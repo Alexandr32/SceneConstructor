@@ -96,3 +96,13 @@ button {
   height: 100%;
   border: solid coral;
 }
+
+.scene {
+  position: absolute;
+}
+
+.scene--header {
+  background: blueviolet;
+  width: 100px;
+  height: 30px;
+}
