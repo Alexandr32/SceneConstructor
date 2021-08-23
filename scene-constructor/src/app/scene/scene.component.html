@@ -4,7 +4,8 @@
      (mousemove)="onmousedown($event)"
      (click)="onClick($event)"
 >
-  <div class="scene--header"></div>
+  <div class="scene--header"
+       [class.scene--header-drag]="isDrag"></div>
   <div>{{scene.text}}</div>
   <div>{{scene.title}}</div>
 </div>
