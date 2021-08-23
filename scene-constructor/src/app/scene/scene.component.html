@@ -2,11 +2,19 @@
      [style.top.px]="scene.coordinate.y"
      [style.left.px]="scene.coordinate.x"
      (mousemove)="onmousedown($event)"
-     (click)="onClick($event)"
 >
   <div class="scene--header"
-       [class.scene--header-drag]="isDrag"></div>
+       (click)="onClick($event)"
+       [class.scene--header-drag]="isDrag">
+
+  </div>
   <div>{{scene.text}}</div>
   <div>{{scene.title}}</div>
+
+   <div class="scene--variants">
+     <button (click)="selectVariant()">Ответ 1</button>
+     <button (click)="selectVariant()">Ответ 2</button>
+     <button (click)="selectVariant()">Ответ 3</button>
+   </div>
 </div>
 

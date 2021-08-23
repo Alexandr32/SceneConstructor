@@ -10,7 +10,9 @@
 
     <app-scene *ngFor="let scene of scenes"
                [scene]="scene"
-               [coordinate$]="coordinate$"></app-scene>
+               [coordinate$]="coordinate$"
+               (selectVariantScene)="selectVariant($event)"
+    ></app-scene>
 
   </div>
 </div>

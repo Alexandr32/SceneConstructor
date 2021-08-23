@@ -10,7 +10,7 @@ html, body {
   height: 100%;
 }
 
-button {
+/*button {
   padding: 0;
   border: none;
   font: inherit;
@@ -18,7 +18,7 @@ button {
   background-color: transparent;
   cursor: pointer;
   outline: none;
-}
+}*/
 
 .header {
   z-index: 1000;
@@ -110,4 +110,9 @@ button {
 
 .scene--header-drag {
   border: dashed black;
+}
+
+.scene--variants {
+  display: flex;
+  flex-direction: column;
 }

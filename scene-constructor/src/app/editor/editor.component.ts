@@ -25,6 +25,8 @@ export class EditorComponent implements OnInit {
     scene2.text = 'Text2'
     scene2.title = 'title2'
     scene2.coordinate = new Coordinate()
+    scene2.coordinate.y = 100
+    scene2.coordinate.x = 140
 
     this.scenes.push(scene1, scene2)
   }
@@ -40,6 +42,10 @@ export class EditorComponent implements OnInit {
       coordinate.y = event.layerY
       this.coordinate$.next(coordinate)
     }
+  }
+
+  selectVariant(scene: Scene) {
+    console.log(scene);
   }
 
 }

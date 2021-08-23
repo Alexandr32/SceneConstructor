@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter} from '@angular/core';
 import {Coordinate, Scene} from '../models/scene-model';
 import {Observable, Subject} from 'rxjs';
 
@@ -14,6 +14,9 @@ export class SceneComponent implements OnInit {
 
   @Input()
   coordinate$ = new Subject<Coordinate>()
+
+  @Output()
+  selectVariantScene = new EventEmitter<Scene>()
 
   isDrag = false
 
@@ -47,6 +50,10 @@ export class SceneComponent implements OnInit {
       this.coordinate$.next(coordinate)
     }
     event.stopPropagation()
+  }
+
+  selectVariant() {
+    this.selectVariantScene.next(this.scene)
   }
 
 }
