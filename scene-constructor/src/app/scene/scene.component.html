@@ -1,12 +1,8 @@
 <div class="scene"
-     #Scene
-     [style.top]="positionY | ToCoordinates"
-     [style.left]="positionX | ToCoordinates"
-     draggable="true"
-     (drag)="onDrag($event)"
-     (dragstart)="onDragStart($event)"
-     (dragend)="onDragend($event)"
-     (mousedown)="onmousedown($event)"
+     [style.top.px]="positionY"
+     [style.left.px]="positionX"
+     (mousemove)="onmousedown($event)"
+     (click)="onClick($event)"
 >
   <div class="scene--header"></div>
   <div>{{scene.text}}</div>

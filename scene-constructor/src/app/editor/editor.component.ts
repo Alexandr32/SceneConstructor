@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Scene} from '../models/scene-model';
+import {Coordinate, Scene} from '../models/scene-model';
+import {Observable, of, Subject} from 'rxjs';
 
 @Component({
   selector: 'app-editor',
@@ -10,6 +11,8 @@ export class EditorComponent implements OnInit {
 
   scene: Scene
 
+  coordinate$ = new Subject<Coordinate>()
+
   constructor() {
     this.scene = new Scene()
     this.scene.id = 1
@@ -18,6 +21,16 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  onmousemove(event) {
+    const el = event.target as HTMLDivElement
+    if(el.classList.contains('editor--working-space')) {
+      const coordinate = new Coordinate()
+      coordinate.x = event.layerX
+      coordinate.y = event.layerY
+      this.coordinate$.next(coordinate)
+    }
   }
 
 }

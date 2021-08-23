@@ -5,7 +5,8 @@
     <div class="editor--control"></div>
   </div>
 
-  <div class="editor--working-space">
-    <app-scene [scene]="scene"></app-scene>
+  <div class="editor--working-space"
+  (mousemove)="onmousemove($event)">
+    <app-scene [scene]="scene" [coordinate$]="coordinate$"></app-scene>
   </div>
 </div>
