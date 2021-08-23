@@ -7,6 +7,7 @@ import {HeaderComponent} from './header/header.component';
 import {EditorComponent} from './editor/editor.component';
 import {SceneComponent} from './scene/scene.component';
 import {ToCoordinatesPipe} from './pipe/toсoordinates.pipe';
+import { SvgLineComponent } from './svg-line/svg-line.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {ToCoordinatesPipe} from './pipe/toсoordinates.pipe';
     HeaderComponent,
     EditorComponent,
     SceneComponent,
-    ToCoordinatesPipe
+    ToCoordinatesPipe,
+    SvgLineComponent
   ],
   imports: [
     BrowserModule,

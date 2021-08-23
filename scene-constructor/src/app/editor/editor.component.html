@@ -8,6 +8,11 @@
   <div class="editor--working-space"
   (mousemove)="onmousemove($event)">
 
+    <app-svg-line
+      [pointOne]="scenes[0].coordinate"
+      [pointTwo]="scenes[1].coordinate"
+    ></app-svg-line>
+
     <app-scene *ngFor="let scene of scenes"
                [scene]="scene"
                [coordinate$]="coordinate$"
