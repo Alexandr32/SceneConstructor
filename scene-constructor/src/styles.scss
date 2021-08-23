@@ -1,3 +1,5 @@
+$padding-body: 50px;
+
 * {
   padding: 0;
   margin: 0;
@@ -30,8 +32,8 @@ button {
 
 .header--content {
   width: 1000px;
-  padding-left: 150px;
-  padding-right: 150px;
+  padding-left: $padding-body;
+  padding-right: $padding-body;
 }
 
 .footer {
@@ -63,6 +65,31 @@ button {
 
 // Класс содержащий в себе контент между header и footer
 .body {
-  display: flex;
   flex-wrap: wrap;
+  padding-left: $padding-body;
+  padding-right: $padding-body;
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  height: 1000px;
+
+}
+
+.editor--control-panel {
+  display: flex;
+}
+
+.editor--control {
+  background-color: burlywood;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
+
+.editor--working-space {
+  position: relative;
+  height: 100%;
+  border: solid coral;
 }
