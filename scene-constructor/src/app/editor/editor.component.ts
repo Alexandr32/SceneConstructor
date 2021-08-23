@@ -9,15 +9,24 @@ import {Observable, of, Subject} from 'rxjs';
 })
 export class EditorComponent implements OnInit {
 
-  scene: Scene
+  scenes: Scene[] = []
 
   coordinate$ = new Subject<Coordinate>()
 
   constructor() {
-    this.scene = new Scene()
-    this.scene.id = 1
-    this.scene.text = 'Text'
-    this.scene.title = 'title'
+    const scene1 = new Scene()
+    scene1.id = 1
+    scene1.text = 'Text'
+    scene1.title = 'title'
+    scene1.coordinate = new Coordinate()
+
+    const scene2 = new Scene()
+    scene2.id = 2
+    scene2.text = 'Text2'
+    scene2.title = 'title2'
+    scene2.coordinate = new Coordinate()
+
+    this.scenes.push(scene1, scene2)
   }
 
   ngOnInit() {

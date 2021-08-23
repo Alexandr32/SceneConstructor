@@ -7,6 +7,10 @@
 
   <div class="editor--working-space"
   (mousemove)="onmousemove($event)">
-    <app-scene [scene]="scene" [coordinate$]="coordinate$"></app-scene>
+
+    <app-scene *ngFor="let scene of scenes"
+               [scene]="scene"
+               [coordinate$]="coordinate$"></app-scene>
+
   </div>
 </div>

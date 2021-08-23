@@ -2,6 +2,7 @@ export class Scene {
   id: number
   title: string
   text: string
+  coordinate: Coordinate
 }
 
 export class Coordinate {

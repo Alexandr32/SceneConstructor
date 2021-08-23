@@ -20,29 +20,16 @@ export class SceneComponent implements OnInit {
   @ViewChild("SceneElement", {static: false})
   sceneElement: ElementRef|undefined;
 
-  positionX: number = 0
-  positionY: number = 0
-
   constructor(public elementRef:ElementRef) {
 
   }
 
   ngOnInit() {
-
-    console.log(this.elementRef.nativeElement.parentElement);
-
     this.coordinate$
       .subscribe(coordinate => {
-
-      console.log(coordinate);
-
       if(this.isDrag) {
-
-        //this.sceneElement.nativeElemen..pageX = coordinate.x
-
-
-        this.positionX = coordinate.x
-        this.positionY = coordinate.y
+        this.scene.coordinate.x = coordinate.x
+        this.scene.coordinate.y = coordinate.y
       }
     })
   }

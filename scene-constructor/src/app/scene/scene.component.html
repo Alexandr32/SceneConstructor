@@ -1,6 +1,6 @@
 <div class="scene"
-     [style.top.px]="positionY"
-     [style.left.px]="positionX"
+     [style.top.px]="scene.coordinate.y"
+     [style.left.px]="scene.coordinate.x"
      (mousemove)="onmousedown($event)"
      (click)="onClick($event)"
 >
