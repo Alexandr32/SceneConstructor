@@ -19,4 +19,48 @@ export class SvgLineComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getPointXOne(): number {
+
+    if(this.pointOne.x <= this.pointTwo.x) {
+      return this.pointOne.x
+    }
+
+    return this.pointTwo.x
+  }
+
+  getPointYOne(): number {
+
+    if(this.pointOne.y <= this.pointTwo.y) {
+      return this.pointOne.y
+    }
+
+    return this.pointTwo.y
+  }
+
+  getPointXTwo(): number {
+
+    if(this.pointTwo.x <= this.pointTwo.x) {
+      return this.pointTwo.x
+    }
+
+    return this.pointTwo.x
+  }
+
+  getPointYTwo(): number {
+
+    if(this.pointTwo.y <= this.pointTwo.y) {
+      return this.pointTwo.y
+    }
+
+    return this.pointTwo.y
+  }
+
+  getWidth(): number {
+    return Math.abs(this.pointTwo.x)
+  }
+
+  getHeight(): number {
+    return Math.abs(this.pointTwo.y)
+  }
+
 }
