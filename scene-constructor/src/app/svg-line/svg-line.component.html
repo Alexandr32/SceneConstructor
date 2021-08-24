@@ -1,0 +1,22 @@
+<div
+  class="svg-line"
+  [style.top.px]="pointOne.y"
+  [style.left.px]="getStartX()">
+  <svg [attr.width]="getWidth()" [attr.height]="getHeight()">
+    <!--<defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="7"
+              refX="0" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" />
+      </marker>
+    </defs>-->
+    <line [attr.x1]="getStartPointX()"
+          [attr.y1]="getStartPointY()"
+          [attr.x2]="getEndPointX()"
+          [attr.y2]="getEndPointY()"
+          stroke="#000"
+          stroke-width="10"
+          marker-end="url(#arrowhead)"/>
+  </svg>
+</div>
+
+

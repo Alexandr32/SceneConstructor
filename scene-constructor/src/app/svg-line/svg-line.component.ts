@@ -3,7 +3,7 @@ import { Coordinate } from '../models/scene-model';
 
 @Component({
   selector: 'app-svg-line',
-  templateUrl: './svg-line.component.svg',
+  templateUrl: './svg-line.component.html',
   styleUrls: ['./svg-line.component.scss']
 })
 export class SvgLineComponent implements OnInit {
@@ -19,7 +19,47 @@ export class SvgLineComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getPointXOne(): number {
+  getStartX() {
+    if(this.pointOne.x <= this.pointTwo.x) {
+      return this.pointOne.x
+    } else {
+      return this.pointTwo.x
+    }
+  }
+
+  getStartPointX() {
+    if(this.pointOne.x <= this.pointTwo.x) {
+      return 0
+    } else {
+      return 0
+    }
+  }
+
+  getStartPointY() {
+    if(this.pointOne.x <= this.pointTwo.x) {
+      return 0
+    } else {
+      return this.getHeight()
+    }
+  }
+
+  getEndPointX() {
+    if(this.pointOne.x <= this.pointTwo.x) {
+      return this.getWidth()
+    } else {
+      return this.getWidth()
+    }
+  }
+
+  getEndPointY() {
+    if(this.pointOne.x <= this.pointTwo.x) {
+      return this.getHeight()
+    } else {
+      return 0
+    }
+  }
+
+  /*getPointXOne(): number {
 
     if(this.pointOne.x <= this.pointTwo.x) {
       return this.pointOne.x
@@ -53,7 +93,7 @@ export class SvgLineComponent implements OnInit {
     }
 
     return this.pointOne.y
-  }
+  }*/
 
   getWidth(): number {
     return Math.abs(Math.abs(this.pointOne.x) - Math.abs(this.pointTwo.x))
