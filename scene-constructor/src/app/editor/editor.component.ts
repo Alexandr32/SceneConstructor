@@ -63,6 +63,8 @@ export class EditorComponent implements OnInit {
    */
   private moveZLine(coordinateOne: Coordinate, coordinateTwo: Coordinate) {
 
+    this.moveCircle(coordinateOne)
+
     const coordinateX2Y1 = new Coordinate()
     coordinateX2Y1.x = 2 / 3  * coordinateTwo.x
     coordinateX2Y1.y = coordinateOne.y
@@ -77,6 +79,21 @@ export class EditorComponent implements OnInit {
 
     this.moveLine(coordinateX2Y2, coordinateTwo)
 
+    this.moveCircle(coordinateTwo)
+
+  }
+
+  /**
+   * Рисует точку
+   * @param coordinate
+   * @private
+   */
+  private moveCircle(coordinate: Coordinate) {
+    this.ctx.beginPath();
+    this.ctx.arc(coordinate.x, coordinate.y, 6, 0, 2 * Math.PI);
+    this.ctx.fillStyle = 'coral';
+    this.ctx.fill();
+    this.ctx.closePath()
   }
 
   /**
