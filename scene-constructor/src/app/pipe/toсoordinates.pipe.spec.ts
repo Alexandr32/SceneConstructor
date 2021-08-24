@@ -1,8 +1,9 @@
-import { ToСoordinatesPipe } from './toсoordinates.pipe';
+import {ToCoordinatesPipe} from './toсoordinates.pipe';
+
 
 describe('ToСoordinatesPipe', () => {
   it('create an instance', () => {
-    const pipe = new ToСoordinatesPipe();
+    const pipe = new ToCoordinatesPipe();
     expect(pipe).toBeTruthy();
   });
 });
