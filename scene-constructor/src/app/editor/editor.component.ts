@@ -11,8 +11,6 @@ export class EditorComponent implements OnInit {
 
   scenes: Scene[] = []
 
-  coordinate$ = new Subject<Coordinate>()
-
   constructor() {
     const scene1 = new Scene()
     scene1.id = 1
@@ -32,16 +30,6 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  onmousemove(event) {
-    const el = event.target as HTMLDivElement
-    if(el.classList.contains('editor--working-space')) {
-      const coordinate = new Coordinate()
-      coordinate.x = event.layerX
-      coordinate.y = event.layerY
-      this.coordinate$.next(coordinate)
-    }
   }
 
   selectVariant(scene: Scene) {

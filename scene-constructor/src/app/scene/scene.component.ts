@@ -1,6 +1,7 @@
 import {Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter} from '@angular/core';
 import {Coordinate, Scene} from '../models/scene-model';
 import {Observable, Subject} from 'rxjs';
+import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
 
 @Component({
   selector: 'app-scene',
@@ -12,13 +13,10 @@ export class SceneComponent implements OnInit {
   @Input()
   scene: Scene
 
-  @Input()
-  coordinate$ = new Subject<Coordinate>()
-
   @Output()
   selectVariantScene = new EventEmitter<Scene>()
 
-  isDrag = false
+  dragPosition = {x: 0, y: 0};
 
   @ViewChild("SceneElement", {static: false})
   sceneElement: ElementRef|undefined;
@@ -28,28 +26,38 @@ export class SceneComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.coordinate$
-      .subscribe(coordinate => {
-      if(this.isDrag) {
-        this.scene.coordinate.x = coordinate.x
-        this.scene.coordinate.y = coordinate.y
-      }
-    })
+
+    this.dragPosition = {x: this.scene.coordinate.x, y: this.scene.coordinate.y};
+  }
+
+  onCdkDragDropped(event) {
+    console.log(event)
+    const element = event.source.getRootElement();
+    const boundingClientRect = element.getBoundingClientRect();
+    const parentPosition = this.getPosition(element);
+    const x = boundingClientRect.x - parentPosition.left
+    const y = boundingClientRect.y - parentPosition.top
+
+    this.scene.coordinate.x = x
+    this.scene.coordinate.y = y
+
+    console.log('x: ' + (boundingClientRect.x - parentPosition.left), 'y: ' +
+      (boundingClientRect.y - parentPosition.top));
   }
 
   onClick(event) {
-    this.isDrag = !this.isDrag
+    
   }
 
-  onmousedown(event) {
-    if(this.isDrag) {
-      const coordinate = new Coordinate()
-      coordinate.x = event.x - 100
-      coordinate.y = event.y - 200
-
-      this.coordinate$.next(coordinate)
+  getPosition(el) {
+    let x = 0;
+    let y = 0;
+    while(el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+      x += el.offsetLeft - el.scrollLeft;
+      y += el.offsetTop - el.scrollTop;
+      el = el.offsetParent;
     }
-    event.stopPropagation()
+    return { top: y, left: x };
   }
 
   selectVariant() {

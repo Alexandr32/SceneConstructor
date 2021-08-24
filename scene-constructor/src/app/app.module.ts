@@ -8,6 +8,8 @@ import {EditorComponent} from './editor/editor.component';
 import {SceneComponent} from './scene/scene.component';
 import {ToCoordinatesPipe} from './pipe/toсoordinates.pipe';
 import { SvgLineComponent } from './svg-line/svg-line.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -18,10 +20,12 @@ import { SvgLineComponent } from './svg-line/svg-line.component';
     ToCoordinatesPipe,
     SvgLineComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        DragDropModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

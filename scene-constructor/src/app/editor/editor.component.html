@@ -1,21 +1,20 @@
 <div class="editor">
-  <div class="editor--control-panel">
-    <div class="editor--control"></div>
-    <div class="editor--control"></div>
-    <div class="editor--control"></div>
+  <div class="editor__control-panel">
+    <div class="editor__control"></div>
+    <div class="editor__control"></div>
+    <div class="editor__control"></div>
   </div>
 
-  <div class="editor--working-space"
-  (mousemove)="onmousemove($event)">
+  <div class="editor__working-space">
 
-    <app-svg-line
+
+    <!--<app-svg-line
       [pointOne]="scenes[0].coordinate"
       [pointTwo]="scenes[1].coordinate"
-    ></app-svg-line>
+    ></app-svg-line>-->
 
     <app-scene *ngFor="let scene of scenes"
                [scene]="scene"
-               [coordinate$]="coordinate$"
                (selectVariantScene)="selectVariant($event)"
     ></app-scene>
 
