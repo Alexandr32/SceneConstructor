@@ -33,11 +33,6 @@ export class SceneComponent implements OnInit {
   onCdkDragDropped(event) {
     console.log(event)
 
-    //const x = this.scene.coordinate.x + event.distance.x
-    //const y = this.scene.coordinate.y + event.distance.y
-
-    //console.log(x, y);
-
     const element = event.source.getRootElement();
     const boundingClientRect = element.getBoundingClientRect();
     const parentPosition = this.getPosition(element);

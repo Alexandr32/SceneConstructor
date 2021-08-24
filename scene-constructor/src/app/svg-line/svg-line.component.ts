@@ -39,28 +39,28 @@ export class SvgLineComponent implements OnInit {
 
   getPointXTwo(): number {
 
-    if(this.pointTwo.x <= this.pointTwo.x) {
+    if(this.pointTwo.x >= this.pointOne.x) {
       return this.pointTwo.x
     }
 
-    return this.pointTwo.x
+    return this.pointOne.x
   }
 
   getPointYTwo(): number {
 
-    if(this.pointTwo.y <= this.pointTwo.y) {
+    if(this.pointTwo.y >= this.pointOne.y) {
       return this.pointTwo.y
     }
 
-    return this.pointTwo.y
+    return this.pointOne.y
   }
 
   getWidth(): number {
-    return Math.abs(this.pointTwo.x)
+    return Math.abs(Math.abs(this.pointOne.x) - Math.abs(this.pointTwo.x))
   }
 
   getHeight(): number {
-    return Math.abs(this.pointTwo.y)
+    return Math.abs(Math.abs(this.pointOne.y) - Math.abs(this.pointTwo.y))
   }
 
 }

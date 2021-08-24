@@ -23,7 +23,7 @@ export class EditorComponent implements OnInit {
     scene2.text = 'Text2'
     scene2.title = 'title2'
     scene2.coordinate = new Coordinate()
-    scene2.coordinate.y = 10
+    scene2.coordinate.y = 50
     scene2.coordinate.x = 300
 
     this.scenes.push(scene1, scene2)
