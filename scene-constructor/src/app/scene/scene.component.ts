@@ -46,7 +46,7 @@ export class SceneComponent implements OnInit {
   }
 
   onClick(event) {
-    
+
   }
 
   getPosition(el) {
