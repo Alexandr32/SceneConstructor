@@ -14,9 +14,11 @@
     <div>{{scene.title}}</div>
 
     <div class="scene__variants">
-      <button (click)="selectVariant()">Ответ 1</button>
-      <button (click)="selectVariant()">Ответ 2</button>
-      <button (click)="selectVariant()">Ответ 3</button>
+      <button *ngFor="let answer of scene.answers"
+              #answer
+              (click)="selectVariant()">{{answer.text}}</button>
+      <!--<button (click)="selectVariant()">Ответ 2</button>
+      <button (click)="selectVariant()">Ответ 3</button>-->
     </div>
   </div>
 

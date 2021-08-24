@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Coordinate, Scene} from '../models/scene-model';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Answer, Coordinate, Scene} from '../models/scene-model';
 import {Observable, of, Subject} from 'rxjs';
 
 @Component({
@@ -7,12 +7,12 @@ import {Observable, of, Subject} from 'rxjs';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, AfterViewInit {
 
   scenes: Scene[] = [];
 
   @ViewChild('working', {static: true})
-  workingSpace: ElementRef|undefined;
+  workingSpace: ElementRef | undefined;
 
   @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>;
@@ -25,6 +25,12 @@ export class EditorComponent implements OnInit {
     scene1.title = 'title';
     scene1.coordinate = new Coordinate();
 
+    const answers1 = new Answer(1, 'a');
+    const answers2 = new Answer(2, 'б', 2);
+    const answers3 = new Answer(3, 'в');
+
+    scene1.answers = [answers1, answers2, answers3];
+
     const scene2 = new Scene();
     scene2.id = 2;
     scene2.text = 'Text2';
@@ -36,19 +42,46 @@ export class EditorComponent implements OnInit {
     this.scenes.push(scene1, scene2);
   }
 
+  ngAfterViewInit(): void {
+
+    this.renderLine()
+    console.log('EditorComponent: ngAfterViewInit');
+  }
+
+  /**
+   * Перерисовать линии связей
+   */
+  renderLine() {
+    this.scenes.forEach((item) => {
+      const answers = item.answers.filter(answer => answer.sceneId)
+
+      answers.forEach(answer => {
+        const coordinateOne = new Coordinate()
+        coordinateOne.x = answer.coordinate.x + 80
+        coordinateOne.y = answer.coordinate.y - 10
+
+        const scene = this.scenes.find(scene => scene.id == answer.sceneId)
+        const coordinateTwo: Coordinate = new Coordinate()
+        coordinateTwo.x = scene.coordinate.x + 4
+        coordinateTwo.y = scene.coordinate.y + 4
+
+        this.moveZLine(coordinateOne, coordinateTwo)
+      })
+    })
+  }
+
   onChangeDrag() {
 
     console.log('onChangeDrag');
 
-    this.clearCanvas()
-
-    this.moveZLine(this.scenes[0].coordinate, this.scenes[1].coordinate)
+    this.clearCanvas();
+    this.renderLine()
   }
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    this.moveZLine(this.scenes[0].coordinate, this.scenes[1].coordinate)
+    //this.moveZLine(this.scenes[0].coordinate, this.scenes[1].coordinate);
   }
 
   private clearCanvas() {
@@ -63,23 +96,23 @@ export class EditorComponent implements OnInit {
    */
   private moveZLine(coordinateOne: Coordinate, coordinateTwo: Coordinate) {
 
-    this.moveCircle(coordinateOne)
+    this.moveCircle(coordinateOne);
 
-    const coordinateX2Y1 = new Coordinate()
-    coordinateX2Y1.x = 2 / 3  * coordinateTwo.x
-    coordinateX2Y1.y = coordinateOne.y
+    const coordinateX2Y1 = new Coordinate();
+    coordinateX2Y1.x = 2 / 3 * coordinateTwo.x;
+    coordinateX2Y1.y = coordinateOne.y;
 
-    this.moveLine(coordinateOne, coordinateX2Y1)
+    this.moveLine(coordinateOne, coordinateX2Y1);
 
-    const coordinateX2Y2 = new Coordinate()
-    coordinateX2Y2.x = 2 / 3 * coordinateTwo.x
-    coordinateX2Y2.y = coordinateTwo.y
+    const coordinateX2Y2 = new Coordinate();
+    coordinateX2Y2.x = 2 / 3 * coordinateTwo.x;
+    coordinateX2Y2.y = coordinateTwo.y;
 
-    this.moveLine(coordinateX2Y1, coordinateX2Y2)
+    this.moveLine(coordinateX2Y1, coordinateX2Y2);
 
-    this.moveLine(coordinateX2Y2, coordinateTwo)
+    this.moveLine(coordinateX2Y2, coordinateTwo);
 
-    this.moveCircle(coordinateTwo)
+    this.moveCircle(coordinateTwo);
 
   }
 
@@ -93,7 +126,7 @@ export class EditorComponent implements OnInit {
     this.ctx.arc(coordinate.x, coordinate.y, 6, 0, 2 * Math.PI);
     this.ctx.fillStyle = 'coral';
     this.ctx.fill();
-    this.ctx.closePath()
+    this.ctx.closePath();
   }
 
   /**
@@ -109,7 +142,7 @@ export class EditorComponent implements OnInit {
     this.ctx.strokeStyle = 'coral';
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
-    this.ctx.closePath()
+    this.ctx.closePath();
   }
 
   selectVariant(scene: Scene) {
