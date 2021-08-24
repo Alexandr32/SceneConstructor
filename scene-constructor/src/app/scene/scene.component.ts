@@ -18,8 +18,8 @@ export class SceneComponent implements OnInit {
 
   dragPosition = {x: 0, y: 0};
 
-  @ViewChild("SceneElement", {static: false})
-  sceneElement: ElementRef|undefined;
+  @Output()
+  changeDrag = new EventEmitter()
 
   constructor(public elementRef:ElementRef) {
 
@@ -48,6 +48,8 @@ export class SceneComponent implements OnInit {
 
     console.log('x: ' + (boundingClientRect.x - parentPosition.left), 'y: ' +
       (boundingClientRect.y - parentPosition.top));
+
+    this.changeDrag.next()
   }
 
   onClick(event) {

@@ -55,7 +55,12 @@ export class SvgLineComponent implements OnInit {
     if(this.pointOne.x <= this.pointTwo.x) {
       return this.getHeight()
     } else {
-      return 0
+
+      if (this.pointOne.y <= this.pointTwo.y) {
+        return 0
+      }
+
+      return this.pointOne.y
     }
   }
 

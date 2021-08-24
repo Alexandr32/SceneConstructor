@@ -5,14 +5,17 @@
     <div class="editor__control"></div>
   </div>
 
-  <div class="editor__working-space">
+  <div #working class="editor__working-space">
 
-    <app-svg-line
+    <canvas #canvas width="1200" height="800" class="editor__working-space__canvas"></canvas>
+
+    <!--<app-svg-line
       [pointOne]="scenes[0].coordinate"
       [pointTwo]="scenes[1].coordinate"
-    ></app-svg-line>
+    ></app-svg-line>-->
 
     <app-scene *ngFor="let scene of scenes"
+               (changeDrag)="onChangeDrag()"
                [scene]="scene"
                (selectVariantScene)="selectVariant($event)"
     ></app-scene>
