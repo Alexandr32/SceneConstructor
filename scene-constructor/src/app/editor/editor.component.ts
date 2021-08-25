@@ -9,6 +9,9 @@ import {Observable, of, Subject} from 'rxjs';
 })
 export class EditorComponent implements OnInit, AfterViewInit {
 
+  // Смещение коорлдинаты у кнопки с ответом
+  private readonly biasX = 110
+
   scenes: Scene[] = [];
 
   @ViewChild('working', {static: true})
@@ -25,9 +28,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene1.title = 'title';
     scene1.coordinate = new Coordinate();
 
-    const answers1 = new Answer(1, 'a');
+    const answers1 = new Answer(1, 'a', 3);
     const answers2 = new Answer(2, 'б', 2);
-    const answers3 = new Answer(3, 'в');
+    const answers3 = new Answer(3, 'в', 2);
 
     scene1.answers = [answers1, answers2, answers3];
 
@@ -39,7 +42,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene2.coordinate.y = 50;
     scene2.coordinate.x = 300;
 
-    this.scenes.push(scene1, scene2);
+    const scene3 = new Scene();
+    scene3.id = 3;
+    scene3.text = 'Text3';
+    scene3.title = 'title3';
+    scene3.coordinate = new Coordinate();
+    scene3.coordinate.y = 150;
+    scene3.coordinate.x = 400;
+
+    this.scenes.push(scene1, scene2, scene3);
   }
 
   ngAfterViewInit(): void {
@@ -51,14 +62,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
   /**
    * Перерисовать линии связей
    */
-  renderLine() {
+  private renderLine() {
     this.scenes.forEach((item) => {
       const answers = item.answers.filter(answer => answer.sceneId)
 
       answers.forEach(answer => {
         const coordinateOne = new Coordinate()
-        coordinateOne.x = answer.coordinate.x + 110
-        coordinateOne.y = answer.coordinate.y - 10
+        coordinateOne.x = answer.coordinate.x + this.biasX
+        coordinateOne.y = answer.coordinate.y + 10
 
         const scene = this.scenes.find(scene => scene.id == answer.sceneId)
         const coordinateTwo: Coordinate = new Coordinate()
@@ -84,6 +95,27 @@ export class EditorComponent implements OnInit, AfterViewInit {
     //this.moveZLine(this.scenes[0].coordinate, this.scenes[1].coordinate);
   }
 
+  /**
+   * Создает новую сцену
+   */
+  private addNewScene() {
+
+    const newArray: number[] = this.scenes.map(item => item.id)
+    let max = Math.max(...newArray)
+
+    const scene = new Scene();
+    scene.id = max++;
+    scene.text = 'Новая сцена';
+    scene.title = 'Новое описание';
+    scene.coordinate = new Coordinate();
+    scene.coordinate.y = 0;
+    scene.coordinate.x = 0;
+
+    this.scenes.push(scene)
+
+    this.renderLine()
+  }
+
   private clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
   }
@@ -99,13 +131,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.moveCircle(coordinateOne);
 
     const coordinateX2Y1 = new Coordinate();
-    coordinateX2Y1.x = 2 / 3 * coordinateTwo.x;
+    coordinateX2Y1.x = 2 / 3 * (coordinateTwo.x);
     coordinateX2Y1.y = coordinateOne.y;
 
     this.moveLine(coordinateOne, coordinateX2Y1);
 
     const coordinateX2Y2 = new Coordinate();
-    coordinateX2Y2.x = 2 / 3 * coordinateTwo.x;
+    coordinateX2Y2.x = 2 / 3 * (coordinateTwo.x);
     coordinateX2Y2.y = coordinateTwo.y;
 
     this.moveLine(coordinateX2Y1, coordinateX2Y2);

@@ -54,6 +54,10 @@ export class SceneComponent implements OnInit, AfterViewInit {
     console.log('SceneComponent: ngAfterViewInit');
   }
 
+  onClick(event) {
+
+  }
+
   onCdkDragDropped(event) {
     console.log('event', event)
 
@@ -78,11 +82,7 @@ export class SceneComponent implements OnInit, AfterViewInit {
     this.changeDrag.next()
   }
 
-  onClick(event) {
-
-  }
-
-  getCoordinate(element) {
+  private getCoordinate(element) {
     const boundingClientRect = element.getBoundingClientRect();
     const parentPosition = this.getPosition(element);
 
@@ -94,7 +94,7 @@ export class SceneComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getPosition(el) {
+  private getPosition(el) {
     let x = 0;
     let y = 0;
     while(el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
