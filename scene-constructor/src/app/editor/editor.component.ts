@@ -1,6 +1,8 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Answer, Coordinate, Scene} from '../models/scene-model';
 import {Observable, of, Subject} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
 
 @Component({
   selector: 'app-editor',
@@ -11,6 +13,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   // Смещение коорлдинаты у кнопки с ответом
   private readonly biasX = 110
+  private readonly biasY = 0
 
   scenes: Scene[] = [];
 
@@ -21,16 +24,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
   canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
     const scene1 = new Scene();
     scene1.id = 1;
     scene1.text = 'Text';
     scene1.title = 'title';
     scene1.coordinate = new Coordinate();
 
-    const answers1 = new Answer(1, 'a', 3);
+    const answers1 = new Answer(1, 'a', 2);
     const answers2 = new Answer(2, 'б', 2);
-    const answers3 = new Answer(3, 'в', 2);
+    const answers3 = new Answer(3, 'в', 3);
 
     scene1.answers = [answers1, answers2, answers3];
 
@@ -59,6 +62,22 @@ export class EditorComponent implements OnInit, AfterViewInit {
     console.log('EditorComponent: ngAfterViewInit');
   }
 
+  openEditDialog(scene: Scene): void {
+
+    const dialogRef = this.dialog.open(EditSceneDialogComponent, {
+      data: scene
+    });
+
+    dialogRef.componentInstance.saveEvent.subscribe(() => {
+      this.clearCanvas()
+      this.renderLine()
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('closeDialog');
+    });
+  }
+
   /**
    * Перерисовать линии связей
    */
@@ -69,7 +88,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       answers.forEach(answer => {
         const coordinateOne = new Coordinate()
         coordinateOne.x = answer.coordinate.x + this.biasX
-        coordinateOne.y = answer.coordinate.y + 10
+        coordinateOne.y = answer.coordinate.y + this.biasY
 
         const scene = this.scenes.find(scene => scene.id == answer.sceneId)
         const coordinateTwo: Coordinate = new Coordinate()
@@ -98,7 +117,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   /**
    * Создает новую сцену
    */
-  private addNewScene() {
+  addNewScene() {
 
     const newArray: number[] = this.scenes.map(item => item.id)
     let max = Math.max(...newArray)

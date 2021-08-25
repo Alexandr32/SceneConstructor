@@ -1,0 +1,45 @@
+<form [formGroup]="form" novalidate>
+
+  <label>
+    <p>Название:</p>
+    <input name="title" formControlName="title"/>
+    <div
+         *ngIf="form.controls['title'].invalid">
+      Введите значение
+    </div>
+
+    <p>Описание:</p>
+    <input name="text" formControlName="text"/>
+    <div
+      *ngIf="form.controls['text'].invalid">
+      Введите значение
+    </div>
+  </label>
+
+  <p>Ответы:</p>
+  <div cdkDropList class="answers-list" (cdkDropListDropped)="drop($event)">
+    <div class="answer-box" *ngFor="let answer of answers" cdkDrag>
+      <div>{{answer.text}}</div>
+      <button (click)="editAnswer(answer)">Редактировать</button>
+      <button (click)="deleteAnswer(answer)">Удалить</button>
+    </div>
+
+  </div>
+
+  <div>
+    <button type="button" (click)="onNoClick()">
+      Отмена
+    </button>
+    <button (click)="onClickSave()"  *ngIf="form.valid">
+      Сохранить
+    </button>
+  </div>
+
+</form>
+
+<!--<div mat-dialog-actions>
+  <button mat-button (click)="onClick()">Изменить</button>
+  <button mat-button (click)="onClickSave()">Сохранить и закрыть</button>
+  <button mat-button (click)="onNoClick()">Закрыть</button>
+</div>-->
+

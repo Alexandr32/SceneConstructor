@@ -15,12 +15,19 @@
 
     <div class="scene__variants">
       <button *ngFor="let answer of scene.answers"
+              id="{{answer.id}}"
               #answer
               (click)="selectVariant()">{{answer.text}}</button>
       <!--<button (click)="selectVariant()">Ответ 2</button>
       <button (click)="selectVariant()">Ответ 3</button>-->
     </div>
+
+    <div>
+      <button (click)="onClickEdit()">Редактировать</button>
+    </div>
   </div>
+
+
 
   <!--<div class="scene__box__bth-float" cdkDragHandle>
     <svg width="24px" fill="currentColor" viewBox="0 0 24 24">

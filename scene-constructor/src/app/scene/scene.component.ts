@@ -16,6 +16,9 @@ export class SceneComponent implements OnInit, AfterViewInit {
   @Output()
   selectVariantScene = new EventEmitter<Scene>()
 
+  @Output()
+  editScene = new EventEmitter<Scene>()
+
   dragPosition = {x: 0, y: 0};
 
   @Output()
@@ -33,22 +36,23 @@ export class SceneComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.answers.forEach((element: ElementRef, index) => {
+    this.answers.forEach((elementRef: ElementRef) => {
 
-      const answer = this.scene.answers[index]
+      const id = elementRef.nativeElement.id
+      const answer = this.scene.answers.find(item => item.id == id)
 
       const coordinate = new Coordinate()
-      coordinate.x = element.nativeElement.offsetLeft
-      coordinate.y = element.nativeElement.offsetTop
+      coordinate.x = elementRef.nativeElement.offsetLeft
+      coordinate.y = elementRef.nativeElement.offsetTop
 
       const startCoordinate = new Coordinate()
-      startCoordinate.x = element.nativeElement.offsetLeft
-      startCoordinate.y = element.nativeElement.offsetTop
+      startCoordinate.x = elementRef.nativeElement.offsetLeft
+      startCoordinate.y = elementRef.nativeElement.offsetTop
 
       answer.startCoordinate = startCoordinate
       answer.coordinate = coordinate
 
-      console.log(element.nativeElement.offsetLeft, element.nativeElement.offsetTop, element)
+      console.log(elementRef.nativeElement.offsetLeft, elementRef.nativeElement.offsetTop, elementRef)
     });
 
     console.log('SceneComponent: ngAfterViewInit');
@@ -71,9 +75,11 @@ export class SceneComponent implements OnInit, AfterViewInit {
     this.scene.coordinate.y = y
 
     // Изменяем координаты у дочерних эл-ов
-    this.answers.forEach((item, index) => {
+    this.answers.forEach((elementRef) => {
 
-      const answer = this.scene.answers[index]
+      const id = elementRef.nativeElement.id
+
+      const answer = this.scene.answers.find(item => item.id == id)
       console.log('startCoordinate', answer.startCoordinate);
       answer.coordinate.x = answer.startCoordinate.x + x
       answer.coordinate.y = answer.startCoordinate.y + y
@@ -107,6 +113,10 @@ export class SceneComponent implements OnInit, AfterViewInit {
 
   selectVariant() {
     this.selectVariantScene.next(this.scene)
+  }
+
+  onClickEdit() {
+    this.editScene.emit(this.scene)
   }
 
 }

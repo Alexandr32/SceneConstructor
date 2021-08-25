@@ -14,6 +14,7 @@
   <div #working class="editor__working-space">
 
     <app-scene *ngFor="let scene of scenes"
+               (editScene)="openEditDialog($event)"
                (changeDrag)="onChangeDrag()"
                [scene]="scene"
                (selectVariantScene)="selectVariant($event)"
