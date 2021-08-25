@@ -57,8 +57,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
       answers.forEach(answer => {
         const coordinateOne = new Coordinate()
-        coordinateOne.x = answer.coordinate.x + 80
-        coordinateOne.y = answer.coordinate.y - 10
+        coordinateOne.x = answer.coordinate.x //+ 80
+        coordinateOne.y = answer.coordinate.y //- 10
 
         const scene = this.scenes.find(scene => scene.id == answer.sceneId)
         const coordinateTwo: Coordinate = new Coordinate()

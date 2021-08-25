@@ -33,9 +33,10 @@ export class SceneComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.answers.forEach((element: ElementRef) => {
+    this.answers.forEach((element: ElementRef, index) => {
 
-      const answer = this.scene.answers.find(item => item.text ==  element.nativeElement.innerText)
+      const answer = this.scene.answers[index]
+      //const answer = this.scene.answers.find(item => item.text == element.nativeElement.innerText)
       const coordinate = new Coordinate()
       coordinate.x = element.nativeElement.offsetLeft
       coordinate.y = element.nativeElement.offsetTop
@@ -43,32 +44,41 @@ export class SceneComponent implements OnInit, AfterViewInit {
       answer.coordinate = coordinate
 
       console.log(element.nativeElement.offsetLeft, element.nativeElement.offsetTop, element)
-
-      /*item.nativeElement.getBoundingClientRect();
-      console.log('item', item.nativeElement.offsetLeft);
-      console.log('item', item.nativeElement.offsetParent);*/
     });
 
     console.log('SceneComponent: ngAfterViewInit');
   }
 
   onCdkDragDropped(event) {
-    console.log(event)
+    console.log('event', event)
 
     const element = event.source.getRootElement();
-    /*const boundingClientRect = element.getBoundingClientRect();
-    const parentPosition = this.getPosition(element);
-
-    console.log('left', boundingClientRect.x);
-    console.log('top', boundingClientRect.y);
-
-    const x = boundingClientRect.x - parentPosition.left
-    const y = boundingClientRect.y - parentPosition.top*/
 
     const {x, y} = this.getCoordinate(element)
 
+    console.log(x, y);
+
     this.scene.coordinate.x = x
     this.scene.coordinate.y = y
+
+    // Изменяем координаты у дочерних эл-ов
+    this.answers.forEach((item, index) => {
+
+      console.log(item);
+
+      const element = item.nativeElement
+      const {x, y} = this.getCoordinate(element)
+
+      const answer = this.scene.answers[index]
+      answer.coordinate.x = x
+      answer.coordinate.y = y
+    })
+
+
+    /*this.scene.answers.forEach((item) => {
+      item.coordinate.x = item.coordinate.x + x
+      item.coordinate.y = item.coordinate.y + y
+    })*/
 
     this.changeDrag.next()
   }
@@ -83,13 +93,8 @@ export class SceneComponent implements OnInit, AfterViewInit {
     const boundingClientRect = element.getBoundingClientRect();
     const parentPosition = this.getPosition(element);
 
-    //console.log('left', boundingClientRect.x);
-    //console.log('top', boundingClientRect.y);
-    console.log('x: ' + (boundingClientRect.x - parentPosition.left), 'y: ' +
-      (boundingClientRect.y - parentPosition.top));
-
     const x = boundingClientRect.x - parentPosition.left
-    const y = boundingClientRect.y - parentPosition.top
+    const y = boundingClientRect.y - parentPosition.top + window.scrollY
 
     return {
       x, y
