@@ -36,11 +36,16 @@ export class SceneComponent implements OnInit, AfterViewInit {
     this.answers.forEach((element: ElementRef, index) => {
 
       const answer = this.scene.answers[index]
-      //const answer = this.scene.answers.find(item => item.text == element.nativeElement.innerText)
+
       const coordinate = new Coordinate()
       coordinate.x = element.nativeElement.offsetLeft
       coordinate.y = element.nativeElement.offsetTop
 
+      const startCoordinate = new Coordinate()
+      startCoordinate.x = element.nativeElement.offsetLeft
+      startCoordinate.y = element.nativeElement.offsetTop
+
+      answer.startCoordinate = startCoordinate
       answer.coordinate = coordinate
 
       console.log(element.nativeElement.offsetLeft, element.nativeElement.offsetTop, element)
@@ -64,26 +69,14 @@ export class SceneComponent implements OnInit, AfterViewInit {
     // Изменяем координаты у дочерних эл-ов
     this.answers.forEach((item, index) => {
 
-      console.log(item);
-
-      const element = item.nativeElement
-      const {x, y} = this.getCoordinate(element)
-
       const answer = this.scene.answers[index]
-      answer.coordinate.x = x
-      answer.coordinate.y = y
+      console.log('startCoordinate', answer.startCoordinate);
+      answer.coordinate.x = answer.startCoordinate.x + x
+      answer.coordinate.y = answer.startCoordinate.y + y
     })
-
-
-    /*this.scene.answers.forEach((item) => {
-      item.coordinate.x = item.coordinate.x + x
-      item.coordinate.y = item.coordinate.y + y
-    })*/
 
     this.changeDrag.next()
   }
-
-
 
   onClick(event) {
 

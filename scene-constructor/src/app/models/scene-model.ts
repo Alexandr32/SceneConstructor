@@ -24,7 +24,8 @@ export class Answer {
   constructor(public id: number,
               public text: string,
               public sceneId?: number,
-              public coordinate?: Coordinate
+              public startCoordinate?: Coordinate, // Координаты при отрисовке на холсте
+              public coordinate?: Coordinate // Текущие координаты
   ) {
   }
 }

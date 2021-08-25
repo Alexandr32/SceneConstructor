@@ -1,4 +1,4 @@
-<!--<div class="editor">
+<div class="editor">
   <div class="editor__control-panel">
     <div class="editor__control"></div>
     <div class="editor__control"></div>
@@ -7,35 +7,13 @@
 
   <div #working class="editor__working-space">
 
-    <canvas #canvas width="1200" height="300" class="editor__working-space__canvas"></canvas>
-
-    &lt;!&ndash;<app-svg-line
-      [pointOne]="scenes[0].coordinate"
-      [pointTwo]="scenes[1].coordinate"
-    ></app-svg-line>&ndash;&gt;
-
     <app-scene *ngFor="let scene of scenes"
                (changeDrag)="onChangeDrag()"
                [scene]="scene"
                (selectVariantScene)="selectVariant($event)"
     ></app-scene>
 
+    <canvas #canvas width="1200" height="800" class="editor__working-space__canvas"></canvas>
+
   </div>
-</div>-->
-
-<div #working class="editor__working-space">
-
-  <app-scene *ngFor="let scene of scenes"
-             (changeDrag)="onChangeDrag()"
-             [scene]="scene"
-             (selectVariantScene)="selectVariant($event)"
-  ></app-scene>
-
-  <canvas #canvas width="1200" height="800" class="editor__working-space__canvas"></canvas>
-
-  <!--<app-svg-line
-    [pointOne]="scenes[0].coordinate"
-    [pointTwo]="scenes[1].coordinate"
-  ></app-svg-line>-->
-
 </div>
