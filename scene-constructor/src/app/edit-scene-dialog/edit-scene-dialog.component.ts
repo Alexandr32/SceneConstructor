@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, Output, EventEmitter} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Answer, Scene} from '../models/scene-model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
@@ -12,24 +12,25 @@ import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
 export class EditSceneDialogComponent implements OnInit {
 
   @Output()
-  saveEvent = new EventEmitter()
+  saveEvent = new EventEmitter();
 
-  form: FormGroup
+  form: FormGroup;
 
-  answers: Answer[] = []
+  answers: Answer[] = [];
 
   constructor(public dialogRef: MatDialogRef<EditSceneDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: Scene) { }
+              @Inject(MAT_DIALOG_DATA) public data: Scene) {
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      "title":
+      'title':
         new FormControl(
           this.data.title,
           [
             Validators.required
           ]),
-      "text":
+      'text':
         new FormControl(
           this.data.text,
           [
@@ -38,24 +39,47 @@ export class EditSceneDialogComponent implements OnInit {
     });
 
     this.data.answers.forEach(item => {
-      this.answers.push(item)
-    })
+      this.addControl(item)
+      this.answers.push(item);
+    });
+  }
+
+  private addControl(answer: Answer) {
+    this.form.addControl(`answerId${answer.id}`,
+      new FormControl(
+        answer.text,
+        [
+          Validators.required
+        ]));
   }
 
   drop(event: CdkDragDrop<string[]>) {
     //moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
   }
 
-  editAnswer(answer: Answer) {
+  deleteAnswer(answer: Answer) {
 
+    console.log(answer);
+
+    const item = this.data.answers.find(item => item.id == answer.id);
+    const index = this.answers.indexOf(item);
+    this.answers.splice(index, 1);
+
+    this.updatePosition();
   }
 
-  deleteAnswer(answer: Answer) {
-    const item = this.data.answers.find(item => item.id == answer.id)
-    const index = this.answers.indexOf(item)
-    this.answers.splice(index, 1)
+  onClickNewAnswer() {
 
-    this.updatePosition()
+    const ids: number[] = this.answers.map(item => item.id)
+    let id = Math.max(...ids) + 1
+    const positions: number[] = this.answers.map(item => item.position)
+    const position = Math.max(...positions) + 1
+
+    const answer = new Answer(id, '', position, this.data)
+
+    this.addControl(answer)
+    this.answers.push(answer)
+    
   }
 
   /**
@@ -65,26 +89,29 @@ export class EditSceneDialogComponent implements OnInit {
   private updatePosition() {
     this.answers.forEach((value, index) => {
       console.log('index:', index);
-      value.position = index//+ 1
-    })
+      value.position = index;//+ 1
+    });
   }
 
-
   onClick() {
-    this.saveEvent.emit()
+    this.saveEvent.emit();
   }
 
   onClickSave() {
     if (this.form.invalid) {
-      return
+      return;
     }
 
-    this.data.title = this.form.value['title']
-    this.data.text = this.form.value['text']
+    this.data.title = this.form.value['title'];
+    this.data.text = this.form.value['text'];
 
-    this.data.answers = this.answers
+    this.answers.forEach(item => {
+      item.text = this.form.value[`answerId${item.id}`]
+    })
 
-    this.saveEvent.emit(this.data)
+    this.data.answers = this.answers;
+
+    this.saveEvent.emit(this.data);
     this.dialogRef.close();
   }
 

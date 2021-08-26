@@ -16,15 +16,18 @@
     </div>
   </label>
 
-  <p>Ответы:</p>
   <div cdkDropList class="answers-list" (cdkDropListDropped)="drop($event)">
     <div class="answer-box" *ngFor="let answer of answers" cdkDrag>
-      <div>{{answer.text}}</div>
-      <button (click)="editAnswer(answer)">Редактировать</button>
+      <input name="answerId{{answer.id}}" formControlName="answerId{{answer.id}}" value="{{answer.text}}">
+      <div
+        *ngIf="form.controls['answerId' + answer.id].invalid">
+        Введите значение
+      </div>
       <button (click)="deleteAnswer(answer)">Удалить</button>
     </div>
-
   </div>
+
+  <button (click)="onClickNewAnswer()">Добавить новый ответ</button>
 
   <div>
     <button type="button" (click)="onNoClick()">
