@@ -53,8 +53,30 @@ export class EditSceneDialogComponent implements OnInit {
         ]));
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    //moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+  /**
+   * Перемещение элементов
+   * @param event
+   */
+  drop(event: CdkDragDrop<Answer[]>) {
+
+    const previousIndex = event.previousIndex
+    const currentIndex = event.currentIndex
+
+    const currentAnswers = this.answers.find(item => item.position == previousIndex)
+    const nextAnswers = this.answers.find(item => item.position == currentIndex)
+
+    currentAnswers.position = currentIndex
+    nextAnswers.position = previousIndex
+
+    this.answers = this.answers.sort((a, b) => {
+      if (a.position > b.position) {
+        return 1;
+      }
+      if (a.position < b.position) {
+        return -1;
+      }
+      return 0;
+    })
   }
 
   deleteAnswer(answer: Answer) {
@@ -79,7 +101,7 @@ export class EditSceneDialogComponent implements OnInit {
 
     this.addControl(answer)
     this.answers.push(answer)
-    
+
   }
 
   /**
