@@ -65,7 +65,7 @@ export class EditSceneDialogComponent implements OnInit {
   private updatePosition() {
     this.answers.forEach((value, index) => {
       console.log('index:', index);
-      value.position = index + 1
+      value.position = index//+ 1
     })
   }
 

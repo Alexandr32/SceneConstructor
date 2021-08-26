@@ -22,7 +22,7 @@ export class Coordinate {
  */
 export class Answer {
 
-  private readonly startY = 65
+  private readonly startY = 85
   private readonly startX = 120
 
   // Координаты при отрисовке на холсте
@@ -38,13 +38,14 @@ export class Answer {
 
   set position(value: number) {
     this._position = value
-    this.startCoordinate.y = 20 * this._position + this.startY + this.startCoordinate.y
-    this.coordinate.y = 20 * this._position + this.startY //+ this.startCoordinate.y
+    this.startCoordinate.y = 20 * this._position + this.startY //+ this.startCoordinate.y
+    this.coordinate.y = 20 * this._position + this.startY + this.parentScene.coordinate.y
   }
 
   constructor(public id: number,
               public text: string,
               position: number,
+              public parentScene: Scene,
               public sceneId?: number,
   ) {
 
@@ -56,7 +57,7 @@ export class Answer {
 
     this.coordinate = new Coordinate()
     this.coordinate.x = this.startX
-    this.coordinate.y = 20 * position + this.startY
+    this.coordinate.y = 20 * position + this.startY + parentScene.coordinate.y
   }
 
   setX(x: number) {

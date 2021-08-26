@@ -27,9 +27,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene1.title = 'title';
     scene1.coordinate = new Coordinate();
 
-    const answers1 = new Answer(1, 'a', 1,2);
-    const answers2 = new Answer(2, 'б', 2, 2);
-    const answers3 = new Answer(3, 'в', 3, 3);
+    const answers1 = new Answer(1, 'a', 0,scene1, 2);
+    const answers2 = new Answer(2, 'б', 1, scene1,2);
+    const answers3 = new Answer(3, 'в', 2, scene1,3);
 
     scene1.answers = [answers1, answers2, answers3];
 
