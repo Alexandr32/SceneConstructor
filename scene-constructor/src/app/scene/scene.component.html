@@ -17,23 +17,12 @@
       <button *ngFor="let answer of scene.answers"
               id="{{answer.id}}"
               #answer
-              (click)="selectVariant()">{{answer.text}}</button>
-      <!--<button (click)="selectVariant()">Ответ 2</button>
-      <button (click)="selectVariant()">Ответ 3</button>-->
+              (click)="selectVariant($event)">{{answer.text}}</button>
     </div>
 
     <div>
       <button (click)="onClickEdit()">Редактировать</button>
     </div>
   </div>
-
-
-
-  <!--<div class="scene__box__bth-float" cdkDragHandle>
-    <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-      <path d="M0 0h24v24H0z" fill="none"></path>
-    </svg>
-  </div>-->
 </div>
 

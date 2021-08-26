@@ -53,8 +53,20 @@ export class EditSceneDialogComponent implements OnInit {
   deleteAnswer(answer: Answer) {
     const item = this.data.answers.find(item => item.id == answer.id)
     const index = this.answers.indexOf(item)
-    console.log('index:', index);
     this.answers.splice(index, 1)
+
+    this.updatePosition()
+  }
+
+  /**
+   * Обновляет позицию элемента в списке
+   * @private
+   */
+  private updatePosition() {
+    this.answers.forEach((value, index) => {
+      console.log('index:', index);
+      value.position = index + 1
+    })
   }
 
 

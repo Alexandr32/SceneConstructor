@@ -11,10 +11,6 @@ import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.c
 })
 export class EditorComponent implements OnInit, AfterViewInit {
 
-  // Смещение коорлдинаты у кнопки с ответом
-  private readonly biasX = 110
-  private readonly biasY = 0
-
   scenes: Scene[] = [];
 
   @ViewChild('working', {static: true})
@@ -31,9 +27,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene1.title = 'title';
     scene1.coordinate = new Coordinate();
 
-    const answers1 = new Answer(1, 'a', 2);
-    const answers2 = new Answer(2, 'б', 2);
-    const answers3 = new Answer(3, 'в', 3);
+    const answers1 = new Answer(1, 'a', 1,2);
+    const answers2 = new Answer(2, 'б', 2, 2);
+    const answers3 = new Answer(3, 'в', 3, 3);
 
     scene1.answers = [answers1, answers2, answers3];
 
@@ -87,8 +83,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
       answers.forEach(answer => {
         const coordinateOne = new Coordinate()
-        coordinateOne.x = answer.coordinate.x + this.biasX
-        coordinateOne.y = answer.coordinate.y + this.biasY
+        coordinateOne.x = answer.coordinate.x
+        coordinateOne.y = answer.coordinate.y
 
         const scene = this.scenes.find(scene => scene.id == answer.sceneId)
         const coordinateTwo: Coordinate = new Coordinate()

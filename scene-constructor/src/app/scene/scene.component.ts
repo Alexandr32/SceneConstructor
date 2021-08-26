@@ -24,7 +24,7 @@ export class SceneComponent implements OnInit, AfterViewInit {
   @Output()
   changeDrag = new EventEmitter()
 
-  @ViewChildren("answer")
+  @ViewChildren("answer", {read: ElementRef})
   answers: QueryList<ElementRef>;
 
   constructor(public elementRef:ElementRef) {
@@ -36,10 +36,38 @@ export class SceneComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.answers.forEach((elementRef: ElementRef) => {
+
+    //this.initAnswersElement(this.answers)
+
+    //this.answers.reset([])
+
+    /*this.answers.changes.subscribe((elements) => {
+
+      this.initAnswersElement(elements)
+    })*/
+
+    //console.log('SceneComponent: ngAfterViewInit');
+  }
+
+  ngOnChanges() {
+    console.log('ngOnChanges');
+  }
+
+  private initAnswersElement(elements: QueryList<ElementRef>) {
+    elements.forEach((elementRef: ElementRef) => {
+
+      //elementRef.nativeElement.clear
 
       const id = elementRef.nativeElement.id
       const answer = this.scene.answers.find(item => item.id == id)
+
+      // ------------------
+
+      //const {x, y} = this.getCoordinate(elementRef.nativeElement)
+
+      //console.log('!!!', elementRef.nativeElement.source.getRootElement().offsetTop, elementRef.nativeElement.screenY);
+
+      // ------------------
 
       const coordinate = new Coordinate()
       coordinate.x = elementRef.nativeElement.offsetLeft
@@ -49,13 +77,11 @@ export class SceneComponent implements OnInit, AfterViewInit {
       startCoordinate.x = elementRef.nativeElement.offsetLeft
       startCoordinate.y = elementRef.nativeElement.offsetTop
 
-      answer.startCoordinate = startCoordinate
-      answer.coordinate = coordinate
+      //answer.startCoordinate = startCoordinate
+      //answer.coordinate = coordinate
 
       console.log(elementRef.nativeElement.offsetLeft, elementRef.nativeElement.offsetTop, elementRef)
     });
-
-    console.log('SceneComponent: ngAfterViewInit');
   }
 
   onClick(event) {
@@ -80,9 +106,8 @@ export class SceneComponent implements OnInit, AfterViewInit {
       const id = elementRef.nativeElement.id
 
       const answer = this.scene.answers.find(item => item.id == id)
-      console.log('startCoordinate', answer.startCoordinate);
-      answer.coordinate.x = answer.startCoordinate.x + x
-      answer.coordinate.y = answer.startCoordinate.y + y
+      answer.setX(x)
+      answer.setY(y)
     })
 
     this.changeDrag.next()
@@ -111,8 +136,12 @@ export class SceneComponent implements OnInit, AfterViewInit {
     return { top: y, left: x };
   }
 
-  selectVariant() {
-    this.selectVariantScene.next(this.scene)
+  selectVariant(event) {
+
+    console.log(event);
+
+
+    //this.selectVariantScene.next(this.scene)
   }
 
   onClickEdit() {
