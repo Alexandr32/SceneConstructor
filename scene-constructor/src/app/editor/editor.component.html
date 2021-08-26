@@ -14,13 +14,19 @@
   <div #working class="editor__working-space">
 
     <app-scene *ngFor="let scene of scenes"
+               [changeSelectModeEvent$]="changeSelectModeEvent$"
                (editScene)="openEditDialog($event)"
                (changeDrag)="onChangeDrag()"
                [scene]="scene"
-               (selectVariantScene)="selectVariant($event)"
+               (selectAnswerScene)="selectAnswerScene($event)"
+               (selectScene)="selectScene($event)"
     ></app-scene>
 
-    <canvas #canvas width="1200" height="800" class="editor__working-space__canvas"></canvas>
+    <canvas #canvas
+            width="1200"
+            height="800"
+            class="editor__working-space__canvas"
+            (click)="onClickWorkingSpace()"></canvas>
 
   </div>
 </div>

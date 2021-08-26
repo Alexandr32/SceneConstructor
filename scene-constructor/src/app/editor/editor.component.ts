@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Answer, Coordinate, Scene} from '../models/scene-model';
-import {Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
 
@@ -13,12 +13,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   scenes: Scene[] = [];
 
-  @ViewChild('working', {static: true})
-  workingSpace: ElementRef | undefined;
-
   @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
+
+  changeSelectModeEvent$ = new BehaviorSubject<boolean>(false)
 
   constructor(public dialog: MatDialog) {
     const scene1 = new Scene();
@@ -27,11 +26,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene1.title = 'title';
     scene1.coordinate = new Coordinate();
 
-    const answers1 = new Answer(1, 'a', 0,scene1, 2);
-    const answers2 = new Answer(2, 'б', 1, scene1,2);
-    const answers3 = new Answer(3, 'в', 2, scene1,3);
-
-    scene1.answers = [answers1, answers2, answers3];
 
     const scene2 = new Scene();
     scene2.id = 2;
@@ -41,6 +35,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene2.coordinate.y = 50;
     scene2.coordinate.x = 300;
 
+    //const answers1 = new Answer(1, 'a', 0, scene2);
+    //const answers2 = new Answer(2, 'б', 1, scene2);
+    //const answers3 = new Answer(3, 'в', 2, scene2);
+
+    //scene2.answers = [answers1, answers2, answers3];
+
     const scene3 = new Scene();
     scene3.id = 3;
     scene3.text = 'Text3';
@@ -49,7 +49,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene3.coordinate.y = 150;
     scene3.coordinate.x = 400;
 
-    this.scenes.push(scene1, scene2, scene3);
+    //this.scenes.push(scene1, scene2, scene3);
   }
 
   ngAfterViewInit(): void {
@@ -115,11 +115,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
    */
   addNewScene() {
 
-    const newArray: number[] = this.scenes.map(item => item.id)
-    let max = Math.max(...newArray)
+    const ids: number[] = this.scenes.map(item => item.id)
+    let id = this.getId(ids)
 
     const scene = new Scene();
-    scene.id = max++;
+    scene.id = id;
     scene.text = 'Новая сцена';
     scene.title = 'Новое описание';
     scene.coordinate = new Coordinate();
@@ -129,6 +129,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.scenes.push(scene)
 
     this.renderLine()
+  }
+
+  private getId(ids: number[]): number {
+    let id = 1
+    if(ids.length != 0) {
+      id = Math.max(...ids) + 1
+    }
+
+    return id
   }
 
   private clearCanvas() {
@@ -192,8 +201,45 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.ctx.closePath();
   }
 
-  selectVariant(scene: Scene) {
-    console.log(scene);
+  // Выбранный ответ
+  selectSceneForChangeSelectMode: Answer
+
+  /**
+   * Выбор ответа у сцены
+   * @param scene
+   */
+  selectAnswerScene(scene: Answer) {
+    console.log('Выбор ответа у сцены', scene);
+
+    const isChangeSelectMode = this.changeSelectModeEvent$.getValue()
+
+    if(isChangeSelectMode) {
+      this.selectSceneForChangeSelectMode = scene
+    }
+
   }
+
+  /**
+   * Выбор сцены для связывания
+   * @param scene
+   */
+  selectScene(scene: Scene) {
+    console.log('Выбор сцены для связывания', scene);
+
+    const isChangeSelectMode = this.changeSelectModeEvent$.getValue()
+
+    if(isChangeSelectMode) {
+      this.selectSceneForChangeSelectMode.sceneId = scene.id
+      this.clearCanvas()
+      this.renderLine()
+    }
+
+    this.changeSelectModeEvent$.next(false)
+  }
+
+  onClickWorkingSpace() {
+    this.changeSelectModeEvent$.next(false)
+  }
+
 
 }

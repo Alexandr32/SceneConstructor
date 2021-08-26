@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter, ViewChildren, QueryList, AfterViewInit} from '@angular/core';
-import {Coordinate, Scene} from '../models/scene-model';
+import {Answer, Coordinate, Scene} from '../models/scene-model';
 import {Observable, Subject} from 'rxjs';
 import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
 
@@ -8,13 +8,13 @@ import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
   templateUrl: './scene.component.html',
   styleUrls: ['./scene.component.scss']
 })
-export class SceneComponent implements OnInit, AfterViewInit {
+export class SceneComponent implements OnInit {
 
   @Input()
   scene: Scene
 
   @Output()
-  selectVariantScene = new EventEmitter<Scene>()
+  selectAnswerScene = new EventEmitter<Answer>()
 
   @Output()
   editScene = new EventEmitter<Scene>()
@@ -27,61 +27,35 @@ export class SceneComponent implements OnInit, AfterViewInit {
   @ViewChildren("answer", {read: ElementRef})
   answers: QueryList<ElementRef>;
 
+  @Input()
+  changeSelectModeEvent$: Subject<boolean>
+
+  @Output()
+  selectScene = new EventEmitter<Scene>()
+
+  isSelectMode = false
+
   constructor(public elementRef:ElementRef) {
 
   }
 
   ngOnInit() {
     this.dragPosition = {x: this.scene.coordinate.x, y: this.scene.coordinate.y};
-  }
 
-  ngAfterViewInit(): void {
-
-    //this.initAnswersElement(this.answers)
-
-    //this.answers.reset([])
-
-    /*this.answers.changes.subscribe((elements) => {
-
-      this.initAnswersElement(elements)
-    })*/
-
-    //console.log('SceneComponent: ngAfterViewInit');
+    this.changeSelectModeEvent$.subscribe(isSelectMode => {
+      this.isSelectMode = isSelectMode
+    })
   }
 
   ngOnChanges() {
     console.log('ngOnChanges');
   }
 
-  private initAnswersElement(elements: QueryList<ElementRef>) {
-    elements.forEach((elementRef: ElementRef) => {
-
-      //elementRef.nativeElement.clear
-
-      const id = elementRef.nativeElement.id
-      const answer = this.scene.answers.find(item => item.id == id)
-
-      // ------------------
-
-      //const {x, y} = this.getCoordinate(elementRef.nativeElement)
-
-      //console.log('!!!', elementRef.nativeElement.source.getRootElement().offsetTop, elementRef.nativeElement.screenY);
-
-      // ------------------
-
-      const coordinate = new Coordinate()
-      coordinate.x = elementRef.nativeElement.offsetLeft
-      coordinate.y = elementRef.nativeElement.offsetTop
-
-      const startCoordinate = new Coordinate()
-      startCoordinate.x = elementRef.nativeElement.offsetLeft
-      startCoordinate.y = elementRef.nativeElement.offsetTop
-
-      //answer.startCoordinate = startCoordinate
-      //answer.coordinate = coordinate
-
-      console.log(elementRef.nativeElement.offsetLeft, elementRef.nativeElement.offsetTop, elementRef)
-    });
+  onClickScene() {
+    if(this.isSelectMode) {
+      console.log('clickScene');
+      this.selectScene.next(this.scene)
+    }
   }
 
   onClick(event) {
@@ -111,6 +85,8 @@ export class SceneComponent implements OnInit, AfterViewInit {
     })
 
     this.changeDrag.next()
+
+    //element.stopPropagation()
   }
 
   private getCoordinate(element) {
@@ -136,12 +112,21 @@ export class SceneComponent implements OnInit, AfterViewInit {
     return { top: y, left: x };
   }
 
-  selectVariant(event) {
+  selectAnswer(answer: Answer) {
 
-    console.log(event);
+    this.changeSelectModeEvent$.next(false)
 
+    this.toggleSelectMode()
+    this.selectAnswerScene.next(answer)
+  }
 
-    //this.selectVariantScene.next(this.scene)
+  /**
+   * Вызвать переключение в режим связи вопроса и сцены
+   * @private
+   */
+  private toggleSelectMode() {
+    this.changeSelectModeEvent$.next(true)
+    this.isSelectMode = false
   }
 
   onClickEdit() {

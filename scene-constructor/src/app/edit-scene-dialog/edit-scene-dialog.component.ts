@@ -90,18 +90,41 @@ export class EditSceneDialogComponent implements OnInit {
     this.updatePosition();
   }
 
-  onClickNewAnswer() {
+  onClickAddNewAnswer() {
 
     const ids: number[] = this.answers.map(item => item.id)
-    let id = Math.max(...ids) + 1
+
+    console.log(ids.length);
+
+    let id: number = this.getId(ids)
+
+    console.log('this.data:', this.data);
+
     const positions: number[] = this.answers.map(item => item.position)
-    const position = Math.max(...positions) + 1
+
+    let position: number = this.getPosition(positions)
 
     const answer = new Answer(id, '', position, this.data)
 
     this.addControl(answer)
     this.answers.push(answer)
+  }
 
+  private getId(ids: number[]) {
+    let id: number = 1
+    if(ids.length != 0) {
+      id = Math.max(...ids) + 1
+    }
+
+    return id
+  }
+
+  private getPosition(positions: number[]): number {
+    let position = 0
+    if(positions.length != 0) {
+      position = Math.max(...positions) + 1
+    }
+    return position
   }
 
   /**

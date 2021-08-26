@@ -2,22 +2,24 @@
      cdkDrag
      cdkDragBoundary=".editor__working-space"
      [cdkDragFreeDragPosition]="dragPosition"
+     (click)="onClickScene()"
      (cdkDragEnded)="onCdkDragDropped($event)">
 
   <div>
     <div class="scene__header"
          cdkDragHandle
          (click)="onClick($event)"
-         [class.scene__header-drag]="false">
+         [class.scene__header-select]="isSelectMode">
     </div>
-    <div>{{scene.text}}</div>
+    <div>{{scene.id}}</div>
     <div>{{scene.title}}</div>
+    <div>{{scene.text}}</div>
 
     <div class="scene__variants">
       <button *ngFor="let answer of scene.answers"
               id="{{answer.id}}"
               #answer
-              (click)="selectVariant($event)">{{answer.text}}</button>
+              (click)="selectAnswer(answer)">{{answer.text}}</button>
     </div>
 
     <div>
