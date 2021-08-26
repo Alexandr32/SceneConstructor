@@ -13,6 +13,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   scenes: Scene[] = [];
 
+  @ViewChild('working', {static: true})
+  working: ElementRef<HTMLDivElement>;
+
   @ViewChild('canvas', {static: true})
   canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
@@ -241,5 +244,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.changeSelectModeEvent$.next(false)
   }
 
+  increaseWorkingSpace() {
+    this.canvas.nativeElement.height += 500
+
+
+    //this.working.nativeElement.style.height += '500px'
+  }
 
 }

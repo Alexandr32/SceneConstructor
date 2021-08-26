@@ -85,11 +85,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .editor__control-panel {
   display: flex;
+  justify-content: center;
 }
 
-.btn-control {
+.editor__control-panel__btn-control {
   height: 56px;
   margin: 5px;
+}
+
+.editor__btn-control-bottom {
+  display: flex;
+  justify-content: center;
 }
 
 .mat-button-base {
@@ -105,8 +111,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .editor__working-space {
   position: relative;
-  height: 850px;
+  //height: 850px;
   display: block;
+  justify-content: center;
 }
 
 .editor__working-space__canvas {

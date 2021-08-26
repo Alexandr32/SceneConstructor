@@ -1,17 +1,12 @@
 <div class="editor">
-  <div class="editor__control-panel">
-    <div class="btn-control">
-      <button mat-raised-button color="primary" (click)="addNewScene()">Добавить сцену</button>
-    </div>
-    <div class="btn-control">
-      <button mat-raised-button color="primary">Кнопка 2</button>
-    </div>
-    <div class="btn-control">
-      <button mat-raised-button color="primary">Кнопка 3</button>
-    </div>
-  </div>
 
   <div #working class="editor__working-space">
+
+    <div class="editor__control-panel">
+      <div class="editor__control-panel__btn-control">
+        <button mat-raised-button color="primary" (click)="addNewScene()">Добавить сцену</button>
+      </div>
+    </div>
 
     <app-scene *ngFor="let scene of scenes"
                [changeSelectModeEvent$]="changeSelectModeEvent$"
@@ -28,5 +23,9 @@
             class="editor__working-space__canvas"
             (click)="onClickWorkingSpace()"></canvas>
 
+  </div>
+
+  <div class="editor__btn-control-bottom">
+    <button mat-raised-button color="primary" (click)="increaseWorkingSpace()">Увеличить холст</button>
   </div>
 </div>
