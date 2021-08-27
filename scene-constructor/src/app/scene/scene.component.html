@@ -19,7 +19,7 @@
       <button *ngFor="let answer of scene.answers"
               id="{{answer.id}}"
               #answer
-              (click)="selectAnswer(answer)">{{answer.text}}</button>
+              (click)="selectAnswer($event, answer)">{{answer.text}}</button>
     </div>
 
     <div>

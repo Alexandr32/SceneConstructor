@@ -112,12 +112,16 @@ export class SceneComponent implements OnInit {
     return { top: y, left: x };
   }
 
-  selectAnswer(answer: Answer) {
+  selectAnswer(event, answer: Answer) {
+
+    console.log('selectAnswer');
 
     this.changeSelectModeEvent$.next(false)
 
     this.toggleSelectMode()
     this.selectAnswerScene.next(answer)
+
+    event.stopPropagation()
   }
 
   /**
@@ -126,7 +130,7 @@ export class SceneComponent implements OnInit {
    */
   private toggleSelectMode() {
     this.changeSelectModeEvent$.next(true)
-    this.isSelectMode = false
+    //this.isSelectMode = false
   }
 
   onClickEdit() {

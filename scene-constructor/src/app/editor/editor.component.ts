@@ -22,6 +22,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   changeSelectModeEvent$ = new BehaviorSubject<boolean>(false)
 
+  // Выбранный ответ
+  selectSceneForChangeSelectMode: Answer
+
   constructor(public dialog: MatDialog) {
     const scene1 = new Scene();
     scene1.id = 1;
@@ -203,9 +206,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.ctx.stroke();
     this.ctx.closePath();
   }
-
-  // Выбранный ответ
-  selectSceneForChangeSelectMode: Answer
 
   /**
    * Выбор ответа у сцены
