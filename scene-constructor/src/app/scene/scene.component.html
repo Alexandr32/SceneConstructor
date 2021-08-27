@@ -19,6 +19,7 @@
       <button *ngFor="let answer of scene.answers"
               id="{{answer.id}}"
               #answer
+              [class.scene__box__btn-warning]="!answer.sceneId"
               (click)="selectAnswer($event, answer)">{{answer.text}}</button>
     </div>
 

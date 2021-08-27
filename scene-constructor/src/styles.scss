@@ -175,6 +175,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: 24px;
 }
 
+// Предупреждение что у элемента нет связи
+.scene__box__btn-warning {
+  background: red;
+
+}
+
 .svg-line {
   background: maroon;
   position: absolute;
