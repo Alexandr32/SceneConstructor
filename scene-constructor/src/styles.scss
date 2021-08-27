@@ -119,7 +119,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .editor__working-space__canvas {
   background: rgb(34,193,195);
   background: linear-gradient(180deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
-  border: solid coral;
+}
+
+.editor__player-box {
+  margin: 5px;
+}
+
+.editor__players__btn-add {
+  text-align: center;
 }
 
 .scene {
@@ -175,10 +182,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: 24px;
 }
 
+.editor__players {
+  margin: 50px;
+
+}
+
+.editor__border {
+  border: solid coral;
+}
+
+.editor__players__players-list {
+  display: flex;
+  justify-content: center;
+}
+
 // Предупреждение что у элемента нет связи
 .scene__box__btn-warning {
   background: red;
-
 }
 
 .svg-line {

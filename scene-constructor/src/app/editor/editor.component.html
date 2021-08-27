@@ -1,5 +1,25 @@
 <div class="editor">
 
+  <div class="editor__players">
+    <div class="editor__players__players-list editor__border">
+      <div
+        class="editor__player-box editor__border"
+        *ngFor="let player of players">
+        <div>{{player.name}}</div>
+        <button (click)="onClickEditPlayer(player)">Редактировать</button>
+        <button (click)="onClickDeletePlayer(player)">Удалить</button>
+      </div>
+    </div>
+
+    <div class="editor__players__btn-add">
+      <button
+        *ngIf="players.length < 4"
+        (click)="addNewPlayer()">Добавить персонажа</button>
+    </div>
+  </div>
+
+  <hr>
+
   <div #working class="editor__working-space">
 
     <div class="editor__control-panel">
@@ -20,7 +40,7 @@
     <canvas #canvas
             width="1200"
             height="800"
-            class="editor__working-space__canvas"
+            class="editor__working-space__canvas editor__border"
             (click)="onClickWorkingSpace()"></canvas>
 
   </div>

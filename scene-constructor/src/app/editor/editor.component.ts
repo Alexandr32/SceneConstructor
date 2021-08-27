@@ -5,6 +5,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
 import {Answer} from '../models/answer.model';
 import {Coordinate} from '../models/coordinate.model';
+import {Player} from '../models/player.model';
+import {v4 as uuidv4} from 'uuid';
 
 @Component({
   selector: 'app-editor',
@@ -14,6 +16,7 @@ import {Coordinate} from '../models/coordinate.model';
 export class EditorComponent implements OnInit, AfterViewInit {
 
   scenes: Scene[] = [];
+  players: Player[] = []
 
   @ViewChild('working', {static: true})
   working: ElementRef<HTMLDivElement>;
@@ -63,6 +66,30 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     this.renderLine()
     console.log('EditorComponent: ngAfterViewInit');
+  }
+
+  addNewPlayer() {
+
+    if(this.players.length > 3) {
+      return
+    }
+
+    const id =  uuidv4();
+    const title = 'Новый персонаж'
+    const  description = 'Описание нового персонажа'
+
+    const player = new Player(id, title, description)
+
+    this.players.push(player)
+  }
+
+  onClickEditPlayer(player: Player) {
+    
+  }
+
+  onClickDeletePlayer(player: Player) {
+    const index = this.players.indexOf(player)
+    this.players.splice(index, 1)
   }
 
   openEditDialog(scene: Scene): void {
