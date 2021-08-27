@@ -42,7 +42,7 @@ export class Answer {
     this.coordinate.y = 20 * this._position + this.startY + this.parentScene.coordinate.y
   }
 
-  constructor(public id: number,
+  constructor(public id: string,
               public text: string,
               position: number,
               public parentScene: Scene,

@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {Answer, Scene} from '../models/scene-model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
+import {v4 as uuidv4} from 'uuid';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -92,11 +93,7 @@ export class EditSceneDialogComponent implements OnInit {
 
   onClickAddNewAnswer() {
 
-    const ids: number[] = this.answers.map(item => item.id)
-
-    console.log(ids.length);
-
-    let id: number = this.getId(ids)
+    let id: string = this.getId()
 
     console.log('this.data:', this.data);
 
@@ -110,13 +107,8 @@ export class EditSceneDialogComponent implements OnInit {
     this.answers.push(answer)
   }
 
-  private getId(ids: number[]) {
-    let id: number = 1
-    if(ids.length != 0) {
-      id = Math.max(...ids) + 1
-    }
-
-    return id
+  private getId(): string {
+    return uuidv4();
   }
 
   private getPosition(positions: number[]): number {

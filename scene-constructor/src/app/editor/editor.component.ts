@@ -247,8 +247,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   increaseWorkingSpace() {
     this.canvas.nativeElement.height += 500
 
-
-    //this.working.nativeElement.style.height += '500px'
+    this.clearCanvas()
+    this.renderLine()
   }
 
 }
