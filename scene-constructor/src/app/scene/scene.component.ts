@@ -1,7 +1,8 @@
 import {Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter, ViewChildren, QueryList, AfterViewInit} from '@angular/core';
-import {Answer, Coordinate, Scene} from '../models/scene-model';
+import {Scene} from '../models/scene.model';
 import {Observable, Subject} from 'rxjs';
 import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
+import {Answer} from '../models/answer.model';
 
 @Component({
   selector: 'app-scene',

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { Coordinate } from '../models/scene-model';
+import {Coordinate} from '../models/coordinate.model';
 
 @Component({
   selector: 'app-svg-line',

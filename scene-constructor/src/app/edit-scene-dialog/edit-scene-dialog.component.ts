@@ -1,9 +1,11 @@
 import {Component, Inject, OnInit, Output, EventEmitter} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Answer, Scene} from '../models/scene-model';
+import {Scene} from '../models/scene.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
 import {v4 as uuidv4} from 'uuid';
+import {Answer} from '../models/answer.model';
+import {EditorComponent} from '../editor/editor.component';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -101,10 +103,18 @@ export class EditSceneDialogComponent implements OnInit {
 
     let position: number = this.getPosition(positions)
 
-    const answer = new Answer(id, '', position, this.data)
+    let color = EditSceneDialogComponent.getRndColor()
+    const answer = new Answer(id, '', position, this.data, color)
 
     this.addControl(answer)
     this.answers.push(answer)
+  }
+
+  private static getRndColor(): string  {
+    const r = Math.floor(Math.random() * (256))
+    const g = Math.floor(Math.random() * (256))
+    const b = Math.floor(Math.random() * (256))
+    return '#' + r.toString(16) + g.toString(16) + b.toString(16);
   }
 
   private getId(): string {

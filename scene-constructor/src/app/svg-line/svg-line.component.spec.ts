@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SvgLineComponent } from './svg-line.component';
 import {Input} from '@angular/core';
-import {Coordinate} from '../models/scene-model';
+import {Coordinate} from '../models/scene.model';
 
 describe('SvgLineComponent', () => {
 

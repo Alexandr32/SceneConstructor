@@ -1,8 +1,10 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Answer, Coordinate, Scene} from '../models/scene-model';
+import {Scene} from '../models/scene.model';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
+import {Answer} from '../models/answer.model';
+import {Coordinate} from '../models/coordinate.model';
 
 @Component({
   selector: 'app-editor',
@@ -26,12 +28,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
   selectSceneForChangeSelectMode: Answer
 
   constructor(public dialog: MatDialog) {
-    const scene1 = new Scene();
+    /*const scene1 = new Scene();
     scene1.id = 1;
     scene1.text = 'Text';
     scene1.title = 'title';
     scene1.coordinate = new Coordinate();
-
 
     const scene2 = new Scene();
     scene2.id = 2;
@@ -53,7 +54,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene3.title = 'title3';
     scene3.coordinate = new Coordinate();
     scene3.coordinate.y = 150;
-    scene3.coordinate.x = 400;
+    scene3.coordinate.x = 400;*/
 
     //this.scenes.push(scene1, scene2, scene3);
   }
@@ -97,7 +98,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         coordinateTwo.x = scene.coordinate.x + 4
         coordinateTwo.y = scene.coordinate.y + 4
 
-        this.moveZLine(coordinateOne, coordinateTwo)
+        this.moveZLine(coordinateOne, coordinateTwo, answer.color)
       })
     })
   }
@@ -154,39 +155,41 @@ export class EditorComponent implements OnInit, AfterViewInit {
    * Отрисовывает z образную линию
    * @param coordinateOne
    * @param coordinateTwo
+   * @param color цвет линии
    * @private
    */
-  private moveZLine(coordinateOne: Coordinate, coordinateTwo: Coordinate) {
+  private moveZLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string) {
 
-    this.moveCircle(coordinateOne);
+    this.moveCircle(coordinateOne, color);
 
     const coordinateX2Y1 = new Coordinate();
     coordinateX2Y1.x = 2 / 3 * (coordinateTwo.x);
     coordinateX2Y1.y = coordinateOne.y;
 
-    this.moveLine(coordinateOne, coordinateX2Y1);
+    this.moveLine(coordinateOne, coordinateX2Y1, color);
 
     const coordinateX2Y2 = new Coordinate();
     coordinateX2Y2.x = 2 / 3 * (coordinateTwo.x);
     coordinateX2Y2.y = coordinateTwo.y;
 
-    this.moveLine(coordinateX2Y1, coordinateX2Y2);
+    this.moveLine(coordinateX2Y1, coordinateX2Y2, color);
 
-    this.moveLine(coordinateX2Y2, coordinateTwo);
+    this.moveLine(coordinateX2Y2, coordinateTwo, color);
 
-    this.moveCircle(coordinateTwo);
+    this.moveCircle(coordinateTwo, color);
 
   }
 
   /**
    * Рисует точку
    * @param coordinate
+   * @param color цвет линии
    * @private
    */
-  private moveCircle(coordinate: Coordinate) {
+  private moveCircle(coordinate: Coordinate, color: string) {
     this.ctx.beginPath();
     this.ctx.arc(coordinate.x, coordinate.y, 6, 0, 2 * Math.PI);
-    this.ctx.fillStyle = 'coral';
+    this.ctx.fillStyle = color
     this.ctx.fill();
     this.ctx.closePath();
   }
@@ -195,13 +198,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
    * Открисовывает одну линию
    * @param coordinateOne
    * @param coordinateTwo
+   * @param color цвет линии
    * @private
    */
-  private moveLine(coordinateOne: Coordinate, coordinateTwo: Coordinate) {
+  private moveLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string) {
     this.ctx.beginPath();
     this.ctx.moveTo(coordinateOne.x, coordinateOne.y);
     this.ctx.lineTo(coordinateTwo.x, coordinateTwo.y);
-    this.ctx.strokeStyle = 'coral';
+    this.ctx.strokeStyle = color;
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
     this.ctx.closePath();

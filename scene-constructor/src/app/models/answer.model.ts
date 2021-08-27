@@ -1,21 +1,6 @@
-/**
- * Описание сцены
- */
-export class Scene {
-  id: number
-  title: string
-  text: string
-  answers: Answer[] = []
-  coordinate: Coordinate
-}
+import {Coordinate} from './coordinate.model';
+import {Scene} from './scene.model';
 
-/**
- * Координаты элемента
- */
-export class Coordinate {
-  x: number = 0
-  y: number = 0
-}
 
 /**
  * Вариант ответа на сцене
@@ -46,6 +31,7 @@ export class Answer {
               public text: string,
               position: number,
               public parentScene: Scene,
+              public color: string,
               public sceneId?: number,
   ) {
 
