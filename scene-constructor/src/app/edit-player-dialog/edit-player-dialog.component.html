@@ -1,0 +1,28 @@
+<form [formGroup]="form" novalidate>
+
+  <label>
+    <p>Имя:</p>
+    <input name="name" formControlName="name"/>
+    <div
+      *ngIf="form.controls['name'].invalid">
+      Введите значение
+    </div>
+
+    <p>Описание:</p>
+    <input name="description" formControlName="description"/>
+    <div
+      *ngIf="form.controls['description'].invalid">
+      Введите значение
+    </div>
+  </label>
+
+  <div>
+    <button type="button" (click)="onNoClick()">
+      Отмена
+    </button>
+    <button (click)="onClickSave()" *ngIf="form.valid">
+      Сохранить
+    </button>
+  </div>
+
+</form>

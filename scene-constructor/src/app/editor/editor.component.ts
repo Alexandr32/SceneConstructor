@@ -7,6 +7,7 @@ import {Answer} from '../models/answer.model';
 import {Coordinate} from '../models/coordinate.model';
 import {Player} from '../models/player.model';
 import {v4 as uuidv4} from 'uuid';
+import {EditPlayerDialogComponent} from '../edit-player-dialog/edit-player-dialog.component';
 
 @Component({
   selector: 'app-editor',
@@ -84,7 +85,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   onClickEditPlayer(player: Player) {
-    
+
+    const dialogRef = this.dialog.open(EditPlayerDialogComponent, {
+      data: player
+    });
+
+    /*dialogRef.componentInstance.saveEvent.subscribe(() => {
+      this.clearCanvas()
+      this.renderLine()
+    })*/
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('closeDialog');
+    });
+
   }
 
   onClickDeletePlayer(player: Player) {
