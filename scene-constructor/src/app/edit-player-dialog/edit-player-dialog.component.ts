@@ -13,12 +13,17 @@ export class EditPlayerDialogComponent implements OnInit {
   @Output()
   saveEvent = new EventEmitter<Player>();
 
+  imgFile: string;
+
   form: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<EditPlayerDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public player: Player) { }
+              @Inject(MAT_DIALOG_DATA) public player: Player) {
+  }
 
   ngOnInit(): void {
+
+    this.imgFile = this.player.imgFile
 
     this.form = new FormGroup({
       'name':
@@ -32,7 +37,9 @@ export class EditPlayerDialogComponent implements OnInit {
           this.player.description,
           [
             Validators.required
-          ])
+          ]),
+      'file': new FormControl('', [Validators.required]),
+      'imgSrc': new FormControl(this.imgFile, [Validators.required])
     });
   }
 
@@ -52,4 +59,22 @@ export class EditPlayerDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onImageChange(e) {
+    const reader = new FileReader();
+
+    if (e.target.files && e.target.files.length) {
+      const [file] = e.target.files;
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        this.imgFile = reader.result as string;
+        this.form.patchValue({
+          imgSrc: reader.result
+        });
+
+        console.log(this.imgFile);
+
+      };
+    }
+  }
 }

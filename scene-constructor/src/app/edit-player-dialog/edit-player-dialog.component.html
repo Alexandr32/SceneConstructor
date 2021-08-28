@@ -18,6 +18,23 @@
     </div>
   </label>
 
+  <div class="preview" *ngIf="imgFile">
+    <img [src]="imgFile" style="width:100px; height:250px">
+  </div>
+
+  <div class="form-group">
+    <label for="file">Изображение</label>
+    <input type="file"
+           class="form-control"
+           id="file" formControlName="file"
+           (change)="onImageChange($event)">
+    <div
+      *ngIf="this.form.controls.file.touched && this.form.controls.file.invalid"
+      class="alert alert-danger">
+      <div *ngIf="this.form.controls.file.errors.required">Файл не поддерживается</div>
+    </div>
+  </div>
+
   <div>
     <button type="button" (click)="onNoClick()">
       Отмена
