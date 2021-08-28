@@ -38,9 +38,16 @@ export class EditPlayerDialogComponent implements OnInit {
           [
             Validators.required
           ]),
-      'file': new FormControl('', [Validators.required]),
-      'imgSrc': new FormControl(this.imgFile, [Validators.required])
+      'file': new FormControl(this.player.imgFile, [Validators.required]),
     });
+  }
+
+  onClickDeletedImg(): void {
+    this.imgFile = ''
+    this.form.patchValue({
+      file: ''
+    });
+    this.form.get('file').updateValueAndValidity()
   }
 
   onClickSave() {
@@ -48,8 +55,9 @@ export class EditPlayerDialogComponent implements OnInit {
       return;
     }
 
-    this.player.name = this.form.value['name'];
-    this.player.description = this.form.value['description'];
+    this.player.name = this.form.value['name']
+    this.player.description = this.form.value['description']
+    this.player.imgFile = this.imgFile
 
     this.saveEvent.emit(this.player);
     this.dialogRef.close();
@@ -59,22 +67,18 @@ export class EditPlayerDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onImageChange(e) {
+  // Image Preview
+  showPreview(event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({
+      file
+    });
+    this.form.get('file').updateValueAndValidity()
+    // File Preview
     const reader = new FileReader();
-
-    if (e.target.files && e.target.files.length) {
-      const [file] = e.target.files;
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        this.imgFile = reader.result as string;
-        this.form.patchValue({
-          imgSrc: reader.result
-        });
-
-        console.log(this.imgFile);
-
-      };
+    reader.onload = () => {
+      this.imgFile = reader.result as string;
     }
+    reader.readAsDataURL(file)
   }
 }

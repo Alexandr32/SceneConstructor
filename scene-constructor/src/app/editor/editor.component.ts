@@ -79,7 +79,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     const title = 'Новый персонаж'
     const  description = 'Описание нового персонажа'
 
-    const player = new Player(id, title, description)
+    const player = new Player(id, title, description, '')
 
     this.players.push(player)
   }

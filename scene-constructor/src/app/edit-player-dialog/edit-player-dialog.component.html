@@ -18,21 +18,29 @@
     </div>
   </label>
 
-  <div class="preview" *ngIf="imgFile">
-    <img [src]="imgFile" style="width:100px; height:250px">
+  <!-- https://www.positronx.io/angular-8-show-image-preview-with-reactive-forms-tutorial/ -->
+  <div>
+    <!--<label for="file"></label>-->
+    <input id="file"
+           type="file"
+           accept="image/*"
+           (change)="showPreview($event)"/>
   </div>
 
-  <div class="form-group">
-    <label for="file">Изображение</label>
-    <input type="file"
-           class="form-control"
-           id="file" formControlName="file"
-           (change)="onImageChange($event)">
-    <div
-      *ngIf="this.form.controls.file.touched && this.form.controls.file.invalid"
-      class="alert alert-danger">
-      <div *ngIf="this.form.controls.file.errors.required">Файл не поддерживается</div>
-    </div>
+  <div class="edit-player-dialog__box-image"
+       *ngIf="imgFile && imgFile !== ''">
+
+    <img class="edit-player-dialog__box-image__image"
+         [src]="imgFile"
+         [alt]="form.value.name">
+
+    <button
+      class="edit-player-dialog__box-image__btn-delete-img"
+      type="button"
+      (click)="onClickDeletedImg()">
+      Удалить
+    </button>
+
   </div>
 
   <div>
