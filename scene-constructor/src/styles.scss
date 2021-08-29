@@ -198,8 +198,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .edit-player-dialog__box-image__image {
-  width:100px;
-  height:250px
+  width: 50%;
+  //max-height: 250px;
+  border-radius: 8px;
 }
 
 .editor__border {
