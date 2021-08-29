@@ -1,7 +1,9 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Player} from '../models/player.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {CropperSettings} from 'ngx-img-cropper';
+import {EditImagePlayerComponent} from '../edit-image-player/edit-image-player.component';
 
 @Component({
   selector: 'app-edit-player-dialog',
@@ -18,7 +20,9 @@ export class EditPlayerDialogComponent implements OnInit {
   form: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<EditPlayerDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public player: Player) {
+              @Inject(MAT_DIALOG_DATA) public player: Player,
+              public dialog: MatDialog) {
+
   }
 
   ngOnInit(): void {
@@ -50,6 +54,23 @@ export class EditPlayerDialogComponent implements OnInit {
     this.form.get('file').updateValueAndValidity()
   }
 
+  openDialogEditImagePlayer() {
+    const dialogRef = this.dialog.open(EditImagePlayerComponent, {
+      data: ''
+    });
+
+    dialogRef.componentInstance.saveEvent.subscribe((imgFile: string) => {
+      this.imgFile = imgFile
+      this.form.patchValue({
+        file: imgFile
+      });
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('closeDialog');
+    });
+  }
+
   onClickSave() {
     if (this.form.invalid) {
       return;
@@ -68,7 +89,7 @@ export class EditPlayerDialogComponent implements OnInit {
   }
 
   // Image Preview
-  showPreview(event) {
+  /*showPreview(event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({
       file
@@ -80,5 +101,5 @@ export class EditPlayerDialogComponent implements OnInit {
       this.imgFile = reader.result as string;
     }
     reader.readAsDataURL(file)
-  }
+  }*/
 }

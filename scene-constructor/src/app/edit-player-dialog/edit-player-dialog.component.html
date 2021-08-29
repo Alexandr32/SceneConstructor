@@ -1,4 +1,6 @@
-<form [formGroup]="form" novalidate style="{overflow: scroll;}">
+<form [formGroup]="form"
+      class="edit-player-dialog__body"
+      novalidate>
 
   <h1>Персонаж:</h1>
 
@@ -19,13 +21,13 @@
   </label>
 
   <!-- https://www.positronx.io/angular-8-show-image-preview-with-reactive-forms-tutorial/ -->
-  <div>
-    <!--<label for="file"></label>-->
+  <!--<div>
+    &lt;!&ndash;<label for="file"></label>&ndash;&gt;
     <input id="file"
            type="file"
            accept="image/*"
            (change)="showPreview($event)"/>
-  </div>
+  </div>-->
 
   <div class="edit-player-dialog__box-image"
        *ngIf="imgFile && imgFile !== ''">
@@ -43,8 +45,7 @@
 
   </div>
 
-  <div>Изображение должно быть примерно 2/3 чтобы хорошо отображаться на мобильном устройстве
-  p.s потом доделаю редактор для редактирования изображения как у аватара в ВК</div>
+  <button (click)="openDialogEditImagePlayer()">Выбрать изображение</button>
 
   <div>
     <button type="button" (click)="onNoClick()">

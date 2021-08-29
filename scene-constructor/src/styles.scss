@@ -197,9 +197,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   right: 10px;
 }
 
+.image {
+  border-radius: 8px;
+}
+
+.editor__image-player {
+  width: 80px;
+  height: 110px;
+  border-radius: 8px;
+}
+
+
 .edit-player-dialog__box-image__image {
-  width: 50%;
-  //max-height: 250px;
+  width: 400px;
+  height: 550px;
   border-radius: 8px;
 }
 
@@ -220,5 +231,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .svg-line {
   background: maroon;
   position: absolute;
+}
+
+.edit-image-player__body {
+  overflow: scroll;
+  max-height: 500px;
+}
+
+.edit-player-dialog__body {
+  overflow: scroll;
+  max-height: 500px;
 }
 

@@ -7,7 +7,7 @@
         *ngFor="let player of players">
         <div>{{player.name}}</div>
         <div *ngIf="player.imgFile && player.imgFile !== ''">
-          <img class="edit-player-dialog__box-image__image"
+          <img class="editor__image-player"
                [src]="player.imgFile" [alt]="player.name">
         </div>
         <button (click)="onClickEditPlayer(player)">Редактировать</button>
