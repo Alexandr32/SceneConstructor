@@ -34,6 +34,7 @@ export class EditImagePlayerComponent implements OnInit {
 
   onClickSave() {
     this.saveEvent.emit(this.data.image)
+    this.data.image = ''
     this.dialogRef.close()
   }
 

@@ -79,12 +79,14 @@ export class EditPlayerDialogComponent implements OnInit {
     this.player.name = this.form.value['name']
     this.player.description = this.form.value['description']
     this.player.imgFile = this.imgFile
+    this.imgFile = ''
 
     this.saveEvent.emit(this.player);
     this.dialogRef.close();
   }
 
   onNoClick(): void {
+    this.imgFile = ''
     this.dialogRef.close();
   }
 
