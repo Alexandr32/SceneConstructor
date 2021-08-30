@@ -138,4 +138,12 @@ export class SceneComponent implements OnInit {
     this.editScene.emit(this.scene)
   }
 
+  toStringLabel(text: string, maxCount: number) {
+    let sliced = text.slice(0,maxCount);
+    if (sliced.length < text.length) {
+      sliced += '...';
+    }
+    return sliced
+  }
+
 }

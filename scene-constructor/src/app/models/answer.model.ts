@@ -42,7 +42,7 @@ export class Answer {
     this.startCoordinate.y = 20 * position + this.startY
 
     this.coordinate = new Coordinate()
-    this.coordinate.x = this.startX
+    this.coordinate.x = parentScene.coordinate.x + this.startX
     this.coordinate.y = 20 * position + this.startY + parentScene.coordinate.y
   }
 

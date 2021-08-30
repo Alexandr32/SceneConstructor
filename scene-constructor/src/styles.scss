@@ -135,8 +135,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .scene__header {
   background: blueviolet;
-  width: 100px;
+  width: 150px;
   height: 30px;
+}
+
+.scene__control-width {
+  max-width: 75ch;
 }
 
 .scene__header-select {

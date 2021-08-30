@@ -12,15 +12,15 @@
          [class.scene__header-select]="isSelectMode">
     </div>
     <div>{{scene.id}}</div>
-    <div>{{scene.title}}</div>
-    <div>{{scene.text}}</div>
+    <div class="scene__control-width">{{toStringLabel(scene.title, 30)}}</div>
+    <div class="scene__control-width">{{toStringLabel(scene.text, 30)}}</div>
 
     <div class="scene__variants">
       <button *ngFor="let answer of scene.answers"
               id="{{answer.id}}"
               #answer
               [class.scene__box__btn-warning]="!answer.sceneId"
-              (click)="selectAnswer($event, answer)">{{answer.text}}</button>
+              (click)="selectAnswer($event, answer)">{{toStringLabel(answer.text, 50)}}</button>
     </div>
 
     <div>
