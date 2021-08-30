@@ -102,14 +102,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   onClickDeletePlayer(player: Player) {
+
     const index = this.players.indexOf(player)
     this.players.splice(index, 1)
+
+    this.scenes.forEach(scene => {
+      const index = scene.players.indexOf(player)
+      scene.players.splice(index, 1)
+    })
   }
 
   openEditDialog(scene: Scene): void {
 
     const dialogRef = this.dialog.open(EditSceneDialogComponent, {
-      data: scene
+      data: {scene, players: this.players}
     });
 
     dialogRef.componentInstance.saveEvent.subscribe(() => {

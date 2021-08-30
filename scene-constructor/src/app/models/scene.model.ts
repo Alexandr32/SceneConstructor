@@ -3,6 +3,7 @@
  */
 import {Coordinate} from './coordinate.model';
 import {Answer} from './answer.model';
+import {Player} from './player.model';
 
 export class Scene {
   id: number
@@ -10,4 +11,5 @@ export class Scene {
   text: string
   answers: Answer[] = []
   coordinate: Coordinate
+  players: Player[] = []
 }
