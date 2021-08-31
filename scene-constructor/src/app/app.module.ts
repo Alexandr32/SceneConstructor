@@ -18,7 +18,7 @@ import {MatInputModule} from '@angular/material/input';
 import {ReactiveFormsModule} from '@angular/forms';
 import { EditPlayerDialogComponent } from './edit-player-dialog/edit-player-dialog.component';
 import {ImageCropperModule} from 'ngx-img-cropper';
-import { EditImagePlayerComponent } from './edit-image-player/edit-image-player.component';
+import { EditImageComponent } from './edit-image-player/edit-image.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { EditImagePlayerComponent } from './edit-image-player/edit-image-player.
     SvgLineComponent,
     EditSceneDialogComponent,
     EditPlayerDialogComponent,
-    EditImagePlayerComponent
+    EditImageComponent
   ],
     imports: [
         BrowserModule,

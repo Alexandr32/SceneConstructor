@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {Player} from '../models/player.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CropperSettings} from 'ngx-img-cropper';
-import {EditImagePlayerComponent} from '../edit-image-player/edit-image-player.component';
+import {EditImageComponent} from '../edit-image-player/edit-image.component';
 
 @Component({
   selector: 'app-edit-player-dialog',
@@ -55,8 +55,17 @@ export class EditPlayerDialogComponent implements OnInit {
   }
 
   openDialogEditImagePlayer() {
-    const dialogRef = this.dialog.open(EditImagePlayerComponent, {
-      data: ''
+
+    const cropperSettings = new CropperSettings();
+    cropperSettings.width = 400;
+    cropperSettings.height = 550;
+    cropperSettings.croppedWidth = 450;
+    cropperSettings.croppedHeight = 550;
+    cropperSettings.canvasWidth = 400;
+    cropperSettings.canvasHeight = 300;
+
+    const dialogRef = this.dialog.open(EditImageComponent, {
+      data: {image: '', cropperSettings}
     });
 
     dialogRef.componentInstance.saveEvent.subscribe((imgFile: string) => {

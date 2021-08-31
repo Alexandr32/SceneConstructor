@@ -129,19 +129,32 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   text-align: center;
 }
 
+.edit-scene-dialog__image-box {
+  width: 256px;
+  height: 192px;
+}
+
+.edit-scene-dialog__image-box__image {
+  width: 256px;
+  height: 192px;
+}
+
 .scene {
   position: absolute;
 }
 
 .scene__header {
   background: blueviolet;
-  width: 150px;
+  width: 210px;
   height: 30px;
 }
 
-.scene__control-width {
-  max-width: 75ch;
+.scene__image-box__image {
+  border-radius: 10px;
+  width: 205px;
+  height: 155px;
 }
+
 
 .scene__header-select {
   border: dashed chartreuse;

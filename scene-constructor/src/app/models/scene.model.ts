@@ -9,6 +9,7 @@ export class Scene {
   id: number
   title: string
   text: string
+  imgFile: string
   answers: Answer[] = []
   coordinate: Coordinate
   players: Player[] = []

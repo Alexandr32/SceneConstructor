@@ -291,6 +291,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.changeSelectModeEvent$.next(false)
   }
 
+  /**
+   * Клик по канвасу
+   */
   onClickWorkingSpace() {
     this.changeSelectModeEvent$.next(false)
   }

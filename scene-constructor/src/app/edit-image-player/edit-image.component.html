@@ -1,8 +1,8 @@
 <div class="edit-image-player__body">
-  <img-cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+  <img-cropper [image]="dataImage" [settings]="cropperSettings"></img-cropper>
   <br/>
   <img class="image"
-       [src]="data.image"
+       [src]="dataImage.image"
        [width]="cropperSettings.croppedWidth"
        [height]="cropperSettings.croppedHeight"
   />
@@ -10,7 +10,7 @@
     <button type="button" (click)="onNoClick()">
       Отмена
     </button>
-    <button (click)="onClickSave()" *ngIf="data.image && data.image !== ''">
+    <button (click)="onClickSave()" *ngIf="dataImage.image && dataImage.image !== ''">
       Сохранить
     </button>
   </div>

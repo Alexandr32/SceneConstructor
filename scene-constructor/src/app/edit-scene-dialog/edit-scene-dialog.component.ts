@@ -5,8 +5,9 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
 import {v4 as uuidv4} from 'uuid';
 import {Answer} from '../models/answer.model';
-import {EditorComponent} from '../editor/editor.component';
 import {Player} from '../models/player.model';
+import {CropperSettings} from 'ngx-img-cropper';
+import {EditImageComponent} from '../edit-image-player/edit-image.component';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -20,14 +21,21 @@ export class EditSceneDialogComponent implements OnInit {
 
   form: FormGroup;
 
+  imgFile: string;
+
   answers: Answer[] = [];
   players: { player: Player, isSelect: boolean }[] = [];
 
   constructor(public dialogRef: MatDialogRef<EditSceneDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: { scene: Scene, players: Player[] }) {
+              @Inject(MAT_DIALOG_DATA) public data: { scene: Scene,
+                players: Player[]},
+              public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
+
+    this.imgFile = this.data.scene.imgFile
+
     this.form = new FormGroup({
       'title':
         new FormControl(
@@ -40,7 +48,8 @@ export class EditSceneDialogComponent implements OnInit {
           this.data.scene.text,
           [
             Validators.required
-          ])
+          ]),
+      'file': new FormControl(this.data.scene.imgFile, [Validators.required]),
     });
 
     this.data.players.forEach((item) => {
@@ -170,6 +179,8 @@ export class EditSceneDialogComponent implements OnInit {
 
     this.data.scene.answers = this.answers;
 
+    this.data.scene.imgFile = this.imgFile
+
     console.log('player:', player);
 
     this.data.scene.players = player;
@@ -180,6 +191,39 @@ export class EditSceneDialogComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  openImageDialog() {
+    const cropperSettings = new CropperSettings();
+    cropperSettings.width = 1024;
+    cropperSettings.height = 768;
+    cropperSettings.croppedWidth = 1024;
+    cropperSettings.croppedHeight = 768;
+    cropperSettings.canvasWidth = 400;
+    cropperSettings.canvasHeight = 300;
+
+    const dialogRef = this.dialog.open(EditImageComponent, {
+      data: {image: '', cropperSettings}
+    });
+
+    dialogRef.componentInstance.saveEvent.subscribe((imgFile: string) => {
+      this.imgFile = imgFile
+      this.form.patchValue({
+        file: imgFile
+      });
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('closeDialog');
+    });
+  }
+
+  onClickDeletedImg() {
+    this.imgFile = ''
+    this.form.patchValue({
+      file: ''
+    });
+    this.form.get('file').updateValueAndValidity()
   }
 
 }

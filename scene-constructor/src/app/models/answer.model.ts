@@ -7,8 +7,8 @@ import {Scene} from './scene.model';
  */
 export class Answer {
 
-  private readonly startY = 85
-  private readonly startX = 120
+  private readonly startY = 207
+  private readonly startX = 220
 
   // Координаты при отрисовке на холсте
   private startCoordinate?: Coordinate

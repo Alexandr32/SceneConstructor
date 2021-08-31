@@ -4,7 +4,7 @@
     <p>Название:</p>
     <input name="title" formControlName="title"/>
     <div
-         *ngIf="form.controls['title'].invalid">
+      *ngIf="form.controls['title'].invalid">
       Введите значение
     </div>
 
@@ -19,7 +19,7 @@
   <label>
     <p>Кто должен отвечать:</p>
     <div
-         *ngFor="let item of players">
+      *ngFor="let item of players">
       <label>
         <input
           type="checkbox"
@@ -50,6 +50,23 @@
       <button (click)="deleteAnswer(answer)">Удалить</button>
     </div>
   </div>
+
+  <div class="edit-scene-dialog__image-box"
+    *ngIf="imgFile && imgFile !== ''">
+
+    <img class="edit-scene-dialog__image-box__image"
+      [src]="imgFile"
+      [alt]="form.value.name">
+
+    <button
+      type="button"
+      (click)="onClickDeletedImg()">
+      Удалить
+    </button>
+
+  </div>
+
+  <button (click)="openImageDialog()">Выбрать изображение</button>
 
   <div>
     <button type="button" (click)="onNoClick()">

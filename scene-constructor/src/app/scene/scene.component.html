@@ -11,13 +11,11 @@
          (click)="onClick($event)"
          [class.scene__header-select]="isSelectMode">
     </div>
-    <div>{{scene.id}}</div>
-    <div class="scene__control-width">{{toStringLabel(scene.title, 30)}}</div>
-    <div class="scene__control-width">{{toStringLabel(scene.text, 30)}}</div>
 
-    <div class="scene__control-width">Кто отвечает:</div>
-    <div class="scene__control-width text-green" *ngFor="let player of scene.players">{{player.name}}</div>
-    <div class="text-red scene__control-width" *ngIf="scene.players.length == 0">Нет выбранных персонажей</div>
+    <div *ngIf="scene.imgFile && scene.imgFile !== ''">
+      <img class="scene__image-box__image"
+           [src]="scene.imgFile" [alt]="scene.name">
+    </div>
 
     <div class="scene__variants">
       <button *ngFor="let answer of scene.answers"
@@ -26,6 +24,14 @@
               [class.scene__box__btn-warning]="!answer.sceneId"
               (click)="selectAnswer($event, answer)">{{toStringLabel(answer.text, 50)}}</button>
     </div>
+
+    <div class="scene__control-width">{{toStringLabel(scene.title, 30)}}</div>
+    <div class="scene__control-width">{{toStringLabel(scene.text, 30)}}</div>
+
+    <div class="scene__control-width">Кто отвечает:</div>
+    <div class="scene__control-width text-green" *ngFor="let player of scene.players">{{player.name}}</div>
+    <div class="text-red scene__control-width" *ngIf="scene.players.length == 0">Нет выбранных персонажей</div>
+
 
     <div>
       <button (click)="onClickEdit()">Редактировать</button>
