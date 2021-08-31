@@ -33,6 +33,10 @@
       </div>
     </div>
 
+    <div>
+
+    </div>
+
     <app-scene *ngFor="let scene of scenes"
                [changeSelectModeEvent$]="changeSelectModeEvent$"
                (editScene)="openEditDialog($event)"
@@ -43,7 +47,7 @@
     ></app-scene>
 
     <canvas #canvas
-            width="1200"
+            width="{{getWidthScreen()}}"
             height="800"
             class="editor__working-space__canvas editor__border"
             (click)="onClickWorkingSpace()"></canvas>

@@ -305,4 +305,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.renderLine()
   }
 
+  getWidthScreen(): number {
+    return window.screen.width
+  }
+
 }
