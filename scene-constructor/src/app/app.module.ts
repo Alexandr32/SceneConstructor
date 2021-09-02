@@ -19,6 +19,10 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { EditPlayerDialogComponent } from './edit-player-dialog/edit-player-dialog.component';
 import {ImageCropperModule} from 'ngx-img-cropper';
 import { EditImageComponent } from './edit-image-player/edit-image.component';
+import { AngularFireModule } from "@angular/fire";
+import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,7 @@ import { EditImageComponent } from './edit-image-player/edit-image.component';
     SvgLineComponent,
     EditSceneDialogComponent,
     EditPlayerDialogComponent,
-    EditImageComponent
+    EditImageComponent,
   ],
     imports: [
         BrowserModule,
@@ -40,7 +44,10 @@ import { EditImageComponent } from './edit-image-player/edit-image.component';
         MatButtonModule,
         MatDialogModule,
         ReactiveFormsModule,
-        ImageCropperModule
+        ImageCropperModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule,
+        AngularFirestoreModule,
     ],
   providers: [],
   bootstrap: [AppComponent]

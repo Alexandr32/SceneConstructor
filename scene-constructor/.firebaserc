@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "webgame-a64c1": {
+      "hosting": {
+        "scene-constructor": [
+          "webgame-a64c1"
+        ]
+      }
+    }
+  }
+}

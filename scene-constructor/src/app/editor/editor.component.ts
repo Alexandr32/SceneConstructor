@@ -8,6 +8,7 @@ import {Coordinate} from '../models/coordinate.model';
 import {Player} from '../models/player.model';
 import {v4 as uuidv4} from 'uuid';
 import {EditPlayerDialogComponent} from '../edit-player-dialog/edit-player-dialog.component';
+import {FirestoreService} from '../serveces/firestore.service';
 
 @Component({
   selector: 'app-editor',
@@ -17,7 +18,7 @@ import {EditPlayerDialogComponent} from '../edit-player-dialog/edit-player-dialo
 export class EditorComponent implements OnInit, AfterViewInit {
 
   scenes: Scene[] = [];
-  players: Player[] = []
+  players: Player[] = [];
 
   @ViewChild('working', {static: true})
   working: ElementRef<HTMLDivElement>;
@@ -26,12 +27,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
   canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
 
-  changeSelectModeEvent$ = new BehaviorSubject<boolean>(false)
+  changeSelectModeEvent$ = new BehaviorSubject<boolean>(false);
 
   // Выбранный ответ
-  selectSceneForChangeSelectMode: Answer
+  selectSceneForChangeSelectMode: Answer;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private firestoreServiceService: FirestoreService) {
     /*const scene1 = new Scene();
     scene1.id = 1;
     scene1.text = 'Text';
@@ -65,23 +66,23 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
 
-    this.renderLine()
+    this.renderLine();
     console.log('EditorComponent: ngAfterViewInit');
   }
 
   addNewPlayer() {
 
-    if(this.players.length > 3) {
-      return
+    if (this.players.length > 3) {
+      return;
     }
 
-    const id =  uuidv4();
-    const title = 'Новый персонаж'
-    const  description = 'Описание нового персонажа'
+    const id = uuidv4();
+    const title = 'Новый персонаж';
+    const description = 'Описание нового персонажа';
 
-    const player = new Player(id, title, description, '')
+    const player = new Player(id, title, description, '');
 
-    this.players.push(player)
+    this.players.push(player);
   }
 
   onClickEditPlayer(player: Player) {
@@ -103,13 +104,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   onClickDeletePlayer(player: Player) {
 
-    const index = this.players.indexOf(player)
-    this.players.splice(index, 1)
+    const index = this.players.indexOf(player);
+    this.players.splice(index, 1);
 
     this.scenes.forEach(scene => {
-      const index = scene.players.indexOf(player)
-      scene.players.splice(index, 1)
-    })
+      const index = scene.players.indexOf(player);
+      scene.players.splice(index, 1);
+    });
   }
 
   openEditDialog(scene: Scene): void {
@@ -119,9 +120,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.componentInstance.saveEvent.subscribe(() => {
-      this.clearCanvas()
-      this.renderLine()
-    })
+      this.clearCanvas();
+      this.renderLine();
+    });
 
     dialogRef.afterClosed().subscribe(() => {
       console.log('closeDialog');
@@ -133,21 +134,21 @@ export class EditorComponent implements OnInit, AfterViewInit {
    */
   private renderLine() {
     this.scenes.forEach((item) => {
-      const answers = item.answers.filter(answer => answer.sceneId)
+      const answers = item.answers.filter(answer => answer.sceneId);
 
       answers.forEach(answer => {
-        const coordinateOne = new Coordinate()
-        coordinateOne.x = answer.coordinate.x
-        coordinateOne.y = answer.coordinate.y
+        const coordinateOne = new Coordinate();
+        coordinateOne.x = answer.coordinate.x;
+        coordinateOne.y = answer.coordinate.y;
 
-        const scene = this.scenes.find(scene => scene.id == answer.sceneId)
-        const coordinateTwo: Coordinate = new Coordinate()
-        coordinateTwo.x = scene.coordinate.x + 4
-        coordinateTwo.y = scene.coordinate.y + 4
+        const scene = this.scenes.find(scene => scene.id == answer.sceneId);
+        const coordinateTwo: Coordinate = new Coordinate();
+        coordinateTwo.x = scene.coordinate.x + 4;
+        coordinateTwo.y = scene.coordinate.y + 4;
 
-        this.moveZLine(coordinateOne, coordinateTwo, answer.color)
-      })
-    })
+        this.moveZLine(coordinateOne, coordinateTwo, answer.color);
+      });
+    });
   }
 
   onChangeDrag() {
@@ -155,7 +156,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     console.log('onChangeDrag');
 
     this.clearCanvas();
-    this.renderLine()
+    this.renderLine();
   }
 
   ngOnInit() {
@@ -169,8 +170,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
    */
   addNewScene() {
 
-    const ids: number[] = this.scenes.map(item => item.id)
-    let id = this.getId(ids)
+    const ids: number[] = this.scenes.map(item => item.id);
+    let id = this.getId(ids);
 
     const scene = new Scene();
     scene.id = id;
@@ -180,18 +181,27 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene.coordinate.y = 0;
     scene.coordinate.x = 0;
 
-    this.scenes.push(scene)
+    this.scenes.push(scene);
 
-    this.renderLine()
+    this.renderLine();
+
+    console.log(this.firestoreServiceService);
+
+    this.firestoreServiceService.addNewScene(scene)
+      .then(info => {
+        console.log(info);
+      }).catch(error => {
+      console.log(error);
+    });
   }
 
   private getId(ids: number[]): number {
-    let id = 1
-    if(ids.length != 0) {
-      id = Math.max(...ids) + 1
+    let id = 1;
+    if (ids.length != 0) {
+      id = Math.max(...ids) + 1;
     }
 
-    return id
+    return id;
   }
 
   private clearCanvas() {
@@ -236,7 +246,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   private moveCircle(coordinate: Coordinate, color: string) {
     this.ctx.beginPath();
     this.ctx.arc(coordinate.x, coordinate.y, 6, 0, 2 * Math.PI);
-    this.ctx.fillStyle = color
+    this.ctx.fillStyle = color;
     this.ctx.fill();
     this.ctx.closePath();
   }
@@ -265,10 +275,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
   selectAnswerScene(scene: Answer) {
     console.log('Выбор ответа у сцены', scene);
 
-    const isChangeSelectMode = this.changeSelectModeEvent$.getValue()
+    const isChangeSelectMode = this.changeSelectModeEvent$.getValue();
 
-    if(isChangeSelectMode) {
-      this.selectSceneForChangeSelectMode = scene
+    if (isChangeSelectMode) {
+      this.selectSceneForChangeSelectMode = scene;
     }
 
   }
@@ -280,33 +290,33 @@ export class EditorComponent implements OnInit, AfterViewInit {
   selectScene(scene: Scene) {
     console.log('Выбор сцены для связывания', scene);
 
-    const isChangeSelectMode = this.changeSelectModeEvent$.getValue()
+    const isChangeSelectMode = this.changeSelectModeEvent$.getValue();
 
-    if(isChangeSelectMode) {
-      this.selectSceneForChangeSelectMode.sceneId = scene.id
-      this.clearCanvas()
-      this.renderLine()
+    if (isChangeSelectMode) {
+      this.selectSceneForChangeSelectMode.sceneId = scene.id;
+      this.clearCanvas();
+      this.renderLine();
     }
 
-    this.changeSelectModeEvent$.next(false)
+    this.changeSelectModeEvent$.next(false);
   }
 
   /**
    * Клик по канвасу
    */
   onClickWorkingSpace() {
-    this.changeSelectModeEvent$.next(false)
+    this.changeSelectModeEvent$.next(false);
   }
 
   increaseWorkingSpace() {
-    this.canvas.nativeElement.height += 500
+    this.canvas.nativeElement.height += 500;
 
-    this.clearCanvas()
-    this.renderLine()
+    this.clearCanvas();
+    this.renderLine();
   }
 
   getWidthScreen(): number {
-    return window.screen.width
+    return window.screen.width;
   }
 
 }
