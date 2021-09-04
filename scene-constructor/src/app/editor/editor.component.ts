@@ -11,6 +11,7 @@ import {FirestoreService} from '../serveces/firestore.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Game} from '../models/game.model';
 import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-editor',
@@ -23,6 +24,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   players: Player[] = [];
 
   game: Game
+  form: FormGroup;
+
 
   @ViewChild('working', {static: true})
   working: ElementRef<HTMLDivElement>;
@@ -46,6 +49,25 @@ export class EditorComponent implements OnInit, AfterViewInit {
       [])
   }
 
+  ngOnInit() {
+    this.ctx = this.canvas.nativeElement.getContext('2d');
+
+    this.form = new FormGroup({
+      'name':
+        new FormControl(
+          this.game.name,
+          [
+            Validators.required
+          ]),
+      'description':
+        new FormControl(
+          this.game.description,
+          [
+            Validators.required
+          ]),
+    });
+  }
+
   ngAfterViewInit(): void {
 
     this.renderLine();
@@ -65,6 +87,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
     const player = new Player(id, title, description, '');
 
     this.players.push(player);
+
+    this.game.name = '123'
   }
 
   onClickEditPlayer(player: Player) {
@@ -139,12 +163,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     this.clearCanvas();
     this.renderLine();
-  }
-
-  ngOnInit() {
-    this.ctx = this.canvas.nativeElement.getContext('2d');
-
-    //this.moveZLine(this.scenes[0].coordinate, this.scenes[1].coordinate);
   }
 
   async saveGame() {
