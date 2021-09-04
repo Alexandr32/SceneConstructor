@@ -32,7 +32,7 @@ export class Answer {
               position: number,
               public parentScene: Scene,
               public color: string,
-              public sceneId?: number,
+              public sceneId?: string,
   ) {
 
     this._position = position

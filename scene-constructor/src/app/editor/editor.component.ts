@@ -9,6 +9,8 @@ import {Player} from '../models/player.model';
 import {v4 as uuidv4} from 'uuid';
 import {EditPlayerDialogComponent} from '../edit-player-dialog/edit-player-dialog.component';
 import {FirestoreService} from '../serveces/firestore.service';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {Game} from '../models/game.model';
 
 @Component({
   selector: 'app-editor',
@@ -19,6 +21,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   scenes: Scene[] = [];
   players: Player[] = [];
+
+  game: Game
 
   @ViewChild('working', {static: true})
   working: ElementRef<HTMLDivElement>;
@@ -32,7 +36,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
   // Выбранный ответ
   selectSceneForChangeSelectMode: Answer;
 
-  constructor(public dialog: MatDialog, private firestoreServiceService: FirestoreService) {
+  constructor(public dialog: MatDialog, private fireStore: AngularFirestore, private firestoreServiceService: FirestoreService) {
+
+    this.game = new Game(
+      this.fireStore.createId(),
+      'Новая игра',
+      'Описание игры',
+      [],
+      [])
+
+
     /*const scene1 = new Scene();
     scene1.id = 1;
     scene1.text = 'Text';
@@ -76,7 +89,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const id = uuidv4();
+    const id = this.fireStore.createId();
     const title = 'Новый персонаж';
     const description = 'Описание нового персонажа';
 
@@ -165,34 +178,44 @@ export class EditorComponent implements OnInit, AfterViewInit {
     //this.moveZLine(this.scenes[0].coordinate, this.scenes[1].coordinate);
   }
 
+  async saveGame() {
+
+    this.game.scenes = this.scenes
+    this.game.players = this.players
+    this.firestoreServiceService.saveGame(this.game)
+  }
+
   /**
    * Создает новую сцену
    */
   addNewScene() {
 
-    const ids: number[] = this.scenes.map(item => item.id);
-    let id = this.getId(ids);
+    //const ids: number[] = this.scenes.map(item => item.id);
+    //let id = this.getId(ids);
 
     const scene = new Scene();
-    scene.id = id;
+    scene.id = this.fireStore.createId();
     scene.text = 'Новая сцена';
     scene.title = 'Новое описание';
     scene.coordinate = new Coordinate();
     scene.coordinate.y = 0;
     scene.coordinate.x = 0;
 
+    const answers1 = new Answer(this.fireStore.createId(), 'a', 0, scene, 'red');
+    const answers2 = new Answer(this.fireStore.createId(), 'б', 1, scene, 'red');
+    const answers3 = new Answer(this.fireStore.createId(), 'в', 2, scene, 'red');
+
+    scene.answers = [answers1, answers2, answers3];
+
     this.scenes.push(scene);
 
     this.renderLine();
 
-    console.log(this.firestoreServiceService);
-
-    this.firestoreServiceService.addNewScene(scene)
-      .then(info => {
-        console.log(info);
+    /*.then(docRef => {
+        console.log('docRef:', docRef);
       }).catch(error => {
       console.log(error);
-    });
+    });*/
   }
 
   private getId(ids: number[]): number {

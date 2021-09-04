@@ -6,7 +6,7 @@ import {Answer} from './answer.model';
 import {Player} from './player.model';
 
 export class Scene {
-  id: number
+  id: string
   title: string
   text: string
   imgFile: string

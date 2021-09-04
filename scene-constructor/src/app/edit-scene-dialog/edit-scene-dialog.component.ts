@@ -8,6 +8,7 @@ import {Answer} from '../models/answer.model';
 import {Player} from '../models/player.model';
 import {CropperSettings} from 'ngx-img-cropper';
 import {EditImageComponent} from '../edit-image-player/edit-image.component';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -27,6 +28,7 @@ export class EditSceneDialogComponent implements OnInit {
   players: { player: Player, isSelect: boolean }[] = [];
 
   constructor(public dialogRef: MatDialogRef<EditSceneDialogComponent>,
+              private fireStore: AngularFirestore,
               @Inject(MAT_DIALOG_DATA) public data: { scene: Scene,
                 players: Player[]},
               public dialog: MatDialog) {
@@ -114,7 +116,7 @@ export class EditSceneDialogComponent implements OnInit {
 
   onClickAddNewAnswer() {
 
-    let id: string = this.getId()
+    let id: string = this.fireStore.createId()
 
     console.log('this.data:', this.data);
 
