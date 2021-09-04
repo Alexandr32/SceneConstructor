@@ -1,16 +1,16 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Scene} from '../models/scene.model';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
 import {Answer} from '../models/answer.model';
 import {Coordinate} from '../models/coordinate.model';
 import {Player} from '../models/player.model';
-import {v4 as uuidv4} from 'uuid';
 import {EditPlayerDialogComponent} from '../edit-player-dialog/edit-player-dialog.component';
 import {FirestoreService} from '../serveces/firestore.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Game} from '../models/game.model';
+import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-editor',
@@ -44,37 +44,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       'Описание игры',
       [],
       [])
-
-
-    /*const scene1 = new Scene();
-    scene1.id = 1;
-    scene1.text = 'Text';
-    scene1.title = 'title';
-    scene1.coordinate = new Coordinate();
-
-    const scene2 = new Scene();
-    scene2.id = 2;
-    scene2.text = 'Text2';
-    scene2.title = 'title2';
-    scene2.coordinate = new Coordinate();
-    scene2.coordinate.y = 50;
-    scene2.coordinate.x = 300;
-
-    //const answers1 = new Answer(1, 'a', 0, scene2);
-    //const answers2 = new Answer(2, 'б', 1, scene2);
-    //const answers3 = new Answer(3, 'в', 2, scene2);
-
-    //scene2.answers = [answers1, answers2, answers3];
-
-    const scene3 = new Scene();
-    scene3.id = 3;
-    scene3.text = 'Text3';
-    scene3.title = 'title3';
-    scene3.coordinate = new Coordinate();
-    scene3.coordinate.y = 150;
-    scene3.coordinate.x = 400;*/
-
-    //this.scenes.push(scene1, scene2, scene3);
   }
 
   ngAfterViewInit(): void {
@@ -180,18 +149,33 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   async saveGame() {
 
+    const dialogSave = this.dialog.open(MessageDialogComponent, {
+      data: 'Сохранение...'
+    });
+
     this.game.scenes = this.scenes
     this.game.players = this.players
-    this.firestoreServiceService.saveGame(this.game)
+    try {
+      await this.firestoreServiceService.saveGame(this.game)
+
+      dialogSave.close()
+
+      this.dialog.open(MessageDialogComponent, {
+        data: 'Игра сохранена'
+      });
+
+    } catch (error) {
+      this.dialog.open(MessageDialogComponent, {
+        data: 'При сохраненнии произошла ошибка' + error
+      });
+    }
+
   }
 
   /**
    * Создает новую сцену
    */
   addNewScene() {
-
-    //const ids: number[] = this.scenes.map(item => item.id);
-    //let id = this.getId(ids);
 
     const scene = new Scene();
     scene.id = this.fireStore.createId();
@@ -210,21 +194,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.scenes.push(scene);
 
     this.renderLine();
-
-    /*.then(docRef => {
-        console.log('docRef:', docRef);
-      }).catch(error => {
-      console.log(error);
-    });*/
-  }
-
-  private getId(ids: number[]): number {
-    let id = 1;
-    if (ids.length != 0) {
-      id = Math.max(...ids) + 1;
-    }
-
-    return id;
   }
 
   private clearCanvas() {

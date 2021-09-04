@@ -23,6 +23,7 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import { MessageDialogComponent } from './message-dialog/message-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { environment } from '../environments/environment';
     EditSceneDialogComponent,
     EditPlayerDialogComponent,
     EditImageComponent,
+    MessageDialogComponent,
   ],
     imports: [
         BrowserModule,
