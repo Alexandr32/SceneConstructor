@@ -12,6 +12,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Game} from '../models/game.model';
 import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-editor',
@@ -24,7 +25,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   players: Player[] = [];
 
   game: Game
-  form: FormGroup;
+  form: FormGroup = new FormGroup({});
+  showForm = false
 
 
   @ViewChild('working', {static: true})
@@ -39,33 +41,43 @@ export class EditorComponent implements OnInit, AfterViewInit {
   // Выбранный ответ
   selectSceneForChangeSelectMode: Answer;
 
-  constructor(public dialog: MatDialog, private fireStore: AngularFirestore, private firestoreServiceService: FirestoreService) {
-
-    this.game = new Game(
-      this.fireStore.createId(),
-      'Новая игра',
-      'Описание игры',
-      [],
-      [])
+  constructor(public dialog: MatDialog,
+              private fireStore: AngularFirestore,
+              private firestoreServiceService: FirestoreService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    this.form = new FormGroup({
-      'name':
-        new FormControl(
-          this.game.name,
-          [
-            Validators.required
-          ]),
-      'description':
-        new FormControl(
-          this.game.description,
-          [
-            Validators.required
-          ]),
-    });
+    const gameId = this.route.snapshot.params.gameId
+
+    this.firestoreServiceService.getGameById(gameId).subscribe((game) => {
+      this.game = game
+      console.log('this.game:', this.game);
+
+      this.form = new FormGroup({
+        'name':
+          new FormControl(
+            this.game.name,
+            [
+              Validators.required
+            ]),
+        'description':
+          new FormControl(
+            this.game.description,
+            [
+              Validators.required
+            ]),
+      });
+      this.showForm = true
+
+      this.game.scenes.forEach(scene => {
+        this.scenes.push(scene);
+      })
+      this.renderLine();
+    })
   }
 
   ngAfterViewInit(): void {

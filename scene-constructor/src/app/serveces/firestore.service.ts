@@ -1,38 +1,87 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Game} from '../models/game.model';
 import {Scene} from '../models/scene.model';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {Player} from '../models/player.model';
+import {filter, map, switchMap} from 'rxjs/operators';
+import {Observable, pipe, Subscription, zip} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreService {
 
-  private readonly nameGameCollection = 'Games'
-  private readonly nameScenesCollection = 'Scenes'
-  private readonly namePlayersCollection = 'Players'
-  private readonly nameAnswersCollection = 'Answers'
-  private readonly ImageFileSceneCollection = 'images'
-  private readonly ImageFilePlayersCollection = 'Players'
+  private readonly nameGameCollection = 'Games';
+  private readonly nameScenesCollection = 'Scenes';
+  private readonly ImageFileSceneCollection = 'images';
+  private readonly ImageFilePlayersCollection = 'Players';
 
-  constructor(private fireStore: AngularFirestore, private storage: AngularFireStorage) { }
+  constructor(private fireStore: AngularFirestore, private storage: AngularFireStorage) {
+  }
+
+  getGames(): Observable<Game[]> {
+    return this.fireStore.collection<Game>('Games')
+      .valueChanges({idField: 'id'});
+  }
+
+  getGameById(gameId: string): Observable<Game> {
+
+    const game$ = this.fireStore.doc<Game>(`Games/${gameId}`)
+      .snapshotChanges()
+      .pipe(
+        map((doc) => {
+          const game = doc.payload.data() as Game;
+          game.id = doc.payload.id;
+          return game;
+        })
+      )
+
+    const scenes$ = this.fireStore.collection<any>(`Games/${gameId}/Scenes`)
+      .snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const scene = a.payload.doc.data() as Scene;
+          scene.id = a.payload.doc.id;
+          return scene;
+        }))
+      )
+
+    return zip(game$, scenes$).pipe(
+      map((item) => {
+        item[0].scenes = item[1]
+        return item[0]
+      })
+    )
+  }
+
+  deleteGame(gameId: string): Promise<any> {
+    return this.fireStore.firestore.collection('Games').doc(gameId).delete();
+  }
 
   async saveGame(game: Game) {
 
     try {
+
+      const players = [...(game.players.map(item => {
+        return {
+          id: item.id,
+          name: item.name,
+          description: item.description
+        };
+      }))];
+
       await this.fireStore.collection<any>(this.nameGameCollection)
         .doc(game.id)
         .set({
           name: game.name,
-          description: game.description
-        })
+          description: game.description,
+          players: players
+        });
     } catch (error) {
       console.log('При сохранении данных игры произошла ошибка', error);
     }
 
-    for(const player of game.players) {
+    /*for (const player of game.players) {
 
       try {
         await this.fireStore.collection<any>(this.nameGameCollection)
@@ -42,20 +91,38 @@ export class FirestoreService {
           .set({
             name: player.name,
             description: player.description,
-          })
+          });
 
-        if(player.imgFile) {
-          await this.saveImage(player)
+        if (player.imgFile) {
+          await this.saveImage(player);
         }
 
       } catch (error) {
         console.log('При сохранении игроков произошла ошибка', error);
-        throw error
+        throw error;
       }
-    }
+    }*/
 
     for (const scene of game.scenes) {
       try {
+
+        const answers = [...(scene.answers
+          .filter(item => item.parentScene.id == scene.id)
+          .map(item => {
+            return {
+              text: item.text,
+              position: item.position,
+              color: item.color,
+              sceneId: item.sceneId ? item.sceneId : '',
+              coordinate: {
+                x: item.coordinate.x,
+                y: item.coordinate.y
+              }
+            };
+          }))];
+
+        console.log('answers:', answers);
+
         await this.fireStore.collection<any>(this.nameGameCollection)
           .doc(game.id)
           .collection(this.nameScenesCollection)
@@ -63,21 +130,24 @@ export class FirestoreService {
           .set({
             title: scene.title,
             text: scene.text,
-            x: scene.coordinate.x,
-            y: scene.coordinate.y,
-            players: scene.players.map(item => item.id)
-          })
+            coordinate: {
+              x: scene.coordinate.x,
+              y: scene.coordinate.y
+            },
+            answers: answers,
+            players: scene.players.map(item => item.id) // кто отвечает на данной сцене
+          });
 
-        if(scene.imgFile) {
-          await this.saveImage(scene)
+        if (scene.imgFile) {
+          await this.saveImage(scene);
         }
 
       } catch (error) {
         console.log('При сохранении сцен произошла ошибка', error);
-        throw error
+        throw error;
       }
 
-      for (const answer of scene.answers) {
+      /*for (const answer of scene.answers) {
         try {
           // список ответов
           await this.fireStore.collection<any>(this.nameGameCollection)
@@ -91,14 +161,16 @@ export class FirestoreService {
               position: answer.position,
               color: answer.color,
               sceneId: answer.sceneId ? answer.sceneId : '',
-              x: answer.coordinate.x,
-              y: answer.coordinate.y
-            })
+              coordinate: {
+                x: answer.coordinate.x,
+                y: answer.coordinate.y
+              },
+            });
         } catch (error) {
           console.log('При сохранении ответов произошла ошибка', error);
-          throw error
+          throw error;
         }
-      }
+      }*/
     }
   }
 
@@ -112,10 +184,10 @@ export class FirestoreService {
         .doc(scene.id)
         .set({
           imgFile: scene.imgFile
-        })
+        });
     } catch (error) {
       console.log('При сохранении изображения сцены произошла ошибка', error);
-      throw error
+      throw error;
     }
   }
 
@@ -125,39 +197,39 @@ export class FirestoreService {
         .doc(player.id)
         .set({
           imgFile: player.imgFile
-        })
+        });
     } catch (error) {
       console.log('При сохранении изображения персонажа произошла ошибка', error);
-      throw error
+      throw error;
     }
   }
 
 
   async saveImage(value: Scene | Player) {
 
-    if(!value.imgFile) {
-      throw Error('Получена пустая строка base64')
+    if (!value.imgFile) {
+      throw Error('Получена пустая строка base64');
     }
 
     try {
       const file = FirestoreService.base64ToFile(
         value.imgFile,
         value.id,
-      )
+      );
 
-      let folderName
+      let folderName;
 
-      if(value instanceof Player) {
-        folderName = 'Players'
+      if (value instanceof Player) {
+        folderName = 'Players';
       } else {
-        folderName = 'Scene'
+        folderName = 'Scene';
       }
 
-      await this.storage.upload(`${folderName}/${value.id}`, file)
+      await this.storage.upload(`${folderName}/${value.id}`, file);
 
     } catch (error) {
       console.log('При сохранении изображения сцены произошла ошибка', error);
-      throw error
+      throw error;
     }
 
   }
@@ -178,10 +250,10 @@ export class FirestoreService {
     let n = bstr.length;
     let u8arr = new Uint8Array(n);
 
-    while(n--){
+    while (n--) {
       u8arr[n] = bstr.charCodeAt(n);
     }
 
-    return new File([u8arr], filename, { type: mime });
+    return new File([u8arr], filename, {type: mime});
   }
 }

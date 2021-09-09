@@ -1,11 +1,12 @@
 import {Coordinate} from './coordinate.model';
 import {Scene} from './scene.model';
+import {Entity} from './entity.model';
 
 
 /**
  * Вариант ответа на сцене
  */
-export class Answer {
+export class Answer implements Entity  {
 
   private readonly startY = 207
   private readonly startX = 220
