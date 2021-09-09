@@ -44,13 +44,6 @@ export class GameListComponent implements OnInit {
     await this.firestoreService.deleteGame(gameId)
   }
 
-  async getById(gameId: string) {
-   this.firestoreService.getGameById(gameId).subscribe((item) => {
-     console.log('item::::::', item);
-   })
-
-  }
-
   async createNewGame() {
     const game = new Game(
       this.fireStore.createId(),
