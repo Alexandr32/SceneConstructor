@@ -63,13 +63,10 @@ export class SceneComponent implements OnInit {
   }
 
   onCdkDragDropped(event) {
-    console.log('event', event)
 
     const element = event.source.getRootElement();
 
     const {x, y} = this.getCoordinate(element)
-
-    console.log(x, y);
 
     this.scene.coordinate.x = x
     this.scene.coordinate.y = y
@@ -79,19 +76,13 @@ export class SceneComponent implements OnInit {
 
       const id = elementRef.nativeElement.id
 
-      console.log(this.scene.answers);
-
       const answer = this.scene.answers.find(item => item.id == id)
-
-      console.log(answer);
 
       answer.setX(x)
       answer.setY(y)
     })
 
     this.changeDrag.next()
-
-    //element.stopPropagation()
   }
 
   private getCoordinate(element) {
