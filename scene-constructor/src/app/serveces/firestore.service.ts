@@ -6,6 +6,8 @@ import {AngularFireStorage} from '@angular/fire/storage';
 import {Player} from '../models/player.model';
 import {filter, map, switchMap} from 'rxjs/operators';
 import {Observable, pipe, Subscription, zip} from 'rxjs';
+import {Answer} from '../models/answer.model';
+import {Coordinate} from '../models/coordinate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +43,30 @@ export class FirestoreService {
       .snapshotChanges().pipe(
         map(actions => actions.map(a => {
           const scene = a.payload.doc.data() as Scene;
+
+          const answers: Answer[] = []
+
+          scene.answers.forEach(answerInFireBase => {
+
+            console.log('answerInFireBase', answerInFireBase);
+
+            const answer = new Answer(
+              answerInFireBase.id,
+              answerInFireBase.text,
+              answerInFireBase.position,
+              scene,
+              answerInFireBase.color,
+              answerInFireBase.sceneId
+            )
+            answer.coordinate = new Coordinate()
+            answer.coordinate.x = answerInFireBase.coordinate.x
+            answer.coordinate.y = answerInFireBase.coordinate.y
+
+            answers.push(answer)
+          })
+
+          scene.answers = answers
+
           scene.id = a.payload.doc.id;
           return scene;
         }))
@@ -55,7 +81,11 @@ export class FirestoreService {
   }
 
   deleteGame(gameId: string): Promise<any> {
-    return this.fireStore.firestore.collection('Games').doc(gameId).delete();
+    return this.fireStore.collection('Games').doc(gameId).delete();
+  }
+
+  deleteScene(gameId: string, scene: Scene): Promise<any> {
+    return this.fireStore.collection(`Games/${gameId}/Scenes`).doc(scene.id).delete()
   }
 
   async saveGame(game: Game) {
@@ -79,37 +109,17 @@ export class FirestoreService {
         });
     } catch (error) {
       console.log('При сохранении данных игры произошла ошибка', error);
+      throw error
     }
-
-    /*for (const player of game.players) {
-
-      try {
-        await this.fireStore.collection<any>(this.nameGameCollection)
-          .doc(game.id)
-          .collection(this.namePlayersCollection)
-          .doc(player.id)
-          .set({
-            name: player.name,
-            description: player.description,
-          });
-
-        if (player.imgFile) {
-          await this.saveImage(player);
-        }
-
-      } catch (error) {
-        console.log('При сохранении игроков произошла ошибка', error);
-        throw error;
-      }
-    }*/
 
     for (const scene of game.scenes) {
       try {
 
         const answers = [...(scene.answers
-          .filter(item => item.parentScene.id == scene.id)
+          //.filter(item => item.parentScene.id == scene.id)
           .map(item => {
             return {
+              id: item.id,
               text: item.text,
               position: item.position,
               color: item.color,
@@ -122,6 +132,8 @@ export class FirestoreService {
           }))];
 
         console.log('answers:', answers);
+        console.log('game.id:', game.id);
+        console.log('scene.id:', scene.id);
 
         await this.fireStore.collection<any>(this.nameGameCollection)
           .doc(game.id)

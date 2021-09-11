@@ -8,8 +8,8 @@ import {Entity} from './entity.model';
  */
 export class Answer implements Entity  {
 
-  private readonly startY = 207
-  private readonly startX = 220
+  private readonly startY = 46
+  private readonly startX = 227
 
   // Координаты при отрисовке на холсте
   private startCoordinate?: Coordinate

@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Game} from '../models/game.model';
 import {FirestoreService} from '../serveces/firestore.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
+import {Subscriber, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-game-list',
   templateUrl: './game-list.component.html',
   styleUrls: ['./game-list.component.scss']
 })
-export class GameListComponent implements OnInit {
+export class GameListComponent implements OnInit, OnDestroy {
 
   gameList: Game[] = []
+
+  game$: Subscription
 
   constructor(private dialog: MatDialog,
               private fireStore: AngularFirestore,
@@ -24,7 +27,7 @@ export class GameListComponent implements OnInit {
       data: 'Загрузка'
     });
 
-    this.firestoreService.getGames().subscribe((items) => {
+    this.game$ = this.firestoreService.getGames().subscribe((items) => {
 
       dialogSave.close()
 
@@ -53,5 +56,9 @@ export class GameListComponent implements OnInit {
       [])
 
     await this.firestoreService.saveGame(game)
+  }
+
+  ngOnDestroy(): void {
+    this.game$.unsubscribe()
   }
 }

@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Scene} from '../models/scene.model';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
 import {Answer} from '../models/answer.model';
@@ -19,9 +19,10 @@ import {ActivatedRoute} from '@angular/router';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit, AfterViewInit {
+export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   scenes: Scene[] = [];
+  scenesForDeleted: Scene[] = [];
   players: Player[] = [];
 
   game: Game
@@ -41,19 +42,24 @@ export class EditorComponent implements OnInit, AfterViewInit {
   // Выбранный ответ
   selectSceneForChangeSelectMode: Answer;
 
+  game$: Subscription
+
   constructor(public dialog: MatDialog,
               private fireStore: AngularFirestore,
               private firestoreServiceService: FirestoreService,
               private route: ActivatedRoute) {
   }
 
+  ngOnDestroy(): void {
+    this.game$.unsubscribe()
+    }
+
   ngOnInit() {
 
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
     const gameId = this.route.snapshot.params.gameId
-
-    this.firestoreServiceService.getGameById(gameId).subscribe((game) => {
+    this.game$ = this.firestoreServiceService.getGameById(gameId).subscribe((game) => {
       this.game = game
       console.log('this.game:', this.game);
 
@@ -73,9 +79,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
       });
       this.showForm = true
 
+      this.scenes = []
       this.game.scenes.forEach(scene => {
         this.scenes.push(scene);
       })
+
+      this.players = []
+      this.game.players.forEach(player => {
+        this.players.push(player)
+      })
+
       this.renderLine();
     })
   }
@@ -185,7 +198,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     this.game.scenes = this.scenes
     this.game.players = this.players
+    this.game.name = this.form.get('name').value
+    this.game.description = this.form.get('description').value
+
     try {
+
+      this.scenesForDeleted.map(async item => {
+        try {
+          await this.firestoreServiceService.deleteScene(this.game.id, item)
+        } catch (e) {
+          console.log('При удалении сцен что-то пошло не так');
+          throw e
+        }
+      })
+
       await this.firestoreServiceService.saveGame(this.game)
 
       dialogSave.close()
@@ -224,6 +250,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.scenes.push(scene);
 
     this.renderLine();
+  }
+
+  deletedScene(scene: Scene) {
+    const index = this.game.scenes.indexOf(scene)
+    console.log('index:', index);
+    this.scenes.splice(index, 1)
+    this.renderLine()
+
+    this.scenesForDeleted.push(scene)
   }
 
   private clearCanvas() {

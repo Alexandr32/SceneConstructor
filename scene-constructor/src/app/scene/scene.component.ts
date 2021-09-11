@@ -20,6 +20,9 @@ export class SceneComponent implements OnInit {
   @Output()
   editScene = new EventEmitter<Scene>()
 
+  @Output()
+  deleteScene = new EventEmitter<Scene>()
+
   dragPosition = {x: 0, y: 0};
 
   @Output()
@@ -80,7 +83,12 @@ export class SceneComponent implements OnInit {
 
       const id = elementRef.nativeElement.id
 
+      console.log(this.scene.answers);
+
       const answer = this.scene.answers.find(item => item.id == id)
+
+      console.log(answer);
+
       answer.setX(x)
       answer.setY(y)
     })
@@ -136,6 +144,10 @@ export class SceneComponent implements OnInit {
 
   onClickEdit() {
     this.editScene.emit(this.scene)
+  }
+
+  onClickDelete() {
+    this.deleteScene.emit(this.scene)
   }
 
   toStringLabel(text: string, maxCount: number) {

@@ -69,6 +69,7 @@
                (editScene)="openEditDialog($event)"
                (changeDrag)="onChangeDrag()"
                [scene]="scene"
+               (deleteScene)="deletedScene($event)"
                (selectAnswerScene)="selectAnswerScene($event)"
                (selectScene)="selectScene($event)"
     ></app-scene>
