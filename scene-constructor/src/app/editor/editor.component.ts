@@ -28,7 +28,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
   form: FormGroup = new FormGroup({});
   showForm = false
 
-
   @ViewChild('working', {static: true})
   working: ElementRef<HTMLDivElement>;
 
@@ -82,6 +81,14 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
       this.game.scenes.forEach(scene => {
         this.scenes.push(scene);
       })
+
+      if(this.game.scenes.length == 0) {
+        this.canvas.nativeElement.height = 880
+      } else {
+        this.canvas.nativeElement.height = this.game.scenes
+          .flatMap(item => item.coordinate.y)
+          .reduce((previousValue, currentValue) => previousValue + currentValue) + 500
+      }
 
       this.players = []
       this.game.players.forEach(player => {
@@ -367,6 +374,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   increaseWorkingSpace() {
     this.canvas.nativeElement.height += 500;
+    //this.canvasHeight += 500;
 
     this.clearCanvas();
     this.renderLine();
