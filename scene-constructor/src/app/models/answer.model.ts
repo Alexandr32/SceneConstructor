@@ -33,7 +33,7 @@ export class Answer implements Entity  {
               position: number,
               public parentScene: Scene,
               public color: string,
-              public sceneId?: string,
+              public sceneId: string = null,
   ) {
 
     this._position = position

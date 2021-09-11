@@ -22,7 +22,6 @@ import {ActivatedRoute} from '@angular/router';
 export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   scenes: Scene[] = [];
-  scenesForDeleted: Scene[] = [];
   players: Player[] = [];
 
   game: Game
@@ -189,6 +188,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   async saveGame() {
 
+    console.log('saveGame');
+
     const dialogSave = this.dialog.open(MessageDialogComponent, {
       data: 'Сохранение...'
     });
@@ -200,22 +201,13 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
     try {
 
-      this.scenesForDeleted.map(async item => {
-        try {
-          await this.firestoreServiceService.deleteScene(this.game.id, item)
-        } catch (e) {
-          console.log('При удалении сцен что-то пошло не так');
-          throw e
-        }
-      })
-
       await this.firestoreServiceService.saveGame(this.game)
 
       dialogSave.close()
 
-      this.dialog.open(MessageDialogComponent, {
+      /*this.dialog.open(MessageDialogComponent, {
         data: 'Игра сохранена'
-      });
+      });*/
 
     } catch (error) {
       this.dialog.open(MessageDialogComponent, {
@@ -250,11 +242,23 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
   }
 
   deletedScene(scene: Scene) {
+
+    const answers = this.scenes
+      .flatMap((item) => item.answers)
+      .filter(item => item.sceneId == scene.id)
+      .map(item => item.sceneId = null)
+
+    /*answers.forEach(it => {
+      it.sceneId = null
+    })*/
+
+    console.log(answers);
+
     const index = this.game.scenes.indexOf(scene)
     this.scenes.splice(index, 1)
+    this.clearCanvas()
     this.renderLine()
 
-    this.scenesForDeleted.push(scene)
   }
 
   private clearCanvas() {

@@ -29,17 +29,40 @@ export class FirestoreService {
 
   getGameById(gameId: string): Observable<Game> {
 
-    const game$ = this.fireStore.doc<Game>(`Games/${gameId}`)
+    return this.fireStore.doc<Game>(`Games/${gameId}`)
       .snapshotChanges()
       .pipe(
         map((doc) => {
           const game = doc.payload.data() as Game;
+          game.scenes.forEach(scene => {
+            const answers: Answer[] = []
+
+            scene.answers.forEach(answerInFireBase => {
+
+              const answer = new Answer(
+                answerInFireBase.id,
+                answerInFireBase.text,
+                answerInFireBase.position,
+                scene,
+                answerInFireBase.color,
+                answerInFireBase.sceneId
+              )
+              answer.coordinate = new Coordinate()
+              answer.coordinate.x = answerInFireBase.coordinate.x
+              answer.coordinate.y = answerInFireBase.coordinate.y
+
+              answers.push(answer)
+            })
+
+            scene.answers = answers
+          })
+
           game.id = doc.payload.id;
           return game;
         })
       )
 
-    const scenes$ = this.fireStore.collection<any>(`Games/${gameId}/Scenes`)
+    /*const scenes$ = this.fireStore.collection<any>(`Games/${gameId}/Scenes`)
       .snapshotChanges().pipe(
         map(actions => actions.map(a => {
           const scene = a.payload.doc.data() as Scene;
@@ -75,7 +98,7 @@ export class FirestoreService {
         item[0].scenes = item[1]
         return item[0]
       })
-    )
+    )*/
   }
 
   deleteGame(gameId: string): Promise<any> {
@@ -98,11 +121,44 @@ export class FirestoreService {
         };
       }))];
 
+      const scenes = [...(game.scenes.map(scene => {
+
+        const answers = [...(scene.answers
+          .map(item => {
+            return {
+              id: item.id,
+              text: item.text,
+              position: item.position,
+              color: item.color,
+              sceneId: item.sceneId ? item.sceneId : '',
+              coordinate: {
+                x: item.coordinate.x,
+                y: item.coordinate.y
+              }
+            };
+          }))];
+
+        return {
+          id: scene.id,
+          title: scene.title,
+          text: scene.text,
+          coordinate: {
+            x: scene.coordinate.x,
+            y: scene.coordinate.y
+          },
+          answers: answers,
+          players: scene.players.map(item => item.id) //
+        }
+      }))
+
+      ]
+
       await this.fireStore.collection<any>(this.nameGameCollection)
         .doc(game.id)
         .set({
           name: game.name,
           description: game.description,
+          scenes: scenes,
           players: players
         });
     } catch (error) {
@@ -110,7 +166,7 @@ export class FirestoreService {
       throw error
     }
 
-    for (const scene of game.scenes) {
+    /*for (const scene of game.scenes) {
       try {
 
         const answers = [...(scene.answers
@@ -153,7 +209,7 @@ export class FirestoreService {
         throw error;
       }
 
-      /*for (const answer of scene.answers) {
+      /!*for (const answer of scene.answers) {
         try {
           // список ответов
           await this.fireStore.collection<any>(this.nameGameCollection)
@@ -176,8 +232,8 @@ export class FirestoreService {
           console.log('При сохранении ответов произошла ошибка', error);
           throw error;
         }
-      }*/
-    }
+      }*!/
+    }*/
   }
 
   /**
