@@ -32,7 +32,6 @@ export class GameListComponent implements OnInit, OnDestroy {
       dialogSave.close()
 
       this.gameList = items
-      console.log('items:', items);
 
     }, error => {
 

@@ -96,7 +96,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
   ngAfterViewInit(): void {
 
     this.renderLine();
-    console.log('EditorComponent: ngAfterViewInit');
   }
 
   addNewPlayer() {
@@ -184,8 +183,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   onChangeDrag() {
 
-    console.log('onChangeDrag');
-
     this.clearCanvas();
     this.renderLine();
   }
@@ -254,7 +251,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   deletedScene(scene: Scene) {
     const index = this.game.scenes.indexOf(scene)
-    console.log('index:', index);
     this.scenes.splice(index, 1)
     this.renderLine()
 

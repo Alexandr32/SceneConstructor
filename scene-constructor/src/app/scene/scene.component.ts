@@ -51,10 +51,6 @@ export class SceneComponent implements OnInit {
     })
   }
 
-  ngOnChanges() {
-    console.log('ngOnChanges');
-  }
-
   onClickScene() {
     if(this.isSelectMode) {
       console.log('clickScene');

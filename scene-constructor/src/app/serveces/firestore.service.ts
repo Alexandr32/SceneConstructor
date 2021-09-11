@@ -48,8 +48,6 @@ export class FirestoreService {
 
           scene.answers.forEach(answerInFireBase => {
 
-            console.log('answerInFireBase', answerInFireBase);
-
             const answer = new Answer(
               answerInFireBase.id,
               answerInFireBase.text,
@@ -130,10 +128,6 @@ export class FirestoreService {
               }
             };
           }))];
-
-        console.log('answers:', answers);
-        console.log('game.id:', game.id);
-        console.log('scene.id:', scene.id);
 
         await this.fireStore.collection<any>(this.nameGameCollection)
           .doc(game.id)
