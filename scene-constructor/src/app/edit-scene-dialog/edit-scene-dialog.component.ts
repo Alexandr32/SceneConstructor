@@ -125,8 +125,6 @@ export class EditSceneDialogComponent implements OnInit {
 
     let id: string = this.fireStore.createId()
 
-    console.log('this.data:', this.data);
-
     const positions: number[] = this.answers.map(item => item.position)
 
     let position: number = this.getPosition(positions)
@@ -143,10 +141,6 @@ export class EditSceneDialogComponent implements OnInit {
     const g = Math.floor(Math.random() * (256))
     const b = Math.floor(Math.random() * (256))
     return '#' + r.toString(16) + g.toString(16) + b.toString(16);
-  }
-
-  private getId(): string {
-    return uuidv4();
   }
 
   private getPosition(positions: number[]): number {
@@ -189,8 +183,6 @@ export class EditSceneDialogComponent implements OnInit {
     this.data.scene.answers = this.answers;
 
     this.data.scene.imgFile = this.imgFile
-
-    console.log('player:', player);
 
     this.data.scene.players = player;
 

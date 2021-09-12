@@ -61,44 +61,6 @@ export class FirestoreService {
           return game;
         })
       )
-
-    /*const scenes$ = this.fireStore.collection<any>(`Games/${gameId}/Scenes`)
-      .snapshotChanges().pipe(
-        map(actions => actions.map(a => {
-          const scene = a.payload.doc.data() as Scene;
-
-          const answers: Answer[] = []
-
-          scene.answers.forEach(answerInFireBase => {
-
-            const answer = new Answer(
-              answerInFireBase.id,
-              answerInFireBase.text,
-              answerInFireBase.position,
-              scene,
-              answerInFireBase.color,
-              answerInFireBase.sceneId
-            )
-            answer.coordinate = new Coordinate()
-            answer.coordinate.x = answerInFireBase.coordinate.x
-            answer.coordinate.y = answerInFireBase.coordinate.y
-
-            answers.push(answer)
-          })
-
-          scene.answers = answers
-
-          scene.id = a.payload.doc.id;
-          return scene;
-        }))
-      )
-
-    return zip(game$, scenes$).pipe(
-      map((item) => {
-        item[0].scenes = item[1]
-        return item[0]
-      })
-    )*/
   }
 
   deleteGame(gameId: string): Promise<any> {
@@ -147,7 +109,7 @@ export class FirestoreService {
             y: scene.coordinate.y
           },
           answers: answers,
-          players: scene.players.map(item => item.id) //
+          players: scene.players
         }
       }))
 
@@ -161,79 +123,19 @@ export class FirestoreService {
           scenes: scenes,
           players: players
         });
+
+      game.scenes.map(async (scene) => {
+        await this.saveImage(scene)
+      })
+
+      game.players.map(async (player) => {
+        await this.saveImage(player)
+      })
+
     } catch (error) {
       console.log('При сохранении данных игры произошла ошибка', error);
       throw error
     }
-
-    /*for (const scene of game.scenes) {
-      try {
-
-        const answers = [...(scene.answers
-          //.filter(item => item.parentScene.id == scene.id)
-          .map(item => {
-            return {
-              id: item.id,
-              text: item.text,
-              position: item.position,
-              color: item.color,
-              sceneId: item.sceneId ? item.sceneId : '',
-              coordinate: {
-                x: item.coordinate.x,
-                y: item.coordinate.y
-              }
-            };
-          }))];
-
-        await this.fireStore.collection<any>(this.nameGameCollection)
-          .doc(game.id)
-          .collection(this.nameScenesCollection)
-          .doc(scene.id)
-          .set({
-            title: scene.title,
-            text: scene.text,
-            coordinate: {
-              x: scene.coordinate.x,
-              y: scene.coordinate.y
-            },
-            answers: answers,
-            players: scene.players.map(item => item.id) // кто отвечает на данной сцене
-          });
-
-        if (scene.imgFile) {
-          await this.saveImage(scene);
-        }
-
-      } catch (error) {
-        console.log('При сохранении сцен произошла ошибка', error);
-        throw error;
-      }
-
-      /!*for (const answer of scene.answers) {
-        try {
-          // список ответов
-          await this.fireStore.collection<any>(this.nameGameCollection)
-            .doc(game.id)
-            .collection(this.nameScenesCollection)
-            .doc(scene.id)
-            .collection(this.nameAnswersCollection)
-            .doc(answer.id)
-            .set({
-              text: answer.text,
-              position: answer.position,
-              color: answer.color,
-              sceneId: answer.sceneId ? answer.sceneId : '',
-              coordinate: {
-                x: answer.coordinate.x,
-                y: answer.coordinate.y
-              },
-            });
-        } catch (error) {
-          console.log('При сохранении ответов произошла ошибка', error);
-          throw error;
-        }
-      }*!/
-    }*/
   }
 
   /**
@@ -265,7 +167,6 @@ export class FirestoreService {
       throw error;
     }
   }
-
 
   async saveImage(value: Scene | Player) {
 

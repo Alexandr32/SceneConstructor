@@ -117,8 +117,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     const player = new Player(id, title, description, '');
 
     this.players.push(player);
-
-    this.game.name = '123';
   }
 
   onClickEditPlayer(player: Player) {
