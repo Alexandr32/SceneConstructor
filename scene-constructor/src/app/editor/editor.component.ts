@@ -96,7 +96,28 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       this.renderLine();
+
+      this.game.players.forEach((player) => {
+        this.firestoreServiceService.getImagePlayer(player.id).subscribe((imgFile) => {
+          player.imgFile = imgFile
+        }, error => {
+          console.log('Изображение не найдено');
+          console.log(error);
+        })
+      })
+
+      this.game.scenes.forEach((scene) => {
+        this.firestoreServiceService.getImageScene(scene.id).subscribe((imgFile) => {
+          scene.imgFile = imgFile
+        }, error => {
+          console.log('Изображение не найдено');
+          console.log(error);
+        })
+      })
+
+      this.game$.unsubscribe();
     });
+
   }
 
   ngAfterViewInit(): void {

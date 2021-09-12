@@ -23,6 +23,10 @@
              [src]="scene.imgFile" [alt]="scene.title">
       </div>
 
+      <div *ngIf="!scene.imgFile && scene.imgFile === ''">
+        Загрузка
+      </div>
+
       <div class="">
         <div class="scene__control-width">Название:</div>
         <div class="scene__control-width">{{toStringLabel(scene.title, 25)}}</div>
