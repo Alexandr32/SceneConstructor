@@ -31,7 +31,7 @@
     </div>
   </label>
 
-  <div>
+  <div *ngIf="this.answers.length < 4">
     <button (click)="onClickAddNewAnswer()">Добавить новый ответ</button>
   </div>
 

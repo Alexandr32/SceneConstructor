@@ -116,6 +116,10 @@ export class EditSceneDialogComponent implements OnInit {
 
   onClickAddNewAnswer() {
 
+    if(this.answers.length >= 4) {
+      return
+    }
+
     let id: string = this.fireStore.createId()
 
     console.log('this.data:', this.data);
