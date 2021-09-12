@@ -13,5 +13,5 @@ export class Scene implements Entity  {
   imgFile: string
   answers: Answer[] = []
   coordinate: Coordinate
-  players: Player[] = []
+  players: string[] = []
 }

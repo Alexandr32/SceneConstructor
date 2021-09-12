@@ -19,14 +19,14 @@ import {ActivatedRoute} from '@angular/router';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
+export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   scenes: Scene[] = [];
   players: Player[] = [];
 
-  game: Game
+  game: Game;
   form: FormGroup = new FormGroup({});
-  showForm = false
+  showForm = false;
 
   @ViewChild('working', {static: true})
   working: ElementRef<HTMLDivElement>;
@@ -40,7 +40,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
   // Выбранный ответ
   selectSceneForChangeSelectMode: Answer;
 
-  game$: Subscription
+  game$: Subscription;
 
   constructor(public dialog: MatDialog,
               private fireStore: AngularFirestore,
@@ -49,16 +49,16 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
   }
 
   ngOnDestroy(): void {
-    this.game$.unsubscribe()
-    }
+    this.game$.unsubscribe();
+  }
 
   ngOnInit() {
 
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    const gameId = this.route.snapshot.params.gameId
+    const gameId = this.route.snapshot.params.gameId;
     this.game$ = this.firestoreServiceService.getGameById(gameId).subscribe((game) => {
-      this.game = game
+      this.game = game;
       console.log('this.game:', this.game);
 
       this.form = new FormGroup({
@@ -75,28 +75,28 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
               Validators.required
             ]),
       });
-      this.showForm = true
+      this.showForm = true;
 
-      this.scenes = []
+      this.scenes = [];
       this.game.scenes.forEach(scene => {
         this.scenes.push(scene);
-      })
+      });
 
-      if(this.game.scenes.length == 0) {
-        this.canvas.nativeElement.height = 880
+      if (this.game.scenes.length == 0) {
+        this.canvas.nativeElement.height = 880;
       } else {
         this.canvas.nativeElement.height = this.game.scenes
           .flatMap(item => item.coordinate.y)
-          .reduce((previousValue, currentValue) => previousValue + currentValue) + 500
+          .reduce((previousValue, currentValue) => previousValue + currentValue) + 500;
       }
 
-      this.players = []
+      this.players = [];
       this.game.players.forEach(player => {
-        this.players.push(player)
-      })
+        this.players.push(player);
+      });
 
       this.renderLine();
-    })
+    });
   }
 
   ngAfterViewInit(): void {
@@ -118,7 +118,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
     this.players.push(player);
 
-    this.game.name = '123'
+    this.game.name = '123';
   }
 
   onClickEditPlayer(player: Player) {
@@ -144,7 +144,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
     this.players.splice(index, 1);
 
     this.scenes.forEach(scene => {
-      const index = scene.players.indexOf(player);
+      const index = scene.players.indexOf(player.id);
       scene.players.splice(index, 1);
     });
   }
@@ -172,7 +172,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
     this.scenes.forEach((item) => {
       const answers = item.answers.filter(answer => answer.sceneId);
 
-      answers.forEach(answer => {
+      answers.forEach((answer) => {
         const coordinateOne = new Coordinate();
         coordinateOne.x = answer.coordinate.x;
         coordinateOne.y = answer.coordinate.y;
@@ -182,7 +182,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
         coordinateTwo.x = scene.coordinate.x + 4;
         coordinateTwo.y = scene.coordinate.y + 4;
 
-        this.moveZLine(coordinateOne, coordinateTwo, answer.color);
+        this.moveZLine(coordinateOne, coordinateTwo, answer.color, answer.position);
       });
     });
   }
@@ -201,16 +201,16 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
       data: 'Сохранение...'
     });
 
-    this.game.scenes = this.scenes
-    this.game.players = this.players
-    this.game.name = this.form.get('name').value
-    this.game.description = this.form.get('description').value
+    this.game.scenes = this.scenes;
+    this.game.players = this.players;
+    this.game.name = this.form.get('name').value;
+    this.game.description = this.form.get('description').value;
 
     try {
 
-      await this.firestoreServiceService.saveGame(this.game)
+      await this.firestoreServiceService.saveGame(this.game);
 
-      dialogSave.close()
+      dialogSave.close();
 
       /*this.dialog.open(MessageDialogComponent, {
         data: 'Игра сохранена'
@@ -253,7 +253,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
     const answers = this.scenes
       .flatMap((item) => item.answers)
       .filter(item => item.sceneId == scene.id)
-      .map(item => item.sceneId = null)
+      .map(item => item.sceneId = null);
 
     /*answers.forEach(it => {
       it.sceneId = null
@@ -261,10 +261,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
     console.log(answers);
 
-    const index = this.game.scenes.indexOf(scene)
-    this.scenes.splice(index, 1)
-    this.clearCanvas()
-    this.renderLine()
+    const index = this.game.scenes.indexOf(scene);
+    this.scenes.splice(index, 1);
+    this.clearCanvas();
+    this.renderLine();
 
   }
 
@@ -277,25 +277,26 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
    * @param coordinateOne
    * @param coordinateTwo
    * @param color цвет линии
+   * @param position номер ответа
    * @private
    */
-  private moveZLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string) {
+  private moveZLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string, position: number) {
 
     this.moveCircle(coordinateOne, color);
 
     const coordinateX2Y1 = new Coordinate();
-    coordinateX2Y1.x = 2 / 3 * (coordinateTwo.x);
+    coordinateX2Y1.x = 4 / 5 * (coordinateTwo.x);
     coordinateX2Y1.y = coordinateOne.y;
 
-    this.moveLine(coordinateOne, coordinateX2Y1, color);
+    this.moveLine(coordinateOne, coordinateX2Y1, color, position);
 
     const coordinateX2Y2 = new Coordinate();
-    coordinateX2Y2.x = 2 / 3 * (coordinateTwo.x);
+    coordinateX2Y2.x = 4 / 5 * (coordinateTwo.x);
     coordinateX2Y2.y = coordinateTwo.y;
 
-    this.moveLine(coordinateX2Y1, coordinateX2Y2, color);
+    this.moveLine(coordinateX2Y1, coordinateX2Y2, color, position);
 
-    this.moveLine(coordinateX2Y2, coordinateTwo, color);
+    this.moveLine(coordinateX2Y2, coordinateTwo, color, position);
 
     this.moveCircle(coordinateTwo, color);
 
@@ -320,14 +321,15 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy  {
    * @param coordinateOne
    * @param coordinateTwo
    * @param color цвет линии
+   * @param position номер ответа
    * @private
    */
-  private moveLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string) {
+  private moveLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string, position: number) {
     this.ctx.beginPath();
     this.ctx.moveTo(coordinateOne.x, coordinateOne.y);
     this.ctx.lineTo(coordinateTwo.x, coordinateTwo.y);
     this.ctx.strokeStyle = color;
-    this.ctx.lineWidth = 2;
+    this.ctx.lineWidth = 2 * position;
     this.ctx.stroke();
     this.ctx.closePath();
   }

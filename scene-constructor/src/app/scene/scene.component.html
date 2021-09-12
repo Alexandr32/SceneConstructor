@@ -12,30 +12,43 @@
          [class.scene__header-select]="isSelectMode">
     </div>
 
-    <div *ngIf="scene.imgFile && scene.imgFile !== ''">
-      <img class="scene__image-box__image"
-           [src]="scene.imgFile" [alt]="scene.title">
-    </div>
-
-    <div class="scene__variants">
-      <button *ngFor="let answer of scene.answers"
-              id="{{answer.id}}"
-              #answer
-              [class.scene__box__btn-warning]="!answer.sceneId"
-              (click)="selectAnswer($event, answer)">{{toStringLabel(answer.text, 50)}}</button>
-    </div>
-
-    <div class="scene__control-width">{{toStringLabel(scene.title, 30)}}</div>
-    <div class="scene__control-width">{{toStringLabel(scene.text, 30)}}</div>
-
-    <div class="scene__control-width">Кто отвечает:</div>
-    <div class="scene__control-width text-green" *ngFor="let player of scene.players">{{player.name}}</div>
-    <div class="text-red scene__control-width" *ngIf="scene.players.length == 0">Нет выбранных персонажей</div>
-
-
-    <div>
+    <div class="scene__control-button">
       <button (click)="onClickEdit()">Редактировать</button>
       <button (click)="onClickDelete()">Удалить</button>
+    </div>
+
+    <div class="flex scene__control-height">
+      <div *ngIf="scene.imgFile && scene.imgFile !== ''">
+        <img class="scene__image-box__image"
+             [src]="scene.imgFile" [alt]="scene.title">
+      </div>
+
+      <div class="">
+        <div class="scene__control-width">Название:</div>
+        <div class="scene__control-width">{{toStringLabel(scene.title, 25)}}</div>
+        <div class="scene__control-width">Описание:</div>
+        <div class="scene__control-width">{{toStringLabel(scene.text, 25)}}</div>
+
+        <div class="scene__control-width">Кто отвечает:</div>
+        <div class="scene__control-width text-green" *ngFor="let playerId of scene.players">{{getNamePlayer(playerId)}}</div>
+        <div class="text-red scene__control-width" *ngIf="scene.players.length == 0">Нет выбранных персонажей</div>
+      </div>
+
+
+    </div>
+
+
+    <div class="scene__variants">
+      <div *ngFor="let answer of scene.answers"
+
+           id="{{answer.id}}"
+           #answer>
+        <button
+          class="scene__btn-answer"
+          [class.scene__box__btn-warning]="!answer.sceneId"
+          (click)="selectAnswer($event, answer)"
+        >{{toStringLabel(answer.text, 50)}}</button>
+      </div>
     </div>
   </div>
 </div>

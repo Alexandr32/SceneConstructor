@@ -71,8 +71,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 // Класс содержащий в себе контент между header и footer
 .body {
-  //padding-left: $padding-body;
-  //padding-right: $padding-body;
   flex-grow: 1;
 }
 
@@ -161,7 +159,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .scene__header {
   background: blueviolet;
-  width: 210px;
+  width: 100%;
   height: 30px;
 }
 
@@ -178,7 +176,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .scene__variants {
   display: flex;
-  flex-direction: column;
+}
+
+.scene__btn-answer {
+  width: 100px;
 }
 
 .scene__box {
@@ -282,4 +283,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .text-green {
   color: green;
+}
+
+.scene__control-height {
+  height: 180px;
+  width: 485px;
+}
+.scene__control-button {
+  display: flex;
+  justify-content: flex-end;
 }

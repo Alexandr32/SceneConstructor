@@ -54,9 +54,12 @@ export class EditSceneDialogComponent implements OnInit {
       'file': new FormControl(this.data.scene.imgFile, [Validators.required]),
     });
 
+    console.log('this.data.players:', this.data.players);
+    console.log('this.data.scene.players:', this.data.scene.players);
+
     this.data.players.forEach((item) => {
 
-      const isSelect = this.data.scene.players.includes(item)
+      const isSelect = this.data.scene.players.includes(item.id)
 
       this.addControl(`playerId${item.id}`, isSelect)
       this.players.push({player: item, isSelect: isSelect})
@@ -180,7 +183,7 @@ export class EditSceneDialogComponent implements OnInit {
     const player = this.players.filter(item => {
       return this.form.value[`playerId${item.player.id}`]
     }).map(item => {
-      return item.player
+      return item.player.id
     })
 
     this.data.scene.answers = this.answers;

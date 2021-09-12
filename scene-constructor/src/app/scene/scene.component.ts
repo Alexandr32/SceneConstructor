@@ -3,6 +3,7 @@ import {Scene} from '../models/scene.model';
 import {Observable, Subject} from 'rxjs';
 import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
 import {Answer} from '../models/answer.model';
+import {Player} from '../models/player.model';
 
 @Component({
   selector: 'app-scene',
@@ -13,6 +14,9 @@ export class SceneComponent implements OnInit {
 
   @Input()
   scene: Scene
+
+  @Input()
+  players: Player[]
 
   @Output()
   selectAnswerScene = new EventEmitter<Answer>()
@@ -131,6 +135,10 @@ export class SceneComponent implements OnInit {
 
   onClickEdit() {
     this.editScene.emit(this.scene)
+  }
+
+  getNamePlayer(id: string): string {
+    return this.players.find(item => item.id == id).name
   }
 
   onClickDelete() {
