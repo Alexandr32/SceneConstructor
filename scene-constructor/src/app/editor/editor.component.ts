@@ -121,7 +121,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-
     this.renderLine();
   }
 
@@ -201,7 +200,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         coordinateTwo.x = scene.coordinate.x + 4;
         coordinateTwo.y = scene.coordinate.y + 4;
 
-        this.moveZLine(coordinateOne, coordinateTwo, answer.color, answer.position);
+        this.moveZLine(coordinateOne, coordinateTwo, answer.color);
       });
     });
   }
@@ -274,10 +273,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       .filter(item => item.sceneId == scene.id)
       .map(item => item.sceneId = null);
 
-    /*answers.forEach(it => {
-      it.sceneId = null
-    })*/
-
     console.log(answers);
 
     const index = this.game.scenes.indexOf(scene);
@@ -296,26 +291,23 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param coordinateOne
    * @param coordinateTwo
    * @param color цвет линии
-   * @param position номер ответа
    * @private
    */
-  private moveZLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string, position: number) {
+  private moveZLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string) {
 
     this.moveCircle(coordinateOne, color);
 
     const coordinateX2Y1 = new Coordinate();
-    coordinateX2Y1.x = 4 / 5 * (coordinateTwo.x);
-    coordinateX2Y1.y = coordinateOne.y;
+    coordinateX2Y1.x = coordinateOne.x;
+    coordinateX2Y1.y = coordinateTwo.y;
 
-    this.moveLine(coordinateOne, coordinateX2Y1, color, position);
+    this.moveLine(coordinateOne, coordinateX2Y1, color);
 
     const coordinateX2Y2 = new Coordinate();
-    coordinateX2Y2.x = 4 / 5 * (coordinateTwo.x);
+    coordinateX2Y2.x = coordinateTwo.x;
     coordinateX2Y2.y = coordinateTwo.y;
 
-    this.moveLine(coordinateX2Y1, coordinateX2Y2, color, position);
-
-    this.moveLine(coordinateX2Y2, coordinateTwo, color, position);
+    this.moveLine(coordinateX2Y1, coordinateX2Y2, color);
 
     this.moveCircle(coordinateTwo, color);
 
@@ -340,15 +332,14 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param coordinateOne
    * @param coordinateTwo
    * @param color цвет линии
-   * @param position номер ответа
    * @private
    */
-  private moveLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string, position: number) {
+  private moveLine(coordinateOne: Coordinate, coordinateTwo: Coordinate, color: string) {
     this.ctx.beginPath();
     this.ctx.moveTo(coordinateOne.x, coordinateOne.y);
     this.ctx.lineTo(coordinateTwo.x, coordinateTwo.y);
     this.ctx.strokeStyle = color;
-    this.ctx.lineWidth = 2 * position;
+    this.ctx.lineWidth = 2;
     this.ctx.stroke();
     this.ctx.closePath();
   }
@@ -395,7 +386,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   increaseWorkingSpace() {
     this.canvas.nativeElement.height += 500;
-    //this.canvasHeight += 500;
 
     this.clearCanvas();
     this.renderLine();
