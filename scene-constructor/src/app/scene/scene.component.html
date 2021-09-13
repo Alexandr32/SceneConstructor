@@ -18,14 +18,18 @@
     </div>
 
     <div class="flex scene__control-height">
-      <div *ngIf="scene.imgFile && scene.imgFile !== ''">
+      <div *ngIf="scene.imageFile && scene.imageFile !== ''">
         <img class="scene__image-box__image"
-             [src]="scene.imgFile" [alt]="scene.title">
+             [src]="scene.imageFile" [alt]="scene.title">
+
+        <div *ngIf="scene.videoFile;then foundVideo else notFoundVideo"></div>
       </div>
 
-      <div *ngIf="!scene.imgFile && scene.imgFile === ''">
+      <div *ngIf="!scene.imageFile && scene.imageFile === ''">
         Загрузка
       </div>
+
+
 
       <div class="">
         <div class="scene__control-width">Название:</div>
@@ -56,4 +60,7 @@
     </div>
   </div>
 </div>
+
+<ng-template #notFoundVideo><div class="text-red">Нет видео</div></ng-template>
+<ng-template #foundVideo><div class="text-green">Есть видео</div></ng-template>
 

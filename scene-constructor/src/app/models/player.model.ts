@@ -5,7 +5,8 @@ export class Player implements Entity  {
     public id: string,
     public name: string,
     public description: string,
-    public imgFile: string
+    public imageFile: string,
+    public videoFile: string
   ) {
   }
 }

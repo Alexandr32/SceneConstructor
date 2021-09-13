@@ -8,6 +8,7 @@ import {filter, map, switchMap} from 'rxjs/operators';
 import {Observable, pipe, Subscription, zip} from 'rxjs';
 import {Answer} from '../models/answer.model';
 import {Coordinate} from '../models/coordinate.model';
+import {TypeFile} from '../models/type-file.model';
 
 @Injectable({
   providedIn: 'root'
@@ -124,11 +125,12 @@ export class FirestoreService {
         });
 
       game.scenes.map(async (scene) => {
-        //await this.saveImage(scene);
+        await this.saveFile(scene, 'Image');
+        await this.saveFile(scene, 'Video');
       });
 
       game.players.map(async (player) => {
-        //await this.saveImage(player);
+        await this.saveFile(player, 'Image');
       });
 
     } catch (error) {
@@ -146,7 +148,7 @@ export class FirestoreService {
       await this.fireStore.collection<any>(this.ImageFileSceneCollection)
         .doc(scene.id)
         .set({
-          imgFile: scene.imgFile
+          imgFile: scene.imageFile
         });
     } catch (error) {
       console.log('При сохранении изображения сцены произошла ошибка', error);
@@ -159,7 +161,7 @@ export class FirestoreService {
       await this.fireStore.collection<any>(this.ImageFilePlayersCollection)
         .doc(player.id)
         .set({
-          imgFile: player.imgFile
+          imgFile: player.imageFile
         });
     } catch (error) {
       console.log('При сохранении изображения персонажа произошла ошибка', error);
@@ -167,27 +169,34 @@ export class FirestoreService {
     }
   }
 
-  getImageScene(id: string): Observable<string> {
-    let ref = this.storage.ref(`Scenes/${id}`);
+  getFileScene(id: string, typeFile: 'Video' | 'Image'): Observable<string> {
+    let ref = this.storage.ref(`Scenes/${typeFile}/${id}`);
     return ref.getDownloadURL()
   }
 
-  getImagePlayer(id: string): Observable<string> {
-    let ref = this.storage.ref(`Players/${id}`);
+  getImagePlayer(id: string, typeFile: 'Video' | 'Image'): Observable<string> {
+    let ref = this.storage.ref(`Players/${typeFile}/${id}`);
     return ref.getDownloadURL()
   }
 
-  async saveImage(value: Scene | Player) {
+  async saveFile(value: Scene | Player, typeFile: 'Video' | 'Image') {
 
-    if (!value.imgFile) {
+    if (!value.imageFile) {
       throw Error('Получена пустая строка base64');
     }
 
     console.log('id для записи', value.id);
 
     try {
+      let mediaFile: string
+      if(typeFile === 'Video') {
+        mediaFile = value.videoFile
+      } else {
+        mediaFile = value.imageFile
+      }
+
       const file = FirestoreService.base64ToFile(
-        value.imgFile,
+        mediaFile,
         value.id,
       );
 
@@ -198,6 +207,8 @@ export class FirestoreService {
       } else {
         folderName = 'Scenes';
       }
+
+      folderName = folderName + '/' + typeFile
 
       await this.storage.upload(`${folderName}/${value.id}`, file);
 

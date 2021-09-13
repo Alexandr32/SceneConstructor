@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Scene} from '../models/scene.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -8,6 +8,7 @@ import {Player} from '../models/player.model';
 import {CropperSettings} from 'ngx-img-cropper';
 import {EditImageComponent} from '../edit-image-player/edit-image.component';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {TypeFile} from '../models/type-file.model';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -23,7 +24,7 @@ export class EditSceneDialogComponent implements OnInit {
 
   imgFile: string;
 
-  videoSource: string[] = []
+  videoSources: string[] = []
 
   answers: Answer[] = [];
   players: { player: Player, isSelect: boolean }[] = [];
@@ -37,7 +38,13 @@ export class EditSceneDialogComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.imgFile = this.data.scene.imgFile
+    if(this.data.scene.imageFile) {
+      this.videoSources.push(this.data.scene.videoFile)
+    }
+
+    if(this.data.scene.imageFile) {
+      this.imgFile = this.data.scene.imageFile
+    }
 
     this.form = new FormGroup({
       'title':
@@ -52,7 +59,7 @@ export class EditSceneDialogComponent implements OnInit {
           [
             Validators.required
           ]),
-      'file': new FormControl(this.data.scene.imgFile, [Validators.required]),
+      'file': new FormControl(this.data.scene.imageFile, [Validators.required]),
     });
 
     console.log('this.data.players:', this.data.players);
@@ -182,10 +189,12 @@ export class EditSceneDialogComponent implements OnInit {
     })
 
     this.data.scene.answers = this.answers;
-
-    this.data.scene.imgFile = this.imgFile
+    this.data.scene.imageFile = this.imgFile
+    this.data.scene.videoFile = this.videoSources[0]
 
     this.data.scene.players = player;
+
+    console.log(this.data.scene);
 
     this.saveEvent.emit(this.data);
     this.dialogRef.close();
@@ -211,10 +220,15 @@ export class EditSceneDialogComponent implements OnInit {
   async openVideoDialog(event) {
 
     const file: File = event.target.files[0];
-    const videoSource = await this.fileToBase64(file)
-    this.videoSource = []
-    this.videoSource.push(videoSource)
+    let videoSource
+    try {
+      videoSource = await this.fileToBase64(file)
+    } catch (e) {
+      console.log(e);
+    }
 
+    this.videoSources = []
+    this.videoSources.push(videoSource)
   }
 
   openImageDialog() {

@@ -27,7 +27,7 @@ export class EditPlayerDialogComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.imgFile = this.player.imgFile
+    this.imgFile = this.player.imageFile
 
     this.form = new FormGroup({
       'name':
@@ -42,7 +42,7 @@ export class EditPlayerDialogComponent implements OnInit {
           [
             Validators.required
           ]),
-      'file': new FormControl(this.player.imgFile, [Validators.required]),
+      'file': new FormControl(this.player.imageFile, [Validators.required]),
     });
   }
 
@@ -87,7 +87,7 @@ export class EditPlayerDialogComponent implements OnInit {
 
     this.player.name = this.form.value['name']
     this.player.description = this.form.value['description']
-    this.player.imgFile = this.imgFile
+    this.player.imageFile = this.imgFile
     this.imgFile = ''
 
     this.saveEvent.emit(this.player);

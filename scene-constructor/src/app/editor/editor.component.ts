@@ -13,6 +13,7 @@ import {Game} from '../models/game.model';
 import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
+import {TypeFile} from '../models/type-file.model';
 
 @Component({
   selector: 'app-editor',
@@ -98,8 +99,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.renderLine();
 
       this.game.players.forEach((player) => {
-        this.firestoreServiceService.getImagePlayer(player.id).subscribe((imgFile) => {
-          player.imgFile = imgFile
+        this.firestoreServiceService.getImagePlayer(player.id, 'Image').subscribe((imgFile) => {
+          player.imageFile = imgFile
         }, error => {
           console.log('Изображение не найдено');
           console.log(error);
@@ -107,8 +108,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       })
 
       this.game.scenes.forEach((scene) => {
-        this.firestoreServiceService.getImageScene(scene.id).subscribe((imgFile) => {
-          scene.imgFile = imgFile
+        this.firestoreServiceService.getFileScene(scene.id, 'Image').subscribe((imgFile) => {
+          scene.imageFile = imgFile
         }, error => {
           console.log('Изображение не найдено');
           console.log(error);
@@ -134,7 +135,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     const title = 'Новый персонаж';
     const description = 'Описание нового персонажа';
 
-    const player = new Player(id, title, description, '');
+    const player = new Player(id, title, description, '', '');
 
     this.players.push(player);
   }

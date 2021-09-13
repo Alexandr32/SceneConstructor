@@ -33,9 +33,9 @@
         class="editor__player-box editor__border"
         *ngFor="let player of players">
         <div>{{player.name}}</div>
-        <div *ngIf="player.imgFile && player.imgFile !== ''">
+        <div *ngIf="player.imageFile && player.imageFile !== ''">
           <img class="editor__image-player"
-               [src]="player.imgFile" [alt]="player.name">
+               [src]="player.imageFile" [alt]="player.name">
         </div>
         <button (click)="onClickEditPlayer(player)">Редактировать</button>
         <button (click)="onClickDeletePlayer(player)">Удалить</button>
