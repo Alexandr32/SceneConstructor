@@ -1,5 +1,7 @@
-<form [formGroup]="form" novalidate>
-
+<form [formGroup]="form"
+      novalidate
+      class="dialog__body"
+>
   <label>
     <p>Название:</p>
     <input name="title" formControlName="title"/>
@@ -66,7 +68,24 @@
 
   </div>
 
-  <button (click)="openImageDialog()">Выбрать изображение</button>
+  <div>
+    <button (click)="openImageDialog()">Выбрать изображение</button>
+  </div>
+
+  <div *ngFor="let video of videoSource">
+    <video controls
+           class="edit-scene-dialog__image-box__image"
+           disabled="true"
+           (click)="toggleVideo()">
+      <source [src]="video" type="video/mp4" />
+      Browser not supported
+    </video>
+  </div>
+
+
+  <div>
+    <input type="file" accept="video/mp4" (change)="openVideoDialog($event)" />
+  </div>
 
   <div>
     <button type="button" (click)="onNoClick()">

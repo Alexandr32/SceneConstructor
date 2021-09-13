@@ -1,9 +1,8 @@
-import {Component, Inject, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Scene} from '../models/scene.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CdkDragDrop} from '@angular/cdk/drag-drop/drag-events';
-import {v4 as uuidv4} from 'uuid';
 import {Answer} from '../models/answer.model';
 import {Player} from '../models/player.model';
 import {CropperSettings} from 'ngx-img-cropper';
@@ -23,6 +22,8 @@ export class EditSceneDialogComponent implements OnInit {
   form: FormGroup;
 
   imgFile: string;
+
+  videoSource: string[] = []
 
   answers: Answer[] = [];
   players: { player: Player, isSelect: boolean }[] = [];
@@ -192,6 +193,28 @@ export class EditSceneDialogComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  toggleVideo() {
+    //this.videoPlayer.nativeElement.play()
+  }
+
+  private fileToBase64 = (file: File): Promise<string> => {
+    return new Promise<string> ((resolve,reject)=> {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.toString());
+      reader.onerror = error => reject(error);
+    })
+  }
+
+  async openVideoDialog(event) {
+
+    const file: File = event.target.files[0];
+    const videoSource = await this.fileToBase64(file)
+    this.videoSource = []
+    this.videoSource.push(videoSource)
+
   }
 
   openImageDialog() {
