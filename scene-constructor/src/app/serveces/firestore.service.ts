@@ -170,12 +170,12 @@ export class FirestoreService {
   }
 
   getFileScene(id: string, typeFile: 'Video' | 'Image'): Observable<string> {
-    let ref = this.storage.ref(`Scenes/${typeFile}/${id}`);
+    let ref = this.storage.ref(`Scenes/${id}/${typeFile}/${id}`);
     return ref.getDownloadURL()
   }
 
   getImagePlayer(id: string, typeFile: 'Video' | 'Image'): Observable<string> {
-    let ref = this.storage.ref(`Players/${typeFile}/${id}`);
+    let ref = this.storage.ref(`Players/${id}/${typeFile}/${id}`);
     return ref.getDownloadURL()
   }
 
@@ -203,9 +203,9 @@ export class FirestoreService {
       let folderName;
 
       if (value instanceof Player) {
-        folderName = 'Players';
+        folderName = `Players/${value.id}`;
       } else {
-        folderName = 'Scenes';
+        folderName = `Scenes/${value.id}`;
       }
 
       folderName = folderName + '/' + typeFile
