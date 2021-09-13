@@ -114,6 +114,13 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('Изображение не найдено');
           console.log(error);
         })
+
+        this.firestoreServiceService.getFileScene(scene.id, 'Video').subscribe((videoFile) => {
+          scene.videoFile = videoFile
+        }, error => {
+          console.log('Видео не найдено');
+          console.log(error);
+        })
       })
 
       this.game$.unsubscribe();
