@@ -89,9 +89,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     if (this.game.scenes.length == 0) {
       this.canvas.nativeElement.height = 880;
     } else {
-      this.canvas.nativeElement.height = this.game.scenes
-        .flatMap(item => item.coordinate.y)
-        .reduce((previousValue, currentValue) => previousValue + currentValue) + 500;
+      const array: number[] = this.game.scenes
+        .flatMap(item => Number(item.coordinate.y))
+      this.canvas.nativeElement.height = Math.max(...array) + 500;
     }
 
     this.players = [];
