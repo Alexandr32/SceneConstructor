@@ -20,38 +20,38 @@ export class EditPlayerDialogComponent implements OnInit {
   form: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<EditPlayerDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public player: Player,
+              @Inject(MAT_DIALOG_DATA) public data: { player: Player },
               public dialog: MatDialog) {
 
   }
 
   ngOnInit(): void {
 
-    this.imgFile = this.player.imageFile
+    this.imgFile = this.data.player.imageFile;
 
     this.form = new FormGroup({
       'name':
         new FormControl(
-          this.player.name,
+          this.data.player.name,
           [
             Validators.required
           ]),
       'description':
         new FormControl(
-          this.player.description,
+          this.data.player.description,
           [
             Validators.required
           ]),
-      'file': new FormControl(this.player.imageFile, [Validators.required]),
+      'file': new FormControl(this.data.player.imageFile, [Validators.required]),
     });
   }
 
   onClickDeletedImg(): void {
-    this.imgFile = ''
+    this.imgFile = '';
     this.form.patchValue({
       file: ''
     });
-    this.form.get('file').updateValueAndValidity()
+    this.form.get('file').updateValueAndValidity();
   }
 
   openDialogEditImagePlayer() {
@@ -69,11 +69,11 @@ export class EditPlayerDialogComponent implements OnInit {
     });
 
     dialogRef.componentInstance.saveEvent.subscribe((imgFile: string) => {
-      this.imgFile = imgFile
+      this.imgFile = imgFile;
       this.form.patchValue({
         file: imgFile
       });
-    })
+    });
 
     dialogRef.afterClosed().subscribe(() => {
       console.log('closeDialog');
@@ -85,17 +85,17 @@ export class EditPlayerDialogComponent implements OnInit {
       return;
     }
 
-    this.player.name = this.form.value['name']
-    this.player.description = this.form.value['description']
-    this.player.imageFile = this.imgFile
-    this.imgFile = ''
+    this.data.player.name = this.form.value['name'];
+    this.data.player.description = this.form.value['description'];
+    this.data.player.imageFile = this.imgFile;
+    this.imgFile = '';
 
-    this.saveEvent.emit(this.player);
+    this.saveEvent.emit(this.data.player);
     this.dialogRef.close();
   }
 
   onNoClick(): void {
-    this.imgFile = ''
+    this.imgFile = '';
     this.dialogRef.close();
   }
 

@@ -4,7 +4,7 @@ import {Game} from '../models/game.model';
 import {Scene} from '../models/scene.model';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {Player} from '../models/player.model';
-import {filter, map, switchMap} from 'rxjs/operators';
+import {filter, map, switchMap, first} from 'rxjs/operators';
 import {Observable, pipe, Subscription, zip} from 'rxjs';
 import {Answer} from '../models/answer.model';
 import {Coordinate} from '../models/coordinate.model';
@@ -37,7 +37,6 @@ export class FirestoreService {
           const game = doc.payload.data() as Game;
           game.scenes.forEach(scene => {
             const answers: Answer[] = [];
-
             scene.answers.forEach(answerInFireBase => {
 
               const answer = new Answer(
@@ -54,14 +53,21 @@ export class FirestoreService {
 
               answers.push(answer);
             });
-
             scene.answers = answers;
           });
+
+          game.players = game.players.map((player) => {
+            return new Player(player.id,
+              player.name,player.description,
+              player.imageFile,
+              player.videoFile)
+          })
 
           game.id = doc.payload.id;
           return game;
         })
-      );
+      )
+      .pipe(first());
   }
 
   deleteGame(gameId: string): Promise<any> {
@@ -74,47 +80,47 @@ export class FirestoreService {
 
   async saveGame(game: Game) {
 
+
+    const players = [...(game.players.map(item => {
+      return {
+        id: item.id,
+        name: item.name,
+        description: item.description
+      };
+    }))];
+
+    const scenes = [...(game.scenes.map(scene => {
+
+      const answers = [...(scene.answers
+        .map(item => {
+          return {
+            id: item.id,
+            text: item.text,
+            position: item.position,
+            color: item.color,
+            sceneId: item.sceneId ? item.sceneId : '',
+            coordinate: {
+              x: item.coordinate.x,
+              y: item.coordinate.y
+            }
+          };
+        }))];
+
+      return {
+        id: scene.id,
+        title: scene.title,
+        text: scene.text,
+        coordinate: {
+          x: scene.coordinate.x,
+          y: scene.coordinate.y
+        },
+        answers: answers,
+        players: scene.players
+      };
+    }))
+    ];
+
     try {
-
-      const players = [...(game.players.map(item => {
-        return {
-          id: item.id,
-          name: item.name,
-          description: item.description
-        };
-      }))];
-
-      const scenes = [...(game.scenes.map(scene => {
-
-        const answers = [...(scene.answers
-          .map(item => {
-            return {
-              id: item.id,
-              text: item.text,
-              position: item.position,
-              color: item.color,
-              sceneId: item.sceneId ? item.sceneId : '',
-              coordinate: {
-                x: item.coordinate.x,
-                y: item.coordinate.y
-              }
-            };
-          }))];
-
-        return {
-          id: scene.id,
-          title: scene.title,
-          text: scene.text,
-          coordinate: {
-            x: scene.coordinate.x,
-            y: scene.coordinate.y
-          },
-          answers: answers,
-          players: scene.players
-        };
-      }))
-      ];
-
       await this.fireStore.collection<any>(this.nameGameCollection)
         .doc(game.id)
         .set({
@@ -123,19 +129,32 @@ export class FirestoreService {
           scenes: scenes,
           players: players
         });
-
-      game.scenes.map(async (scene) => {
-        await this.saveFile(scene, 'Image');
-        await this.saveFile(scene, 'Video');
-      });
-
-      game.players.map(async (player) => {
-        await this.saveFile(player, 'Image');
-      });
-
     } catch (error) {
-      console.log('При сохранении данных игры произошла ошибка', error);
-      throw error;
+    console.error('При сохранении данных игры произошла ошибка', error);
+    throw error;
+  }
+
+  for (const scene of game.scenes) {
+
+      if (scene.imageFile) {
+        if(!scene.imageFile.includes('http')) {
+          await this.saveFile(game.id, scene, 'Image');
+        }
+      }
+
+      if (scene.videoFile) {
+        if(!scene.videoFile.includes('http')) {
+          await this.saveFile(game.id, scene, 'Video');
+        }
+      }
+    }
+
+    for (const player of game.players) {
+      if (player.imageFile) {
+        if(!player.imageFile.includes('http')) {
+          await this.saveFile(game.id, player, 'Image');
+        }
+      }
     }
   }
 
@@ -169,30 +188,55 @@ export class FirestoreService {
     }
   }
 
-  getFileScene(id: string, typeFile: 'Video' | 'Image'): Observable<string> {
-    let ref = this.storage.ref(`Scenes/${id}/${typeFile}/${id}`);
-    return ref.getDownloadURL()
+  getFileScene(gameId: string, id: string, typeFile: 'Video' | 'Image'): Observable<string> {
+    let ref = this.storage.ref(`${gameId}/Scenes/${id}/${typeFile}/${id}`);
+    return ref.getDownloadURL();
   }
 
-  getImagePlayer(id: string, typeFile: 'Video' | 'Image'): Observable<string> {
-    let ref = this.storage.ref(`Players/${id}/${typeFile}/${id}`);
-    return ref.getDownloadURL()
+  deleteFileScene(gameId: string, id: string, typeFile: 'Video' | 'Image'): Observable<string> {
+    let ref = this.storage.ref(`${gameId}/Scenes/${id}/${typeFile}/${id}`);
+    return ref.delete();
   }
 
-  async saveFile(value: Scene | Player, typeFile: 'Video' | 'Image') {
+  getImagePlayer(gameId: string, id: string, typeFile: 'Video' | 'Image'): Observable<string> {
+    let ref = this.storage.ref(`${gameId}/Players/${id}/${typeFile}/${id}`);
+    return ref.getDownloadURL();
+  }
 
-    if (!value.imageFile) {
-      throw Error('Получена пустая строка base64');
+  deleteImagePlayer(gameId: string, id: string, typeFile: 'Video' | 'Image'): Observable<string> {
+    const path = `${gameId}/Players/${id}/${typeFile}/${id}`
+    let ref = this.storage.ref(path);
+    return ref.delete();
+  }
+
+  saveFile(gameId: string, value: Scene | Player, typeFile: 'Video' | 'Image') {
+
+    if (typeFile === 'Image') {
+      if (!value.imageFile) {
+        throw Error('Получена пустая строка base64');
+      }
+
+      if(value.imageFile.includes('http')) {
+        throw Error('Получена не строка base64');
+      }
+    } else {
+      if (!value.videoFile) {
+        throw Error('Получена пустая строка base64');
+      }
+
+      if(value.videoFile.includes('http')) {
+        throw Error('Получена не строка base64');
+      }
     }
 
     console.log('id для записи', value.id);
 
     try {
-      let mediaFile: string
-      if(typeFile === 'Video') {
-        mediaFile = value.videoFile
+      let mediaFile: string;
+      if (typeFile === 'Video') {
+        mediaFile = value.videoFile;
       } else {
-        mediaFile = value.imageFile
+        mediaFile = value.imageFile;
       }
 
       const file = FirestoreService.base64ToFile(
@@ -203,17 +247,17 @@ export class FirestoreService {
       let folderName;
 
       if (value instanceof Player) {
-        folderName = `Players/${value.id}`;
+        folderName = `${gameId}/Players/${value.id}`;
       } else {
-        folderName = `Scenes/${value.id}`;
+        folderName = `${gameId}/Scenes/${value.id}`;
       }
 
-      folderName = folderName + '/' + typeFile
+      folderName = folderName + '/' + typeFile;
 
-      await this.storage.upload(`${folderName}/${value.id}`, file);
+      return this.storage.upload(`${folderName}/${value.id}`, file);
 
     } catch (error) {
-      console.log('При сохранении изображения сцены произошла ошибка', error);
+      console.error(`При сохранении файла ${typeFile} произошла ошибка`, error);
       throw error;
     }
   }

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Scene} from '../models/scene.model';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
 import {Answer} from '../models/answer.model';
@@ -12,18 +12,20 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Game} from '../models/game.model';
 import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {TypeFile} from '../models/type-file.model';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EditorComponent implements OnInit, AfterViewInit {
 
   scenes: Scene[] = [];
   players: Player[] = [];
+
+  private fileForDeleteScenes: { id: string, typeFile: 'Video' | 'Image' }[] = [];
+  private fileForDeletePlayers: { id: string, typeFile: 'Video' | 'Image' }[] = [];
 
   game: Game;
   form: FormGroup = new FormGroup({});
@@ -41,91 +43,96 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   // Выбранный ответ
   selectSceneForChangeSelectMode: Answer;
 
-  game$: Subscription;
-
   constructor(public dialog: MatDialog,
               private fireStore: AngularFirestore,
               private firestoreServiceService: FirestoreService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
-  ngOnDestroy(): void {
-    this.game$.unsubscribe();
-  }
-
-  ngOnInit() {
+  async ngOnInit() {
 
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
+    await this.getGameData();
+
+  }
+
+  private async getGameData() {
     const gameId = this.route.snapshot.params.gameId;
-    this.game$ = this.firestoreServiceService.getGameById(gameId).subscribe((game) => {
-      this.game = game;
-      console.log('this.game:', this.game);
+    const game = await this.firestoreServiceService.getGameById(gameId).toPromise();
 
-      this.form = new FormGroup({
-        'name':
-          new FormControl(
-            this.game.name,
-            [
-              Validators.required
-            ]),
-        'description':
-          new FormControl(
-            this.game.description,
-            [
-              Validators.required
-            ]),
-      });
-      this.showForm = true;
+    console.log('game:', game);
 
-      this.scenes = [];
-      this.game.scenes.forEach(scene => {
-        this.scenes.push(scene);
-      });
+    this.game = game;
 
-      if (this.game.scenes.length == 0) {
-        this.canvas.nativeElement.height = 880;
-      } else {
-        this.canvas.nativeElement.height = this.game.scenes
-          .flatMap(item => item.coordinate.y)
-          .reduce((previousValue, currentValue) => previousValue + currentValue) + 500;
-      }
+    this.form = new FormGroup({
+      'name':
+        new FormControl(
+          this.game.name,
+          [
+            Validators.required
+          ]),
+      'description':
+        new FormControl(
+          this.game.description,
+          [
+            Validators.required
+          ]),
+    });
+    this.showForm = true;
 
-      this.players = [];
-      this.game.players.forEach(player => {
-        this.players.push(player);
-      });
-
-      this.renderLine();
-
-      this.game.players.forEach((player) => {
-        this.firestoreServiceService.getImagePlayer(player.id, 'Image').subscribe((imgFile) => {
-          player.imageFile = imgFile
-        }, error => {
-          console.log('Изображение не найдено');
-          console.log(error);
-        })
-      })
-
-      this.game.scenes.forEach((scene) => {
-        this.firestoreServiceService.getFileScene(scene.id, 'Image').subscribe((imgFile) => {
-          scene.imageFile = imgFile
-        }, error => {
-          console.log('Изображение не найдено');
-          console.log(error);
-        })
-
-        this.firestoreServiceService.getFileScene(scene.id, 'Video').subscribe((videoFile) => {
-          scene.videoFile = videoFile
-        }, error => {
-          console.log('Видео не найдено');
-          console.log(error);
-        })
-      })
-
-      this.game$.unsubscribe();
+    this.scenes = [];
+    this.game.scenes.forEach(scene => {
+      this.scenes.push(scene);
     });
 
+    if (this.game.scenes.length == 0) {
+      this.canvas.nativeElement.height = 880;
+    } else {
+      this.canvas.nativeElement.height = this.game.scenes
+        .flatMap(item => item.coordinate.y)
+        .reduce((previousValue, currentValue) => previousValue + currentValue) + 500;
+    }
+
+    this.players = [];
+    this.game.players.forEach(player => {
+      this.players.push(player);
+    });
+
+    this.renderLine();
+
+    for (const player of this.game.players) {
+
+      console.log('файл', player);
+
+      try {
+        player.imageFile = await this.firestoreServiceService.getImagePlayer(game.id, player.id, 'Image').toPromise();
+      } catch (error) {
+        console.log('Изображение не найдено');
+        console.log(error);
+      }
+    }
+
+    for (const scene of this.game.scenes) {
+
+      try {
+        const imageFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Image').toPromise();
+
+        scene.imageFile = imageFile;
+        console.log('imageFile:', imageFile);
+      } catch (error) {
+        console.log('Изображение не найдено');
+        console.log(error);
+      }
+
+      try {
+        scene.videoFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Video').toPromise();
+      } catch (error) {
+        console.log('Видео не найдено');
+        console.log(error);
+      }
+    }
   }
 
   ngAfterViewInit(): void {
@@ -150,7 +157,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   onClickEditPlayer(player: Player) {
 
     const dialogRef = this.dialog.open(EditPlayerDialogComponent, {
-      data: player
+      data: {player}
     });
 
     /*dialogRef.componentInstance.saveEvent.subscribe(() => {
@@ -165,6 +172,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onClickDeletePlayer(player: Player) {
+
+    this.fileForDeletePlayers.push({id: player.id, typeFile: 'Image'});
 
     const index = this.players.indexOf(player);
     this.players.splice(index, 1);
@@ -229,6 +238,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.game.scenes = this.scenes;
     this.game.players = this.players;
+
+    console.log('this.game.players', this.game.players);
+
     this.game.name = this.form.get('name').value;
     this.game.description = this.form.get('description').value;
 
@@ -238,15 +250,16 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
       dialogSave.close();
 
-      /*this.dialog.open(MessageDialogComponent, {
-        data: 'Игра сохранена'
-      });*/
+      await this.deleteFileScenes();
+      await this.deleteFilePlayers();
 
     } catch (error) {
       this.dialog.open(MessageDialogComponent, {
         data: 'При сохраненнии произошла ошибка' + error
       });
     }
+
+    await this.getGameData();
 
   }
 
@@ -275,6 +288,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deletedScene(scene: Scene) {
+
+    this.fileForDeleteScenes.push({id: scene.id, typeFile: 'Video'});
+    this.fileForDeleteScenes.push({id: scene.id, typeFile: 'Image'});
 
     const answers = this.scenes
       .flatMap((item) => item.answers)
@@ -401,6 +417,29 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getWidthScreen(): number {
     return window.screen.width;
+  }
+
+  private async deleteFileScenes() {
+    this.fileForDeleteScenes.map(async (item) => {
+      try {
+        await this.firestoreServiceService.deleteFileScene(this.game.id, item.id, item.typeFile).toPromise();
+      } catch (error) {
+        console.error('Ошибка при удалении файла', error);
+      }
+    });
+    this.fileForDeleteScenes = [];
+  }
+
+  private async deleteFilePlayers() {
+    this.fileForDeletePlayers.map(async (item) => {
+      try {
+        await this.firestoreServiceService.deleteImagePlayer(this.game.id, item.id, item.typeFile).toPromise();
+      } catch (error) {
+        console.error('Ошибка при удалении файла', error);
+      }
+
+    });
+    this.fileForDeletePlayers = [];
   }
 
 }
