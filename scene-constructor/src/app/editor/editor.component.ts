@@ -106,7 +106,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       try {
         player.imageFile = await this.firestoreServiceService.getImagePlayer(game.id, player.id, 'Image').toPromise();
       } catch (error) {
-        player.imageFile = ''
+        player.imageFile = '/assets/http_player.jpg'
         console.log('Изображение не найдено');
         this.showMessage('Изображение не найдено')
         console.log(error);
@@ -118,7 +118,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       try {
         scene.imageFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Image').toPromise();
       } catch (error) {
-        scene.imageFile = ''
+        scene.imageFile = '/assets/http_scene.jpg'
         this.showMessage('Изображение не найдено')
         console.log('Изображение не найдено');
         console.log(error);
@@ -150,6 +150,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     const description = 'Описание нового персонажа';
 
     const player = new Player(id, title, description, '', '');
+    player.imageFile = '/assets/http_player.jpg'
 
     this.players.push(player);
   }
@@ -278,6 +279,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene.coordinate = new Coordinate();
     scene.coordinate.y = 0;
     scene.coordinate.x = 0;
+    scene.imageFile = '/assets/http_scene.jpg'
 
     const answers1 = new Answer(this.fireStore.createId(), 'a', 0, scene, 'red');
     const answers2 = new Answer(this.fireStore.createId(), 'б', 1, scene, 'red');
