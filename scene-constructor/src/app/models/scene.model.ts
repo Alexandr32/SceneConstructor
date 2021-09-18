@@ -3,9 +3,7 @@
  */
 import {Coordinate} from './coordinate.model';
 import {Answer} from './answer.model';
-import {Player} from './player.model';
 import {Entity} from './entity.model';
-import {TypeFile} from './type-file.model';
 
 export class Scene implements Entity  {
   id: string
@@ -16,4 +14,7 @@ export class Scene implements Entity  {
   answers: Answer[] = []
   coordinate: Coordinate
   players: string[] = []
+
+  isStartGame: boolean = false
+  isStopGame: boolean = false
 }

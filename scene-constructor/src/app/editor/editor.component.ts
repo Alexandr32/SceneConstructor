@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Scene} from '../models/scene.model';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
 import {Answer} from '../models/answer.model';
@@ -46,8 +46,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   constructor(public dialog: MatDialog,
               private fireStore: AngularFirestore,
               private firestoreServiceService: FirestoreService,
-              private route: ActivatedRoute,
-              private router: Router) {
+              private route: ActivatedRoute) {
   }
 
   async ngOnInit() {
@@ -104,12 +103,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     for (const player of this.game.players) {
 
-      console.log('файл', player);
-
       try {
         player.imageFile = await this.firestoreServiceService.getImagePlayer(game.id, player.id, 'Image').toPromise();
       } catch (error) {
+        player.imageFile = ''
         console.log('Изображение не найдено');
+        this.showMessage('Изображение не найдено')
         console.log(error);
       }
     }
@@ -117,11 +116,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
     for (const scene of this.game.scenes) {
 
       try {
-        const imageFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Image').toPromise();
-
-        scene.imageFile = imageFile;
-        console.log('imageFile:', imageFile);
+        scene.imageFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Image').toPromise();
       } catch (error) {
+        scene.imageFile = ''
+        this.showMessage('Изображение не найдено')
         console.log('Изображение не найдено');
         console.log(error);
       }
@@ -129,6 +127,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
       try {
         scene.videoFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Video').toPromise();
       } catch (error) {
+        scene.videoFile = ''
+        this.showMessage('Видео не найдено')
         console.log('Видео не найдено');
         console.log(error);
       }
@@ -159,11 +159,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(EditPlayerDialogComponent, {
       data: {player}
     });
-
-    /*dialogRef.componentInstance.saveEvent.subscribe(() => {
-      this.clearCanvas()
-      this.renderLine()
-    })*/
 
     dialogRef.afterClosed().subscribe(() => {
       console.log('closeDialog');
@@ -213,6 +208,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
         coordinateOne.y = answer.coordinate.y;
 
         const scene = this.scenes.find(scene => scene.id == answer.sceneId);
+
+        if(!scene) {
+          return
+        }
+
         const coordinateTwo: Coordinate = new Coordinate();
         coordinateTwo.x = scene.coordinate.x + 4;
         coordinateTwo.y = scene.coordinate.y + 4;
@@ -239,8 +239,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.game.scenes = this.scenes;
     this.game.players = this.players;
 
-    console.log('this.game.players', this.game.players);
-
     this.game.name = this.form.get('name').value;
     this.game.description = this.form.get('description').value;
 
@@ -254,13 +252,18 @@ export class EditorComponent implements OnInit, AfterViewInit {
       await this.deleteFilePlayers();
 
     } catch (error) {
-      this.dialog.open(MessageDialogComponent, {
-        data: 'При сохраненнии произошла ошибка' + error
-      });
+
+      this.showMessage('При сохраненнии произошла ошибка' + error)
+
     }
 
     await this.getGameData();
+  }
 
+  private showMessage(message: string) {
+    this.dialog.open(MessageDialogComponent, {
+      data: message
+    });
   }
 
   /**
@@ -292,15 +295,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.fileForDeleteScenes.push({id: scene.id, typeFile: 'Video'});
     this.fileForDeleteScenes.push({id: scene.id, typeFile: 'Image'});
 
-    const answers = this.scenes
-      .flatMap((item) => item.answers)
-      .filter(item => item.sceneId == scene.id)
-      .map(item => item.sceneId = null);
-
-    console.log(answers);
-
     const index = this.game.scenes.indexOf(scene);
     this.scenes.splice(index, 1);
+
     this.clearCanvas();
     this.renderLine();
 
@@ -373,8 +370,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
    * @param scene
    */
   selectAnswerScene(scene: Answer) {
-    console.log('Выбор ответа у сцены', scene);
-
     const isChangeSelectMode = this.changeSelectModeEvent$.getValue();
 
     if (isChangeSelectMode) {
@@ -388,7 +383,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
    * @param scene
    */
   selectScene(scene: Scene) {
-    console.log('Выбор сцены для связывания', scene);
 
     const isChangeSelectMode = this.changeSelectModeEvent$.getValue();
 

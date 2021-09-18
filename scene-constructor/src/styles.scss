@@ -78,6 +78,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   display: flex;
 }
 
+.justify-content-space-around {
+  justify-content: space-around;
+}
+
 .m-10 {
   margin: 10px;
 }
@@ -283,6 +287,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .text-green {
   color: green;
+}
+
+.text-white {
+  color: white;
 }
 
 .scene__control-height {

@@ -59,11 +59,15 @@ export class EditSceneDialogComponent implements OnInit {
           [
             Validators.required
           ]),
+      'isStartGame':
+        new FormControl(
+          this.data.scene.isStartGame),
+      'isStopGame':
+        new FormControl(
+          this.data.scene.isStopGame),
+
       'file': new FormControl(this.data.scene.imageFile, [Validators.required]),
     });
-
-    console.log('this.data.players:', this.data.players);
-    console.log('this.data.scene.players:', this.data.scene.players);
 
     this.data.players.forEach((item) => {
 
@@ -177,6 +181,8 @@ export class EditSceneDialogComponent implements OnInit {
 
     this.data.scene.title = this.form.value['title'];
     this.data.scene.text = this.form.value['text'];
+    this.data.scene.isStartGame = this.form.value['isStartGame'];
+    this.data.scene.isStopGame = this.form.value['isStopGame'];
 
     this.answers.forEach(item => {
       item.text = this.form.value[`answerId${item.id}`]

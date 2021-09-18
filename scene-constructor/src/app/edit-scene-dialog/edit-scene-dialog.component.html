@@ -2,7 +2,7 @@
       novalidate
       class="dialog__body"
 >
-  <label>
+  <div>
     <p>Название:</p>
     <input name="title" formControlName="title"/>
     <div
@@ -16,7 +16,12 @@
       *ngIf="form.controls['text'].invalid">
       Введите значение
     </div>
-  </label>
+    <p>Сцена начала игры:</p>
+    <input name="isStartGame" formControlName="isStartGame" type="checkbox"/>
+
+    <p>Сцена конца игры:</p>
+    <input name="isStopGame" formControlName="isStopGame" type="checkbox"/>
+  </div>
 
   <label>
     <p>Кто должен отвечать:</p>

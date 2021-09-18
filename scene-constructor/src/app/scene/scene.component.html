@@ -10,6 +10,12 @@
          cdkDragHandle
          (click)="onClick($event)"
          [class.scene__header-select]="isSelectMode">
+
+      <div class="flex justify-content-space-around">
+        <div *ngIf="scene.isStartGame" class="text-white">Стартовая сцена</div>
+        <div *ngIf="scene.isStopGame" class="text-white">Финальная сцена</div>
+      </div>
+
     </div>
 
     <div class="scene__control-button">
@@ -29,8 +35,6 @@
         Загрузка
       </div>
 
-
-
       <div class="">
         <div class="scene__control-width">Название:</div>
         <div class="scene__control-width">{{toStringLabel(scene.title, 25)}}</div>
@@ -41,14 +45,10 @@
         <div class="scene__control-width text-green" *ngFor="let playerId of scene.players">{{getNamePlayer(playerId)}}</div>
         <div class="text-red scene__control-width" *ngIf="scene.players.length == 0">Нет выбранных персонажей</div>
       </div>
-
-
     </div>
-
 
     <div class="scene__variants">
       <div *ngFor="let answer of scene.answers"
-
            id="{{answer.id}}"
            #answer>
         <button

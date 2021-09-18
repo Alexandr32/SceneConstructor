@@ -44,8 +44,8 @@ export class GameListComponent implements OnInit, OnDestroy {
     })
   }
 
-  async deleteGame(gameId: string) {
-    await this.firestoreService.deleteGame(gameId)
+  async deleteGame(game: Game) {
+    await this.firestoreService.deleteGame(game)
   }
 
   async createNewGame() {

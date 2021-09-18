@@ -14,7 +14,6 @@ export class HeaderComponent implements OnInit {
   }
 
   onClickHeader() {
-    console.log('onClickHeader');
     this.router.navigate(['/']);
   }
 
