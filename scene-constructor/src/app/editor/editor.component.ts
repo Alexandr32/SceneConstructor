@@ -295,6 +295,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.fileForDeleteScenes.push({id: scene.id, typeFile: 'Video'});
     this.fileForDeleteScenes.push({id: scene.id, typeFile: 'Image'});
 
+    this.game.scenes.flatMap((item) => {
+      return item.answers
+    }).filter((item) => {
+      return item.sceneId == scene.id
+    }).forEach((item) => {
+      item.sceneId = null
+    })
+
     const index = this.game.scenes.indexOf(scene);
     this.scenes.splice(index, 1);
 
