@@ -12,6 +12,9 @@
 
     <p>Описание:</p>
     <input name="text" formControlName="text"/>
+
+    <input type="color" name="color" formControlName="color">
+
     <div
       *ngIf="form.controls['text'].invalid">
       Введите значение

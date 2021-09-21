@@ -12,7 +12,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Game} from '../models/game.model';
 import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-editor',
@@ -90,7 +90,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.canvas.nativeElement.height = 880;
     } else {
       const array: number[] = this.game.scenes
-        .flatMap(item => Number(item.coordinate.y))
+        .flatMap(item => Number(item.coordinate.y));
       this.canvas.nativeElement.height = Math.max(...array) + 500;
     }
 
@@ -106,9 +106,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
       try {
         player.imageFile = await this.firestoreServiceService.getImagePlayer(game.id, player.id, 'Image').toPromise();
       } catch (error) {
-        player.imageFile = '/assets/http_player.jpg'
+        player.imageFile = '/assets/http_player.jpg';
         console.log('Изображение не найдено');
-        this.showMessage('Изображение не найдено')
         console.log(error);
       }
     }
@@ -118,8 +117,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       try {
         scene.imageFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Image').toPromise();
       } catch (error) {
-        scene.imageFile = '/assets/http_scene.jpg'
-        this.showMessage('Изображение не найдено')
+        scene.imageFile = '/assets/http_scene.jpg';
         console.log('Изображение не найдено');
         console.log(error);
       }
@@ -127,9 +125,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       try {
         scene.videoFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Video').toPromise();
       } catch (error) {
-        scene.videoFile = ''
-        this.showMessage('Видео не найдено')
-        console.log('Видео не найдено');
+        scene.videoFile = '';
         console.log(error);
       }
     }
@@ -150,7 +146,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     const description = 'Описание нового персонажа';
 
     const player = new Player(id, title, description, '', '');
-    player.imageFile = '/assets/http_player.jpg'
+    player.imageFile = '/assets/http_player.jpg';
 
     this.players.push(player);
   }
@@ -210,15 +206,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
         const scene = this.scenes.find(scene => scene.id == answer.sceneId);
 
-        if(!scene) {
-          return
+        if (!scene) {
+          return;
         }
 
         const coordinateTwo: Coordinate = new Coordinate();
         coordinateTwo.x = scene.coordinate.x + 4;
         coordinateTwo.y = scene.coordinate.y + 4;
 
-        this.moveZLine(coordinateOne, coordinateTwo, answer.color);
+        this.moveZLine(coordinateOne, coordinateTwo, scene.color);
       });
     });
   }
@@ -254,7 +250,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     } catch (error) {
 
-      this.showMessage('При сохраненнии произошла ошибка' + error)
+      this.showMessage('При сохраненнии произошла ошибка' + error);
 
     }
 
@@ -276,14 +272,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene.id = this.fireStore.createId();
     scene.text = 'Новая сцена';
     scene.title = 'Новое описание';
+    scene.color = '#7B68EE';
     scene.coordinate = new Coordinate();
     scene.coordinate.y = 0;
     scene.coordinate.x = 0;
-    scene.imageFile = '/assets/http_scene.jpg'
+    scene.imageFile = '/assets/http_scene.jpg';
 
-    const answers1 = new Answer(this.fireStore.createId(), 'a', 0, scene, 'red');
-    const answers2 = new Answer(this.fireStore.createId(), 'б', 1, scene, 'red');
-    const answers3 = new Answer(this.fireStore.createId(), 'в', 2, scene, 'red');
+    const answers1 = new Answer(this.fireStore.createId(), 'a', 0, scene);
+    const answers2 = new Answer(this.fireStore.createId(), 'б', 1, scene);
+    const answers3 = new Answer(this.fireStore.createId(), 'в', 2, scene);
 
     scene.answers = [answers1, answers2, answers3];
 
@@ -298,12 +295,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.fileForDeleteScenes.push({id: scene.id, typeFile: 'Image'});
 
     this.game.scenes.flatMap((item) => {
-      return item.answers
+      return item.answers;
     }).filter((item) => {
-      return item.sceneId == scene.id
+      return item.sceneId == scene.id;
     }).forEach((item) => {
-      item.sceneId = null
-    })
+      item.sceneId = null;
+    });
 
     const index = this.game.scenes.indexOf(scene);
     this.scenes.splice(index, 1);

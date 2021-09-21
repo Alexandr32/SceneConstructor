@@ -44,7 +44,6 @@ export class FirestoreService {
                 answerInFireBase.text,
                 answerInFireBase.position,
                 scene,
-                answerInFireBase.color,
                 answerInFireBase.sceneId
               );
               answer.coordinate = new Coordinate();
@@ -115,7 +114,6 @@ export class FirestoreService {
             id: item.id,
             text: item.text,
             position: item.position,
-            color: item.color,
             sceneId: item.sceneId ? item.sceneId : '',
             coordinate: {
               x: item.coordinate.x,
@@ -128,6 +126,7 @@ export class FirestoreService {
         id: scene.id,
         title: scene.title,
         text: scene.text,
+        color: scene.color,
         coordinate: {
           x: scene.coordinate.x,
           y: scene.coordinate.y

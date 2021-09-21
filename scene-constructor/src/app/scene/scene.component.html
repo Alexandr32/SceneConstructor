@@ -7,6 +7,7 @@
 
   <div>
     <div class="scene__header"
+         [ngStyle]="{'background':scene.color}"
          cdkDragHandle
          (click)="onClick($event)"
          [class.scene__header-select]="isSelectMode">

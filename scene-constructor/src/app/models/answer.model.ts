@@ -35,7 +35,6 @@ export class Answer implements Entity  {
               public text: string,
               position: number,
               public parentScene: Scene,
-              public color: string,
               public sceneId: string = null,
   ) {
 

@@ -9,6 +9,7 @@ export class Scene implements Entity  {
   id: string
   title: string
   text: string
+  color: string
   imageFile: string
   videoFile: string
   answers: Answer[] = []
