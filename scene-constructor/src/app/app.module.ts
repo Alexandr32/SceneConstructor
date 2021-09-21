@@ -25,7 +25,6 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {environment} from '../environments/environment';
 import {MessageDialogComponent} from './message-dialog/message-dialog.component';
 import {GameListComponent} from './game-list/game-list.component';
-import {RunGameComponent} from './run-game/run-game.component';
 import {RunGameModule} from './run-game/run-game.module';
 
 @NgModule({
@@ -41,7 +40,6 @@ import {RunGameModule} from './run-game/run-game.module';
     EditImageComponent,
     MessageDialogComponent,
     GameListComponent,
-    /*RunGameComponent,*/
   ],
   imports: [
     BrowserModule,
