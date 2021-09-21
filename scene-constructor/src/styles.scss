@@ -283,6 +283,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .dialog__body {
   overflow: scroll;
   max-height: 500px;
+  min-width: 600px;
 }
 
 .font-size-10 {
