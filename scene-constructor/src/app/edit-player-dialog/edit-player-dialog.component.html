@@ -4,30 +4,26 @@
 
   <h1>Персонаж:</h1>
 
-  <label>
-    <p>Имя:</p>
-    <input name="name" formControlName="name"/>
-    <div
-      *ngIf="form.controls['name'].invalid">
-      Введите значение
+  <div>
+    <div class="input-box">
+      <p>Имя:</p>
+      <input name="name" formControlName="name"/>
+      <div
+        *ngIf="form.controls['name'].invalid">
+        Введите значение
+      </div>
     </div>
 
-    <p>Описание:</p>
-    <input name="description" formControlName="description"/>
-    <div
-      *ngIf="form.controls['description'].invalid">
-      Введите значение
+    <div class="input-box">
+      <p>Описание:</p>
+      <input name="description" formControlName="description"/>
+      <div
+        *ngIf="form.controls['description'].invalid">
+        Введите значение
+      </div>
     </div>
-  </label>
+  </div>
 
-  <!-- https://www.positronx.io/angular-8-show-image-preview-with-reactive-forms-tutorial/ -->
-  <!--<div>
-    &lt;!&ndash;<label for="file"></label>&ndash;&gt;
-    <input id="file"
-           type="file"
-           accept="image/*"
-           (change)="showPreview($event)"/>
-  </div>-->
 
   <div class="edit-player-dialog__box-image"
        *ngIf="imgFile && imgFile !== ''">

@@ -2,67 +2,93 @@
       novalidate
       class="dialog__body"
 >
-  <div>
+  <div class="input-box">
     <p>Название:</p>
     <input name="title" formControlName="title"/>
     <div
       *ngIf="form.controls['title'].invalid">
       Введите значение
     </div>
+  </div>
 
+  <div class="input-box">
     <p>Описание:</p>
     <input name="text" formControlName="text"/>
-
-    <input type="color" name="color" formControlName="color">
-
     <div
       *ngIf="form.controls['text'].invalid">
       Введите значение
     </div>
-    <p>Сцена начала игры:</p>
-    <input name="isStartGame" formControlName="isStartGame" type="checkbox"/>
-
-    <p>Сцена конца игры:</p>
-    <input name="isStopGame" formControlName="isStopGame" type="checkbox"/>
   </div>
 
-  <label>
-    <p>Кто должен отвечать:</p>
-    <div
-      *ngFor="let item of players">
-      <label>
-        <input
-          type="checkbox"
-          name="playerId{{item.player.id}}"
-          formControlName="playerId{{item.player.id}}"
-          [value]="item.isSelect">
-        {{item.player.name}}
-      </label>
-    </div>
-  </label>
+  <hr class="m-t-25">
 
-  <div *ngIf="this.answers.length < 4">
-    <button (click)="onClickAddNewAnswer()">Добавить новый ответ</button>
+  <div class="input-box">
+    <p>Цвет обозначения:</p>
+    <input type="color" name="color" formControlName="color">
   </div>
 
-  <div cdkDropList
-       class="answers-list"
-       (cdkDropListDropped)="drop($event)">
-    <div class="answer-box"
-         *ngFor="let answer of answers" cdkDrag>
-      <input name="answerId{{answer.id}}"
-             formControlName="answerId{{answer.id}}"
-             value="{{answer.text}}">
+  <hr class="m-t-25">
+
+  <div class="m-t-25">
+    <label>
+      <input name="isStartGame" formControlName="isStartGame" type="checkbox"/>
+      Сцена начала игры
+    </label>
+
+    <label>
+      <input name="isStopGame" formControlName="isStopGame" type="checkbox"/>
+      Сцена конца игры
+    </label>
+  </div>
+
+  <hr class="m-t-25">
+
+  <div class="input-box">
+    <div>
+      <p>Кто должен отвечать:</p>
       <div
-        *ngIf="form.controls['answerId' + answer.id].invalid">
-        Введите значение
+        *ngFor="let item of players">
+        <label>
+          <input
+            type="checkbox"
+            name="playerId{{item.player.id}}"
+            formControlName="playerId{{item.player.id}}"
+            [value]="item.isSelect">
+          {{item.player.name}}
+        </label>
       </div>
-      <button (click)="deleteAnswer(answer)">Удалить</button>
     </div>
   </div>
 
+  <hr class="m-t-25">
 
-  <div class="editor__border">
+  <div class="input-box">
+    <p>Ответы:</p>
+
+    <div cdkDropList
+         class="answers-list m-t-25"
+         (cdkDropListDropped)="drop($event)">
+      <div class="answer-box"
+           *ngFor="let answer of answers" cdkDrag>
+        <input name="answerId{{answer.id}}"
+               formControlName="answerId{{answer.id}}"
+               value="{{answer.text}}">
+        <div
+          *ngIf="form.controls['answerId' + answer.id].invalid">
+          Введите значение
+        </div>
+        <button (click)="deleteAnswer(answer)">Удалить</button>
+      </div>
+    </div>
+
+    <div *ngIf="this.answers.length < 4">
+      <button (click)="onClickAddNewAnswer()">Добавить новый ответ</button>
+    </div>
+  </div>
+
+  <hr class="m-t-25">
+
+  <div class="m-t-25">
     <div class="edit-scene-dialog__image-box"
          *ngIf="imgFile && imgFile !== ''">
 
@@ -82,8 +108,9 @@
     </div>
   </div>
 
-  <div class="editor__border">
+  <hr class="m-t-25">
 
+  <div class="">
     <div *ngFor="let video of videoSources">
       <video controls
              class="edit-scene-dialog__image-box__image"

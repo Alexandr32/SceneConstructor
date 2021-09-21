@@ -95,6 +95,10 @@ body {
   margin: 10px;
 }
 
+.m-t-25 {
+  margin-top: 25px;
+}
+
 .editor {
   display: flex;
   min-height: 100%;
@@ -131,7 +135,7 @@ body {
   text-align: center;
 }
 
-.editor__form__flex-direction-column {
+.input-box {
   padding-top: 25px;
   display: flex;
   flex-direction: column;
@@ -250,6 +254,7 @@ body {
 
 .edit-player-dialog__box-image {
   position: relative;
+  margin-top: 50px;
 }
 
 .edit-player-dialog__box-image__btn-delete-img {
