@@ -9,10 +9,13 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class RunGameComponent implements OnInit {
 
+  title: string
+
   constructor(private route: ActivatedRoute, private dialog: MatDialog) { }
 
   async ngOnInit() {
     const gameId = this.route.snapshot.params.gameId;
+    this.title = gameId
   }
 
 }

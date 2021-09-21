@@ -16,16 +16,17 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {ReactiveFormsModule} from '@angular/forms';
-import { EditPlayerDialogComponent } from './edit-player-dialog/edit-player-dialog.component';
+import {EditPlayerDialogComponent} from './edit-player-dialog/edit-player-dialog.component';
 import {ImageCropperModule} from 'ngx-img-cropper';
-import { EditImageComponent } from './edit-image-player/edit-image.component';
-import { AngularFireModule } from "@angular/fire";
-import { AngularFireAuthModule } from "@angular/fire/auth";
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { environment } from '../environments/environment';
-import { MessageDialogComponent } from './message-dialog/message-dialog.component';
-import { GameListComponent } from './game-list/game-list.component';
-import { RunGameComponent } from './run-game/run-game.component';
+import {EditImageComponent} from './edit-image-player/edit-image.component';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {environment} from '../environments/environment';
+import {MessageDialogComponent} from './message-dialog/message-dialog.component';
+import {GameListComponent} from './game-list/game-list.component';
+import {RunGameComponent} from './run-game/run-game.component';
+import {RunGameModule} from './run-game/run-game.module';
 
 @NgModule({
   declarations: [
@@ -40,21 +41,22 @@ import { RunGameComponent } from './run-game/run-game.component';
     EditImageComponent,
     MessageDialogComponent,
     GameListComponent,
-    RunGameComponent,
+    /*RunGameComponent,*/
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        DragDropModule,
-        MatButtonModule,
-        MatDialogModule,
-        ReactiveFormsModule,
-        ImageCropperModule,
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFireAuthModule,
-        AngularFirestoreModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    DragDropModule,
+    MatButtonModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    ImageCropperModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    RunGameModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
