@@ -96,7 +96,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .editor {
   display: flex;
-  width: 100%;
+  //width: 100%;
   min-height: 100%;
   flex-direction: column;
 }
@@ -104,6 +104,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .editor__control-panel {
   display: flex;
   justify-content: center;
+}
+
+.editor__control-panel__btn-enlarge-canvas {
+  position: absolute;
+  height: 100%;
+  background: #4e2165;
+  display: flex;
+  right: 0;
 }
 
 .editor__control-panel__btn-control {
@@ -129,7 +137,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .editor__working-space {
   position: relative;
-  //height: 850px;
   display: block;
   justify-content: center;
 }

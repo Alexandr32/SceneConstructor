@@ -31,6 +31,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   form: FormGroup = new FormGroup({});
   showForm = false;
 
+  @ViewChild('editor', {static: true})
+  editor: ElementRef<HTMLDivElement>;
+
   @ViewChild('working', {static: true})
   working: ElementRef<HTMLDivElement>;
 
@@ -43,6 +46,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   // Выбранный ответ
   selectSceneForChangeSelectMode: Answer;
 
+  widthScreen: number
+
   constructor(public dialog: MatDialog,
               private fireStore: AngularFirestore,
               private firestoreServiceService: FirestoreService,
@@ -50,6 +55,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
+
+    this.widthScreen = window.screen.width;
 
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
@@ -414,6 +421,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     this.clearCanvas();
     this.renderLine();
+  }
+
+  // Увеличить влево
+  enlargeCanvas() {
+    this.canvas.nativeElement.width += 500;
+    this.working.nativeElement.style.width = `${this.canvas.nativeElement.width}px`
+    this.editor.nativeElement.style.width = `${this.canvas.nativeElement.width}px`
+
+    console.log('width::', this.working.nativeElement.style);
   }
 
   getWidthScreen(): number {

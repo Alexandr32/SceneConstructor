@@ -5,7 +5,7 @@
       <!--Добавить валидацию-->
       <div>
         <label for="name">Название игры</label>
-        <input id="name"  name="name" formControlName="name"/>
+        <input id="name" name="name" formControlName="name"/>
         <div class="text-red"
              *ngIf="form.controls['name'].invalid">
           Введите значение
@@ -52,7 +52,9 @@
 
   <hr>
 
-  <div #working class="editor__working-space">
+  <div #working
+       class="editor__working-space"
+  >
 
     <div class="editor__control-panel">
       <div class="editor__control-panel__btn-control">
@@ -60,9 +62,10 @@
       </div>
     </div>
 
-    <div>
-
-    </div>
+    <!--Увеличить холст-->
+    <!--<div class="editor__control-panel__btn-enlarge-canvas">
+      <button (click)="enlargeCanvas()">&gt;</button>
+    </div>-->
 
     <app-scene *ngFor="let scene of scenes"
                [changeSelectModeEvent$]="changeSelectModeEvent$"
@@ -76,7 +79,7 @@
     ></app-scene>
 
     <canvas #canvas
-            width="{{getWidthScreen()}}"
+            [width]="widthScreen"
             height="880"
             class="editor__working-space__canvas editor__border"
             (click)="onClickWorkingSpace()"></canvas>
