@@ -13,15 +13,15 @@
          [class.scene__header-select]="isSelectMode">
 
       <div class="flex justify-content-space-around">
-        <div *ngIf="scene.isStartGame" class="text-white">Стартовая сцена</div>
-        <div *ngIf="scene.isStopGame" class="text-white">Финальная сцена</div>
+        <div *ngIf="scene.isStartGame" class="text-white font-size-10">Стартовая сцена</div>
+        <div *ngIf="scene.isStopGame" class="text-white font-size-10">Финальная сцена</div>
       </div>
 
     </div>
 
     <div class="scene__control-button">
-      <button (click)="onClickEdit()">Редактировать</button>
-      <button (click)="onClickDelete()">Удалить</button>
+      <button class="font-size-10" (click)="onClickEdit()">Редактировать</button>
+      <button class="font-size-10" (click)="onClickDelete()">Удалить</button>
     </div>
 
     <div class="flex scene__control-height">
@@ -37,14 +37,14 @@
       </div>
 
       <div class="">
-        <div class="scene__control-width">Название:</div>
-        <div class="scene__control-width">{{toStringLabel(scene.title, 25)}}</div>
-        <div class="scene__control-width">Описание:</div>
-        <div class="scene__control-width">{{toStringLabel(scene.text, 25)}}</div>
+        <div class="scene__control-width font-size-10">Название:</div>
+        <div class="scene__control-width font-size-10">{{toStringLabel(scene.title, 25)}}</div>
+        <div class="scene__control-width font-size-10">Описание:</div>
+        <div class="scene__control-width font-size-10">{{toStringLabel(scene.text, 25)}}</div>
 
-        <div class="scene__control-width">Кто отвечает:</div>
-        <div class="scene__control-width text-green" *ngFor="let playerId of scene.players">{{getNamePlayer(playerId)}}</div>
-        <div class="text-red scene__control-width" *ngIf="scene.players.length == 0">Нет выбранных персонажей</div>
+        <div class="scene__control-width font-size-10">Кто отвечает:</div>
+        <div class="scene__control-width text-green font-size-10" *ngFor="let playerId of scene.players">{{getNamePlayer(playerId)}}</div>
+        <div class="text-red scene__control-width font-size-10" *ngIf="scene.players.length == 0">Нет выбранных персонажей</div>
       </div>
     </div>
 
@@ -53,7 +53,7 @@
            id="{{answer.id}}"
            #answer>
         <button
-          class="scene__btn-answer"
+          class="scene__btn-answer font-size-10"
           [class.scene__box__btn-warning]="!answer.sceneId"
           (click)="selectAnswer($event, answer)"
         >{{toStringLabel(answer.text, 50)}}</button>
@@ -62,6 +62,6 @@
   </div>
 </div>
 
-<ng-template #notFoundVideo><div class="text-red">Нет видео</div></ng-template>
-<ng-template #foundVideo><div class="text-green">Есть видео</div></ng-template>
+<ng-template #notFoundVideo><div class="text-red font-size-10">Нет видео</div></ng-template>
+<ng-template #foundVideo><div class="text-green font-size-10">Есть видео</div></ng-template>
 

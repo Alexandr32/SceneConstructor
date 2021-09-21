@@ -168,8 +168,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .scene__image-box__image {
   border-radius: 10px;
-  width: 205px;
-  height: 155px;
+  width: 170px;
+  height: 130px;
 }
 
 
@@ -278,6 +278,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   max-height: 500px;
 }
 
+.font-size-10 {
+  font-size: 10px
+}
+
 .text-red {
   color: red;
 }
@@ -292,7 +296,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .scene__control-height {
   height: 180px;
-  width: 485px;
+  width: 400px;
 }
 .scene__control-button {
   display: flex;
