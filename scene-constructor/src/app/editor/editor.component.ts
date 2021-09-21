@@ -12,7 +12,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Game} from '../models/game.model';
 import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-editor',
@@ -51,7 +51,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   constructor(public dialog: MatDialog,
               private fireStore: AngularFirestore,
               private firestoreServiceService: FirestoreService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   async ngOnInit() {
@@ -262,6 +263,17 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
 
     await this.getGameData();
+  }
+
+  async runGame() {
+
+    await this.saveGame()
+
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['run', this.game.id])
+    );
+
+    window.open(url, '_blank');
   }
 
   private showMessage(message: string) {
