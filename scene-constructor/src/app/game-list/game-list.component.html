@@ -1,19 +1,25 @@
-<div class="flex m-10">
-  <button mat-raised-button
-          color="primary"
-          (click)="createNewGame()"
-  >Новая игра
-  </button>
+<div class="box">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="createNewGame()"
+  >Новая игра</button>
 </div>
 
 <div *ngFor="let game of gameList; let i = index"
-     class="flex game-list__item">
+     class="box">
   <div>{{i + 1}}</div>
   <div>{{game.name}}</div>
   <div>{{game.description}}</div>
   <div>
-    <input type="button" value="Открыть" [routerLink]="['editor', game.id]">
-    <input type="button" value="Удалить" (click)="deleteGame(game)">
+    <input
+      type="button"
+      value="Открыть"
+      [routerLink]="['editor', game.id]">
+    <input type="button"
+           value="Удалить"
+           (click)="deleteGame(game)">
   </div>
 
 </div>
+

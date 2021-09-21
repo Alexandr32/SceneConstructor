@@ -3,15 +3,16 @@ $padding-body: 50px;
 * {
   padding: 0;
   margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 html, body {
-  font-family: Montserrat, sans-serif;
   height: 100%;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+}
 
 /*button {
   padding: 0;
@@ -72,6 +73,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 // Класс содержащий в себе контент между header и footer
 .body {
   flex-grow: 1;
+  position: relative;
 }
 
 .flex {
@@ -86,19 +88,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 10px;
 }
 
-.game-list__item {
-  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.32);
-  margin: 10px;
-  padding: 10px;
-  height: 50px;
+.editor {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.box {
+  margin: 10px 25px;
+  padding: 25px;
+  box-shadow: 1px 1px 19px 8px rgba(34, 60, 80, 0.2);
   border-radius: 10px;
 }
 
-.editor {
-  display: flex;
-  //width: 100%;
-  min-height: 100%;
-  flex-direction: column;
+.editor__brn-save {
+  padding: 25px;
 }
 
 .editor__control-panel {
@@ -115,8 +119,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .editor__control-panel__btn-control {
-  height: 56px;
-  margin: 5px;
+  padding-top: 25px;
+  width: 100%;
+  text-align: center;
+}
+
+.editor__form__flex-direction-column {
+  padding-top: 25px;
+  display: flex;
+  flex-direction: column;
 }
 
 .editor__btn-control-bottom {
@@ -157,6 +168,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .edit-scene-dialog__image-box {
   width: 256px;
   height: 192px;
+  position: relative;
+}
+
+.edit-scene-dialog__btn-del {
+  position: absolute;
+  right: 0;
 }
 
 .edit-scene-dialog__image-box__image {
@@ -222,11 +239,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   cursor: move;
   width: 24px;
   height: 24px;
-}
-
-.editor__players {
-  margin: 50px;
-
 }
 
 .edit-player-dialog__box-image {
@@ -304,7 +316,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .scene__control-height {
   height: 180px;
-  width: 400px;
+  /*width: 400px;*/
 }
 .scene__control-button {
   display: flex;

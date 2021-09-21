@@ -1,9 +1,11 @@
 <div class="editor">
 
-  <div *ngIf="showForm">
+  <div *ngIf="showForm"
+       class="box"
+  >
     <form [formGroup]="form" novalidate>
       <!--Добавить валидацию-->
-      <div>
+      <div class="editor__form__flex-direction-column">
         <label for="name">Название игры</label>
         <input id="name" name="name" formControlName="name"/>
         <div class="text-red"
@@ -11,9 +13,9 @@
           Введите значение
         </div>
       </div>
-      <div>
+      <div class="editor__form__flex-direction-column">
         <label for="description">Название игры</label>
-        <input id="description" name="description" formControlName="description"/>
+        <textarea class="" id="description" name="description" rows="10" formControlName="description"></textarea>
         <div class="text-red"
              *ngIf="form.controls['description'].invalid">
           Введите значение
@@ -26,11 +28,11 @@
     </form>
   </div>
 
-  <div class="editor__players">
-    <div class="editor__players__players-list editor__border">
+  <div class="box">
+    <div class="editor__players__players-list">
       <!--Вынести в отдельный компонент-->
       <div
-        class="editor__player-box editor__border"
+        class="editor__player-box box"
         *ngFor="let player of players">
         <div>{{player.name}}</div>
         <div *ngIf="player.imageFile && player.imageFile !== ''">
@@ -44,20 +46,20 @@
 
     <div class="editor__players__btn-add">
       <button
+        mat-raised-button
+        color="primary"
         *ngIf="players.length < 4"
         (click)="addNewPlayer()">Добавить персонажа
       </button>
     </div>
   </div>
 
-  <hr>
-
   <div #working
        class="editor__working-space"
   >
 
     <div class="editor__control-panel">
-      <div class="editor__control-panel__btn-control">
+      <div class="editor__control-panel__btn-control box">
         <button mat-raised-button color="primary" (click)="addNewScene()">Добавить сцену</button>
       </div>
     </div>
