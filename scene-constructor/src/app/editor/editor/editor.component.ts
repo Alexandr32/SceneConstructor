@@ -1,16 +1,16 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Scene} from '../models/scene.model';
+import {Scene} from '../../models/scene.model';
 import {BehaviorSubject} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
-import {Answer} from '../models/answer.model';
-import {Coordinate} from '../models/coordinate.model';
-import {Player} from '../models/player.model';
+import {Answer} from '../../models/answer.model';
+import {Coordinate} from '../../models/coordinate.model';
+import {Player} from '../../models/player.model';
 import {EditPlayerDialogComponent} from '../edit-player-dialog/edit-player-dialog.component';
-import {FirestoreService} from '../serveces/firestore.service';
+import {FirestoreService} from '../../serveces/firestore.service';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {Game} from '../models/game.model';
-import {MessageDialogComponent} from '../core/message-dialog/message-dialog.component';
+import {Game} from '../../models/game.model';
+import {MessageDialogComponent} from '../../core/message-dialog/message-dialog.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 

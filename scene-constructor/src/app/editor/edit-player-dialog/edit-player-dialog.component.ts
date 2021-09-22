@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Player} from '../models/player.model';
+import {Player} from '../../models/player.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CropperSettings} from 'ngx-img-cropper';
 import {EditImageComponent} from '../edit-image-player/edit-image.component';

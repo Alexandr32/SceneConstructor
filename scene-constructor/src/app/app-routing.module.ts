@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {EditorComponent} from './editor/editor.component';
-import {GameListComponent} from './game-list/game-list.component';
-import {MainComponent} from './main/main.component';
+import {EditorComponent} from './editor/editor/editor.component';
+import {GameListComponent} from './editor/game-list/game-list.component';
+import {MainComponent} from './editor/main/main.component';
 
 // определение дочерних маршрутов
 const editRoutes: Routes = [

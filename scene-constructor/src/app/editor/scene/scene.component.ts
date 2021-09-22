@@ -1,8 +1,8 @@
 import {Component, ElementRef, Input, OnInit, Output, EventEmitter, ViewChildren, QueryList} from '@angular/core';
-import {Scene} from '../models/scene.model';
+import {Scene} from '../../models/scene.model';
 import {Subject} from 'rxjs';
-import {Answer} from '../models/answer.model';
-import {Player} from '../models/player.model';
+import {Answer} from '../../models/answer.model';
+import {Player} from '../../models/player.model';
 
 @Component({
   selector: 'app-scene',

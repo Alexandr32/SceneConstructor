@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {CropperSettings} from 'ngx-img-cropper';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Player} from '../models/player.model';
+import {Player} from '../../models/player.model';
 
 @Component({
   selector: 'app-edit-image',
