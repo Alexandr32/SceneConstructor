@@ -388,8 +388,8 @@ body {
   border: solid 1px;
 }
 
-.game-run__image {
-  background-size: cover;
+.game-run {
+  //background-size: cover;
   width: 100%;
   flex-grow: 1;
 }
@@ -401,4 +401,20 @@ body {
 
 .no-blur {
   filter: blur(0px);
+}
+
+#video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#image {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
 }
