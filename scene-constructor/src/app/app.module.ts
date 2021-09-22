@@ -24,6 +24,8 @@ import {MessageDialogComponent} from './message-dialog/message-dialog.component'
 import {GameListComponent} from './game-list/game-list.component';
 import {RunGameModule} from './run-game/run-game.module';
 import {CoreModule} from './core/core.module';
+import {HeaderComponent} from './core/header/header.component';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import {CoreModule} from './core/core.module';
     EditImageComponent,
     MessageDialogComponent,
     GameListComponent,
+    MainComponent,
   ],
   imports: [
     BrowserModule,
