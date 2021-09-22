@@ -378,6 +378,24 @@ body {
   right: 15%;
 }
 
+.game-run__open-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.game-run__list-player {
+  background: white;
+  width: 400px;
+  height: 100px;
+}
+
+.game-run__list-player-control {
+  background: #606060;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .game-run__answers__item {
   background: white;
   border-radius: 10px;
@@ -392,6 +410,13 @@ body {
   //background-size: cover;
   width: 100%;
   flex-grow: 1;
+}
+
+.drag-box {
+  background: #4e2165;
+  width: 240px;
+  height: 200px;
+  z-index: 1500;
 }
 
 

@@ -1,5 +1,5 @@
 import {RouterModule, Routes} from '@angular/router';
-import {RunGameComponent} from './run-game.component';
+import {RunGameComponent} from './run-game/run-game.component';
 import {NgModule} from '@angular/core';
 
 const routes: Routes = [
