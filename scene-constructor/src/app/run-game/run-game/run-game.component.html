@@ -1,10 +1,9 @@
 <div class="container-run-game">
   <div class="game-run">
-
-    <img id="image" src="assets/scene.jpg" alt="image">
+    <img id="image" src="assets/scene.jpg" alt="image" />
 
     <video id="video" preload="auto" autoplay="true" loop="true" muted="muted">
-      <source src="assets/video-cyber.mp4" type="video/mp4">
+      <source src="assets/video-cyber.mp4" type="video/mp4" />
     </video>
 
     <div>
@@ -15,30 +14,34 @@
         <div class="game-run__answers__item">Ответ 4</div>
 
         <div class="game-run__description">
-          <div class="game-run__description-background blur">
-
-          </div>
+          <div class="game-run__description-background blur"></div>
 
           <div class="game-run__text-description">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab corporis deserunt eligendi explicabo
-            iste natus numquam odio possimus rerum, vitae. Ab assumenda dolorum enim fuga officiis qui sed
-            similique ullam.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
+            corporis deserunt eligendi explicabo iste natus numquam odio
+            possimus rerum, vitae. Ab assumenda dolorum enim fuga officiis qui
+            sed similique ullam.
           </div>
         </div>
       </div>
 
       <div>
         <div class="game-run__open-player">
-          <div class="game-run__list-player" cdkDrag cdkDragBoundary=".game-run">
+          <div
+            class="game-run__list-player"
+            cdkDrag
+            cdkDragBoundary=".game-run"
+          >
             <div class="game-run__list-player-control">
-              <div class="">Управление игроками для тестирования (можно двигать)</div>
-              <button class="font-size-11" (click)="isShowListPlayers = !isShowListPlayers">
-                <div *ngIf="isShowListPlayers;else unset">
-                  Скрыть
-                </div>
-                <ng-template #unset>
-                  Показать
-                </ng-template>
+              <div class="">
+                Управление игроками для тестирования (можно двигать)
+              </div>
+              <button
+                class="font-size-11"
+                (click)="isShowListPlayers = !isShowListPlayers"
+              >
+                <div *ngIf="isShowListPlayers; else unset">Скрыть</div>
+                <ng-template #unset> Показать </ng-template>
               </button>
             </div>
 
@@ -51,11 +54,6 @@
           </div>
         </div>
       </div>
-
-
     </div>
-
-
   </div>
-
 </div>

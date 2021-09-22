@@ -1,30 +1,34 @@
 <div class="editor">
-
-  <div *ngIf="showForm"
-       class="box"
-  >
+  <div *ngIf="showForm" class="box">
     <form [formGroup]="form" novalidate>
       <!--Добавить валидацию-->
       <div class="input-box">
         <label for="name">Название игры</label>
-        <input id="name" name="name" formControlName="name"/>
-        <div class="text-red"
-             *ngIf="form.controls['name'].invalid">
+        <input id="name" name="name" formControlName="name" />
+        <div class="text-red" *ngIf="form.controls['name'].invalid">
           Введите значение
         </div>
       </div>
       <div class="input-box">
         <label for="description">Название игры</label>
-        <textarea class="" id="description" name="description" rows="10" formControlName="description"></textarea>
-        <div class="text-red"
-             *ngIf="form.controls['description'].invalid">
+        <textarea
+          class=""
+          id="description"
+          name="description"
+          rows="10"
+          formControlName="description"
+        ></textarea>
+        <div class="text-red" *ngIf="form.controls['description'].invalid">
           Введите значение
         </div>
       </div>
-      <div class="editor__control-panel__btn-control"
-           *ngIf="form.valid">
-        <button mat-raised-button color="primary" (click)="saveGame()">Сохранить игру</button>
-        <button mat-raised-button color="primary" (click)="runGame()">Запустить игру</button>
+      <div class="editor__control-panel__btn-control" *ngIf="form.valid">
+        <button mat-raised-button color="primary" (click)="saveGame()">
+          Сохранить игру
+        </button>
+        <button mat-raised-button color="primary" (click)="runGame()">
+          Запустить игру
+        </button>
       </div>
     </form>
   </div>
@@ -32,13 +36,14 @@
   <div class="box">
     <div class="editor__players__players-list">
       <!--Вынести в отдельный компонент-->
-      <div
-        class="editor__player-box box"
-        *ngFor="let player of players">
-        <div>{{player.name}}</div>
+      <div class="editor__player-box box" *ngFor="let player of players">
+        <div>{{ player.name }}</div>
         <div *ngIf="player.imageFile && player.imageFile !== ''">
-          <img class="editor__image-player"
-               [src]="player.imageFile" [alt]="player.name">
+          <img
+            class="editor__image-player"
+            [src]="player.imageFile"
+            [alt]="player.name"
+          />
         </div>
         <button (click)="onClickEditPlayer(player)">Редактировать</button>
         <button (click)="onClickDeletePlayer(player)">Удалить</button>
@@ -50,18 +55,22 @@
         mat-raised-button
         color="primary"
         *ngIf="players.length < 4"
-        (click)="addNewPlayer()">Добавить персонажа
+        (click)="addNewPlayer()"
+      >
+        Добавить персонажа
       </button>
     </div>
   </div>
 
-  <div #working
-       class="editor__working-space"
-  >
-
+  <div #working class="editor__working-space">
     <div class="editor__control-panel">
       <div class="editor__control-panel__btn-control box">
-        <button mat-raised-button color="primary" (click)="addNewScene()">Добавить сцену</button>
+        <button mat-raised-button color="primary" (click)="addNewScene()">
+          Добавить сцену
+        </button>
+        <button mat-raised-button color="primary" (click)="addMediaFile()">
+          Добавить медиа файл
+        </button>
       </div>
     </div>
 
@@ -70,26 +79,30 @@
       <button (click)="enlargeCanvas()">&gt;</button>
     </div>-->
 
-    <app-scene *ngFor="let scene of scenes"
-               [changeSelectModeEvent$]="changeSelectModeEvent$"
-               (editScene)="openEditDialog($event)"
-               (changeDrag)="onChangeDrag()"
-               [scene]="scene"
-               [players]="players"
-               (deleteScene)="deletedScene($event)"
-               (selectAnswerScene)="selectAnswerScene($event)"
-               (selectScene)="selectScene($event)"
+    <app-scene
+      *ngFor="let scene of scenes"
+      [changeSelectModeEvent$]="changeSelectModeEvent$"
+      (editScene)="openEditDialog($event)"
+      (changeDrag)="onChangeDrag()"
+      [scene]="scene"
+      [players]="players"
+      (deleteScene)="deletedScene($event)"
+      (selectAnswerScene)="selectAnswerScene($event)"
+      (selectScene)="selectScene($event)"
     ></app-scene>
 
-    <canvas #canvas
-            [width]="widthScreen"
-            height="880"
-            class="editor__working-space__canvas editor__border"
-            (click)="onClickWorkingSpace()"></canvas>
-
+    <canvas
+      #canvas
+      [width]="widthScreen"
+      height="880"
+      class="editor__working-space__canvas editor__border"
+      (click)="onClickWorkingSpace()"
+    ></canvas>
   </div>
 
   <div class="editor__btn-control-bottom">
-    <button mat-raised-button color="primary" (click)="increaseWorkingSpace()">Увеличить холст</button>
+    <button mat-raised-button color="primary" (click)="increaseWorkingSpace()">
+      Увеличить холст
+    </button>
   </div>
 </div>

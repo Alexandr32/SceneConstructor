@@ -1,18 +1,19 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Scene} from '../../models/scene.model';
-import {BehaviorSubject} from 'rxjs';
-import {MatDialog} from '@angular/material/dialog';
-import {EditSceneDialogComponent} from '../edit-scene-dialog/edit-scene-dialog.component';
-import {Answer} from '../../models/answer.model';
-import {Coordinate} from '../../models/coordinate.model';
-import {Player} from '../../models/player.model';
-import {EditPlayerDialogComponent} from '../edit-player-dialog/edit-player-dialog.component';
-import {FirestoreService} from '../../serveces/firestore.service';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {Game} from '../../models/game.model';
-import {MessageDialogComponent} from '../../core/message-dialog/message-dialog.component';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Scene } from '../../models/scene.model';
+import { BehaviorSubject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { EditSceneDialogComponent } from '../edit-scene-dialog/edit-scene-dialog.component';
+import { Answer } from '../../models/answer.model';
+import { Coordinate } from '../../models/coordinate.model';
+import { Player } from '../../models/player.model';
+import { EditPlayerDialogComponent } from '../edit-player-dialog/edit-player-dialog.component';
+import { FirestoreService } from '../../serveces/firestore.service';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Game } from '../../models/game.model';
+import { MessageDialogComponent } from '../../core/message-dialog/message-dialog.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MediaFileDialogComponent } from '../media-file-dialog/media-file-dialog.component';
 
 @Component({
   selector: 'app-editor',
@@ -31,13 +32,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
   form: FormGroup = new FormGroup({});
   showForm = false;
 
-  @ViewChild('editor', {static: true})
+  @ViewChild('editor', { static: true })
   editor: ElementRef<HTMLDivElement>;
 
-  @ViewChild('working', {static: true})
+  @ViewChild('working', { static: true })
   working: ElementRef<HTMLDivElement>;
 
-  @ViewChild('canvas', {static: true})
+  @ViewChild('canvas', { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
 
@@ -49,10 +50,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
   widthScreen: number
 
   constructor(public dialog: MatDialog,
-              private fireStore: AngularFirestore,
-              private firestoreServiceService: FirestoreService,
-              private route: ActivatedRoute,
-              private router: Router) {
+    private fireStore: AngularFirestore,
+    private firestoreServiceService: FirestoreService,
+    private route: ActivatedRoute,
+    private router: Router) {
   }
 
   async ngOnInit() {
@@ -162,7 +163,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   onClickEditPlayer(player: Player) {
 
     const dialogRef = this.dialog.open(EditPlayerDialogComponent, {
-      data: {player}
+      data: { player }
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -173,7 +174,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   onClickDeletePlayer(player: Player) {
 
-    this.fileForDeletePlayers.push({id: player.id, typeFile: 'Image'});
+    this.fileForDeletePlayers.push({ id: player.id, typeFile: 'Image' });
 
     const index = this.players.indexOf(player);
     this.players.splice(index, 1);
@@ -187,7 +188,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   openEditDialog(scene: Scene): void {
 
     const dialogRef = this.dialog.open(EditSceneDialogComponent, {
-      data: {scene, players: this.players}
+      data: { scene, players: this.players }
     });
 
     dialogRef.componentInstance.saveEvent.subscribe(() => {
@@ -308,10 +309,22 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.renderLine();
   }
 
+  addMediaFile() {
+
+    const dialogRef = this.dialog.open(MediaFileDialogComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('closeDialog');
+    });
+
+  }
+
   deletedScene(scene: Scene) {
 
-    this.fileForDeleteScenes.push({id: scene.id, typeFile: 'Video'});
-    this.fileForDeleteScenes.push({id: scene.id, typeFile: 'Image'});
+    this.fileForDeleteScenes.push({ id: scene.id, typeFile: 'Video' });
+    this.fileForDeleteScenes.push({ id: scene.id, typeFile: 'Image' });
 
     this.game.scenes.flatMap((item) => {
       return item.answers;

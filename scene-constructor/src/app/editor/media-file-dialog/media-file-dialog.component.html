@@ -1,0 +1,38 @@
+<div class="m-t-25">
+  <div class="edit-scene-dialog__image-box" *ngIf="imgFile && imgFile !== ''">
+    <img class="edit-scene-dialog__image-box__image" [src]="imgFile" [alt]="" />
+
+    <button class="edit-scene-dialog__btn-del" (click)="onClickDeletedImg()">
+      Удалить
+    </button>
+  </div>
+
+  <div>
+    <button (click)="openImageDialog()">Выбрать изображение</button>
+  </div>
+</div>
+
+<hr class="m-t-25" />
+
+<div class="">
+  <div *ngFor="let video of videoSources">
+    <video
+      controls
+      class="edit-scene-dialog__image-box__image"
+      disabled="true"
+      (click)="toggleVideo()"
+    >
+      <source [src]="video" type="video/mp4" />
+      Browser not supported
+    </video>
+  </div>
+
+  <div>
+    <input type="file" accept="video/mp4" (change)="openVideoDialog($event)" />
+  </div>
+
+  <div>
+    <button type="button" (click)="onNoClick()">Отмена</button>
+    <button (click)="onClickSave()">Сохранить</button>
+  </div>
+</div>
