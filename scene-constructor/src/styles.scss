@@ -386,6 +386,8 @@ body {
 
 .game-run__list-player {
   background: white;
+  opacity: 0.9;
+  border-radius: 8px;
 }
 
 .game-run__list-player-control {
@@ -393,10 +395,12 @@ body {
   align-items: center;
   cursor: move;
   height: 30px;
-  background: #2c2828;
+  background: #1b1a48;
   justify-content: space-between;
   color: white;
   padding: 5px;
+  border-radius: 8px;
+  border: solid 1px black;
 }
 
 .game-run__answers__item {
