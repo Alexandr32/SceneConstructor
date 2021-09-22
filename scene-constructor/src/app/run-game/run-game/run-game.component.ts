@@ -15,6 +15,8 @@ export class RunGameComponent implements OnInit {
 
   url = 'assets/scene.jpg'
 
+  isShowListPlayers: boolean = false
+
   constructor(private route: ActivatedRoute, private dialog: MatDialog) { }
 
   async ngOnInit() {

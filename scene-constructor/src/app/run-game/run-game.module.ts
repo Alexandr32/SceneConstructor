@@ -4,9 +4,13 @@ import {RunGameComponent} from './run-game/run-game.component';
 import {RunGameRoutingModule} from './run-game-routing.module';
 import {RouterModule} from '@angular/router';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {PlayerComponent} from './player/player.component';
 
 @NgModule({
-  declarations: RunGameRoutingModule.components,
+  declarations: [
+    RunGameComponent,
+    PlayerComponent
+  ],
   imports: [
     CommonModule,
     RunGameRoutingModule,

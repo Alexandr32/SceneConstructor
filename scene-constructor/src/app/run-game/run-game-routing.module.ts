@@ -1,6 +1,7 @@
 import {RouterModule, Routes} from '@angular/router';
 import {RunGameComponent} from './run-game/run-game.component';
 import {NgModule} from '@angular/core';
+import {PlayerComponent} from './player/player.component';
 
 const routes: Routes = [
   { path: '', component: RunGameComponent, pathMatch: 'full' },
@@ -11,8 +12,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class RunGameRoutingModule {
-  static components = [
-    RunGameComponent
-  ];
-}
+export class RunGameRoutingModule { }

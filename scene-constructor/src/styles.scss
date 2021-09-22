@@ -386,14 +386,17 @@ body {
 
 .game-run__list-player {
   background: white;
-  width: 400px;
-  height: 100px;
 }
 
 .game-run__list-player-control {
-  background: #606060;
   display: flex;
+  align-items: center;
+  cursor: move;
+  height: 30px;
+  background: #2c2828;
   justify-content: space-between;
+  color: white;
+  padding: 5px;
 }
 
 .game-run__answers__item {
@@ -442,4 +445,37 @@ body {
   bottom: 0;
   min-width: 100%;
   min-height: 100%;
+}
+
+.player-test {
+  position: relative;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.player-test__image {
+  width: 180px;
+  height: 230px;
+  border-radius: 10px;
+}
+
+.game-run__players {
+  display: flex;
+}
+
+.player-test__content {
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  right: 10%;
+}
+
+.player-test__name {
+  padding: 5px;
+  background: white;
+  border-radius: 10px;
+}
+
+.player-test__btn-answer {
+  display: block;
 }
