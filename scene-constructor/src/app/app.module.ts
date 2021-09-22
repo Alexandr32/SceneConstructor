@@ -20,7 +20,7 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {environment} from '../environments/environment';
-import {MessageDialogComponent} from './message-dialog/message-dialog.component';
+import {MessageDialogComponent} from './core/message-dialog/message-dialog.component';
 import {GameListComponent} from './game-list/game-list.component';
 import {RunGameModule} from './run-game/run-game.module';
 import {CoreModule} from './core/core.module';
@@ -37,7 +37,6 @@ import { MainComponent } from './main/main.component';
     EditSceneDialogComponent,
     EditPlayerDialogComponent,
     EditImageComponent,
-    MessageDialogComponent,
     GameListComponent,
     MainComponent,
   ],

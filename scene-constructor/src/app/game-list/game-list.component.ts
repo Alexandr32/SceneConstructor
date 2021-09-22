@@ -3,7 +3,7 @@ import {Game} from '../models/game.model';
 import {FirestoreService} from '../serveces/firestore.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
+import {MessageDialogComponent} from '../core/message-dialog/message-dialog.component';
 import {Subscriber, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 

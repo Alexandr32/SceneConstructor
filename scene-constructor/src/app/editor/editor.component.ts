@@ -10,7 +10,7 @@ import {EditPlayerDialogComponent} from '../edit-player-dialog/edit-player-dialo
 import {FirestoreService} from '../serveces/firestore.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Game} from '../models/game.model';
-import {MessageDialogComponent} from '../message-dialog/message-dialog.component';
+import {MessageDialogComponent} from '../core/message-dialog/message-dialog.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 
