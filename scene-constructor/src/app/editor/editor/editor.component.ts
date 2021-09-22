@@ -267,7 +267,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   async runGame() {
 
-    await this.saveGame()
+    //await this.saveGame()
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run', this.game.id])

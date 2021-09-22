@@ -71,6 +71,18 @@ body {
   flex-direction: column;
 }
 
+.container-run-game {
+  background: #2c2828;
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
 .top {
   flex-grow: 1;
   display: flex;
@@ -328,9 +340,62 @@ body {
 
 .scene__control-height {
   height: 180px;
-  /*width: 400px;*/
 }
 .scene__control-button {
   display: flex;
   justify-content: flex-end;
+}
+
+.game-run__description-background {
+  position: absolute;
+  height: 80px;
+  background: #2c2828;
+  padding: 15px;
+  border-radius: 15px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.game-run__description {
+  height: 110px;
+}
+
+.game-run__text-description {
+  position: absolute;
+  color: white;
+  bottom: 0;
+  padding: 15px;
+  height: 80px;
+  z-index: 1000;
+}
+
+.game-run__answers {
+  position: absolute;
+  bottom: 10%;
+  left: 15%;
+  right: 15%;
+}
+
+.game-run__answers__item {
+  background: white;
+  border-radius: 10px;
+  height: 20px;
+  margin: 10px;
+  padding: 10px;
+}
+
+.game-run__image {
+  background-size: cover;
+  width: 100%;
+  flex-grow: 1;
+}
+
+
+.blur {
+  filter: blur(4px);
+}
+
+.no-blur {
+  filter: blur(0px);
 }
