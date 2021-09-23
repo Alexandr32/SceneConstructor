@@ -21,6 +21,7 @@ import { MainComponent } from './editor/main/main.component';
 import { FireModule } from './fire.module';
 import { MediaFileDialogComponent } from './editor/media-file-dialog/media-file-dialog.component';
 import { CommonModule } from '@angular/common';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [

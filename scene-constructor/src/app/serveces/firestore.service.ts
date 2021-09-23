@@ -1,14 +1,15 @@
-import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {Game} from '../models/game.model';
-import {Scene} from '../models/scene.model';
-import {AngularFireStorage} from '@angular/fire/storage';
-import {Player} from '../models/player.model';
-import {filter, map, switchMap, first} from 'rxjs/operators';
-import {Observable, pipe, Subscription, zip} from 'rxjs';
-import {Answer} from '../models/answer.model';
-import {Coordinate} from '../models/coordinate.model';
-import {TypeFile} from '../models/type-file.model';
+import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Game } from '../models/game.model';
+import { Scene } from '../models/scene.model';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { Player } from '../models/player.model';
+import { filter, map, switchMap, first } from 'rxjs/operators';
+import { Observable, pipe, Subscription, zip } from 'rxjs';
+import { Answer } from '../models/answer.model';
+import { Coordinate } from '../models/coordinate.model';
+import { TypeFile } from '../models/type-file.model';
+import { MediaFile } from '../models/media-file.model.ts';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +21,14 @@ export class FirestoreService {
   private readonly ImageFileSceneCollection = 'images';
   private readonly ImageFilePlayersCollection = 'Players';
 
+  private readonly fileCollection = 'FileCollection'
+
   constructor(private fireStore: AngularFirestore, private storage: AngularFireStorage) {
   }
 
   getGames(): Observable<Game[]> {
     return this.fireStore.collection<Game>('Games')
-      .valueChanges({idField: 'id'});
+      .valueChanges({ idField: 'id' });
   }
 
   getGameById(gameId: string): Observable<Game> {
@@ -138,14 +141,6 @@ export class FirestoreService {
       };
     }))
     ];
-
-    console.log({
-      gameId: game.id,
-      name: game.name,
-      description: game.description,
-      scenes: scenes,
-      players: players,
-    });
 
     try {
       await this.fireStore.collection<any>(this.nameGameCollection)
@@ -289,6 +284,47 @@ export class FirestoreService {
     }
   }
 
+  async saveMediaFile(mediaFile: MediaFile) {
+
+    if (!mediaFile.srs) {
+      throw Error('Получена пустая строка base64');
+    }
+
+    try {
+      await this.fireStore.collection<any>(this.fileCollection)
+        .doc(mediaFile.id)
+        .set({
+          gameId: mediaFile.gameId,
+          typeFile: mediaFile.typeFile
+        });
+    } catch (error) {
+      console.error('При сохранении файла в таблицу произошла ошибка', error);
+      throw error;
+    }
+
+    let file: File
+    try {
+
+      file = FirestoreService.base64ToFile(
+        mediaFile.srs,
+        mediaFile.id,
+      );
+    } catch (error) {
+      console.error('Ошибка преобразования base64', error);
+      throw error;
+    }
+
+    // Общая папка для хранения файлов
+    const folderName = `SourceStore/${mediaFile.gameId}/${mediaFile.typeFile}/${mediaFile.id}`
+
+    try {
+      await this.storage.upload(`${folderName}`, file);
+    } catch (error) {
+      console.error('Ошибка загрузки файла в хранилище', error);
+      throw error;
+    }
+  }
+
   /**
    * Хз как это работает
    * https://coderoad.ru/61041916/%D0%92%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%82-
@@ -309,6 +345,6 @@ export class FirestoreService {
       u8arr[n] = bstr.charCodeAt(n);
     }
 
-    return new File([u8arr], filename, {type: mime});
+    return new File([u8arr], filename, { type: mime });
   }
 }

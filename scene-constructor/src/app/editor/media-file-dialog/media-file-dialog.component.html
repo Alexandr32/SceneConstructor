@@ -1,38 +1,94 @@
-<div class="m-t-25">
-  <div class="edit-scene-dialog__image-box" *ngIf="imgFile && imgFile !== ''">
-    <img class="edit-scene-dialog__image-box__image" [src]="imgFile" [alt]="" />
+<div class="dialog__body">
+  <div>
+    <div>Изображения игроков</div>
+  </div>
 
-    <button class="edit-scene-dialog__btn-del" (click)="onClickDeletedImg()">
+  <div>
+    <div>Изображения сцен</div>
+  </div>
+
+  <div>
+    <div>Видео сцен</div>
+  </div>
+
+  <div>Загрузить изображение персонажей</div>
+  <div
+    class="edit-player-dialog__box-image"
+    *ngIf="imgPlayerFile && imgPlayerFile !== ''"
+  >
+    <img class="edit-player-dialog__box-image__image" [src]="imgPlayerFile" />
+
+    <button
+      class="edit-player-dialog__box-image__btn-delete-img"
+      type="button"
+      (click)="onClickDeletedImgPlayer()"
+    >
       Удалить
     </button>
   </div>
 
-  <div>
-    <button (click)="openImageDialog()">Выбрать изображение</button>
-  </div>
-</div>
+  <button (click)="openDialogEditImagePlayer()">Выбрать изображение</button>
 
-<hr class="m-t-25" />
+  <hr class="m-t-25" />
 
-<div class="">
-  <div *ngFor="let video of videoSources">
-    <video
-      controls
-      class="edit-scene-dialog__image-box__image"
-      disabled="true"
-      (click)="toggleVideo()"
+  <div>Загрузить изображение сцены</div>
+  <div class="m-t-25">
+    <div
+      class="edit-scene-dialog__image-box"
+      *ngIf="imgSceneFile && imgSceneFile !== ''"
     >
-      <source [src]="video" type="video/mp4" />
-      Browser not supported
-    </video>
+      <img
+        class="edit-scene-dialog__image-box__image"
+        [src]="imgSceneFile"
+        [alt]=""
+      />
+
+      <button
+        class="edit-scene-dialog__btn-del"
+        (click)="onClickDeletedSceneImg()"
+      >
+        Удалить
+      </button>
+    </div>
+
+    <div>
+      <button (click)="openImageSceneDialog()">Выбрать изображение</button>
+    </div>
   </div>
 
-  <div>
-    <input type="file" accept="video/mp4" (change)="openVideoDialog($event)" />
-  </div>
+  <hr class="m-t-25" />
 
-  <div>
-    <button type="button" (click)="onNoClick()">Отмена</button>
-    <button (click)="onClickSave()">Сохранить</button>
+  <div>Загрузить видео для сцены</div>
+
+  <div class="">
+    <div *ngFor="let video of videoSources">
+      <video
+        controls
+        class="edit-scene-dialog__image-box__image"
+        disabled="true"
+        (click)="toggleVideo()"
+      >
+        <source [src]="video" type="video/mp4" />
+        Browser not supported
+      </video>
+    </div>
+
+    <div>
+      <input
+        type="file"
+        accept="video/mp4"
+        (change)="openVideoDialog($event)"
+      />
+    </div>
+
+    <div>
+      <button mat-raised-button color="primary" (click)="onLoadFile()">
+        Загрузить
+      </button>
+    </div>
+
+    <div>
+      <button type="button" (click)="onNoClick()">Закрыть</button>
+    </div>
   </div>
 </div>

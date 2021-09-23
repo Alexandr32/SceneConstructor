@@ -312,7 +312,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   addMediaFile() {
 
     const dialogRef = this.dialog.open(MediaFileDialogComponent, {
-      data: {}
+      data: {
+        gameId: this.game.id
+      }
     });
 
     dialogRef.afterClosed().subscribe(() => {
