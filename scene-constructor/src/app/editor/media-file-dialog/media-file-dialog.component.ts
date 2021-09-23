@@ -14,9 +14,9 @@ import { EditImageComponent } from '../edit-image-player/edit-image.component';
 export class MediaFileDialogComponent implements OnInit {
 
 
-  imagesPlayer: string[] = []
-  imagesScene: string[] = []
-  videosScene: string[] = []
+  imagesPlayer: { id: string, url: string }[] = []
+  imagesScene: { id: string, url: string }[] = []
+  videosScene: { id: string, url: string }[] = []
 
 
   imgSceneFile: string = '';
@@ -47,9 +47,15 @@ export class MediaFileDialogComponent implements OnInit {
   private async loadData() {
     this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneImage')
 
+
     this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImage')
 
     this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneVideo')
+  }
+
+  async deleteMediaFile(id: string) {
+    await this.firestoreService.deleteMediaFile(id)
+    this.loadData()
   }
 
   openImageSceneDialog() {

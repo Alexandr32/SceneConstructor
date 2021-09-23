@@ -10,6 +10,7 @@ import { Answer } from '../models/answer.model';
 import { Coordinate } from '../models/coordinate.model';
 import { TypeFile } from '../models/type-file.model';
 import { MediaFile } from '../models/media-file.model.ts';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -325,27 +326,46 @@ export class FirestoreService {
     }
   }
 
-  async getMediaFileLink(gameId: string, typeFile: 'SceneVideo' | 'SceneImage' | 'PlayerImage'): Promise<string[]> {
+  async getMediaFileLink(gameId: string, typeFile: 'SceneVideo' | 'SceneImage' | 'PlayerImage'): Promise<{ id: string, url: string }[]> {
 
-    const mediaFileList: { id: string }[] = await this.fireStore.collection(`FileCollection`, ref => ref.where('gameId', '==', gameId).where('typeFile', '==', typeFile))
+    const mediaFileList: { id: string }[] = await this.fireStore.collection(this.fileCollection, ref => ref.where('gameId', '==', gameId).where('typeFile', '==', typeFile))
       .valueChanges({ idField: 'id' })
       .pipe(first())
       .toPromise();
 
-    console.log(mediaFileList);
-
-    const resultLink: string[] = []
+    const resultLink: { id: string, url: string }[] = []
 
     mediaFileList.forEach(async (item) => {
 
       const folderName = `SourceStore/${gameId}/${typeFile}/${item.id}`
 
       const ref = this.storage.ref(folderName);
-      const result = await ref.getDownloadURL().toPromise();
-      resultLink.push(result)
+      const url = await ref.getDownloadURL().toPromise();
+      resultLink.push({ id: item.id, url: url })
     })
 
     return resultLink
+  }
+
+  async deleteMediaFile(id: string) {
+
+    const mediaFile: MediaFile = await this.fireStore.doc<MediaFile>(`${this.fileCollection}/${id}`)
+      .snapshotChanges()
+      .pipe(
+        map((doc) => {
+          const mediaFile = doc.payload.data() as MediaFile;
+          mediaFile.id = doc.payload.id;
+          return mediaFile;
+        })
+      )
+      .pipe(first())
+      .toPromise()
+
+    const path = `SourceStore/${mediaFile.gameId}/${mediaFile.typeFile}/${mediaFile.id}`
+    let ref = this.storage.ref(path);
+    await ref.delete().toPromise();
+
+    await this.fireStore.doc<MediaFile>(`fileCollection/${id}`).delete();
   }
 
   /**

@@ -4,10 +4,10 @@
     <div class="flex" *ngFor="let item of imagesPlayer">
       <img
         class="edit-scene-dialog__image-box__player-preview-image"
-        src="{{ item }}"
+        src="{{ item.url }}"
         alt=""
       />
-      <button>Удалить</button>
+      <button (click)="deleteMediaFile(item.id)">Удалить</button>
     </div>
   </div>
 
@@ -16,10 +16,10 @@
     <div class="flex" *ngFor="let item of imagesScene">
       <img
         class="edit-scene-dialog__image-box__scene-preview-image"
-        src="{{ item }}"
+        src="{{ item.url }}"
         alt=""
       />
-      <button>Удалить</button>
+      <button (click)="deleteMediaFile(item.id)">Удалить</button>
     </div>
   </div>
 
@@ -28,12 +28,12 @@
     <div class="flex" *ngFor="let item of videosScene">
       <video
         class="edit-scene-dialog__image-box__scene-preview-video"
-        src="{{ item }}"
+        src="{{ item.url }}"
         controls
       >
         Видео не поддерживается
       </video>
-      <button>Удалить</button>
+      <button (click)="deleteMediaFile(item.id)">Удалить</button>
     </div>
   </div>
 
@@ -109,11 +109,16 @@
       />
     </div>
 
-    <div>
-      <button mat-raised-button color="primary" (click)="onLoadFile()">
-        Загрузить
-      </button>
-    </div>
+    <hr class="m-t-25" />
+    <button
+      class="m-t-25"
+      mat-raised-button
+      color="primary"
+      (click)="onLoadFile()"
+    >
+      Загрузить
+    </button>
+    <hr class="m-t-25" />
 
     <div>
       <button type="button" (click)="onNoClick()">Закрыть</button>
