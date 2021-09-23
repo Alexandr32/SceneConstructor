@@ -100,6 +100,20 @@ body {
   display: flex;
 }
 
+.grid-100 {
+  display: grid;
+  grid-template-columns: 100px 100px 100px 100px;
+}
+
+.grid-130 {
+  display: grid;
+  grid-template-columns: 130px 130px 130px 130px;
+}
+.grid-3-160 {
+  display: grid;
+  grid-template-columns: 160px 160px 160px;
+}
+
 .justify-content-space-around {
   justify-content: space-around;
 }
@@ -207,6 +221,21 @@ body {
 .edit-scene-dialog__image-box__image {
   width: 256px;
   height: 192px;
+}
+
+.edit-scene-dialog__image-box__player-preview-image {
+  width: 42px;
+  height: 48px;
+}
+
+.edit-scene-dialog__image-box__scene-preview-image {
+  width: 64px;
+  height: 48px;
+}
+
+.edit-scene-dialog__image-box__scene-preview-video {
+  width: 100px;
+  height: 100px;
 }
 
 .scene {

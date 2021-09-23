@@ -325,6 +325,29 @@ export class FirestoreService {
     }
   }
 
+  async getMediaFileLink(gameId: string, typeFile: 'SceneVideo' | 'SceneImage' | 'PlayerImage'): Promise<string[]> {
+
+    const mediaFileList: { id: string }[] = await this.fireStore.collection(`FileCollection`, ref => ref.where('gameId', '==', gameId).where('typeFile', '==', typeFile))
+      .valueChanges({ idField: 'id' })
+      .pipe(first())
+      .toPromise();
+
+    console.log(mediaFileList);
+
+    const resultLink: string[] = []
+
+    mediaFileList.forEach(async (item) => {
+
+      const folderName = `SourceStore/${gameId}/${typeFile}/${item.id}`
+
+      const ref = this.storage.ref(folderName);
+      const result = await ref.getDownloadURL().toPromise();
+      resultLink.push(result)
+    })
+
+    return resultLink
+  }
+
   /**
    * Хз как это работает
    * https://coderoad.ru/61041916/%D0%92%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%82-

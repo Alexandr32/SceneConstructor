@@ -13,6 +13,12 @@ import { EditImageComponent } from '../edit-image-player/edit-image.component';
 })
 export class MediaFileDialogComponent implements OnInit {
 
+
+  imagesPlayer: string[] = []
+  imagesScene: string[] = []
+  videosScene: string[] = []
+
+
   imgSceneFile: string = '';
 
   imgPlayerFile: string;
@@ -35,6 +41,15 @@ export class MediaFileDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadData()
+  }
+
+  private async loadData() {
+    this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneImage')
+
+    this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImage')
+
+    this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneVideo')
   }
 
   openImageSceneDialog() {
@@ -129,6 +144,8 @@ export class MediaFileDialogComponent implements OnInit {
     if (this.videoSources.length) {
       await this.loadVideoScene()
     }
+
+    this.loadData()
   }
 
   private async loadImagePlayer() {

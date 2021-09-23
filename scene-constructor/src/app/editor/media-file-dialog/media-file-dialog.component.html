@@ -1,15 +1,43 @@
 <div class="dialog__body">
-  <div>
-    <div>Изображения игроков</div>
+  <div>Изображения игроков</div>
+  <div class="grid-100">
+    <div class="flex" *ngFor="let item of imagesPlayer">
+      <img
+        class="edit-scene-dialog__image-box__player-preview-image"
+        src="{{ item }}"
+        alt=""
+      />
+      <button>Удалить</button>
+    </div>
   </div>
 
-  <div>
-    <div>Изображения сцен</div>
+  <div>Изображения сцен</div>
+  <div class="grid-130">
+    <div class="flex" *ngFor="let item of imagesScene">
+      <img
+        class="edit-scene-dialog__image-box__scene-preview-image"
+        src="{{ item }}"
+        alt=""
+      />
+      <button>Удалить</button>
+    </div>
   </div>
 
-  <div>
-    <div>Видео сцен</div>
+  <div>Видео для сцен</div>
+  <div class="grid-3-160">
+    <div class="flex" *ngFor="let item of videosScene">
+      <video
+        class="edit-scene-dialog__image-box__scene-preview-video"
+        src="{{ item }}"
+        controls
+      >
+        Видео не поддерживается
+      </video>
+      <button>Удалить</button>
+    </div>
   </div>
+
+  <hr class="m-t-25" />
 
   <div>Загрузить изображение персонажей</div>
   <div
