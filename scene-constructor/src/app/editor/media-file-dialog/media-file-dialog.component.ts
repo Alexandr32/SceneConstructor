@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CropperSettings } from 'ngx-img-cropper';
 import { MessageDialogComponent } from 'src/app/core/message-dialog/message-dialog.component';
+import { FileLink } from 'src/app/models/file-link.model.ts';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
@@ -15,9 +16,9 @@ import { EditImageComponent } from '../edit-image-player/edit-image.component';
 export class MediaFileDialogComponent implements OnInit {
 
 
-  imagesPlayer: { id: string, url: string }[] = []
-  imagesScene: { id: string, url: string }[] = []
-  videosScene: { id: string, url: string }[] = []
+  imagesPlayer: FileLink[] = []
+  imagesScene: FileLink[] = []
+  videosScene: FileLink[] = []
 
 
   imgSceneFile: string = '';
@@ -47,7 +48,6 @@ export class MediaFileDialogComponent implements OnInit {
 
   private async loadData() {
     this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneImage')
-
 
     this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImage')
 

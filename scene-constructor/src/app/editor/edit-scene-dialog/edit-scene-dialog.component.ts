@@ -9,6 +9,7 @@ import { CropperSettings } from 'ngx-img-cropper';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { TypeFile } from '../../models/type-file.model';
+import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -23,29 +24,38 @@ export class EditSceneDialogComponent implements OnInit {
   form: FormGroup;
 
   imgFile: string;
+  imageFileId: string
 
   videoSources: string[] = [];
+  videoFileId: string
 
   answers: Answer[] = [];
   players: { player: Player, isSelect: boolean }[] = [];
 
+  private gameId: string
+
   constructor(public dialogRef: MatDialogRef<EditSceneDialogComponent>,
     private fireStore: AngularFirestore,
     @Inject(MAT_DIALOG_DATA) public data: {
+      gameId: string,
       scene: Scene,
       players: Player[]
     },
     public dialog: MatDialog) {
+
+    this.gameId = data.gameId
   }
 
   ngOnInit(): void {
 
     if (this.data.scene.imageFile) {
       this.videoSources.push(this.data.scene.videoFile);
+      this.videoFileId = this.data.scene.videoFileId
     }
 
     if (this.data.scene.imageFile) {
       this.imgFile = this.data.scene.imageFile;
+      this.imageFileId = this.data.scene.imageFileId
     }
 
     this.form = new FormGroup({
@@ -154,12 +164,12 @@ export class EditSceneDialogComponent implements OnInit {
     this.answers.push(answer);
   }
 
-  private static getRndColor(): string {
-    const r = Math.floor(Math.random() * (256));
-    const g = Math.floor(Math.random() * (256));
-    const b = Math.floor(Math.random() * (256));
-    return '#' + r.toString(16) + g.toString(16) + b.toString(16);
-  }
+  // private static getRndColor(): string {
+  //   const r = Math.floor(Math.random() * (256));
+  //   const g = Math.floor(Math.random() * (256));
+  //   const b = Math.floor(Math.random() * (256));
+  //   return '#' + r.toString(16) + g.toString(16) + b.toString(16);
+  // }
 
   private getPosition(positions: number[]): number {
     let position = 0;
@@ -191,6 +201,7 @@ export class EditSceneDialogComponent implements OnInit {
     this.data.scene.isStartGame = this.form.value['isStartGame'];
     this.data.scene.isStopGame = this.form.value['isStopGame'];
 
+
     this.answers.forEach(item => {
       item.text = this.form.value[`answerId${item.id}`];
     });
@@ -202,7 +213,10 @@ export class EditSceneDialogComponent implements OnInit {
     });
 
     this.data.scene.answers = this.answers;
+    this.data.scene.imageFileId = this.imageFileId;
     this.data.scene.imageFile = this.imgFile;
+
+    this.data.scene.videoFileId = this.videoFileId
     this.data.scene.videoFile = this.videoSources[0];
 
     this.data.scene.players = player;
@@ -219,52 +233,39 @@ export class EditSceneDialogComponent implements OnInit {
     //this.videoPlayer.nativeElement.play()
   }
 
-  private fileToBase64 = (file: File): Promise<string> => {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result.toString());
-      reader.onerror = error => reject(error);
+  // private fileToBase64 = (file: File): Promise<string> => {
+  //   return new Promise<string>((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result.toString());
+  //     reader.onerror = error => reject(error);
+  //   });
+  // };
+
+  openSelectImageFileDialog() {
+    const dialogRef = this.dialog.open(SelectMediaFileDialogComponent, {
+      data: { gameId: this.gameId }
     });
-  };
 
-  async openVideoDialog(event) {
+    dialogRef.componentInstance.isShowImagesScene = true
 
-    const file: File = event.target.files[0];
-    let videoSource;
-    try {
-      videoSource = await this.fileToBase64(file);
-    } catch (e) {
-      console.log(e);
-    }
-
-    this.videoSources = [];
-    this.videoSources.push(videoSource);
+    dialogRef.componentInstance.selectItem.subscribe((item: { id: string, url: string }) => {
+      this.imgFile = item.url
+      this.imageFileId = item.id
+    });
   }
 
-  openImageDialog() {
-    const cropperSettings = new CropperSettings();
-    cropperSettings.width = 1024;
-    cropperSettings.height = 768;
-    cropperSettings.croppedWidth = 1024;
-    cropperSettings.croppedHeight = 768;
-    cropperSettings.canvasWidth = 400;
-    cropperSettings.canvasHeight = 300;
-
-    const dialogRef = this.dialog.open(EditImageComponent, {
-      data: { image: '', cropperSettings }
+  openSelectVideoFileDialog() {
+    const dialogRef = this.dialog.open(SelectMediaFileDialogComponent, {
+      data: { gameId: this.gameId }
     });
 
-    dialogRef.componentInstance.saveEvent.subscribe((imgFile: string) => {
-      this.imgFile = imgFile;
-      this.form.patchValue({
-        file: imgFile
-      });
+    dialogRef.componentInstance.isShowVideosScene = true
 
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('closeDialog');
+    dialogRef.componentInstance.selectItem.subscribe((item: { id: string, url: string }) => {
+      this.videoSources = []
+      this.videoSources.push(item.url)
+      this.videoFileId = item.id
     });
   }
 

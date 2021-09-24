@@ -14,6 +14,7 @@ import { MessageDialogComponent } from '../../core/message-dialog/message-dialog
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MediaFileDialogComponent } from '../media-file-dialog/media-file-dialog.component';
+import { FileLink } from 'src/app/models/file-link.model.ts';
 
 @Component({
   selector: 'app-editor',
@@ -74,22 +75,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     this.game = game;
 
-    this.form = new FormGroup({
-      'name':
-        new FormControl(
-          this.game.name,
-          [
-            Validators.required
-          ]),
-      'description':
-        new FormControl(
-          this.game.description,
-          [
-            Validators.required
-          ]),
-    });
-    this.showForm = true;
-
     this.scenes = [];
     this.game.scenes.forEach(scene => {
       this.scenes.push(scene);
@@ -108,7 +93,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.players.push(player);
     });
 
-    this.renderLine();
 
     for (const player of this.game.players) {
 
@@ -121,10 +105,25 @@ export class EditorComponent implements OnInit, AfterViewInit {
       }
     }
 
+    //debugger
+
+    //const sceneImagesLinks: FileLink[] = await this.firestoreServiceService.getMediaFileLink(game.id, 'SceneImage')
+    //const sceneVideosLinks: FileLink[] = await this.firestoreServiceService.getMediaFileLink(game.id, 'SceneVideo')
+
+    //debugger
+
     for (const scene of this.game.scenes) {
 
       try {
-        scene.imageFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Image').toPromise();
+
+        // const imageLink = sceneImagesLinks.find(item => {
+        //   if (item.id == scene.idImageFile) {
+        //     return item
+        //   }
+        // })
+
+        scene.imageFile = await this.firestoreServiceService
+          .getUrl(this.game.id, scene.imageFileId, 'SceneImage').toPromise()
       } catch (error) {
         scene.imageFile = '/assets/http_scene.jpg';
         console.log('Изображение не найдено');
@@ -132,12 +131,38 @@ export class EditorComponent implements OnInit, AfterViewInit {
       }
 
       try {
-        scene.videoFile = await this.firestoreServiceService.getFileScene(game.id, scene.id, 'Video').toPromise();
+
+        // const videoLink = sceneVideosLinks.find(item => {
+        //   if (item.id === scene.idVideoFile) {
+        //     return item
+        //   }
+        // })
+
+        scene.videoFile = await this.firestoreServiceService
+          .getUrl(this.game.id, scene.videoFileId, 'SceneVideo').toPromise()
       } catch (error) {
         scene.videoFile = '';
         console.log(error);
       }
     }
+
+    this.form = new FormGroup({
+      'name':
+        new FormControl(
+          this.game.name,
+          [
+            Validators.required
+          ]),
+      'description':
+        new FormControl(
+          this.game.description,
+          [
+            Validators.required
+          ]),
+    });
+    this.showForm = true;
+
+    this.renderLine();
   }
 
   ngAfterViewInit(): void {
@@ -188,7 +213,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   openEditDialog(scene: Scene): void {
 
     const dialogRef = this.dialog.open(EditSceneDialogComponent, {
-      data: { scene, players: this.players }
+      data: { gameId: this.game.id, scene, players: this.players }
     });
 
     dialogRef.componentInstance.saveEvent.subscribe(() => {
@@ -254,7 +279,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
       dialogSave.close();
 
-      await this.deleteFileScenes();
+      //await this.deleteFileScenes();
       await this.deleteFilePlayers();
 
     } catch (error) {
@@ -463,16 +488,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
     return window.screen.width;
   }
 
-  private async deleteFileScenes() {
-    this.fileForDeleteScenes.map(async (item) => {
-      try {
-        await this.firestoreServiceService.deleteFileScene(this.game.id, item.id, item.typeFile).toPromise();
-      } catch (error) {
-        console.error('Ошибка при удалении файла', error);
-      }
-    });
-    this.fileForDeleteScenes = [];
-  }
+  // private async deleteFileScenes() {
+  //   this.fileForDeleteScenes.map(async (item) => {
+  //     try {
+  //       await this.firestoreServiceService.deleteFileScene(this.game.id, item.id, item.typeFile).toPromise();
+  //     } catch (error) {
+  //       console.error('Ошибка при удалении файла', error);
+  //     }
+  //   });
+  //   this.fileForDeleteScenes = [];
+  // }
 
   private async deleteFilePlayers() {
     this.fileForDeletePlayers.map(async (item) => {

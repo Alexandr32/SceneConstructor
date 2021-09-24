@@ -1,0 +1,49 @@
+<div class="dialog__body">
+  <div *ngIf="isShowImagesPlayer">
+    <div>Изображения игроков</div>
+    <div class="grid-100">
+      <div class="flex" *ngFor="let item of imagesPlayer">
+        <img
+          class="edit-scene-dialog__image-box__player-preview-image"
+          src="{{ item.url }}"
+          alt=""
+        />
+        <button (click)="selectMediaFile(item)">Выбрать</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isShowImagesScene">
+    <div>Изображения сцен</div>
+    <div class="grid-130">
+      <div class="flex" *ngFor="let item of imagesScene">
+        <img
+          class="edit-scene-dialog__image-box__scene-preview-image"
+          src="{{ item.url }}"
+          alt=""
+        />
+        <button (click)="selectMediaFile(item)">Выбрать</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isShowVideosScene">
+    <div>Видео для сцен</div>
+    <div class="grid-3-160">
+      <div class="flex" *ngFor="let item of videosScene">
+        <video
+          class="edit-scene-dialog__image-box__scene-preview-video"
+          src="{{ item.url }}"
+          controls
+        >
+          Видео не поддерживается
+        </video>
+        <button (click)="selectMediaFile(item)">Выбрать</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <button type="button" (click)="onNoClick()">Закрыть</button>
+  </div>
+</div>
