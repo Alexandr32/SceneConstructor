@@ -105,45 +105,36 @@ export class EditorComponent implements OnInit, AfterViewInit {
       }
     }
 
-    //debugger
-
-    //const sceneImagesLinks: FileLink[] = await this.firestoreServiceService.getMediaFileLink(game.id, 'SceneImage')
-    //const sceneVideosLinks: FileLink[] = await this.firestoreServiceService.getMediaFileLink(game.id, 'SceneVideo')
-
-    //debugger
-
     for (const scene of this.game.scenes) {
 
-      try {
-
-        // const imageLink = sceneImagesLinks.find(item => {
-        //   if (item.id == scene.idImageFile) {
-        //     return item
-        //   }
-        // })
-
-        scene.imageFile = await this.firestoreServiceService
-          .getUrl(this.game.id, scene.imageFileId, 'SceneImage').toPromise()
-      } catch (error) {
+      if (scene.imageFileId) {
+        try {
+          scene.imageFile = await this.firestoreServiceService
+            .getUrl(this.game.id, scene.imageFileId, 'SceneImage').toPromise()
+        } catch (error) {
+          scene.imageFile = '/assets/http_scene.jpg';
+          console.error('Изображение не найдено');
+          console.error(error);
+        }
+      } else {
         scene.imageFile = '/assets/http_scene.jpg';
-        console.log('Изображение не найдено');
-        console.log(error);
       }
 
-      try {
+      if (scene.videoFileId) {
+        try {
 
-        // const videoLink = sceneVideosLinks.find(item => {
-        //   if (item.id === scene.idVideoFile) {
-        //     return item
-        //   }
-        // })
+          scene.videoFile = await this.firestoreServiceService
+            .getUrl(this.game.id, scene.videoFileId, 'SceneVideo').toPromise()
 
-        scene.videoFile = await this.firestoreServiceService
-          .getUrl(this.game.id, scene.videoFileId, 'SceneVideo').toPromise()
-      } catch (error) {
+        } catch (error) {
+          scene.videoFile = '';
+          console.error(error);
+        }
+      } else {
         scene.videoFile = '';
-        console.log(error);
       }
+
+
     }
 
     this.form = new FormGroup({

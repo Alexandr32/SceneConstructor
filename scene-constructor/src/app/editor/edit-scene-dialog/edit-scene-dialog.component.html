@@ -88,14 +88,11 @@
         [src]="imgFile"
         [alt]="form.value.name"
       />
-
-      <button class="edit-scene-dialog__btn-del" (click)="onClickDeletedImg()">
-        Удалить
-      </button>
     </div>
 
     <div>
       <button (click)="openSelectImageFileDialog()">Выбрать изображение</button>
+      <button (click)="onClickDeletedImg()">Удалить</button>
     </div>
   </div>
 
@@ -116,6 +113,7 @@
 
     <div>
       <button (click)="openSelectVideoFileDialog()">Выбрать видео</button>
+      <button (click)="onClickDeletedVideo()">Убрать видео</button>
     </div>
   </div>
 

@@ -217,7 +217,12 @@ export class EditSceneDialogComponent implements OnInit {
     this.data.scene.imageFile = this.imgFile;
 
     this.data.scene.videoFileId = this.videoFileId
-    this.data.scene.videoFile = this.videoSources[0];
+    if (this.videoFileId) {
+      this.data.scene.videoFile = this.videoSources[0];
+    } else {
+      this.data.scene.videoFile = ''
+    }
+
 
     this.data.scene.players = player;
 
@@ -271,10 +276,16 @@ export class EditSceneDialogComponent implements OnInit {
 
   onClickDeletedImg() {
     this.imgFile = '';
+    this.imageFileId = ''
     this.form.patchValue({
       file: ''
     });
     this.form.get('file').updateValueAndValidity();
+  }
+
+  onClickDeletedVideo() {
+    this.videoFileId = ''
+    this.videoSources = []
   }
 
 }
