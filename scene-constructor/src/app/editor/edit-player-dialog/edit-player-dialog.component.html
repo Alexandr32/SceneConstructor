@@ -1,55 +1,33 @@
-<form [formGroup]="form"
-      class="dialog__body"
-      novalidate>
-
+<form [formGroup]="form" class="dialog__body" novalidate>
   <h1>Персонаж:</h1>
 
   <div>
     <div class="input-box">
       <p>Имя:</p>
-      <input name="name" formControlName="name"/>
-      <div
-        *ngIf="form.controls['name'].invalid">
-        Введите значение
-      </div>
+      <input name="name" formControlName="name" />
+      <div *ngIf="form.controls['name'].invalid">Введите значение</div>
     </div>
 
     <div class="input-box">
       <p>Описание:</p>
-      <input name="description" formControlName="description"/>
-      <div
-        *ngIf="form.controls['description'].invalid">
-        Введите значение
-      </div>
+      <input name="description" formControlName="description" />
+      <div *ngIf="form.controls['description'].invalid">Введите значение</div>
     </div>
   </div>
 
-
-  <div class="edit-player-dialog__box-image"
-       *ngIf="imgFile && imgFile !== ''">
-
-    <img class="edit-player-dialog__box-image__image"
-         [src]="imgFile"
-         [alt]="form.value.name">
-
-    <button
-      class="edit-player-dialog__box-image__btn-delete-img"
-      type="button"
-      (click)="onClickDeletedImg()">
-      Удалить
-    </button>
-
+  <div class="edit-player-dialog__box-image" *ngIf="imgFile && imgFile !== ''">
+    <img
+      class="edit-player-dialog__box-image__image"
+      [src]="imgFile"
+      [alt]="form.value.name"
+    />
   </div>
 
-  <button (click)="openDialogEditImagePlayer()">Выбрать изображение</button>
+  <button (click)="openSelectImageFileDialog()">Выбрать изображение</button>
+  <button type="button" (click)="onClickDeletedImg()">Удалить</button>
 
   <div>
-    <button type="button" (click)="onNoClick()">
-      Отмена
-    </button>
-    <button (click)="onClickSave()" *ngIf="form.valid">
-      Сохранить
-    </button>
+    <button type="button" (click)="onNoClick()">Отмена</button>
+    <button (click)="onClickSave()" *ngIf="form.valid">Сохранить</button>
   </div>
-
 </form>

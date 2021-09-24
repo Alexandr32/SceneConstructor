@@ -96,13 +96,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     for (const player of this.game.players) {
 
-      try {
-        player.imageFile = await this.firestoreServiceService.getImagePlayer(game.id, player.id, 'Image').toPromise();
-      } catch (error) {
+      if (player.imageFileId) {
+        try {
+          player.imageFile = await this.firestoreServiceService
+            .getUrl(this.game.id, player.imageFileId, 'PlayerImage').toPromise()
+        } catch (error) {
+          player.imageFile = '/assets/http_player.jpg';
+          console.log('Изображение не найдено');
+          console.log(error);
+        }
+      } else {
         player.imageFile = '/assets/http_player.jpg';
-        console.log('Изображение не найдено');
-        console.log(error);
       }
+
+
     }
 
     for (const scene of this.game.scenes) {
@@ -170,7 +177,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     const title = 'Новый персонаж';
     const description = 'Описание нового персонажа';
 
-    const player = new Player(id, title, description, '', '');
+    const player = new Player(id, title, description, '');
     player.imageFile = '/assets/http_player.jpg';
 
     this.players.push(player);
@@ -179,7 +186,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   onClickEditPlayer(player: Player) {
 
     const dialogRef = this.dialog.open(EditPlayerDialogComponent, {
-      data: { player }
+      data: { gameId: this.game.id, player }
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -252,8 +259,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   async saveGame() {
 
-    console.log('saveGame');
-
     const dialogSave = this.dialog.open(MessageDialogComponent, {
       data: 'Сохранение...'
     });
@@ -269,9 +274,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       await this.firestoreServiceService.saveGame(this.game);
 
       dialogSave.close();
-
-      //await this.deleteFileScenes();
-      await this.deleteFilePlayers();
 
     } catch (error) {
 
@@ -479,29 +481,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   getWidthScreen(): number {
     return window.screen.width;
-  }
-
-  // private async deleteFileScenes() {
-  //   this.fileForDeleteScenes.map(async (item) => {
-  //     try {
-  //       await this.firestoreServiceService.deleteFileScene(this.game.id, item.id, item.typeFile).toPromise();
-  //     } catch (error) {
-  //       console.error('Ошибка при удалении файла', error);
-  //     }
-  //   });
-  //   this.fileForDeleteScenes = [];
-  // }
-
-  private async deleteFilePlayers() {
-    this.fileForDeletePlayers.map(async (item) => {
-      try {
-        await this.firestoreServiceService.deleteImagePlayer(this.game.id, item.id, item.typeFile).toPromise();
-      } catch (error) {
-        console.error('Ошибка при удалении файла', error);
-      }
-
-    });
-    this.fileForDeletePlayers = [];
   }
 
 }

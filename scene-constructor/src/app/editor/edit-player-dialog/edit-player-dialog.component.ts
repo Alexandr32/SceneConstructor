@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Player} from '../../models/player.model';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {CropperSettings} from 'ngx-img-cropper';
-import {EditImageComponent} from '../edit-image-player/edit-image.component';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Player } from '../../models/player.model';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CropperSettings } from 'ngx-img-cropper';
+import { EditImageComponent } from '../edit-image-player/edit-image.component';
+import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 
 @Component({
   selector: 'app-edit-player-dialog',
@@ -16,18 +17,24 @@ export class EditPlayerDialogComponent implements OnInit {
   saveEvent = new EventEmitter<Player>();
 
   imgFile: string;
+  imageFileId: string
 
   form: FormGroup;
 
+  private gameId: string
+
   constructor(public dialogRef: MatDialogRef<EditPlayerDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: { player: Player },
-              public dialog: MatDialog) {
+    @Inject(MAT_DIALOG_DATA) public data: { gameId: string, player: Player },
+    public dialog: MatDialog) {
+
+    this.gameId = data.gameId
 
   }
 
   ngOnInit(): void {
 
     this.imgFile = this.data.player.imageFile;
+    this.imageFileId = this.data.player.imageFileId
 
     this.form = new FormGroup({
       'name':
@@ -48,35 +55,23 @@ export class EditPlayerDialogComponent implements OnInit {
 
   onClickDeletedImg(): void {
     this.imgFile = '';
+    this.imageFileId = ''
     this.form.patchValue({
       file: ''
     });
     this.form.get('file').updateValueAndValidity();
   }
 
-  openDialogEditImagePlayer() {
-
-    const cropperSettings = new CropperSettings();
-    cropperSettings.width = 400;
-    cropperSettings.height = 550;
-    cropperSettings.croppedWidth = 450;
-    cropperSettings.croppedHeight = 550;
-    cropperSettings.canvasWidth = 400;
-    cropperSettings.canvasHeight = 300;
-
-    const dialogRef = this.dialog.open(EditImageComponent, {
-      data: {image: '', cropperSettings}
+  openSelectImageFileDialog() {
+    const dialogRef = this.dialog.open(SelectMediaFileDialogComponent, {
+      data: { gameId: this.gameId }
     });
 
-    dialogRef.componentInstance.saveEvent.subscribe((imgFile: string) => {
-      this.imgFile = imgFile;
-      this.form.patchValue({
-        file: imgFile
-      });
-    });
+    dialogRef.componentInstance.isShowImagesPlayer = true
 
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('closeDialog');
+    dialogRef.componentInstance.selectItem.subscribe((item: { id: string, url: string }) => {
+      this.imgFile = item.url
+      this.imageFileId = item.id
     });
   }
 
@@ -88,7 +83,9 @@ export class EditPlayerDialogComponent implements OnInit {
     this.data.player.name = this.form.value['name'];
     this.data.player.description = this.form.value['description'];
     this.data.player.imageFile = this.imgFile;
+    this.data.player.imageFileId = this.imageFileId
     this.imgFile = '';
+    this.imageFileId = '';
 
     this.saveEvent.emit(this.data.player);
     this.dialogRef.close();
@@ -98,19 +95,4 @@ export class EditPlayerDialogComponent implements OnInit {
     this.imgFile = '';
     this.dialogRef.close();
   }
-
-  // Image Preview
-  /*showPreview(event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.form.patchValue({
-      file
-    });
-    this.form.get('file').updateValueAndValidity()
-    // File Preview
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imgFile = reader.result as string;
-    }
-    reader.readAsDataURL(file)
-  }*/
 }

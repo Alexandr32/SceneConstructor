@@ -238,15 +238,6 @@ export class EditSceneDialogComponent implements OnInit {
     //this.videoPlayer.nativeElement.play()
   }
 
-  // private fileToBase64 = (file: File): Promise<string> => {
-  //   return new Promise<string>((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result.toString());
-  //     reader.onerror = error => reject(error);
-  //   });
-  // };
-
   openSelectImageFileDialog() {
     const dialogRef = this.dialog.open(SelectMediaFileDialogComponent, {
       data: { gameId: this.gameId }

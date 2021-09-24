@@ -61,10 +61,11 @@ export class FirestoreService {
           });
 
           game.players = game.players.map((player) => {
-            return new Player(player.id,
-              player.name, player.description,
-              player.imageFile,
-              player.videoFile);
+            return new Player(
+              player.id,
+              player.name,
+              player.description,
+              player.imageFileId);
           });
 
           game.id = doc.payload.id;
@@ -75,24 +76,6 @@ export class FirestoreService {
   }
 
   async deleteGame(game: Game): Promise<any> {
-
-    game.players.map(async (item) => {
-      try {
-        await this.deleteImagePlayer(game.id, item.id, 'Image').toPromise();
-      } catch (error) {
-        console.log('Ошибка при удалении файла', error);
-      }
-    });
-
-    // game.scenes.map(async (item) => {
-    //   try {
-    //     await this.deleteFileScene(game.id, item.id, 'Image').toPromise();
-    //     await this.deleteFileScene(game.id, item.id, 'Video').toPromise();
-    //   } catch (error) {
-    //     console.log('Ошибка при удалении файла', error);
-    //   }
-    // });
-
     await this.fireStore.collection('Games').doc(game.id).delete();
   }
 
@@ -106,7 +89,8 @@ export class FirestoreService {
       return {
         id: item.id,
         name: item.name,
-        description: item.description
+        description: item.description,
+        imageFileId: item.imageFileId
       };
     }))];
 
@@ -159,28 +143,6 @@ export class FirestoreService {
       throw error;
     }
 
-    // for (const scene of game.scenes) {
-
-    //   if (scene.imageFile) {
-    //     if (!scene.imageFile.includes('http')) {
-    //       await this.saveFile(game.id, scene, 'Image');
-    //     }
-    //   }
-
-    //   if (scene.videoFile) {
-    //     if (!scene.videoFile.includes('http')) {
-    //       await this.saveFile(game.id, scene, 'Video');
-    //     }
-    //   }
-    // }
-
-    // for (const player of game.players) {
-    //   if (player.imageFile) {
-    //     if (!player.imageFile.includes('http')) {
-    //       await this.saveFile(game.id, player, 'Image');
-    //     }
-    //   }
-    // }
   }
 
   /**
@@ -212,80 +174,6 @@ export class FirestoreService {
       throw error;
     }
   }
-
-  // getFileScene(gameId: string, id: string, typeFile: 'Video' | 'Image'): Observable<string> {
-  //   let ref = this.storage.ref(`${gameId}/Scenes/${id}/${typeFile}/${id}`);
-  //   return ref.getDownloadURL();
-  // }
-
-  // deleteFileScene(gameId: string, id: string, typeFile: 'Video' | 'Image'): Observable<string> {
-  //   let ref = this.storage.ref(`${gameId}/Scenes/${id}/${typeFile}/${id}`);
-  //   return ref.delete();
-  // }
-
-  getImagePlayer(gameId: string, id: string, typeFile: 'Video' | 'Image'): Observable<string> {
-    let ref = this.storage.ref(`${gameId}/Players/${id}/${typeFile}/${id}`);
-    return ref.getDownloadURL();
-  }
-
-  deleteImagePlayer(gameId: string, id: string, typeFile: 'Video' | 'Image'): Observable<string> {
-    const path = `${gameId}/Players/${id}/${typeFile}/${id}`;
-    let ref = this.storage.ref(path);
-    return ref.delete();
-  }
-
-  // saveFile(gameId: string, value: Scene | Player, typeFile: 'Video' | 'Image') {
-
-  //   if (typeFile === 'Image') {
-  //     if (!value.imageFile) {
-  //       throw Error('Получена пустая строка base64');
-  //     }
-
-  //     if (value.imageFile.includes('http')) {
-  //       throw Error('Получена не строка base64');
-  //     }
-  //   } else {
-  //     if (!value.videoFile) {
-  //       throw Error('Получена пустая строка base64');
-  //     }
-
-  //     if (value.videoFile.includes('http')) {
-  //       throw Error('Получена не строка base64');
-  //     }
-  //   }
-
-  //   console.log('id для записи', value.id);
-
-  //   try {
-  //     let mediaFile: string;
-  //     if (typeFile === 'Video') {
-  //       mediaFile = value.videoFile;
-  //     } else {
-  //       mediaFile = value.imageFile;
-  //     }
-
-  //     const file = FirestoreService.base64ToFile(
-  //       mediaFile,
-  //       value.id,
-  //     );
-
-  //     let folderName;
-
-  //     if (value instanceof Player) {
-  //       folderName = `${gameId}/Players/${value.id}`;
-  //     } else {
-  //       folderName = `${gameId}/Scenes/${value.id}`;
-  //     }
-
-  //     folderName = folderName + '/' + typeFile;
-
-  //     return this.storage.upload(`${folderName}/${value.id}`, file);
-
-  //   } catch (error) {
-  //     console.error(`При сохранении файла ${typeFile} произошла ошибка`, error);
-  //     throw error;
-  //   }
-  // }
 
   async saveMediaFile(mediaFile: MediaFile) {
 
