@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CropperSettings } from 'ngx-img-cropper';
+import { MessageDialogComponent } from 'src/app/core/message-dialog/message-dialog.component';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
@@ -139,6 +140,12 @@ export class MediaFileDialogComponent implements OnInit {
   }
 
   async onLoadFile() {
+
+
+    const dialogSave = this.dialog.open(MessageDialogComponent, {
+      data: 'Сохранение...'
+    });
+
     if (this.imgPlayerFile) {
       await this.loadImagePlayer()
     }
@@ -150,6 +157,8 @@ export class MediaFileDialogComponent implements OnInit {
     if (this.videoSources.length) {
       await this.loadVideoScene()
     }
+
+    dialogSave.close()
 
     this.loadData()
   }
