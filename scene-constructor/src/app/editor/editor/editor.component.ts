@@ -309,6 +309,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
     scene.text = 'Новая сцена';
     scene.title = 'Новое описание';
     scene.color = '#7B68EE';
+    scene.imageFileId = ''
+    scene.videoFileId = ''
     scene.coordinate = new Coordinate();
     scene.coordinate.y = 0;
     scene.coordinate.x = 0;
