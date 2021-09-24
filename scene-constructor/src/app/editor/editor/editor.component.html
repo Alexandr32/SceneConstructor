@@ -23,14 +23,30 @@
         </div>
       </div>
       <div class="editor__control-panel__btn-control" *ngIf="form.valid">
-        <button mat-raised-button color="primary" (click)="saveGame()">
-          Сохранить игру
-        </button>
-        <button mat-raised-button color="primary" (click)="runGame()">
-          Запустить игру
-        </button>
-        <button mat-raised-button color="primary" (click)="addMediaFile()">
-          Загрузить медиа файл
+        <div class="m-10">
+          <button color="warn" mat-raised-button (click)="saveGame()">
+            Сохранить игру
+          </button>
+        </div>
+        <div class="m-10">
+          <button
+            class="m-10"
+            mat-raised-button
+            color="primary"
+            (click)="runGame()"
+          >
+            Запустить игру
+          </button>
+        </div>
+      </div>
+      <div class="m-10">
+        <button
+          class="m-10"
+          mat-raised-button
+          color="accent"
+          (click)="addMediaFile()"
+        >
+          Загрузить медиа файлы
         </button>
       </div>
     </form>

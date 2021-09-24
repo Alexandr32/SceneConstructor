@@ -42,10 +42,6 @@ export class SelectMediaFileDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    console.log(this.gameId);
-
-
     this.loadData()
   }
 
