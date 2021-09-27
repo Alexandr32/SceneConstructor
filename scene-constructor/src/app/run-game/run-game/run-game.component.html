@@ -1,9 +1,9 @@
 <div class="container-run-game">
   <div class="game-run">
-    <img id="image" src="assets/scene.jpg" alt="image" />
+    <img id="image" [src]="selectScene?.imageFile" alt="image" />
 
     <video id="video" preload="auto" autoplay="true" loop="true" muted="muted">
-      <source src="assets/video-cyber.mp4" type="video/mp4" />
+      <source [src]="selectScene?.videoFile" type="video/mp4" />
     </video>
 
     <div>
@@ -17,10 +17,8 @@
           <div class="game-run__description-background blur"></div>
 
           <div class="game-run__text-description">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
-            corporis deserunt eligendi explicabo iste natus numquam odio
-            possimus rerum, vitae. Ab assumenda dolorum enim fuga officiis qui
-            sed similique ullam.
+            {{ selectScene?.title }}
+            {{ selectScene?.text }}
           </div>
         </div>
       </div>

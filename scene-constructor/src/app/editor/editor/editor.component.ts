@@ -15,6 +15,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MediaFileDialogComponent } from '../media-file-dialog/media-file-dialog.component';
 import { FileLink } from 'src/app/models/file-link.model.ts';
+import { RunGameService } from 'src/app/serveces/run-game.service';
 
 @Component({
   selector: 'app-editor',
@@ -53,6 +54,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   constructor(public dialog: MatDialog,
     private fireStore: AngularFirestore,
     private firestoreServiceService: FirestoreService,
+    private runGameService: RunGameService,
     private route: ActivatedRoute,
     private router: Router) {
   }
@@ -108,8 +110,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       } else {
         player.imageFile = '/assets/http_player.jpg';
       }
-
-
     }
 
     for (const scene of this.game.scenes) {
@@ -140,8 +140,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       } else {
         scene.videoFile = '';
       }
-
-
     }
 
     this.form = new FormGroup({
@@ -286,7 +284,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   async runGame() {
 
-    //await this.saveGame()
+    await this.runGameService.saveNewGame(this.game)
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run', this.game.id])
