@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Player} from '../../models/player.model';
+import { Component, Input, OnInit } from '@angular/core';
+import { Player } from '../../models/player.model';
 
 @Component({
   selector: 'app-player',
@@ -9,7 +9,7 @@ import {Player} from '../../models/player.model';
 export class PlayerComponent implements OnInit {
 
   @Input()
-  player: Player
+  playerId: string
 
   constructor() { }
 

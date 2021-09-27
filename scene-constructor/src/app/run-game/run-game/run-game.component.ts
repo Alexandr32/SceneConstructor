@@ -16,13 +16,15 @@ export class RunGameComponent implements OnInit {
   title: string
 
   private scenes: Map<string, Scene> = new Map<string, Scene>()
-  private players: Map<string, Player> = new Map<string, Player>()
 
   url = 'assets/scene.jpg'
 
   isShowListPlayers: boolean = false
 
   selectScene: Scene
+
+  videoSources: string[] = [];
+  players: string[] = []
 
   constructor(private route: ActivatedRoute,
     private dialog: MatDialog,
@@ -67,16 +69,27 @@ export class RunGameComponent implements OnInit {
       this.scenes.set(scene.id, scene)
     }
 
-    for (const player of game.players) {
-      this.players.set(player.id, player)
-    }
+    this.players = game.players.map(item => {
+      return item.id
+    })
 
     this.selectScene = this.scenes.get('LXBvckaeQSHyrDo5UQLH')
 
-    console.log(this.scenes);
-    console.log(this.selectScene);
+    console.log('this.players', this.players);
+
+    this.videoSources = []
+    this.videoSources.push(this.selectScene.videoFile)
   }
 
+  next() {
+    this.selectScene = this.scenes.get('00QPeK4tegh5sJYHcd3s')
+
+    console.log(this.scenes);
+    console.log(this.selectScene.videoFile);
+
+    this.videoSources = []
+    this.videoSources.push(this.selectScene.videoFile)
+  }
 
 
 }

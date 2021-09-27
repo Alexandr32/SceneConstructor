@@ -1,23 +1,39 @@
 <div class="container-run-game">
   <div class="game-run">
-    <img id="image" [src]="selectScene?.imageFile" alt="image" />
+    <img
+      *ngIf="!selectScene?.videoFile"
+      id="image"
+      [src]="selectScene?.imageFile"
+      alt="image"
+    />
 
-    <video id="video" preload="auto" autoplay="true" loop="true" muted="muted">
-      <source [src]="selectScene?.videoFile" type="video/mp4" />
-    </video>
+    <div *ngFor="let video of videoSources">
+      <video
+        id="video"
+        preload="auto"
+        autoplay="true"
+        loop="true"
+        muted="muted"
+      >
+        <source [src]="video" type="video/mp4" />
+      </video>
+    </div>
 
     <div>
       <div class="game-run__answers">
-        <div class="game-run__answers__item">Ответ 1</div>
-        <div class="game-run__answers__item">Ответ 2</div>
-        <div class="game-run__answers__item">Ответ 3</div>
-        <div class="game-run__answers__item">Ответ 4</div>
+        <div
+          *ngFor="let item of selectScene?.answers"
+          class="game-run__answers__item"
+          (click)="next()"
+        >
+          {{ item.text }}
+        </div>
 
         <div class="game-run__description">
           <div class="game-run__description-background blur"></div>
 
           <div class="game-run__text-description">
-            {{ selectScene?.title }}
+            {{ selectScene?.title }} <br />
             {{ selectScene?.text }}
           </div>
         </div>
@@ -44,10 +60,10 @@
             </div>
 
             <div class="game-run__players" *ngIf="isShowListPlayers">
-              <app-player></app-player>
-              <app-player></app-player>
-              <app-player></app-player>
-              <app-player></app-player>
+              <app-player
+                *ngFor="let playerId of players"
+                [playerId]="playerId"
+              ></app-player>
             </div>
           </div>
         </div>

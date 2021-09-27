@@ -448,8 +448,8 @@ body {
 
 .game-run {
   //background-size: cover;
-  width: 100%;
-  flex-grow: 1;
+  //width: 100%;
+  //flex-grow: 1;
 }
 
 .drag-box {
@@ -479,8 +479,10 @@ body {
   position: fixed;
   right: 0;
   bottom: 0;
+  left: 0;
+  top: 0;
   min-width: 100%;
-  min-height: 100%;
+  //min-height: 100%;
 }
 
 .player-test {
