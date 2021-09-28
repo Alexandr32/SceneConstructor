@@ -97,6 +97,24 @@ export class RunGameService {
     }
   }
 
+  /**
+   *  Сохранение выбранного ответа у сцены
+   * @param stateGameId
+   * @param player
+   * @param selectAnswer
+   */
+  async saveSelectAnswerStateGame(stateGameId: string, player: Player, selectAnswer: Answer) {
+
+    const state = await this.getStateGame(stateGameId)
+      .pipe(first()).toPromise()
+
+    state.answer[player.id] = selectAnswer.id
+
+    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
+      .doc(stateGameId)
+      .set(state)
+  }
+
   getStateGame(gameId: string): Observable<StateGame> {
     return this.fireStore.doc<StateGame>(`${this.runGameCollection}/${gameId}/${this.stateGame}/${gameId}`)
       .snapshotChanges()
