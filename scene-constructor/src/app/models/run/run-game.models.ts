@@ -55,7 +55,7 @@ class StateGame {
   constructor(
     public id: string,
     public currentScene: string,
-    public answer: [],
+    public answer: { id: string, value: string }[],
   ) {
 
   }

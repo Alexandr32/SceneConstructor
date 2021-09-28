@@ -79,7 +79,7 @@ export class RunGameService {
     }
 
     const statePlayer = [...game.players.map(item => {
-      return { [item.id]: '' }
+      return { id: item.id, value: '' }
     })]
 
     try {
@@ -108,12 +108,23 @@ export class RunGameService {
     const state = await this.getStateGame(stateGameId)
       .pipe(first()).toPromise()
 
-    state.answer[player.id] = selectAnswer.id
+    const statePlayer = [...state.answer.map(item => {
+      return item
+    })]
 
-    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
+    const answer = statePlayer.find((item) => player.id === item.id)
+    answer.value = selectAnswer.id
+
+    state.answer = statePlayer
+
+    this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
       .doc(stateGameId)
-      .set(state)
+      .set({ ...state })
   }
+
+  // RunGameCollection/NEd2cC8BFsg84VWOU75A/StateGame
+  //RunGameCollection/NEd2cC8BFsg84VWOU75A/StateGame/NEd2cC8BFsg84VWOU75A)
+
 
   getStateGame(gameId: string): Observable<StateGame> {
     return this.fireStore.doc<StateGame>(`${this.runGameCollection}/${gameId}/${this.stateGame}/${gameId}`)

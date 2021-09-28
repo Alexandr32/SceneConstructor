@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Answer, Scene } from 'src/app/models/run/run-game.models';
+import { FirestoreService } from 'src/app/serveces/firestore.service';
+import { RunGameService } from 'src/app/serveces/run-game.service';
 import { Player } from '../../models/player.model';
 
 @Component({
@@ -11,9 +14,40 @@ export class PlayerComponent implements OnInit {
   @Input()
   playerId: string
 
-  constructor() { }
+  @Input()
+  gameId: string
 
-  ngOnInit(): void {
+  private scenes: Scene[]
+  currentScene: Scene
+
+  player: Player
+
+  answer: Answer[]
+
+  constructor(
+    private runGameService: RunGameService,
+    private firestoreService: FirestoreService) { }
+
+  async ngOnInit() {
+    const game = await (await this.runGameService.getGameById(this.gameId)).toPromise()
+    this.scenes = game.scenes
+
+    this.player = game.players.find(item => item.id === this.playerId)
+
+    try {
+      this.player.imageFile = await this.firestoreService
+        .getUrl(game.id, this.player.imageFileId, 'PlayerImage').toPromise()
+    } catch (error) {
+      this.player.imageFile = 'assets/http_player.jpg'
+    }
+
+    this.runGameService.getStateGame(this.gameId).subscribe(item => {
+      this.currentScene = this.scenes.find(f => f.id === item.currentScene)
+    })
+  }
+
+  selectAnswer(answer: Answer) {
+    this.runGameService.saveSelectAnswerStateGame(this.gameId, this.player, answer)
   }
 
 }

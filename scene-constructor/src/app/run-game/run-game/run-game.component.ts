@@ -26,16 +26,17 @@ export class RunGameComponent implements OnInit {
   videoSources: string[] = [];
   players: string[] = []
 
+  gameId: string
+
   constructor(private route: ActivatedRoute,
     private dialog: MatDialog,
     private runGameService: RunGameService,
     private firestoreService: FirestoreService,) { }
 
   async ngOnInit() {
-    const gameId = this.route.snapshot.params.gameId;
-    this.title = gameId
+    this.gameId = this.route.snapshot.params.gameId;
 
-    const game = await (await this.runGameService.getGameById(gameId)).toPromise()
+    const game = await (await this.runGameService.getGameById(this.gameId)).toPromise()
 
     for (const scene of game.scenes) {
 
@@ -75,8 +76,8 @@ export class RunGameComponent implements OnInit {
 
     this.videoSources = []
 
-    this.runGameService.getStateGame(gameId).subscribe(stateGame => {
-      console.log('stateGame:', stateGame);
+    this.runGameService.getStateGame(this.gameId).subscribe(stateGame => {
+      console.log('stateGame::::', stateGame);
       this.selectScene = this.scenes.get(stateGame.currentScene)
       this.videoSources = []
       this.videoSources.push(this.selectScene.videoFile)
