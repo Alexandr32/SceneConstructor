@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { Game as EditGame } from '../models/game.model';
 import { Answer, Game, Player, StateGame } from '../models/run/run-game.models';
@@ -83,8 +84,8 @@ export class RunGameService {
 
     try {
 
-      this.fireStore.collection<any>(this.stateGame)
-        .doc(this.fireStore.createId())
+      this.fireStore.collection<any>(`${this.runGameCollection}/${game.id}/${this.stateGame}`)
+        .doc(game.id)
         .set({
           currentScene: startScene.id,
           answer: statePlayer
@@ -96,17 +97,26 @@ export class RunGameService {
     }
   }
 
-  getStateGame(gameId: string) {
-    this.fireStore.collection<StateGame>(`${this.stateGame}/${gameId}`)
-      .doc(this.fireStore.createId())
+  getStateGame(gameId: string): Observable<StateGame> {
+    return this.fireStore.doc<StateGame>(`${this.runGameCollection}/${gameId}/${this.stateGame}/${gameId}`)
       .snapshotChanges()
       .pipe(
         map((doc) => {
-          const stateGame = doc.payload.data() as StateGame
+          const stateGame = doc.payload.data() as StateGame;
           stateGame.id = doc.payload.id;
-          return stateGame;
+          return new StateGame(stateGame.id, stateGame.currentScene, stateGame.answer);
         })
       )
+
+    // .doc(this.fireStore.createId())
+    // .snapshotChanges()
+    // .pipe(
+    //   map((doc) => {
+    //     const stateGame = doc.payload.data() as StateGame
+    //     stateGame.id = doc.payload.id;
+    //     return stateGame;
+    //   })
+    // )
   }
 
   async getGameById(gameId: string) {

@@ -73,12 +73,14 @@ export class RunGameComponent implements OnInit {
       return item.id
     })
 
-    this.selectScene = this.scenes.get('LXBvckaeQSHyrDo5UQLH')
-
-    console.log('this.players', this.players);
-
     this.videoSources = []
-    this.videoSources.push(this.selectScene.videoFile)
+
+    this.runGameService.getStateGame(gameId).subscribe(stateGame => {
+      console.log('stateGame:', stateGame);
+      this.selectScene = this.scenes.get(stateGame.currentScene)
+      this.videoSources = []
+      this.videoSources.push(this.selectScene.videoFile)
+    })
   }
 
   next() {

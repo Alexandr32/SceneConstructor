@@ -35,8 +35,8 @@ class Scene {
 
   }
 
-  imageFile: string
-  videoFile: string
+  imageFile: string = ''
+  videoFile: string = ''
 }
 class Player {
 
@@ -47,13 +47,18 @@ class Player {
     public imageFileId: string
   ) { }
 
-  public imageFile: string
+  public imageFile: string = ''
 }
 
 class StateGame {
-  id: string
-  currentScene: string
-  answer: []
+
+  constructor(
+    public id: string,
+    public currentScene: string,
+    public answer: [],
+  ) {
+
+  }
 }
 
 export { Game, Answer, Scene, Player, StateGame };
