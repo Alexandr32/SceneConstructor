@@ -129,7 +129,7 @@ export class RunGameComponent implements OnInit {
       this.videoSources.push(this.selectScene.videoFile)
 
       // Обнуляем данные
-      await this.runGameService.resetDataStateGame(this.gameId, selectAnswer.sceneId)
+      await this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
 
     })
   }

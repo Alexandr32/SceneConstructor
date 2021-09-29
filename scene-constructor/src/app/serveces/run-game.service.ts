@@ -4,7 +4,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { Game as EditGame } from '../models/game.model';
-import { Answer, Game, Player, StateGame } from '../models/run/run-game.models';
+import { Answer, Game, Player, Scene, StateGame } from '../models/run/run-game.models';
 
 @Injectable({
   providedIn: 'root'
@@ -125,27 +125,29 @@ export class RunGameService {
   // RunGameCollection/NEd2cC8BFsg84VWOU75A/StateGame
   //RunGameCollection/NEd2cC8BFsg84VWOU75A/StateGame/NEd2cC8BFsg84VWOU75A)
 
-  async resetDataStateGame(stateGameId: string, currentSceneId: string) {
+  async resetDataStateGame(stateGameId: string, currentScene: Scene) {
     const state = await this.getStateGame(stateGameId)
       .pipe(first()).toPromise()
 
-    const statePlayer = [...state.answer.map(item => {
-      return item
-    })]
+    // const statePlayer = [...state.answer.map(item => {
+    //   return item
+    // })]
 
-    const answer = statePlayer.map((item) => {
-      item.value = ''
-      return item
-    })
+    // const answer = statePlayer.map((item) => {
+    //   item.value = ''
+    //   return item
+    // })
 
     //state.answer = answer
+    const answer = currentScene.players.map(item => {
+      return { id: item, value: '' }
+    })
 
-    console.log('currentSceneId:::::::::', currentSceneId);
-
+    //console.log('currentSceneId:::::::::', currentSceneId);
 
     this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
       .doc(stateGameId)
-      .set({ currentScene: currentSceneId, answer: answer })
+      .set({ currentScene: currentScene.id, answer: answer })
   }
 
   getStateGame(gameId: string): Observable<StateGame> {

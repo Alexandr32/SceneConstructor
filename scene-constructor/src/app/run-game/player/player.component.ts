@@ -43,7 +43,14 @@ export class PlayerComponent implements OnInit {
 
     this.runGameService.getStateGame(this.gameId).subscribe(item => {
       this.currentScene = this.scenes.find(f => f.id === item.currentScene)
-      this.answers = this.currentScene.answers
+
+      if (this.currentScene.players.includes(this.player.id)) {
+        this.answers = this.currentScene.answers
+      } else {
+        this.answers = []
+      }
+
+
       console.log('answer', this.answers);
       console.log('item.currentScene:player', item);
 
