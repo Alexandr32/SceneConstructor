@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { RunGameService } from 'src/app/serveces/run-game.service';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
-import { Scene } from 'src/app/models/run/run-game.models';
+import { Answer, Scene } from 'src/app/models/run/run-game.models';
 import { Player } from 'src/app/models/player.model';
 
 @Component({
@@ -133,16 +133,5 @@ export class RunGameComponent implements OnInit {
 
     })
   }
-
-  next() {
-    this.selectScene = this.scenes.get('00QPeK4tegh5sJYHcd3s')
-
-    console.log(this.scenes);
-    console.log(this.selectScene.videoFile);
-
-    this.videoSources = []
-    this.videoSources.push(this.selectScene.videoFile)
-  }
-
 
 }
