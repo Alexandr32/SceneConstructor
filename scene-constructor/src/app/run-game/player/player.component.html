@@ -3,7 +3,7 @@
   <div class="player-test__content">
     <div class="player-test__name">{{ player?.name }}</div>
     <button
-      *ngFor="let item of currentScene?.answers"
+      *ngFor="let item of answers"
       class="player-test__btn-answer"
       (click)="selectAnswer(item)"
     >

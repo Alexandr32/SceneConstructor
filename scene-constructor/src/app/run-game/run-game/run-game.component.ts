@@ -76,11 +76,61 @@ export class RunGameComponent implements OnInit {
 
     this.videoSources = []
 
-    this.runGameService.getStateGame(this.gameId).subscribe(stateGame => {
+    const startScene = game.scenes.find(item => item.isStartGame)
+
+    this.selectScene = this.scenes.get(startScene.id)
+    this.videoSources = []
+    this.videoSources.push(this.selectScene.videoFile)
+
+    this.runGameService.getStateGame(this.gameId).subscribe(async (stateGame) => {
+
       console.log('stateGame::::', stateGame);
-      this.selectScene = this.scenes.get(stateGame.currentScene)
+
+      const isEmpty = stateGame.answer.map(item => item.value).includes('')
+
+      if (isEmpty) {
+        return
+      }
+
+      // Ищем выбранные ответы
+      var dictionary = new Map<string, number>();
+      stateGame.answer
+        .map(item => {
+          return item.value
+        })
+        .forEach((item) => {
+          let count: number = dictionary.get(item)
+          if (count) {
+            count++
+            dictionary.set(item, count)
+          } else {
+            dictionary.set(item, 0)
+          }
+        });
+
+      const selectAnswerId = [...dictionary.entries()].reduce((a, e) => e[1] > a[1] ? e : a)
+
+      console.log('Выбранный ответ:', selectAnswerId[0]);
+      console.log('Список ответов:', this.selectScene.answers);
+      console.log('Список сцен:', this.scenes);
+
+      const selectAnswer = this.selectScene.answers.find((item) => item.id === selectAnswerId[0])
+
+      console.log(selectAnswer, 'selectAnswer');
+
+      // Есть выбранная сцена
+      if (selectAnswer.sceneId) {
+        this.selectScene = this.scenes.get(selectAnswer.sceneId)
+      }
+
+      console.log(this.selectScene);
+
       this.videoSources = []
       this.videoSources.push(this.selectScene.videoFile)
+
+      // Обнуляем данные
+      await this.runGameService.resetDataStateGame(this.gameId, selectAnswer.sceneId)
+
     })
   }
 

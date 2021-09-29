@@ -22,7 +22,7 @@ export class PlayerComponent implements OnInit {
 
   player: Player
 
-  answer: Answer[]
+  answers: Answer[] = []
 
   constructor(
     private runGameService: RunGameService,
@@ -43,6 +43,11 @@ export class PlayerComponent implements OnInit {
 
     this.runGameService.getStateGame(this.gameId).subscribe(item => {
       this.currentScene = this.scenes.find(f => f.id === item.currentScene)
+      this.answers = this.currentScene.answers
+      console.log('answer', this.answers);
+      console.log('item.currentScene:player', item);
+
+
     })
   }
 
