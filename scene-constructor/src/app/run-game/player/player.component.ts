@@ -52,11 +52,6 @@ export class PlayerComponent implements OnInit {
         this.answers = []
       }
 
-
-      console.log('answer', this.answers);
-      console.log('item.currentScene:player', item);
-
-
     })
   }
 

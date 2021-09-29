@@ -75,10 +75,6 @@ export class EditSceneDialogComponent implements OnInit {
         new FormControl(
           this.data.scene.isStartGame
         ),
-      'isStopGame':
-        new FormControl(
-          this.data.scene.isStopGame
-        ),
       'color':
         new FormControl(
           this.data.scene.color
@@ -199,7 +195,6 @@ export class EditSceneDialogComponent implements OnInit {
     this.data.scene.text = this.form.value['text'];
     this.data.scene.color = this.form.value['color'];
     this.data.scene.isStartGame = this.form.value['isStartGame'];
-    this.data.scene.isStopGame = this.form.value['isStopGame'];
 
 
     this.answers.forEach(item => {

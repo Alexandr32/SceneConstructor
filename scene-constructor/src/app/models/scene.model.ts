@@ -17,7 +17,6 @@ export class Scene implements Entity {
   players: string[] = []
 
   isStartGame: boolean = false
-  isStopGame: boolean = false
 
   imageFile: string
   videoFile: string

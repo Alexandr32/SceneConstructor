@@ -48,7 +48,6 @@ export class RunGameService {
         answers: answers,
         players: scene.players,
         isStartGame: scene.isStartGame,
-        isStopGame: scene.isStopGame
       };
     }))
     ];

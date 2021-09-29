@@ -1,68 +1,92 @@
-<div class="scene__box"
-     cdkDrag
-     cdkDragBoundary=".editor__working-space"
-     [cdkDragFreeDragPosition]="dragPosition"
-     (click)="onClickScene()"
-     (cdkDragEnded)="onCdkDragDropped($event)">
-
+<div
+  class="scene__box"
+  cdkDrag
+  cdkDragBoundary=".editor__working-space"
+  [cdkDragFreeDragPosition]="dragPosition"
+  (click)="onClickScene()"
+  (cdkDragEnded)="onCdkDragDropped($event)"
+>
   <div>
-    <div class="scene__header"
-         [ngStyle]="{'background':scene.color}"
-         cdkDragHandle
-         (click)="onClick($event)"
-         [class.scene__header-select]="isSelectMode">
-
+    <div
+      class="scene__header"
+      [ngStyle]="{ background: scene.color }"
+      cdkDragHandle
+      (click)="onClick($event)"
+      [class.scene__header-select]="isSelectMode"
+    >
       <div class="flex justify-content-space-around">
-        <div *ngIf="scene.isStartGame" class="text-white font-size-11">Стартовая сцена</div>
-        <div *ngIf="scene.isStopGame" class="text-white font-size-11">Финальная сцена</div>
+        <div *ngIf="scene.isStartGame" class="text-white font-size-11">
+          Стартовая сцена
+        </div>
       </div>
-
     </div>
 
     <div class="scene__control-button">
-      <button class="font-size-11" (click)="onClickRunScene()">Запустить сцену</button>
-      <button class="font-size-11" (click)="onClickEdit()">Редактировать</button>
+      <button class="font-size-11" (click)="onClickRunScene()">
+        Запустить сцену
+      </button>
+      <button class="font-size-11" (click)="onClickEdit()">
+        Редактировать
+      </button>
       <button class="font-size-11" (click)="onClickDelete()">Удалить</button>
     </div>
 
     <div class="flex scene__control-height">
       <div *ngIf="scene.imageFile && scene.imageFile !== ''">
-        <img class="scene__image-box__image"
-             [src]="scene.imageFile" [alt]="scene.title">
+        <img
+          class="scene__image-box__image"
+          [src]="scene.imageFile"
+          [alt]="scene.title"
+        />
 
-        <div *ngIf="scene.videoFile;then foundVideo else notFoundVideo"></div>
+        <div *ngIf="scene.videoFile; then foundVideo; else notFoundVideo"></div>
       </div>
 
-      <div *ngIf="!scene.imageFile && scene.imageFile === ''">
-        Загрузка
-      </div>
+      <div *ngIf="!scene.imageFile && scene.imageFile === ''">Загрузка</div>
 
       <div class="">
         <div class="scene__control-width font-size-11">Название:</div>
-        <div class="scene__control-width font-size-11">{{toStringLabel(scene.title, 25)}}</div>
+        <div class="scene__control-width font-size-11">
+          {{ toStringLabel(scene.title, 25) }}
+        </div>
         <div class="scene__control-width font-size-11">Описание:</div>
-        <div class="scene__control-width font-size-11">{{toStringLabel(scene.text, 25)}}</div>
+        <div class="scene__control-width font-size-11">
+          {{ toStringLabel(scene.text, 25) }}
+        </div>
 
         <div class="scene__control-width font-size-11">Кто отвечает:</div>
-        <div class="scene__control-width text-green font-size-11" *ngFor="let playerId of scene.players">{{getNamePlayer(playerId)}}</div>
-        <div class="text-red scene__control-width font-size-11" *ngIf="scene.players.length == 0">Нет выбранных персонажей</div>
+        <div
+          class="scene__control-width text-green font-size-11"
+          *ngFor="let playerId of scene.players"
+        >
+          {{ getNamePlayer(playerId) }}
+        </div>
+        <div
+          class="text-red scene__control-width font-size-11"
+          *ngIf="scene.players.length == 0"
+        >
+          Нет выбранных персонажей
+        </div>
       </div>
     </div>
 
     <div class="scene__variants">
-      <div *ngFor="let answer of scene.answers"
-           id="{{answer.id}}"
-           #answer>
+      <div *ngFor="let answer of scene.answers" id="{{ answer.id }}" #answer>
         <button
           class="scene__btn-answer font-size-11"
           [class.scene__box__btn-warning]="!answer.sceneId"
           (click)="selectAnswer($event, answer)"
-        >{{toStringLabel(answer.text, 50)}}</button>
+        >
+          {{ toStringLabel(answer.text, 50) }}
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<ng-template #notFoundVideo><div class="text-red font-size-11">Нет видео</div></ng-template>
-<ng-template #foundVideo><div class="text-green font-size-11">Есть видео</div></ng-template>
-
+<ng-template #notFoundVideo
+  ><div class="text-red font-size-11">Нет видео</div></ng-template
+>
+<ng-template #foundVideo
+  ><div class="text-green font-size-11">Есть видео</div></ng-template
+>

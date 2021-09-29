@@ -123,8 +123,7 @@ export class FirestoreService {
         },
         answers: answers,
         players: scene.players,
-        isStartGame: scene.isStartGame,
-        isStopGame: scene.isStopGame
+        isStartGame: scene.isStartGame
       };
     }))
     ];
