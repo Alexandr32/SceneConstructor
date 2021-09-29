@@ -43,11 +43,19 @@ export class PlayerComponent implements OnInit {
       this.player.imageFile = 'assets/http_player.jpg'
     }
 
-    this.runGameService.getStateGame(this.gameId).subscribe(item => {
-      this.currentScene = this.scenes.find(f => f.id === item.currentScene)
+    this.runGameService.getStateGame(this.gameId).subscribe(stateGame => {
+      this.currentScene = this.scenes.find(f => f.id === stateGame.currentScene)
 
       if (this.currentScene.players.includes(this.player.id)) {
-        this.answers = this.currentScene.answers
+
+        const answer = stateGame.answer.find(i => i.id == this.player.id)
+
+        if (answer.value) {
+          this.answers = []
+        } else {
+          this.answers = this.currentScene.answers
+        }
+
       } else {
         this.answers = []
       }
