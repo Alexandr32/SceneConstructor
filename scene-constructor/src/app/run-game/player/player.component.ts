@@ -26,7 +26,9 @@ export class PlayerComponent implements OnInit {
 
   constructor(
     private runGameService: RunGameService,
-    private firestoreService: FirestoreService) { }
+    private firestoreService: FirestoreService) {
+
+  }
 
   async ngOnInit() {
     const game = await (await this.runGameService.getGameById(this.gameId)).toPromise()

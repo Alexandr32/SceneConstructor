@@ -30,7 +30,6 @@ class Scene {
     public players: string[] = [],
 
     public isStartGame: boolean,
-    public isStopGame: boolean,
   ) {
 
   }

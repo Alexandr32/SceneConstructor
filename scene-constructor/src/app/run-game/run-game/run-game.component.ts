@@ -31,7 +31,9 @@ export class RunGameComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private dialog: MatDialog,
     private runGameService: RunGameService,
-    private firestoreService: FirestoreService,) { }
+    private firestoreService: FirestoreService,) {
+
+  }
 
   async ngOnInit() {
     this.gameId = this.route.snapshot.params.gameId;
@@ -108,11 +110,11 @@ export class RunGameComponent implements OnInit {
           }
         });
 
-      const selectAnswerId = [...dictionary.entries()].reduce((a, e) => e[1] > a[1] ? e : a)
+      if (dictionary.size === 0) {
+        return
+      }
 
-      console.log('Выбранный ответ:', selectAnswerId[0]);
-      console.log('Список ответов:', this.selectScene.answers);
-      console.log('Список сцен:', this.scenes);
+      const selectAnswerId = [...dictionary.entries()].reduce((a, e) => e[1] > a[1] ? e : a)
 
       const selectAnswer = this.selectScene.answers.find((item) => item.id === selectAnswerId[0])
 
@@ -122,8 +124,6 @@ export class RunGameComponent implements OnInit {
       if (selectAnswer.sceneId) {
         this.selectScene = this.scenes.get(selectAnswer.sceneId)
       }
-
-      console.log(this.selectScene);
 
       this.videoSources = []
       this.videoSources.push(this.selectScene.videoFile)
