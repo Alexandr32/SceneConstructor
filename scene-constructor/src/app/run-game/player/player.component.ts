@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { debounceTime } from 'rxjs/operators';
 import { Answer, Scene } from 'src/app/models/run/run-game.models';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { RunGameService } from 'src/app/serveces/run-game.service';
@@ -43,28 +44,31 @@ export class PlayerComponent implements OnInit {
       this.player.imageFile = 'assets/http_player.jpg'
     }
 
-    this.runGameService.getStateGame(this.gameId).subscribe(stateGame => {
-      this.currentScene = this.scenes.find(f => f.id === stateGame.currentScene)
+    this.runGameService.getStateGame(this.gameId)
+      // .pipe(
+      //   debounceTime(1000)
+      // )
+      .subscribe(stateGame => {
+        this.currentScene = this.scenes.find(f => f.id === stateGame.currentScene)
 
-      if (this.currentScene.players.includes(this.player.id)) {
+        if (this.currentScene.players.includes(this.player.id)) {
 
-        const answer = stateGame.answer.find(i => i.id == this.player.id)
+          const answer = stateGame.answer.find(i => i.id == this.player.id)
 
-        if (answer.value) {
-          this.answers = []
+          if (answer.value) {
+            this.answers = []
+          } else {
+            this.answers = this.currentScene.answers
+          }
+
         } else {
-          this.answers = this.currentScene.answers
+          this.answers = []
         }
 
-      } else {
-        this.answers = []
-      }
-
-    })
+      })
   }
 
-  selectAnswer(answer: Answer) {
-    this.runGameService.saveSelectAnswerStateGame(this.gameId, this.player, answer)
+  async selectAnswer(answer: Answer) {
+    await this.runGameService.saveSelectAnswerStateGame(this.gameId, this.player, answer)
   }
-
 }

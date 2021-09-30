@@ -118,15 +118,15 @@ export class RunGameService {
 
     this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
       .doc(stateGameId)
-      .set({ ...state })
+      .update({ ...state })
   }
 
   // RunGameCollection/NEd2cC8BFsg84VWOU75A/StateGame
   //RunGameCollection/NEd2cC8BFsg84VWOU75A/StateGame/NEd2cC8BFsg84VWOU75A)
 
   async resetDataStateGame(stateGameId: string, currentScene: Scene) {
-    const state = await this.getStateGame(stateGameId)
-      .pipe(first()).toPromise()
+    //const state = await this.getStateGame(stateGameId)
+    //  .pipe(first()).toPromise()
 
     // const statePlayer = [...state.answer.map(item => {
     //   return item

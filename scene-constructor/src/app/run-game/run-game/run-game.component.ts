@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { RunGameService } from 'src/app/serveces/run-game.service';
@@ -12,7 +12,7 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
   templateUrl: './run-game.component.html',
   styleUrls: ['./run-game.component.scss']
 })
-export class RunGameComponent implements OnInit {
+export class RunGameComponent implements OnInit, OnDestroy {
 
   title: string
 
@@ -37,6 +37,11 @@ export class RunGameComponent implements OnInit {
     private firestoreService: FirestoreService,) {
 
   }
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy');
+  }
+
+  static count = 0
 
   async ngOnInit() {
     this.gameId = this.route.snapshot.params.gameId;
@@ -87,57 +92,63 @@ export class RunGameComponent implements OnInit {
     this.videoSources = []
     this.videoSources.push(this.selectScene.videoFile)
 
-    this.runGameService.getStateGame(this.gameId).subscribe(async (stateGame) => {
+    this.subscribeStateGame()
+  }
 
-      //console.log('stateGame::::', stateGame);
+  private subscribeStateGame() {
+    this.runGameService.getStateGame(this.gameId)
+      // .pipe(
+      //   debounceTime(1000)
+      // )
+      .subscribe(async (stateGame) => {
 
-      this.answers$.next(stateGame.answer)
+        console.log('stateGame::::', stateGame);
 
-      const isEmpty = stateGame.answer.map(item => item.value).includes('')
+        this.answers$.next(stateGame.answer)
 
-      if (isEmpty) {
-        return
-      }
+        const isEmpty = stateGame.answer.map(item => item.value).includes('')
 
-      // Ищем выбранные ответы
-      const dictionary = new Map<string, number>();
-      stateGame.answer
-        .map(item => {
-          return item.value
-        })
-        .forEach((item) => {
-          let count: number = dictionary.get(item)
-          if (count) {
-            count++
-            dictionary.set(item, count)
-          } else {
-            dictionary.set(item, 0)
-          }
-        });
+        if (isEmpty) {
+          return
+        }
 
-      if (dictionary.size === 0) {
-        return
-      }
+        // Ищем выбранные ответы
+        const dictionary = new Map<string, number>();
+        stateGame.answer
+          .map(item => {
+            return item.value
+          })
+          .forEach((item) => {
+            let count: number = dictionary.get(item)
+            if (count) {
+              count++
+              dictionary.set(item, count)
+            } else {
+              dictionary.set(item, 0)
+            }
+          });
 
-      const selectAnswerId = [...dictionary.entries()].reduce((a, e) => e[1] > a[1] ? e : a)
+        if (dictionary.size === 0) {
+          return
+        }
 
-      const selectAnswer = this.selectScene.answers.find((item) => item.id === selectAnswerId[0])
+        const selectAnswerId = [...dictionary.entries()].reduce((a, e) => e[1] > a[1] ? e : a)
 
-      console.log(selectAnswer, 'selectAnswer');
+        const selectAnswer = this.selectScene.answers.find((item) => item.id === selectAnswerId[0])
 
-      // Есть выбранная сцена
-      if (selectAnswer.sceneId) {
-        this.selectScene = this.scenes.get(selectAnswer.sceneId)
-      }
+        // Есть выбранная сцена
+        if (selectAnswer.sceneId) {
+          this.selectScene = this.scenes.get(selectAnswer.sceneId)
+        }
 
-      this.videoSources = []
-      this.videoSources.push(this.selectScene.videoFile)
+        this.videoSources = []
+        this.videoSources.push(this.selectScene.videoFile)
 
-      // Обнуляем данные
+        // Обнуляем данные
 
-      await this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
+        await this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
 
-    })
+      })
   }
 
 }
