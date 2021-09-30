@@ -6,6 +6,7 @@ import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { Answer, Scene } from 'src/app/models/run/run-game.models';
 import { Player } from 'src/app/models/player.model';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-run-game',
@@ -136,19 +137,35 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
         const selectAnswer = this.selectScene.answers.find((item) => item.id === selectAnswerId[0])
 
+        if (!selectAnswer) {
+          return
+        }
+
         // Есть выбранная сцена
         if (selectAnswer.sceneId) {
+          await this.delay(1000)
           this.selectScene = this.scenes.get(selectAnswer.sceneId)
         }
 
         this.videoSources = []
         this.videoSources.push(this.selectScene.videoFile)
 
-        // Обнуляем данные
 
-        await this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
+
+        // Обнуляем данные
+        this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
 
       })
+  }
+
+  private delay = (time: number): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log('setTimeout');
+
+        resolve('')
+      }, time);
+    })
   }
 
 }
