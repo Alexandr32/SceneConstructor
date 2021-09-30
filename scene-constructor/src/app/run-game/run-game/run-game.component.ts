@@ -5,6 +5,7 @@ import { RunGameService } from 'src/app/serveces/run-game.service';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { Answer, Scene } from 'src/app/models/run/run-game.models';
 import { Player } from 'src/app/models/player.model';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-run-game',
@@ -27,6 +28,8 @@ export class RunGameComponent implements OnInit {
   players: string[] = []
 
   gameId: string
+
+  answers$: BehaviorSubject<{ id: string, value: string }[]> = new BehaviorSubject([])
 
   constructor(private route: ActivatedRoute,
     private dialog: MatDialog,
@@ -86,7 +89,9 @@ export class RunGameComponent implements OnInit {
 
     this.runGameService.getStateGame(this.gameId).subscribe(async (stateGame) => {
 
-      console.log('stateGame::::', stateGame);
+      //console.log('stateGame::::', stateGame);
+
+      this.answers$.next(stateGame.answer)
 
       const isEmpty = stateGame.answer.map(item => item.value).includes('')
 
@@ -95,7 +100,7 @@ export class RunGameComponent implements OnInit {
       }
 
       // Ищем выбранные ответы
-      var dictionary = new Map<string, number>();
+      const dictionary = new Map<string, number>();
       stateGame.answer
         .map(item => {
           return item.value
@@ -129,6 +134,7 @@ export class RunGameComponent implements OnInit {
       this.videoSources.push(this.selectScene.videoFile)
 
       // Обнуляем данные
+
       await this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
 
     })

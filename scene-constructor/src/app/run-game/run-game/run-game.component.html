@@ -21,12 +21,11 @@
 
     <div>
       <div class="game-run__answers">
-        <div
+        <app-item-answer
           *ngFor="let item of selectScene?.answers"
-          class="game-run__answers__item"
-        >
-          {{ item.text }}
-        </div>
+          [answer]="item"
+          [answers$]="answers$"
+        ></app-item-answer>
 
         <div class="game-run__description">
           <div class="game-run__description-background blur"></div>
