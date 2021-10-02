@@ -9,9 +9,6 @@ import { Game } from 'src/app/models/game.model';
 export class ItemGameComponent implements OnInit {
 
   @Input()
-  index: number
-
-  @Input()
   game: Game
 
   @Output()
@@ -24,7 +21,7 @@ export class ItemGameComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.backgroundCssClass = 'item-game__background'
-    }, 2000)
+    }, 1000)
   }
 
   deleteGame() {

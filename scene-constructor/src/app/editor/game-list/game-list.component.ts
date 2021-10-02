@@ -49,8 +49,19 @@ export class GameListComponent implements OnInit, OnDestroy {
   }
 
   async createNewGame() {
+
+    const numberArray: number[] = this.gameList.map(item => item.number)
+
+    let maxNumber: number = 0
+    if (numberArray.length != 0) {
+      maxNumber = Math.max(...numberArray)
+    }
+
+    maxNumber += 1
+
     const game = new Game(
       this.fireStore.createId(),
+      maxNumber,
       'Новая игра',
       'Описание игры',
       [],

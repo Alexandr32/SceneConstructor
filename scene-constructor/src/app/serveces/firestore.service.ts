@@ -29,7 +29,7 @@ export class FirestoreService {
   }
 
   getGames(): Observable<Game[]> {
-    return this.fireStore.collection<Game>('Games')
+    return this.fireStore.collection<Game>('Games', ref => ref.orderBy('number', 'desc'))
       .valueChanges({ idField: 'id' });
   }
 
@@ -132,6 +132,7 @@ export class FirestoreService {
       await this.fireStore.collection<any>(this.nameGameCollection)
         .doc(game.id)
         .set({
+          number: game.number,
           name: game.name,
           description: game.description,
           scenes: scenes,

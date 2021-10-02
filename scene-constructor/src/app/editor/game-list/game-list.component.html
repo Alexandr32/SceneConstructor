@@ -6,7 +6,6 @@
 
 <app-item-game
   *ngFor="let game of gameList; let i = index; trackBy: identify"
-  [index]="i + 1"
   [game]="game"
   (delete)="deleteGame($event)"
 >
