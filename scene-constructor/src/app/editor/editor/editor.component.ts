@@ -263,7 +263,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   isCheckingSceneStart(): { isChecking: boolean, message: string } {
-    const startList = this.game.scenes.filter(item => item.isStartGame)
+    const startList = this.scenes.filter(item => item.isStartGame)
 
     if (startList.length == 0) {
       return {

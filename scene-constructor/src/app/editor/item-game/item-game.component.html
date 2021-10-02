@@ -1,0 +1,29 @@
+<div class="box {{ backgroundCssClass }}">
+  <div>{{ index }}</div>
+  <div>{{ game.name }}</div>
+  <div>{{ game.description }}</div>
+  <div class="flex p-t-10">
+    <div class="p-r-10">
+      <button
+        mat-raised-button
+        value="Открыть"
+        mat-button
+        color="primary"
+        [routerLink]="['editor', game.id]"
+      >
+        Открыть
+      </button>
+    </div>
+    <div>
+      <button
+        color="accent"
+        mat-raised-button
+        value="Открыть"
+        mat-button
+        (click)="deleteGame()"
+      >
+        Удалить
+      </button>
+    </div>
+  </div>
+</div>

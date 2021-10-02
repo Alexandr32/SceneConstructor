@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Game} from '../../models/game.model';
-import {FirestoreService} from '../../serveces/firestore.service';
-import {MatDialog} from '@angular/material/dialog';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {MessageDialogComponent} from '../../core/message-dialog/message-dialog.component';
-import {Subscriber, Subscription} from 'rxjs';
-import {Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Game } from '../../models/game.model';
+import { FirestoreService } from '../../serveces/firestore.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { MessageDialogComponent } from '../../core/message-dialog/message-dialog.component';
+import { Subscriber, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-list',
@@ -19,9 +19,9 @@ export class GameListComponent implements OnInit, OnDestroy {
   game$: Subscription
 
   constructor(private dialog: MatDialog,
-              private fireStore: AngularFirestore,
-              private firestoreService: FirestoreService,
-              private router: Router) { }
+    private fireStore: AngularFirestore,
+    private firestoreService: FirestoreService,
+    private router: Router) { }
 
   ngOnInit(): void {
 
@@ -57,6 +57,10 @@ export class GameListComponent implements OnInit, OnDestroy {
       [])
 
     await this.firestoreService.saveGame(game)
+  }
+
+  identify(index, item) {
+    return item.id;
   }
 
   ngOnDestroy(): void {

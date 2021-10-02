@@ -23,6 +23,7 @@ import { MediaFileDialogComponent } from './editor/media-file-dialog/media-file-
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { SelectMediaFileDialogComponent } from './editor/select-media-file-dialog/select-media-file-dialog.component';
+import { ItemGameComponent } from './editor/item-game/item-game.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SelectMediaFileDialogComponent } from './editor/select-media-file-dialo
     MainComponent,
     MediaFileDialogComponent,
     SelectMediaFileDialogComponent,
+    ItemGameComponent,
   ],
   imports: [
     CommonModule,

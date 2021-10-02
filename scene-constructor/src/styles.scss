@@ -62,6 +62,14 @@ body {
   min-height: 100%;
 }
 
+.p-t-10 {
+  padding-top: 10px;
+}
+
+.p-r-10 {
+  padding-right: 10px;
+}
+
 // Класс содержит в себе элементы html такие как header, body, footer
 .container {
   background: white;
@@ -535,4 +543,13 @@ body {
 
 mat-grid-tile {
   background: lightblue;
+}
+
+.item-game__background-select {
+  transition-duration: 0.3s;
+  background: #fff0d9;
+}
+
+.item-game__background {
+  transition-duration: 0.3s;
 }
