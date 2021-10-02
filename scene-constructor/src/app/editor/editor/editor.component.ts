@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Scene } from '../../models/scene.model';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,7 +22,7 @@ import { RunGameService } from 'src/app/serveces/run-game.service';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit, AfterViewInit {
+export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   scenes: Scene[] = [];
   players: Player[] = [];
@@ -60,6 +60,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router) {
   }
+  ngOnDestroy(): void {
+    this.startScene$.unsubscribe()
+    this.changeSelectModeEvent$.unsubscribe()
+  }
 
   async ngOnInit() {
 
@@ -77,8 +81,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
   private async getGameData() {
     const gameId = this.route.snapshot.params.gameId;
     const game = await this.firestoreServiceService.getGameById(gameId).toPromise();
-
-    console.log('game:', game);
 
     this.game = game;
 
@@ -260,7 +262,36 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.renderLine();
   }
 
+  isCheckingSceneStart(): { isChecking: boolean, message: string } {
+    const startList = this.game.scenes.filter(item => item.isStartGame)
+
+    if (startList.length == 0) {
+      return {
+        isChecking: false,
+        message: 'Не задана стартовая сцена'
+      }
+    }
+
+    if (startList.length > 1) {
+      return {
+        isChecking: false,
+        message: 'Должна быть только одна сцена для старта'
+      }
+    }
+
+    return {
+      isChecking: true, message: ''
+    }
+  }
+
+
   async saveGame() {
+
+    const isCheckingSceneStart = this.isCheckingSceneStart()
+    if (!isCheckingSceneStart.isChecking) {
+      this.showMessage(isCheckingSceneStart.message)
+      return
+    }
 
     const dialogSave = this.dialog.open(MessageDialogComponent, {
       data: 'Сохранение...'
@@ -289,6 +320,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   async runGame() {
 
+    const isCheckingSceneStart = this.isCheckingSceneStart()
+    if (!isCheckingSceneStart.isChecking) {
+      this.showMessage(isCheckingSceneStart.message)
+      return
+    }
+
     await this.runGameService.saveNewGame(this.game)
 
     const url = this.router.serializeUrl(
@@ -299,6 +336,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   async runGameByScene(scene: Scene) {
+
+    const isCheckingSceneStart = this.isCheckingSceneStart()
+    if (!isCheckingSceneStart.isChecking) {
+      this.showMessage(isCheckingSceneStart.message)
+      return
+    }
 
     await this.runGameService.saveNewGame(this.game)
 
