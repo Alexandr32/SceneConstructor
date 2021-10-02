@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Scene } from '../../models/scene.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditSceneDialogComponent } from '../edit-scene-dialog/edit-scene-dialog.component';
 import { Answer } from '../../models/answer.model';
@@ -51,6 +51,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   widthScreen: number
 
+  startScene$: Subject<Scene> = new Subject<Scene>()
+
   constructor(public dialog: MatDialog,
     private fireStore: AngularFirestore,
     private firestoreServiceService: FirestoreService,
@@ -67,6 +69,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     await this.getGameData();
 
+    this.startScene$.subscribe(async (scene) => {
+      await this.runGameByScene(scene)
+    })
   }
 
   private async getGameData() {
@@ -285,6 +290,19 @@ export class EditorComponent implements OnInit, AfterViewInit {
   async runGame() {
 
     await this.runGameService.saveNewGame(this.game)
+
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['run', this.game.id])
+    );
+
+    window.open(url, '_blank');
+  }
+
+  async runGameByScene(scene: Scene) {
+
+    await this.runGameService.saveNewGame(this.game)
+
+    await this.runGameService.resetDataStateGame(this.game.id, scene)
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run', this.game.id])

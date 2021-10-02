@@ -1,8 +1,8 @@
-import {Component, ElementRef, Input, OnInit, Output, EventEmitter, ViewChildren, QueryList} from '@angular/core';
-import {Scene} from '../../models/scene.model';
-import {Subject} from 'rxjs';
-import {Answer} from '../../models/answer.model';
-import {Player} from '../../models/player.model';
+import { Component, ElementRef, Input, OnInit, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Scene } from '../../models/scene.model';
+import { Subject } from 'rxjs';
+import { Answer } from '../../models/answer.model';
+import { Player } from '../../models/player.model';
 
 @Component({
   selector: 'app-scene',
@@ -26,12 +26,12 @@ export class SceneComponent implements OnInit {
   @Output()
   deleteScene = new EventEmitter<Scene>();
 
-  dragPosition = {x: 0, y: 0};
+  dragPosition = { x: 0, y: 0 };
 
   @Output()
   changeDrag = new EventEmitter();
 
-  @ViewChildren('answer', {read: ElementRef})
+  @ViewChildren('answer', { read: ElementRef })
   answers: QueryList<ElementRef>;
 
   @Input()
@@ -42,12 +42,15 @@ export class SceneComponent implements OnInit {
 
   isSelectMode = false;
 
+  @Input()
+  startScene$: Subject<Scene> = new Subject<Scene>()
+
   constructor(public elementRef: ElementRef) {
 
   }
 
   ngOnInit() {
-    this.dragPosition = {x: this.scene.coordinate.x, y: this.scene.coordinate.y};
+    this.dragPosition = { x: this.scene.coordinate.x, y: this.scene.coordinate.y };
 
     this.changeSelectModeEvent$.subscribe(isSelectMode => {
       this.isSelectMode = isSelectMode;
@@ -69,7 +72,7 @@ export class SceneComponent implements OnInit {
 
     const element = event.source.getRootElement();
 
-    const {x, y} = this.getCoordinate(element);
+    const { x, y } = this.getCoordinate(element);
 
     this.scene.coordinate.x = x;
     this.scene.coordinate.y = y;
@@ -108,7 +111,7 @@ export class SceneComponent implements OnInit {
       y += el.offsetTop - el.scrollTop;
       el = el.offsetParent;
     }
-    return {top: y, left: x};
+    return { top: y, left: x };
   }
 
   selectAnswer(event, answer: Answer) {
@@ -139,6 +142,7 @@ export class SceneComponent implements OnInit {
    * Запустить сцену
    */
   onClickRunScene() {
+    this.startScene$.next(this.scene)
     //this.editScene.emit(this.scene);
   }
 
