@@ -6,7 +6,7 @@ import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { Answer, Scene } from 'src/app/models/run/run-game.models';
 import { Player } from 'src/app/models/player.model';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { timeout } from 'rxjs/operators';
+import { first, timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-run-game',
@@ -87,9 +87,11 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
     this.videoSources = []
 
-    const startScene = game.scenes.find(item => item.isStartGame)
+    const stateGame = await this.runGameService.getStateGame(this.gameId)
+      .pipe(first())
+      .toPromise()
 
-    this.selectScene = this.scenes.get(startScene.id)
+    this.selectScene = this.scenes.get(stateGame.currentScene)
     this.videoSources = []
     this.videoSources.push(this.selectScene.videoFile)
 
@@ -98,9 +100,6 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
   private subscribeStateGame() {
     this.runGameService.getStateGame(this.gameId)
-      // .pipe(
-      //   debounceTime(1000)
-      // )
       .subscribe(async (stateGame) => {
 
         console.log('stateGame::::', stateGame);
@@ -143,14 +142,12 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
         // Есть выбранная сцена
         if (selectAnswer.sceneId) {
-          await this.delay(1000)
+          await this.delay(500)
           this.selectScene = this.scenes.get(selectAnswer.sceneId)
         }
 
         this.videoSources = []
         this.videoSources.push(this.selectScene.videoFile)
-
-
 
         // Обнуляем данные
         this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
