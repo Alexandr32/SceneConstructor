@@ -217,7 +217,7 @@ export class FirestoreService {
     }
   }
 
-  async getMediaFileLink(gameId: string, typeFile: 'SceneVideos' | 'SceneImages' | 'PlayerImages'): Promise<FileLink[]> {
+  async getMediaFileLink(gameId: string, typeFile: 'SceneVideos' | 'SceneImages' | 'PlayerImages' | 'PanoramaImages'): Promise<FileLink[]> {
 
     const mediaFileList: { id: string }[] = await this.fireStore.collection(this.fileCollection, ref => ref.where('gameId', '==', gameId).where('typeFile', '==', typeFile))
       .valueChanges({ idField: 'id' })
@@ -265,6 +265,6 @@ export class FirestoreService {
     let ref = this.storage.ref(path);
     await ref.delete().toPromise();
 
-    await this.fireStore.doc<MediaFile>(`fileCollection/${id}`).delete();
+    await this.fireStore.doc<MediaFile>(`${this.fileCollection}/${id}`).delete();
   }
 }

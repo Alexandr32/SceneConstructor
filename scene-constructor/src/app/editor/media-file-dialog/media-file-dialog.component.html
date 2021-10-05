@@ -23,6 +23,18 @@
     </div>
   </div>
 
+  <div>Изображения сцен</div>
+  <div class="grid-130">
+    <div class="flex" *ngFor="let item of imagesPanoramas">
+      <img
+        class="edit-scene-dialog__image-box__scene-preview-image"
+        src="{{ item.url }}"
+        alt=""
+      />
+      <button (click)="deleteMediaFile(item.id)">Удалить</button>
+    </div>
+  </div>
+
   <div>Видео для сцен</div>
   <div class="grid-3-160">
     <div class="flex" *ngFor="let item of videosScene">

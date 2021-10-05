@@ -54,6 +54,8 @@ export class MediaFileDialogComponent implements OnInit {
 
     this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImages')
 
+    this.imagesPanoramas = await this.firestoreService.getMediaFileLink(this.gameId, 'PanoramaImages')
+
     this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneVideos')
   }
 
