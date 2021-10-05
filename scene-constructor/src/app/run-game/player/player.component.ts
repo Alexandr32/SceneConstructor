@@ -39,7 +39,7 @@ export class PlayerComponent implements OnInit {
 
     try {
       this.player.imageFile = await this.firestoreService
-        .getUrl(game.id, this.player.imageFileId, 'PlayerImage').toPromise()
+        .getUrl(game.id, this.player.imageFileId, 'PlayerImages').toPromise()
     } catch (error) {
       this.player.imageFile = 'assets/http_player.jpg'
     }

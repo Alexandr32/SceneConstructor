@@ -48,17 +48,17 @@ export class SelectMediaFileDialogComponent implements OnInit {
   private async loadData() {
 
     if (this.isShowImagesScene) {
-      this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneImage')
+      this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneImages')
 
     }
 
     if (this.isShowImagesPlayer) {
-      this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImage')
+      this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImages')
     }
 
 
     if (this.isShowVideosScene) {
-      this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneVideo')
+      this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneVideos')
     }
   }
 

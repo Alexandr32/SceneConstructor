@@ -217,7 +217,7 @@ export class FirestoreService {
     }
   }
 
-  async getMediaFileLink(gameId: string, typeFile: 'SceneVideo' | 'SceneImage' | 'PlayerImage'): Promise<FileLink[]> {
+  async getMediaFileLink(gameId: string, typeFile: 'SceneVideos' | 'SceneImages' | 'PlayerImages'): Promise<FileLink[]> {
 
     const mediaFileList: { id: string }[] = await this.fireStore.collection(this.fileCollection, ref => ref.where('gameId', '==', gameId).where('typeFile', '==', typeFile))
       .valueChanges({ idField: 'id' })
@@ -233,7 +233,6 @@ export class FirestoreService {
       const ref = this.storage.ref(folderName);
       const url = await ref.getDownloadURL().toPromise();
 
-      //const url = await this.getUrl(folderName).toPromise()
       const fileLink = new FileLink(item.id, url)
 
       resultLink.push(fileLink)
@@ -242,7 +241,7 @@ export class FirestoreService {
     return resultLink
   }
 
-  getUrl(gameId: string, fileId: string, typeFile: 'SceneVideo' | 'SceneImage' | 'PlayerImage'): Observable<string> {
+  getUrl(gameId: string, fileId: string, typeFile: 'SceneVideos' | 'SceneImages' | 'PlayerImages'): Observable<string> {
     const folderName = `SourceStore/${gameId}/${typeFile}/${fileId}`
     let ref = this.storage.ref(folderName);
     return ref.getDownloadURL();

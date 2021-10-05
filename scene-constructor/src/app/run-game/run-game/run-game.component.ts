@@ -54,7 +54,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
       if (scene.imageFileId) {
         try {
           scene.imageFile = await this.firestoreService
-            .getUrl(game.id, scene.imageFileId, 'SceneImage').toPromise()
+            .getUrl(game.id, scene.imageFileId, 'SceneImages').toPromise()
         } catch (error) {
           scene.imageFile = '/assets/http_scene.jpg';
           console.error('Изображение не найдено');
@@ -68,7 +68,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
         try {
 
           scene.videoFile = await this.firestoreService
-            .getUrl(game.id, scene.videoFileId, 'SceneVideo').toPromise()
+            .getUrl(game.id, scene.videoFileId, 'SceneVideos').toPromise()
 
         } catch (error) {
           scene.videoFile = '';

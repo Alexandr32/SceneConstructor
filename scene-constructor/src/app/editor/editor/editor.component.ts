@@ -108,7 +108,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       if (player.imageFileId) {
         try {
           player.imageFile = await this.firestoreServiceService
-            .getUrl(this.game.id, player.imageFileId, 'PlayerImage').toPromise()
+            .getUrl(this.game.id, player.imageFileId, 'PlayerImages').toPromise()
         } catch (error) {
           player.imageFile = '/assets/http_player.jpg';
           console.log('Изображение не найдено');
@@ -124,7 +124,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       if (scene.imageFileId) {
         try {
           scene.imageFile = await this.firestoreServiceService
-            .getUrl(this.game.id, scene.imageFileId, 'SceneImage').toPromise()
+            .getUrl(this.game.id, scene.imageFileId, 'SceneImages').toPromise()
         } catch (error) {
           scene.imageFile = '/assets/http_scene.jpg';
           console.error('Изображение не найдено');
@@ -138,7 +138,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         try {
 
           scene.videoFile = await this.firestoreServiceService
-            .getUrl(this.game.id, scene.videoFileId, 'SceneVideo').toPromise()
+            .getUrl(this.game.id, scene.videoFileId, 'SceneVideos').toPromise()
 
         } catch (error) {
           scene.videoFile = '';

@@ -50,11 +50,11 @@ export class MediaFileDialogComponent implements OnInit {
   }
 
   private async loadData() {
-    this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneImage')
+    this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneImages')
 
-    this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImage')
+    this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImages')
 
-    this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneVideo')
+    this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneVideos')
   }
 
   async deleteMediaFile(id: string) {
@@ -156,6 +156,9 @@ export class MediaFileDialogComponent implements OnInit {
     if (this.imgSceneFile) {
       await this.loadImageScene()
     }
+    if (this.imgPanoramasFile) {
+      await this.loadImagePanoramas()
+    }
 
     if (this.videoSources.length) {
       await this.loadVideoScene()
@@ -172,7 +175,7 @@ export class MediaFileDialogComponent implements OnInit {
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.imgPlayerFile
-    mediaFile.typeFile = 'PlayerImage'
+    mediaFile.typeFile = 'PlayerImages'
 
     try {
       await this.firestoreService.saveMediaFile(mediaFile)
@@ -189,7 +192,7 @@ export class MediaFileDialogComponent implements OnInit {
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.imgSceneFile
-    mediaFile.typeFile = "SceneImage"
+    mediaFile.typeFile = "SceneImages"
 
     try {
       await this.firestoreService.saveMediaFile(mediaFile)
@@ -200,13 +203,30 @@ export class MediaFileDialogComponent implements OnInit {
     this.imgSceneFile = ''
   }
 
+  private async loadImagePanoramas() {
+
+    const mediaFile = new MediaFile()
+    mediaFile.id = this.fireStore.createId()
+    mediaFile.gameId = this.gameId
+    mediaFile.srs = this.imgPanoramasFile
+    mediaFile.typeFile = 'PanoramaImages'
+
+    try {
+      await this.firestoreService.saveMediaFile(mediaFile)
+    } catch (error) {
+      console.log('Ошибка сохранения', error);
+    }
+
+    this.imgPanoramasFile = ''
+  }
+
   private async loadVideoScene() {
 
     const mediaFile = new MediaFile()
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.videoSources[0]
-    mediaFile.typeFile = 'SceneVideo'
+    mediaFile.typeFile = 'SceneVideos'
 
     try {
       await this.firestoreService.saveMediaFile(mediaFile)
