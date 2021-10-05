@@ -12,6 +12,7 @@ import { TypeFile } from '../models/type-file.model';
 import { MediaFile } from '../models/media-file.model.ts';
 import { identifierModuleUrl } from '@angular/compiler';
 import { FileLink } from '../models/file-link.model.ts';
+import { base64ToFile } from '../models/base64-to-file.model';
 
 @Injectable({
   providedIn: 'root'
@@ -196,7 +197,7 @@ export class FirestoreService {
     let file: File
     try {
 
-      file = FirestoreService.base64ToFile(
+      file = base64ToFile(
         mediaFile.srs,
         mediaFile.id,
       );
@@ -266,28 +267,5 @@ export class FirestoreService {
     await ref.delete().toPromise();
 
     await this.fireStore.doc<MediaFile>(`fileCollection/${id}`).delete();
-  }
-
-  /**
-   * Хз как это работает
-   * https://coderoad.ru/61041916/%D0%92%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%82-
-   * %D1%84%D0%B0%D0%B9%D0%BB%D0%B0-%D0%B8%D0%B7-ngx-image-cropper-%D0%B2-upload-Angular
-   * @param data
-   * @param filename
-   * @private
-   */
-  private static base64ToFile(data, filename) {
-
-    const arr = data.split(',');
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    let u8arr = new Uint8Array(n);
-
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-
-    return new File([u8arr], filename, { type: mime });
   }
 }

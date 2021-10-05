@@ -86,6 +86,39 @@
 
   <hr class="m-t-25" />
 
+  <div>Загрузить изображение панорамы</div>
+  <div class="m-t-25">
+    <div
+      class="edit-scene-dialog__image-box"
+      *ngIf="imgPanoramasFile && imgPanoramasFile !== ''"
+    >
+      <img
+        class="edit-scene-dialog__image-box__panorama-image"
+        [src]="imgPanoramasFile"
+        [alt]=""
+      />
+
+      <button
+        class="edit-scene-dialog__btn-del"
+        (click)="onClickDeletedPanoramasImg()"
+      >
+        Удалить
+      </button>
+    </div>
+
+    <div>
+      <!-- <button (click)="openImagePanoramasDialog()">Выбрать изображение</button> -->
+      <input
+        type="file"
+        value="Выбрать изображение"
+        accept="image/*"
+        (change)="openImagePanoramasDialog($event)"
+      />
+    </div>
+  </div>
+
+  <hr class="m-t-25" />
+
   <div>Загрузить видео для сцены</div>
 
   <div class="">

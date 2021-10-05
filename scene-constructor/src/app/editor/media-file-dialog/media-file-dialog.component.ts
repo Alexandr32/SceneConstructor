@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CropperSettings } from 'ngx-img-cropper';
 import { MessageDialogComponent } from 'src/app/core/message-dialog/message-dialog.component';
+import { base64ToFile, fileToBase64 } from 'src/app/models/base64-to-file.model';
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
@@ -19,13 +20,15 @@ export class MediaFileDialogComponent implements OnInit {
   imagesPlayer: FileLink[] = []
   imagesScene: FileLink[] = []
   videosScene: FileLink[] = []
-
+  imagesPanoramas: FileLink[] = []
 
   imgSceneFile: string = '';
 
   imgPlayerFile: string;
 
   videoSources: string[] = [];
+
+  imgPanoramasFile: string = '';
 
   private gameId: string
 
@@ -212,6 +215,24 @@ export class MediaFileDialogComponent implements OnInit {
     }
 
     this.videoSources = []
+  }
+
+  async openImagePanoramasDialog(event) {
+
+    const mediaFile: File = event.target.files[0];
+
+    try {
+
+      this.imgPanoramasFile = await fileToBase64(mediaFile)
+
+    } catch (error) {
+      console.error('Ошибка преобразования base64', error);
+      throw error;
+    }
+  }
+
+  onClickDeletedPanoramasImg() {
+    this.imgPanoramasFile = ''
   }
 
 }

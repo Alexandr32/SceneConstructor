@@ -29,9 +29,12 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/pannellum/build/pannellum.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/pannellum/build/pannellum.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -68,6 +71,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "scene-constructor:build"
+
           },
           "configurations": {
             "production": {
@@ -94,9 +98,12 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/pannellum/build/pannellum.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/pannellum/build/pannellum.js"
+            ]
           }
         },
         "lint": {
