@@ -301,5 +301,21 @@ export class FirestoreService {
     await ref.delete().toPromise();
 
     await this.fireStore.doc<MediaFile>(`${this.fileCollection}/${id}`).delete();
+
+    if (mediaFile.typeFile === TypeFile.PuzzleImages) {
+
+      for (var i = 1; i <= 9; i++) {
+        const pathSubFile = `SourceStore/${mediaFile.gameId}/${mediaFile.typeFile.toString()}/${mediaFile.id}/${i}`
+
+        try {
+          let refSubFile = this.storage.ref(pathSubFile);
+          await refSubFile.delete().toPromise();
+        } catch (error) {
+          console.error('Ошибка удаления дочерних файлов', error);
+          throw error;
+        }
+      }
+
+    }
   }
 }
