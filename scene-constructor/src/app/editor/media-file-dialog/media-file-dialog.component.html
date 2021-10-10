@@ -23,11 +23,23 @@
     </div>
   </div>
 
-  <div>Изображения сцен</div>
+  <div>Изображения панорам</div>
   <div class="grid-130">
     <div class="flex" *ngFor="let item of imagesPanoramas">
       <img
         class="edit-scene-dialog__image-box__scene-preview-image"
+        src="{{ item.url }}"
+        alt=""
+      />
+      <button (click)="deleteMediaFile(item.id)">Удалить</button>
+    </div>
+  </div>
+
+  <div>Изображения головоломок</div>
+  <div class="grid-130">
+    <div class="flex" *ngFor="let item of imagePuzzle">
+      <img
+        class="edit-scene-dialog__image-box__puzzle-preview-image"
         src="{{ item.url }}"
         alt=""
       />
@@ -119,13 +131,39 @@
     </div>
 
     <div>
-      <!-- <button (click)="openImagePanoramasDialog()">Выбрать изображение</button> -->
       <input
         type="file"
         value="Выбрать изображение"
         accept="image/*"
         (change)="openImagePanoramasDialog($event)"
       />
+    </div>
+  </div>
+
+  <hr class="m-t-25" />
+
+  <div>Загрузить изображение для головоломки</div>
+  <div class="m-t-25">
+    <div
+      class="edit-scene-dialog__image-box"
+      *ngIf="imgPuzzleFile && imgPuzzleFile !== ''"
+    >
+      <img
+        class="edit-scene-dialog__image-box__puzzle-image"
+        [src]="imgPuzzleFile"
+        [alt]=""
+      />
+
+      <button
+        class="edit-scene-dialog__btn-del"
+        (click)="onClickDeletedPuzzleImg()"
+      >
+        Удалить
+      </button>
+    </div>
+
+    <div>
+      <button (click)="openImagePuzzleDialog()">Выбрать изображение</button>
     </div>
   </div>
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Game } from '../models/game.model';
 import { Scene } from '../models/scene.model';
@@ -13,6 +13,7 @@ import { MediaFile } from '../models/media-file.model.ts';
 import { identifierModuleUrl } from '@angular/compiler';
 import { FileLink } from '../models/file-link.model.ts';
 import { base64ToFile } from '../models/base64-to-file.model';
+import { async } from '@angular/core/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -215,6 +216,40 @@ export class FirestoreService {
       console.error('Ошибка загрузки файла в хранилище', error);
       throw error;
     }
+  }
+
+  async savePuzzleMediaFile(mediaFile: MediaFile, parts: Array<{ id: number, src: string }>) {
+
+    if (mediaFile.typeFile != TypeFile.PuzzleImages) {
+      throw Error('Не Верный тип файла');
+    }
+
+    parts.forEach((async (item: { id: number, src: string }) => {
+
+      let file: File
+      try {
+
+        file = base64ToFile(
+          item.src,
+          item.id,
+        );
+      } catch (error) {
+        console.error('Ошибка преобразования base64', error);
+        throw error;
+      }
+
+      // Папка хранения файлов
+      const folderName = `SourceStore/${mediaFile.gameId}/${mediaFile.typeFile.toString()}/${mediaFile.id}/${item.id}`
+
+      try {
+        await this.storage.upload(`${folderName}`, file);
+      } catch (error) {
+        console.error('Ошибка загрузки файла в хранилище', error);
+        throw error;
+      }
+
+    }))
+
   }
 
   async getMediaFileLink(gameId: string, typeFile: TypeFile): Promise<FileLink[]> {

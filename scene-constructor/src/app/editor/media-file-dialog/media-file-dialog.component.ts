@@ -17,11 +17,11 @@ import { EditImageComponent } from '../edit-image-player/edit-image.component';
 })
 export class MediaFileDialogComponent implements OnInit {
 
-
   imagesPlayer: FileLink[] = []
   imagesScene: FileLink[] = []
   videosScene: FileLink[] = []
   imagesPanoramas: FileLink[] = []
+  imagePuzzle: FileLink[] = []
 
   imgSceneFile: string = '';
 
@@ -30,6 +30,8 @@ export class MediaFileDialogComponent implements OnInit {
   videoSources: string[] = [];
 
   imgPanoramasFile: string = '';
+
+  imgPuzzleFile: string = ''
 
   private gameId: string
 
@@ -56,6 +58,8 @@ export class MediaFileDialogComponent implements OnInit {
     this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PlayerImages)
 
     this.imagesPanoramas = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PanoramaImages)
+
+    this.imagePuzzle = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PuzzleImages)
 
     this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
   }
@@ -167,6 +171,10 @@ export class MediaFileDialogComponent implements OnInit {
       await this.loadVideoScene()
     }
 
+    if (this.imgPuzzleFile) {
+      await this.loadImagePuzzle()
+    }
+
     dialogSave.close()
 
     this.loadData()
@@ -205,6 +213,72 @@ export class MediaFileDialogComponent implements OnInit {
 
     this.imgSceneFile = ''
   }
+
+  private async loadImagePuzzle() {
+
+    const mediaFile = new MediaFile()
+    mediaFile.id = this.fireStore.createId()
+    mediaFile.gameId = this.gameId
+    mediaFile.srs = this.imgPuzzleFile
+    mediaFile.typeFile = TypeFile.PuzzleImages
+
+    try {
+      await this.firestoreService.saveMediaFile(mediaFile)
+    } catch (error) {
+      console.log('Ошибка сохранения', error);
+    }
+
+    let parts: Array<{ id: number, src: string }>
+
+    try {
+      parts = await this.getPromiseImagePuzzle(this.imgPuzzleFile)
+    } catch (error) {
+      console.log('Ошибка при нарезке изображений', error);
+    }
+
+    try {
+      await this.firestoreService.savePuzzleMediaFile(mediaFile, parts)
+    } catch (error) {
+      console.log('Ошибка при сохранении нарезанных изображений', error);
+    }
+
+    this.imgPuzzleFile = ''
+  }
+
+  private getPromiseImagePuzzle = (imgPuzzleFile: string): Promise<Array<{ id: number, src: string }>> => {
+
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      const parts: Array<{ id: number, src: string }> = []
+      const img = new Image();
+
+      function split() {
+        const w2 = img.width / 2
+        const h2 = img.height / 2;
+
+        for (var i = 0; i < 4; i++) {
+
+          const x = (-w2 * i) % (w2 * 2)
+          const y = (h2 * i) <= h2 ? 0 : -h2;
+
+          canvas.width = w2;
+          canvas.height = h2;
+
+          ctx.drawImage(this, x, y, w2 * 2, h2 * 2); // img, x, y, w, h
+          parts.push({ id: i, src: canvas.toDataURL() }); // ("image/jpeg") for jpeg
+
+          resolve(parts)
+        }
+      }
+
+      img.onload = split;
+      img.src = imgPuzzleFile
+    })
+
+  }
+
+
 
   private async loadImagePanoramas() {
 
@@ -257,5 +331,32 @@ export class MediaFileDialogComponent implements OnInit {
   onClickDeletedPanoramasImg() {
     this.imgPanoramasFile = ''
   }
+
+
+  async openImagePuzzleDialog() {
+
+    const cropperSettings = new CropperSettings();
+    cropperSettings.width = 390;
+    cropperSettings.height = 390;
+    cropperSettings.croppedWidth = 390;
+    cropperSettings.croppedHeight = 390;
+    cropperSettings.canvasWidth = 390;
+    cropperSettings.canvasHeight = 390;
+
+    const dialogRef = this.dialog.open(EditImageComponent, {
+      data: { image: '', cropperSettings }
+    });
+
+    dialogRef.componentInstance.saveEvent.subscribe((imgFile: string) => {
+      this.imgPuzzleFile = imgFile;
+    });
+  }
+
+
+  onClickDeletedPuzzleImg() {
+    this.imgPuzzleFile = ''
+  }
+
+
 
 }
