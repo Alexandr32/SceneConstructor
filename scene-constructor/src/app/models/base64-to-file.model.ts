@@ -1,5 +1,4 @@
-import { rejects } from "assert";
-import { resolve } from "dns";
+
 
 /**
    * Хз как это работает
