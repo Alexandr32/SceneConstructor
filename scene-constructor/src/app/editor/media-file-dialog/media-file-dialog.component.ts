@@ -272,7 +272,7 @@ export class MediaFileDialogComponent implements OnInit {
         for (var i = 0; i < row; i++) {
           for (var j = 0; j < col; j++) {
 
-            ctx.drawImage(img, i * width, j * height, width, height, 0, 0, width, height);
+            ctx.drawImage(img, j * width, i * height, width, height, 0, 0, width, height);
 
 
             parts.push({ id: count, src: canvas.toDataURL() });
