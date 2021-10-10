@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
 import { Answer, Scene } from 'src/app/models/run/run-game.models';
+import { TypeFile } from 'src/app/models/type-file.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { RunGameService } from 'src/app/serveces/run-game.service';
 import { Player } from '../../models/player.model';
@@ -39,7 +40,7 @@ export class PlayerComponent implements OnInit {
 
     try {
       this.player.imageFile = await this.firestoreService
-        .getUrl(game.id, this.player.imageFileId, 'PlayerImages').toPromise()
+        .getUrl(game.id, this.player.imageFileId, TypeFile.PlayerImages).toPromise()
     } catch (error) {
       this.player.imageFile = 'assets/http_player.jpg'
     }

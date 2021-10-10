@@ -1,6 +1,9 @@
 // Не используется
 export enum TypeFile {
-  video = 'video',
-  image ='image',
-  undefined = ''
+  SceneVideos = 'SceneVideos',
+  SceneImages = 'SceneImages',
+  PlayerImages = 'PlayerImages',
+  PanoramaImages = 'PanoramaImages',
+  PuzzleImages = 'PuzzleImages',
+  Undefined = 'undefined'
 }

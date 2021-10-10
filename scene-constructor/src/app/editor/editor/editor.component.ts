@@ -16,6 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MediaFileDialogComponent } from '../media-file-dialog/media-file-dialog.component';
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { RunGameService } from 'src/app/serveces/run-game.service';
+import { TypeFile } from 'src/app/models/type-file.model';
 
 @Component({
   selector: 'app-editor',
@@ -108,7 +109,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       if (player.imageFileId) {
         try {
           player.imageFile = await this.firestoreServiceService
-            .getUrl(this.game.id, player.imageFileId, 'PlayerImages').toPromise()
+            .getUrl(this.game.id, player.imageFileId, TypeFile.PlayerImages).toPromise()
         } catch (error) {
           player.imageFile = '/assets/http_player.jpg';
           console.log('Изображение не найдено');
@@ -124,7 +125,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       if (scene.imageFileId) {
         try {
           scene.imageFile = await this.firestoreServiceService
-            .getUrl(this.game.id, scene.imageFileId, 'SceneImages').toPromise()
+            .getUrl(this.game.id, scene.imageFileId, TypeFile.SceneImages).toPromise()
         } catch (error) {
           scene.imageFile = '/assets/http_scene.jpg';
           console.error('Изображение не найдено');
@@ -138,7 +139,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         try {
 
           scene.videoFile = await this.firestoreServiceService
-            .getUrl(this.game.id, scene.videoFileId, 'SceneVideos').toPromise()
+            .getUrl(this.game.id, scene.videoFileId, TypeFile.SceneVideos).toPromise()
 
         } catch (error) {
           scene.videoFile = '';

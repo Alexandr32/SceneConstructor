@@ -7,6 +7,7 @@ import { Answer, Scene } from 'src/app/models/run/run-game.models';
 import { Player } from 'src/app/models/player.model';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { first, timeout } from 'rxjs/operators';
+import { TypeFile } from 'src/app/models/type-file.model';
 
 @Component({
   selector: 'app-run-game',
@@ -54,7 +55,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
       if (scene.imageFileId) {
         try {
           scene.imageFile = await this.firestoreService
-            .getUrl(game.id, scene.imageFileId, 'SceneImages').toPromise()
+            .getUrl(game.id, scene.imageFileId, TypeFile.SceneImages).toPromise()
         } catch (error) {
           scene.imageFile = '/assets/http_scene.jpg';
           console.error('Изображение не найдено');
@@ -68,7 +69,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
         try {
 
           scene.videoFile = await this.firestoreService
-            .getUrl(game.id, scene.videoFileId, 'SceneVideos').toPromise()
+            .getUrl(game.id, scene.videoFileId, TypeFile.SceneVideos).toPromise()
 
         } catch (error) {
           scene.videoFile = '';

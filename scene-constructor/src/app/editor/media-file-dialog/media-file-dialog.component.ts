@@ -6,6 +6,7 @@ import { MessageDialogComponent } from 'src/app/core/message-dialog/message-dial
 import { base64ToFile, fileToBase64 } from 'src/app/models/base64-to-file.model';
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
+import { TypeFile } from 'src/app/models/type-file.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
 
@@ -50,13 +51,13 @@ export class MediaFileDialogComponent implements OnInit {
   }
 
   private async loadData() {
-    this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneImages')
+    this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneImages)
 
-    this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImages')
+    this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PlayerImages)
 
-    this.imagesPanoramas = await this.firestoreService.getMediaFileLink(this.gameId, 'PanoramaImages')
+    this.imagesPanoramas = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PanoramaImages)
 
-    this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneVideos')
+    this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
   }
 
   async deleteMediaFile(id: string) {
@@ -177,7 +178,7 @@ export class MediaFileDialogComponent implements OnInit {
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.imgPlayerFile
-    mediaFile.typeFile = 'PlayerImages'
+    mediaFile.typeFile = TypeFile.PlayerImages
 
     try {
       await this.firestoreService.saveMediaFile(mediaFile)
@@ -194,7 +195,7 @@ export class MediaFileDialogComponent implements OnInit {
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.imgSceneFile
-    mediaFile.typeFile = "SceneImages"
+    mediaFile.typeFile = TypeFile.SceneImages
 
     try {
       await this.firestoreService.saveMediaFile(mediaFile)
@@ -211,7 +212,7 @@ export class MediaFileDialogComponent implements OnInit {
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.imgPanoramasFile
-    mediaFile.typeFile = 'PanoramaImages'
+    mediaFile.typeFile = TypeFile.PanoramaImages
 
     try {
       await this.firestoreService.saveMediaFile(mediaFile)
@@ -228,7 +229,7 @@ export class MediaFileDialogComponent implements OnInit {
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.videoSources[0]
-    mediaFile.typeFile = 'SceneVideos'
+    mediaFile.typeFile = TypeFile.SceneVideos
 
     try {
       await this.firestoreService.saveMediaFile(mediaFile)

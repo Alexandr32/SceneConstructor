@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileLink } from 'src/app/models/file-link.model.ts';
+import { TypeFile } from 'src/app/models/type-file.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { MediaFileDialogComponent } from '../media-file-dialog/media-file-dialog.component';
 
@@ -48,17 +49,17 @@ export class SelectMediaFileDialogComponent implements OnInit {
   private async loadData() {
 
     if (this.isShowImagesScene) {
-      this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneImages')
+      this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneImages)
 
     }
 
     if (this.isShowImagesPlayer) {
-      this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, 'PlayerImages')
+      this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PlayerImages)
     }
 
 
     if (this.isShowVideosScene) {
-      this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, 'SceneVideos')
+      this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
     }
   }
 

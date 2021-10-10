@@ -187,7 +187,7 @@ export class FirestoreService {
         .doc(mediaFile.id)
         .set({
           gameId: mediaFile.gameId,
-          typeFile: mediaFile.typeFile
+          typeFile: mediaFile.typeFile.toString()
         });
     } catch (error) {
       console.error('При сохранении файла в таблицу произошла ошибка', error);
@@ -207,7 +207,7 @@ export class FirestoreService {
     }
 
     // Общая папка для хранения файлов
-    const folderName = `SourceStore/${mediaFile.gameId}/${mediaFile.typeFile}/${mediaFile.id}`
+    const folderName = `SourceStore/${mediaFile.gameId}/${mediaFile.typeFile.toString()}/${mediaFile.id}`
 
     try {
       await this.storage.upload(`${folderName}`, file);
@@ -217,7 +217,7 @@ export class FirestoreService {
     }
   }
 
-  async getMediaFileLink(gameId: string, typeFile: 'SceneVideos' | 'SceneImages' | 'PlayerImages' | 'PanoramaImages'): Promise<FileLink[]> {
+  async getMediaFileLink(gameId: string, typeFile: TypeFile): Promise<FileLink[]> {
 
     const mediaFileList: { id: string }[] = await this.fireStore.collection(this.fileCollection, ref => ref.where('gameId', '==', gameId).where('typeFile', '==', typeFile))
       .valueChanges({ idField: 'id' })
@@ -228,7 +228,7 @@ export class FirestoreService {
 
     mediaFileList.forEach(async (item) => {
 
-      const folderName = `SourceStore/${gameId}/${typeFile}/${item.id}`
+      const folderName = `SourceStore/${gameId}/${typeFile.toString()}/${item.id}`
 
       const ref = this.storage.ref(folderName);
       const url = await ref.getDownloadURL().toPromise();
@@ -241,8 +241,8 @@ export class FirestoreService {
     return resultLink
   }
 
-  getUrl(gameId: string, fileId: string, typeFile: 'SceneVideos' | 'SceneImages' | 'PlayerImages'): Observable<string> {
-    const folderName = `SourceStore/${gameId}/${typeFile}/${fileId}`
+  getUrl(gameId: string, fileId: string, typeFile: TypeFile): Observable<string> {
+    const folderName = `SourceStore/${gameId}/${typeFile.toString()}/${fileId}`
     let ref = this.storage.ref(folderName);
     return ref.getDownloadURL();
   }
@@ -261,7 +261,7 @@ export class FirestoreService {
       .pipe(first())
       .toPromise()
 
-    const path = `SourceStore/${mediaFile.gameId}/${mediaFile.typeFile}/${mediaFile.id}`
+    const path = `SourceStore/${mediaFile.gameId}/${mediaFile.typeFile.toString()}/${mediaFile.id}`
     let ref = this.storage.ref(path);
     await ref.delete().toPromise();
 
