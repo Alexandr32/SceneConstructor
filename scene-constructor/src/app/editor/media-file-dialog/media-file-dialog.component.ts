@@ -254,22 +254,35 @@ export class MediaFileDialogComponent implements OnInit {
       const img = new Image();
 
       function split() {
-        const w2 = img.width / 2
-        const h2 = img.height / 2;
 
-        for (var i = 0; i < 4; i++) {
+        const col = 3 // столбец
+        const row = 3; // строка
 
-          const x = (-w2 * i) % (w2 * 2)
-          const y = (h2 * i) <= h2 ? 0 : -h2;
+        const width = img.width / col
+        const height = img.height / row;
 
-          canvas.width = w2;
-          canvas.height = h2;
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d');
 
-          ctx.drawImage(this, x, y, w2 * 2, h2 * 2); // img, x, y, w, h
-          parts.push({ id: i, src: canvas.toDataURL() }); // ("image/jpeg") for jpeg
+        canvas.width = width;
+        canvas.height = height;
 
-          resolve(parts)
+        let count = 1
+
+        for (var i = 0; i < row; i++) {
+          for (var j = 0; j < col; j++) {
+
+            ctx.drawImage(img, i * width, j * height, width, height, 0, 0, width, height);
+
+
+            parts.push({ id: count, src: canvas.toDataURL() });
+
+            count++
+
+            resolve(parts)
+          }
         }
+
       }
 
       img.onload = split;

@@ -242,6 +242,11 @@ body {
   height: 48px;
 }
 
+.edit-scene-dialog__image-box__puzzle-preview-image {
+  width: 48px;
+  height: 48px;
+}
+
 .edit-scene-dialog__image-box__scene-preview-video {
   width: 100px;
   height: 100px;
@@ -569,5 +574,10 @@ mat-grid-tile {
 
 .edit-scene-dialog__image-box__panorama-image {
   width: 400px;
+  height: 192px;
+}
+
+.edit-scene-dialog__image-box__puzzle-image {
+  width: 192px;
   height: 192px;
 }
