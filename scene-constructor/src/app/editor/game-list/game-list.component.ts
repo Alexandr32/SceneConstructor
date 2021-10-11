@@ -34,7 +34,7 @@ export class GameListComponent implements OnInit, OnDestroy {
 
     this.viewer = pannellum.viewer('panoramaContainer', {
       "type": "equirectangular",
-      "panorama": "../assets/3.jpg",
+      "panorama": "../assets/2.jpg",
       "autoLoad": true,
       "autoRotate": true,
       'showFullscreenCtrl': false,
