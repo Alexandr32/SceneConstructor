@@ -97,6 +97,8 @@ export class RunGameComponent implements OnInit, OnDestroy {
     this.videoSources.push(this.selectScene.videoFile)
 
     this.subscribeStateGame()
+
+    this.playSound()
   }
 
   private subscribeStateGame() {
@@ -164,6 +166,11 @@ export class RunGameComponent implements OnInit, OnDestroy {
         resolve('')
       }, time);
     })
+  }
+
+  private playSound() {
+    var audio = new Audio('../assets/audio_file.mp3');
+    audio.play();
   }
 
 }
