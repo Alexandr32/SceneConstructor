@@ -176,6 +176,7 @@ export class MediaFileDialogComponent implements OnInit {
       data: 'Сохранение...'
     });
 
+
     if (this.imgPlayerFile) {
       await this.SaveImagePlayer()
     }
@@ -360,6 +361,7 @@ export class MediaFileDialogComponent implements OnInit {
     const mediaFile = new MediaFile()
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
+    mediaFile.nameFile = 'Видео'
     mediaFile.srs = this.videoSources[0]
     mediaFile.typeFile = TypeFile.SceneVideos
 
