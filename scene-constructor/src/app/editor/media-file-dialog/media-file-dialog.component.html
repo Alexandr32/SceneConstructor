@@ -61,6 +61,16 @@
     </div>
   </div>
 
+  <div>Аудио для сцен</div>
+  <div>
+    <div *ngFor="let item of sounds">
+      <br />
+      <div>{{ item.nameFile }}</div>
+      <audio controls src="{{ item.url }}">не поддерживается</audio>
+      <button (click)="deleteMediaFile(item.id)">Удалить</button>
+    </div>
+  </div>
+
   <hr class="m-t-25" />
 
   <div>Загрузить изображение персонажей</div>
@@ -143,6 +153,7 @@
   <hr class="m-t-25" />
 
   <div>Загрузить изображение для головоломки</div>
+
   <div class="m-t-25">
     <div
       class="edit-scene-dialog__image-box"
@@ -193,6 +204,30 @@
     </div>
 
     <hr class="m-t-25" />
+
+    <div>Загрузить звуковой файл</div>
+    <div class="m-t-25">
+      <div *ngIf="soundFile && soundFile !== ''">
+        <div class="flex m-8">
+          <div>Название аудио трека:</div>
+
+          <input
+            type="text"
+            [value]="nameSound"
+            (input)="nameSound = $event.target.value"
+          />
+
+          <button (click)="onClickDeletedSound()">Удалить</button>
+        </div>
+      </div>
+
+      <div>
+        <input type="file" accept=".mp3" (change)="openSoundDialog($event)" />
+      </div>
+    </div>
+
+    <hr class="m-t-25" />
+
     <button
       class="m-t-25"
       mat-raised-button
@@ -201,6 +236,7 @@
     >
       Загрузить
     </button>
+
     <hr class="m-t-25" />
 
     <div>

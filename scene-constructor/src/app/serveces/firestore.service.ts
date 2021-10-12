@@ -188,6 +188,7 @@ export class FirestoreService {
         .doc(mediaFile.id)
         .set({
           gameId: mediaFile.gameId,
+          nameFile: mediaFile.nameFile,
           typeFile: mediaFile.typeFile.toString()
         });
     } catch (error) {
@@ -254,12 +255,15 @@ export class FirestoreService {
 
   async getMediaFileLink(gameId: string, typeFile: TypeFile): Promise<FileLink[]> {
 
-    const mediaFileList: { id: string }[] = await this.fireStore.collection(this.fileCollection, ref => ref.where('gameId', '==', gameId).where('typeFile', '==', typeFile))
+    const mediaFileList: FileLink[] = await this.fireStore
+      .collection<FileLink>(this.fileCollection, ref => ref
+        .where('gameId', '==', gameId)
+        .where('typeFile', '==', typeFile))
       .valueChanges({ idField: 'id' })
       .pipe(first())
       .toPromise();
 
-    const resultLink: { id: string, url: string }[] = []
+    const resultLink: FileLink[] = []
 
     mediaFileList.forEach(async (item) => {
 
@@ -268,7 +272,7 @@ export class FirestoreService {
       const ref = this.storage.ref(folderName);
       const url = await ref.getDownloadURL().toPromise();
 
-      const fileLink = new FileLink(item.id, url)
+      const fileLink = new FileLink(item.id, item.nameFile, url)
 
       resultLink.push(fileLink)
     })

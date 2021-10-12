@@ -5,5 +5,6 @@ export enum TypeFile {
   PlayerImages = 'PlayerImages',
   PanoramaImages = 'PanoramaImages',
   PuzzleImages = 'PuzzleImages',
+  Sound = 'Sound',
   Undefined = 'undefined'
 }

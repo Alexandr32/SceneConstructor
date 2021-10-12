@@ -22,6 +22,7 @@ export class MediaFileDialogComponent implements OnInit {
   videosScene: FileLink[] = []
   imagesPanoramas: FileLink[] = []
   imagePuzzle: FileLink[] = []
+  sounds: FileLink[] = []
 
   imgSceneFile: string = '';
 
@@ -32,6 +33,9 @@ export class MediaFileDialogComponent implements OnInit {
   imgPanoramasFile: string = '';
 
   imgPuzzleFile: string = ''
+
+  soundFile: string = ''
+  nameSound: string = ''
 
   private gameId: string
 
@@ -62,6 +66,10 @@ export class MediaFileDialogComponent implements OnInit {
     this.imagePuzzle = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PuzzleImages)
 
     this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
+
+    this.sounds = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.Sound)
+
+    console.log('sounds:', this.sounds);
   }
 
   async deleteMediaFile(id: string) {
@@ -103,6 +111,19 @@ export class MediaFileDialogComponent implements OnInit {
 
     this.videoSources = [];
     this.videoSources.push(videoSource);
+  }
+
+  async openSoundDialog(event) {
+
+    const file: File = event.target.files[0];
+    let soundSource: string;
+    try {
+      soundSource = await this.fileToBase64(file);
+    } catch (e) {
+      console.log(e);
+    }
+
+    this.soundFile = soundSource
   }
 
   private fileToBase64 = (file: File): Promise<string> => {
@@ -151,17 +172,16 @@ export class MediaFileDialogComponent implements OnInit {
 
   async onLoadFile() {
 
-
     const dialogSave = this.dialog.open(MessageDialogComponent, {
       data: 'Сохранение...'
     });
 
     if (this.imgPlayerFile) {
-      await this.loadImagePlayer()
+      await this.SaveImagePlayer()
     }
 
     if (this.imgSceneFile) {
-      await this.loadImageScene()
+      await this.SaveImageScene()
     }
     if (this.imgPanoramasFile) {
       await this.loadImagePanoramas()
@@ -172,7 +192,11 @@ export class MediaFileDialogComponent implements OnInit {
     }
 
     if (this.imgPuzzleFile) {
-      await this.loadImagePuzzle()
+      await this.SaveImagePuzzle()
+    }
+
+    if (this.soundFile) {
+      await this.SaveSound()
     }
 
     dialogSave.close()
@@ -180,11 +204,12 @@ export class MediaFileDialogComponent implements OnInit {
     this.loadData()
   }
 
-  private async loadImagePlayer() {
+  private async SaveImagePlayer() {
 
     const mediaFile = new MediaFile()
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
+    mediaFile.nameFile = 'Изображение игрока'
     mediaFile.srs = this.imgPlayerFile
     mediaFile.typeFile = TypeFile.PlayerImages
 
@@ -197,12 +222,13 @@ export class MediaFileDialogComponent implements OnInit {
     this.imgPlayerFile = ''
   }
 
-  private async loadImageScene() {
+  private async SaveImageScene() {
 
     const mediaFile = new MediaFile()
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.imgSceneFile
+    mediaFile.nameFile = 'Изображение сцены'
     mediaFile.typeFile = TypeFile.SceneImages
 
     try {
@@ -214,12 +240,13 @@ export class MediaFileDialogComponent implements OnInit {
     this.imgSceneFile = ''
   }
 
-  private async loadImagePuzzle() {
+  private async SaveImagePuzzle() {
 
     const mediaFile = new MediaFile()
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.imgPuzzleFile
+    mediaFile.nameFile = 'Изображение головоломки'
     mediaFile.typeFile = TypeFile.PuzzleImages
 
     try {
@@ -243,6 +270,25 @@ export class MediaFileDialogComponent implements OnInit {
     }
 
     this.imgPuzzleFile = ''
+  }
+
+  private async SaveSound() {
+
+    const mediaFile = new MediaFile()
+    mediaFile.id = this.fireStore.createId()
+    mediaFile.gameId = this.gameId
+    mediaFile.srs = this.soundFile
+    mediaFile.nameFile = this.nameSound ? this.nameSound : "Аудиофайл"
+    mediaFile.typeFile = TypeFile.Sound
+
+    try {
+      await this.firestoreService.saveMediaFile(mediaFile)
+    } catch (error) {
+      console.log('Ошибка сохранения', error);
+    }
+
+    this.soundFile = ''
+    this.nameSound = ''
   }
 
   private getPromiseImagePuzzle = (imgPuzzleFile: string): Promise<Array<{ id: number, src: string }>> => {
@@ -291,14 +337,13 @@ export class MediaFileDialogComponent implements OnInit {
 
   }
 
-
-
   private async loadImagePanoramas() {
 
     const mediaFile = new MediaFile()
     mediaFile.id = this.fireStore.createId()
     mediaFile.gameId = this.gameId
     mediaFile.srs = this.imgPanoramasFile
+    mediaFile.nameFile = 'Изображение панорамы'
     mediaFile.typeFile = TypeFile.PanoramaImages
 
     try {
@@ -345,6 +390,10 @@ export class MediaFileDialogComponent implements OnInit {
     this.imgPanoramasFile = ''
   }
 
+  onClickDeletedSound() {
+    this.soundFile = ''
+    this.nameSound = ''
+  }
 
   async openImagePuzzleDialog() {
 
@@ -364,7 +413,6 @@ export class MediaFileDialogComponent implements OnInit {
       this.imgPuzzleFile = imgFile;
     });
   }
-
 
   onClickDeletedPuzzleImg() {
     this.imgPuzzleFile = ''
