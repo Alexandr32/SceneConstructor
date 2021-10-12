@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CropperSettings } from 'ngx-img-cropper';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
+import { FileLink } from 'src/app/models/file-link.model.ts';
 
 @Component({
   selector: 'app-edit-player-dialog',
@@ -69,7 +70,7 @@ export class EditPlayerDialogComponent implements OnInit {
 
     dialogRef.componentInstance.isShowImagesPlayer = true
 
-    dialogRef.componentInstance.selectItem.subscribe((item: { id: string, url: string }) => {
+    dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
       this.imgFile = item.url
       this.imageFileId = item.id
     });

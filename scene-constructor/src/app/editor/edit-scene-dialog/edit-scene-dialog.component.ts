@@ -10,6 +10,7 @@ import { EditImageComponent } from '../edit-image-player/edit-image.component';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { TypeFile } from '../../models/type-file.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
+import { FileLink } from 'src/app/models/file-link.model.ts';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -240,7 +241,7 @@ export class EditSceneDialogComponent implements OnInit {
 
     dialogRef.componentInstance.isShowImagesScene = true
 
-    dialogRef.componentInstance.selectItem.subscribe((item: { id: string, url: string }) => {
+    dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
       this.imgFile = item.url
       this.imageFileId = item.id
     });
@@ -253,7 +254,7 @@ export class EditSceneDialogComponent implements OnInit {
 
     dialogRef.componentInstance.isShowVideosScene = true
 
-    dialogRef.componentInstance.selectItem.subscribe((item: { id: string, url: string }) => {
+    dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
       this.videoSources = []
       this.videoSources.push(item.url)
       this.videoFileId = item.id
