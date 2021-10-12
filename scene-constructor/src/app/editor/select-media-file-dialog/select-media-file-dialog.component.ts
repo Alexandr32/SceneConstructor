@@ -22,12 +22,25 @@ export class SelectMediaFileDialogComponent implements OnInit {
   @Input()
   isShowVideosScene: boolean = false
 
+  @Input()
+  isShowImagesPanoramas: boolean = false
+
+  @Input()
+  isShowImagePuzzle: boolean = false
+
+  @Input()
+  isShowSounds: boolean = false
+
   @Output()
-  selectItem = new EventEmitter<{ id: string, url: string }>();
+  selectItem = new EventEmitter<FileLink>();
 
   imagesPlayer: FileLink[] = []
   imagesScene: FileLink[] = []
   videosScene: FileLink[] = []
+
+  imagesPanoramas: FileLink[] = []
+  imagePuzzle: FileLink[] = []
+  sounds: FileLink[] = []
 
   private gameId: string
 
@@ -61,9 +74,22 @@ export class SelectMediaFileDialogComponent implements OnInit {
     if (this.isShowVideosScene) {
       this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
     }
+
+    if (this.isShowImagesPanoramas) {
+      this.imagesPanoramas = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PanoramaImages)
+    }
+
+    if (this.isShowImagePuzzle) {
+      this.imagePuzzle = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PuzzleImages)
+    }
+
+    if (this.isShowSounds) {
+      this.sounds = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PuzzleImages)
+    }
+
   }
 
-  selectMediaFile(item: { id: string, url: string }) {
+  selectMediaFile(item: FileLink) {
     this.selectItem.emit(item)
     this.dialogRef.close();
   }
