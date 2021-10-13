@@ -11,6 +11,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { TypeFile } from '../../models/type-file.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 import { FileLink } from 'src/app/models/file-link.model.ts';
+import { MediaFile } from 'src/app/models/media-file.model.ts';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -32,6 +33,8 @@ export class EditSceneDialogComponent implements OnInit {
 
   answers: Answer[] = [];
   players: { player: Player, isSelect: boolean }[] = [];
+
+  soundFileLink: FileLink
 
   private gameId: string
 
@@ -57,6 +60,10 @@ export class EditSceneDialogComponent implements OnInit {
     if (this.data.scene.imageFile) {
       this.imgFile = this.data.scene.imageFile;
       this.imageFileId = this.data.scene.imageFileId
+    }
+
+    if (this.data.scene.soundFileLink) {
+      this.soundFileLink = this.data.scene.soundFileLink
     }
 
     this.form = new FormGroup({
@@ -161,13 +168,6 @@ export class EditSceneDialogComponent implements OnInit {
     this.answers.push(answer);
   }
 
-  // private static getRndColor(): string {
-  //   const r = Math.floor(Math.random() * (256));
-  //   const g = Math.floor(Math.random() * (256));
-  //   const b = Math.floor(Math.random() * (256));
-  //   return '#' + r.toString(16) + g.toString(16) + b.toString(16);
-  // }
-
   private getPosition(positions: number[]): number {
     let position = 0;
     if (positions.length != 0) {
@@ -207,6 +207,8 @@ export class EditSceneDialogComponent implements OnInit {
     }).map(item => {
       return item.player.id;
     });
+
+    this.data.scene.soundFileLink = this.soundFileLink
 
     this.data.scene.answers = this.answers;
     this.data.scene.imageFileId = this.imageFileId;
@@ -273,6 +275,22 @@ export class EditSceneDialogComponent implements OnInit {
   onClickDeletedVideo() {
     this.videoFileId = ''
     this.videoSources = []
+  }
+
+  selectSoundFileLink() {
+    const dialogRef = this.dialog.open(SelectMediaFileDialogComponent, {
+      data: { gameId: this.gameId }
+    });
+
+    dialogRef.componentInstance.isShowSounds = true
+
+    dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
+      this.soundFileLink = item
+    });
+  }
+
+  deletedSoundFileLink() {
+    this.soundFileLink = null
   }
 
 }

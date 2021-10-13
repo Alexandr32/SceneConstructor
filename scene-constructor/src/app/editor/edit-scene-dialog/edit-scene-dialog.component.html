@@ -29,6 +29,20 @@
 
   <hr class="m-t-25" />
 
+  <div>
+    Аудиофайл для сцены
+
+    <div *ngIf="soundFileLink">
+      <div>{{ soundFileLink.nameFile }}</div>
+      <audio controls src="{{ soundFileLink.url }}">не поддерживается</audio>
+    </div>
+
+    <button (click)="selectSoundFileLink()">Выбрать</button>
+    <button (click)="deletedSoundFileLink()">Убрать</button>
+  </div>
+
+  <hr class="m-t-25" />
+
   <div class="input-box">
     <div>
       <p>Кто должен отвечать/взаимодействовать:</p>

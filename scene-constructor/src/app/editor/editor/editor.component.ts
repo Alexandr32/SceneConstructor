@@ -148,6 +148,14 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         scene.videoFile = '';
       }
+
+      if (scene.soundFileId) {
+
+        scene.soundFileLink =
+          await this.firestoreServiceService
+            .getMediaFileLinkById(this.game.id, TypeFile.Sound, scene.soundFileId)
+
+      }
     }
 
     this.form = new FormGroup({

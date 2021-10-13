@@ -84,7 +84,7 @@ export class SelectMediaFileDialogComponent implements OnInit {
     }
 
     if (this.isShowSounds) {
-      this.sounds = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PuzzleImages)
+      this.sounds = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.Sound)
     }
 
   }

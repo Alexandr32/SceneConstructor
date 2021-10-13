@@ -50,7 +50,7 @@
           src="{{ item.url }}"
           alt=""
         />
-        <button (click)="selectMediaFile(item.id)">Выбрать</button>
+        <button (click)="selectMediaFile(item)">Выбрать</button>
       </div>
     </div>
   </div>
@@ -78,7 +78,7 @@
         <br />
         <div>{{ item.nameFile }}</div>
         <audio controls src="{{ item.url }}">не поддерживается</audio>
-        <button (click)="selectMediaFile(item.id)">Выбрать</button>
+        <button (click)="selectMediaFile(item)">Выбрать</button>
       </div>
     </div>
   </div>
