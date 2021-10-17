@@ -124,6 +124,7 @@ export class FirestoreService {
           x: scene.coordinate.x,
           y: scene.coordinate.y
         },
+        typeScene: scene.typesScene,
         answers: answers,
         players: scene.players,
         isStartGame: scene.isStartGame

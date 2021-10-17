@@ -22,9 +22,8 @@ import { getDefaultScene, getTypeScene, TypeScene, TypeSceneEnum } from 'src/app
 export class EditSceneDialogComponent implements OnInit {
 
   typesScene = getTypeScene()
-  selectTypeScene: TypeScene = this.typesScene[2]
+  selectTypeScene: TypeScene = this.typesScene[0]
   nameTypeScene = this.selectTypeScene.name
-
 
   @Output()
   saveEvent = new EventEmitter();
@@ -72,6 +71,12 @@ export class EditSceneDialogComponent implements OnInit {
       this.soundFileLink = this.data.scene.soundFileLink
     }
 
+    if (this.data.scene.typesScene) {
+
+      const selectTypeScene = this.typesScene.find(item => item.type === this.data.scene.typesScene)
+      this.selectTypeScene = selectTypeScene
+      this.nameTypeScene = this.selectTypeScene.name
+    }
 
     this.form = new FormGroup({
       'title':
@@ -203,6 +208,8 @@ export class EditSceneDialogComponent implements OnInit {
     this.data.scene.color = this.form.value['color'];
     this.data.scene.isStartGame = this.form.value['isStartGame'];
 
+    this.data.scene.typesScene = this.selectTypeScene.type
+
 
     this.answers.forEach(item => {
       item.text = this.form.value[`answerId${item.id}`];
@@ -301,6 +308,7 @@ export class EditSceneDialogComponent implements OnInit {
 
   selectChangeTypeScene(nameTypeScene: string) {
     const selectTypeScene = this.typesScene.find(item => item.name === nameTypeScene)
+    this.selectTypeScene = selectTypeScene
     console.log('selectTypeScene:', selectTypeScene);
 
   }

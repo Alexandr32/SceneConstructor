@@ -5,6 +5,7 @@ import { Coordinate } from './coordinate.model';
 import { Answer } from './answer.model';
 import { Entity } from './entity.model';
 import { FileLink } from './file-link.model.ts';
+import { TypeScene, TypeSceneEnum } from './typs-scene.enum';
 
 export class Scene implements Entity {
   id: string
@@ -15,13 +16,15 @@ export class Scene implements Entity {
   soundFileId: string
   soundFileLink: FileLink
 
-  imageFileId: string
-  videoFileId: string
-  answers: Answer[] = []
+  typesScene: TypeSceneEnum
+
+  isStartGame: boolean = false
   coordinate: Coordinate
   players: string[] = []
 
-  isStartGame: boolean = false
+  imageFileId: string
+  videoFileId: string
+  answers: Answer[] = []
 
   imageFile: string
   videoFile: string
