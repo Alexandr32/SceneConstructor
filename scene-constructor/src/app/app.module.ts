@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { EditSceneDialogComponent } from './editor/edit-scene-dialog/edit-scene-dialog.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditPlayerDialogComponent } from './editor/edit-player-dialog/edit-player-dialog.component';
 import { ImageCropperModule } from 'ngx-img-cropper';
 import { EditImageComponent } from './editor/edit-image-player/edit-image.component';
@@ -41,6 +41,7 @@ import { ItemGameComponent } from './editor/item-game/item-game.component';
     ItemGameComponent,
   ],
   imports: [
+    FormsModule,
     CommonModule,
     BrowserModule,
     CoreModule,

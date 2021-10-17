@@ -12,6 +12,7 @@ import { TypeFile } from '../../models/type-file.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
+import { getDefaultScene, getTypeScene, TypeScene, TypeSceneEnum } from 'src/app/models/typs-scene.enum';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -19,6 +20,11 @@ import { MediaFile } from 'src/app/models/media-file.model.ts';
   styleUrls: ['./edit-scene-dialog.component.scss']
 })
 export class EditSceneDialogComponent implements OnInit {
+
+  typesScene = getTypeScene()
+  selectTypeScene: TypeScene = this.typesScene[2]
+  nameTypeScene = this.selectTypeScene.name
+
 
   @Output()
   saveEvent = new EventEmitter();
@@ -66,6 +72,7 @@ export class EditSceneDialogComponent implements OnInit {
       this.soundFileLink = this.data.scene.soundFileLink
     }
 
+
     this.form = new FormGroup({
       'title':
         new FormControl(
@@ -87,7 +94,6 @@ export class EditSceneDialogComponent implements OnInit {
         new FormControl(
           this.data.scene.color
         ),
-      'file': new FormControl(this.data.scene.imageFile, [Validators.required]),
     });
 
     this.data.players.forEach((item) => {
@@ -293,4 +299,9 @@ export class EditSceneDialogComponent implements OnInit {
     this.soundFileLink = null
   }
 
+  selectChangeTypeScene(nameTypeScene: string) {
+    const selectTypeScene = this.typesScene.find(item => item.name === nameTypeScene)
+    console.log('selectTypeScene:', selectTypeScene);
+
+  }
 }

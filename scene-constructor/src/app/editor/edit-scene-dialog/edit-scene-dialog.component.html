@@ -1,66 +1,86 @@
-<form [formGroup]="form" novalidate class="dialog__body">
-  <div class="input-box">
-    <p>Название:</p>
-    <input name="title" formControlName="title" />
-    <div *ngIf="form.controls['title'].invalid">Введите значение</div>
-  </div>
-
-  <div class="input-box">
-    <p>Описание:</p>
-    <input name="text" formControlName="text" />
-    <div *ngIf="form.controls['text'].invalid">Введите значение</div>
-  </div>
-
-  <hr class="m-t-25" />
-
-  <div class="input-box">
-    <p>Цвет обозначения:</p>
-    <input type="color" name="color" formControlName="color" />
-  </div>
-
-  <hr class="m-t-25" />
-
-  <div class="m-t-25">
-    <label>
-      <input name="isStartGame" formControlName="isStartGame" type="checkbox" />
-      Сцена начала игры
-    </label>
-  </div>
-
-  <hr class="m-t-25" />
-
-  <div>
-    Аудиофайл для сцены
-
-    <div *ngIf="soundFileLink">
-      <div>{{ soundFileLink.nameFile }}</div>
-      <audio controls src="{{ soundFileLink.url }}">не поддерживается</audio>
+<div class="dialog__body">
+  <form [formGroup]="form" novalidate>
+    <div class="input-box">
+      <p>Название:</p>
+      <input name="title" formControlName="title" />
+      <div *ngIf="form.controls['title'].invalid">Введите значение</div>
     </div>
 
-    <button (click)="selectSoundFileLink()">Выбрать</button>
-    <button (click)="deletedSoundFileLink()">Убрать</button>
-  </div>
+    <div class="input-box">
+      <p>Описание:</p>
+      <input name="text" formControlName="text" />
+      <div *ngIf="form.controls['text'].invalid">Введите значение</div>
+    </div>
 
-  <hr class="m-t-25" />
+    <hr class="m-t-25" />
 
-  <div class="input-box">
+    <div class="input-box">
+      <p>Цвет обозначения:</p>
+      <input type="color" name="color" formControlName="color" />
+    </div>
+
+    <hr class="m-t-25" />
+
+    <div class="m-t-25">
+      <label>
+        <input
+          name="isStartGame"
+          formControlName="isStartGame"
+          type="checkbox"
+        />
+        Сцена начала игры
+      </label>
+    </div>
+
+    <hr class="m-t-25" />
+
     <div>
-      <p>Кто должен отвечать/взаимодействовать:</p>
-      <div *ngFor="let item of players">
-        <label>
-          <input
-            type="checkbox"
-            name="playerId{{ item.player.id }}"
-            formControlName="playerId{{ item.player.id }}"
-            [value]="item.isSelect"
-          />
-          {{ item.player.name }}
-        </label>
+      Аудиофайл для сцены
+
+      <div *ngIf="soundFileLink">
+        <div>{{ soundFileLink.nameFile }}</div>
+        <audio controls src="{{ soundFileLink.url }}">не поддерживается</audio>
+      </div>
+
+      <button (click)="selectSoundFileLink()">Выбрать</button>
+      <button (click)="deletedSoundFileLink()">Убрать</button>
+    </div>
+
+    <hr class="m-t-25" />
+
+    <div class="input-box">
+      <div>
+        <p>Кто должен отвечать/взаимодействовать:</p>
+        <div *ngFor="let item of players">
+          <label>
+            <input
+              type="checkbox"
+              name="playerId{{ item.player.id }}"
+              formControlName="playerId{{ item.player.id }}"
+              [value]="item.isSelect"
+            />
+            {{ item.player.name }}
+          </label>
+        </div>
       </div>
     </div>
+
+    <hr class="m-t-25" />
+  </form>
+
+  <div class="m-t-25">
+    Тип сцены:
+    <select
+      (change)="selectChangeTypeScene($event.target.value)"
+      [(ngModel)]="nameTypeScene"
+    >
+      <option *ngFor="let type of typesScene" [value]="type.name">
+        {{ type.name }}
+      </option>
+    </select>
   </div>
 
-  <hr class="m-t-25" />
+  <!-- <hr class="m-t-25" />
 
   <div class="input-box">
     <p>Ответы:</p>
@@ -124,10 +144,10 @@
       <button (click)="openSelectVideoFileDialog()">Выбрать видео</button>
       <button (click)="onClickDeletedVideo()">Убрать видео</button>
     </div>
-  </div>
+  </div> -->
 
-  <div>
+  <div class="m-t-25">
     <button type="button" (click)="onNoClick()">Отмена</button>
     <button (click)="onClickSave()" *ngIf="form.valid">Сохранить</button>
   </div>
-</form>
+</div>
