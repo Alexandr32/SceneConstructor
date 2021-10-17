@@ -42,6 +42,7 @@ export class FirestoreService {
       .pipe(
         map((doc) => {
           const game = doc.payload.data() as Game;
+
           game.scenes.forEach(scene => {
             const answers: Answer[] = [];
             scene.answers.forEach(answerInFireBase => {
@@ -112,6 +113,7 @@ export class FirestoreService {
           };
         }))];
 
+
       return {
         id: scene.id,
         title: scene.title,
@@ -124,7 +126,7 @@ export class FirestoreService {
           x: scene.coordinate.x,
           y: scene.coordinate.y
         },
-        typeScene: scene.typesScene,
+        typesScene: scene.typesScene,
         answers: answers,
         players: scene.players,
         isStartGame: scene.isStartGame

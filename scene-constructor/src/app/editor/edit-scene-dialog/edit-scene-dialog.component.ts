@@ -12,7 +12,7 @@ import { TypeFile } from '../../models/type-file.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
-import { getDefaultScene, getTypeScene, TypeScene, TypeSceneEnum } from 'src/app/models/typs-scene.enum';
+import { getTypesScene, TypeScene } from 'src/app/models/type-scene.enum';
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -21,7 +21,7 @@ import { getDefaultScene, getTypeScene, TypeScene, TypeSceneEnum } from 'src/app
 })
 export class EditSceneDialogComponent implements OnInit {
 
-  typesScene = getTypeScene()
+  typesScene = getTypesScene()
   selectTypeScene: TypeScene = this.typesScene[0]
   nameTypeScene = this.selectTypeScene.name
 

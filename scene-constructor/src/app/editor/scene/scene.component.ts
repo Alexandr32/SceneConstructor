@@ -3,6 +3,7 @@ import { Scene } from '../../models/scene.model';
 import { Subject } from 'rxjs';
 import { Answer } from '../../models/answer.model';
 import { Player } from '../../models/player.model';
+import { getTypesScene, TypeScene } from 'src/app/models/type-scene.enum';
 
 @Component({
   selector: 'app-scene',
@@ -13,6 +14,8 @@ export class SceneComponent implements OnInit {
 
   @Input()
   scene: Scene;
+
+  typeScene: TypeScene
 
   @Input()
   players: Player[];
@@ -50,6 +53,9 @@ export class SceneComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.typeScene = getTypesScene().find(item => item.type === this.scene.typesScene)
+
     this.dragPosition = { x: this.scene.coordinate.x, y: this.scene.coordinate.y };
 
     this.changeSelectModeEvent$.subscribe(isSelectMode => {
@@ -143,7 +149,6 @@ export class SceneComponent implements OnInit {
    */
   onClickRunScene() {
     this.startScene$.next(this.scene)
-    //this.editScene.emit(this.scene);
   }
 
   getNamePlayer(id: string): string {

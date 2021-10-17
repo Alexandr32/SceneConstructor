@@ -5,7 +5,7 @@ import { Coordinate } from './coordinate.model';
 import { Answer } from './answer.model';
 import { Entity } from './entity.model';
 import { FileLink } from './file-link.model.ts';
-import { TypeScene, TypeSceneEnum } from './typs-scene.enum';
+import { TypeSceneEnum } from './type-scene.enum';
 
 export class Scene implements Entity {
   id: string

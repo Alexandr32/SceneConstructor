@@ -17,7 +17,7 @@ export const getDefaultScene = (): TypeScene => {
   return new TypeScene(TypeSceneEnum.Puzzle, 'Головоломка')
 }
 
-export function getTypeScene(): Array<TypeScene> {
+export function getTypesScene(): Array<TypeScene> {
   return new Array<TypeScene>(
     new TypeScene(TypeSceneEnum.Answer, 'Сцена ответов'),
     new TypeScene(TypeSceneEnum.Panorama, 'Панорама'),
