@@ -41,7 +41,7 @@ export class EditSceneDialogComponent implements OnInit {
 
   soundFileLink: FileLink
 
-  private gameId: string
+  gameId: string
 
   constructor(public dialogRef: MatDialogRef<EditSceneDialogComponent>,
     private fireStore: AngularFirestore,
@@ -241,10 +241,6 @@ export class EditSceneDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
   toggleVideo() {
     //this.videoPlayer.nativeElement.play()
   }
@@ -290,26 +286,4 @@ export class EditSceneDialogComponent implements OnInit {
     this.videoSources = []
   }
 
-  selectSoundFileLink() {
-    const dialogRef = this.dialog.open(SelectMediaFileDialogComponent, {
-      data: { gameId: this.gameId }
-    });
-
-    dialogRef.componentInstance.isShowSounds = true
-
-    dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
-      this.soundFileLink = item
-    });
-  }
-
-  deletedSoundFileLink() {
-    this.soundFileLink = null
-  }
-
-  selectChangeTypeScene(nameTypeScene: string) {
-    const selectTypeScene = this.typesScene.find(item => item.name === nameTypeScene)
-    this.selectTypeScene = selectTypeScene
-    console.log('selectTypeScene:', selectTypeScene);
-
-  }
 }
