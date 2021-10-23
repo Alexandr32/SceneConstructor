@@ -16,7 +16,7 @@ export class Scene implements Entity {
   soundFileId: string
   soundFileLink: FileLink
 
-  typesScene: TypeSceneEnum
+  typesScene: TypeSceneEnum = TypeSceneEnum.Answer
 
   isStartGame: boolean = false
   coordinate: Coordinate
