@@ -21,14 +21,14 @@ import { getTypesScene, TypeScene } from 'src/app/models/type-scene.enum';
 })
 export class EditSceneDialogComponent implements OnInit {
 
-  typesScene = getTypesScene()
-  selectTypeScene: TypeScene = this.typesScene[0]
-  nameTypeScene = this.selectTypeScene.name
+  validData: boolean = true
 
   @Output()
   saveEvent = new EventEmitter();
 
-  form: FormGroup;
+  form: FormGroup = new FormGroup({})
+
+  formAnswer: FormGroup = new FormGroup({})
 
   imgFile: string;
   imageFileId: string
@@ -37,7 +37,6 @@ export class EditSceneDialogComponent implements OnInit {
   videoFileId: string
 
   answers: Answer[] = [];
-  players: { player: Player, isSelect: boolean }[] = [];
 
   soundFileLink: FileLink
 
@@ -71,57 +70,10 @@ export class EditSceneDialogComponent implements OnInit {
       this.soundFileLink = this.data.scene.soundFileLink
     }
 
-    if (this.data.scene.typesScene) {
-
-      const selectTypeScene = this.typesScene.find(item => item.type === this.data.scene.typesScene)
-      this.selectTypeScene = selectTypeScene
-      this.nameTypeScene = this.selectTypeScene.name
-    }
-
-    this.form = new FormGroup({
-      'title':
-        new FormControl(
-          this.data.scene.title,
-          [
-            Validators.required
-          ]),
-      'text':
-        new FormControl(
-          this.data.scene.text,
-          [
-            Validators.required
-          ]),
-      'isStartGame':
-        new FormControl(
-          this.data.scene.isStartGame
-        ),
-      'color':
-        new FormControl(
-          this.data.scene.color
-        ),
-    });
-
-    this.data.players.forEach((item) => {
-
-      const isSelect = this.data.scene.players.includes(item.id);
-
-      this.addControl(`playerId${item.id}`, isSelect);
-      this.players.push({ player: item, isSelect: isSelect });
-    });
 
     this.data.scene.answers.forEach(item => {
-      this.addControl(`answerId${item.id}`, item.text);
       this.answers.push(item);
     });
-  }
-
-  private addControl(id: string, value: string | boolean) {
-    this.form.addControl(id,
-      new FormControl(
-        value,
-        [
-          Validators.required
-        ]));
   }
 
   /**
@@ -175,7 +127,6 @@ export class EditSceneDialogComponent implements OnInit {
 
     const answer = new Answer(id, '', position, this.data.scene);
 
-    this.addControl(`answerId${answer.id}`, answer.text);
     this.answers.push(answer);
   }
 
@@ -203,26 +154,6 @@ export class EditSceneDialogComponent implements OnInit {
       return;
     }
 
-    this.data.scene.title = this.form.value['title'];
-    this.data.scene.text = this.form.value['text'];
-    this.data.scene.color = this.form.value['color'];
-    this.data.scene.isStartGame = this.form.value['isStartGame'];
-
-    this.data.scene.typesScene = this.selectTypeScene.type
-
-
-    this.answers.forEach(item => {
-      item.text = this.form.value[`answerId${item.id}`];
-    });
-
-    const player = this.players.filter(item => {
-      return this.form.value[`playerId${item.player.id}`];
-    }).map(item => {
-      return item.player.id;
-    });
-
-    this.data.scene.soundFileLink = this.soundFileLink
-
     this.data.scene.answers = this.answers;
     this.data.scene.imageFileId = this.imageFileId;
     this.data.scene.imageFile = this.imgFile;
@@ -233,9 +164,6 @@ export class EditSceneDialogComponent implements OnInit {
     } else {
       this.data.scene.videoFile = ''
     }
-
-
-    this.data.scene.players = player;
 
     this.saveEvent.emit(this.data);
     this.dialogRef.close();
@@ -275,10 +203,6 @@ export class EditSceneDialogComponent implements OnInit {
   onClickDeletedImg() {
     this.imgFile = '';
     this.imageFileId = ''
-    this.form.patchValue({
-      file: ''
-    });
-    this.form.get('file').updateValueAndValidity();
   }
 
   onClickDeletedVideo() {
@@ -286,4 +210,18 @@ export class EditSceneDialogComponent implements OnInit {
     this.videoSources = []
   }
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  changeTextAnswer(answer: Answer, event: { target: { value: string; }; }) {
+    const value = event.target.value
+    answer.text = value
+
+    if (value) {
+      this.validData = true
+    } else {
+      this.validData = false
+    }
+  }
 }

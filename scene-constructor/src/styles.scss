@@ -365,7 +365,8 @@ body {
 .dialog__body {
   overflow: scroll;
   max-height: 500px;
-  min-width: 600px;
+  min-width: 800px;
+  padding: 20px;
 }
 
 .font-size-11 {

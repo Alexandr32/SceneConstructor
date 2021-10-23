@@ -72,6 +72,8 @@
 
   <div class="m-t-25">
     <button type="button" (click)="onNoClick()">Отмена</button>
-    <button (click)="onClickSave()" *ngIf="form.valid">Сохранить</button>
+    <button (click)="onClickSave()" *ngIf="form.valid && validData">
+      Сохранить
+    </button>
   </div>
 </div>
