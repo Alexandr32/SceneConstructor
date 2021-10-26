@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
-import { Scene } from '../../models/scene.model';
+import { IBaseScene, Scene } from '../../models/scene.model';
 import { Subject } from 'rxjs';
 import { Answer } from '../../models/answer.model';
 import { Player } from '../../models/player.model';
@@ -12,10 +12,10 @@ import { getTypesScene, TypeScene } from 'src/app/models/type-scene.enum';
 })
 export class SceneComponent implements OnInit {
 
-  @Input()
-  scene: Scene;
-
   typeScene: TypeScene
+
+  @Input()
+  scene: IBaseScene;
 
   @Input()
   players: Player[];
@@ -24,10 +24,10 @@ export class SceneComponent implements OnInit {
   selectAnswerScene = new EventEmitter<Answer>();
 
   @Output()
-  editScene = new EventEmitter<Scene>();
+  editScene = new EventEmitter<IBaseScene>();
 
   @Output()
-  deleteScene = new EventEmitter<Scene>();
+  deleteScene = new EventEmitter<IBaseScene>();
 
   dragPosition = { x: 0, y: 0 };
 
@@ -41,18 +41,21 @@ export class SceneComponent implements OnInit {
   changeSelectModeEvent$: Subject<boolean>;
 
   @Output()
-  selectScene = new EventEmitter<Scene>();
+  selectScene = new EventEmitter<IBaseScene>();
 
   isSelectMode = false;
 
   @Input()
-  startScene$: Subject<Scene> = new Subject<Scene>()
+  startScene$: Subject<IBaseScene> = new Subject<IBaseScene>()
 
   constructor(public elementRef: ElementRef) {
 
   }
 
   ngOnInit() {
+
+    console.log('scene:', this.scene);
+
 
     this.typeScene = getTypesScene().find(item => item.type === this.scene.typesScene)
 
