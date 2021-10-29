@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Game } from '../models/game.model';
-import { Scene } from '../models/scene.model';
+import { Panorama, Puzzle, Scene } from '../models/scene.model';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Player } from '../models/player.model';
 import { filter, map, switchMap, first } from 'rxjs/operators';
@@ -36,6 +36,12 @@ export class FirestoreService {
       .valueChanges({ idField: 'id' });
   }
 
+  toSceneAnswer(scene: any): Scene { throw new Error('не реализовано') }
+
+  toScenePanorama(panorama: any): Panorama { throw new Error('не реализовано') }
+
+  toScenePuzzle(puzzle: Puzzle): Puzzle { throw new Error('не реализовано') }
+
   getGameById(gameId: string): Observable<Game> {
 
     return this.fireStore.doc<Game>(`Games/${gameId}`)
@@ -44,9 +50,26 @@ export class FirestoreService {
         map((doc) => {
           const game = doc.payload.data() as Game;
 
-          game.scenes.forEach(scene => {
+          game.scenes.forEach(baseScene => {
+
+            let scene: Scene | Panorama | Puzzle
+            switch (baseScene.typesScene) {
+              case TypeSceneEnum.Answer: {
+                scene = this.toSceneAnswer(baseScene)
+                break
+              }
+              case TypeSceneEnum.Panorama: {
+                scene = this.toScenePanorama(baseScene)
+                break
+              }
+              case TypeSceneEnum.Puzzle: {
+                this.toScenePuzzle(baseScene)
+                break
+              }
+            }
+
             const answers: Answer[] = [];
-            scene.answers.forEach(answerInFireBase => {
+            baseScene.answers.forEach(answerInFireBase => {
 
               const answer = new Answer(
                 answerInFireBase.id,
@@ -61,6 +84,7 @@ export class FirestoreService {
 
               answers.push(answer);
             });
+
             scene.answers = answers;
           });
 
@@ -116,14 +140,24 @@ export class FirestoreService {
 
       let convertToSceneFromSave: any
 
-      if (scene.typesScene === TypeSceneEnum.Answer) {
-        convertToSceneFromSave = this.convertToSceneAnswerFromSave((scene as Scene), answers)
+      switch (scene.typesScene) {
+        case TypeSceneEnum.Answer: {
+          convertToSceneFromSave = this.convertToSceneAnswerFromSave((scene as Scene), answers)
+          break
+        }
+        case TypeSceneEnum.Panorama: {
+          convertToSceneFromSave = this.convertToPanoramaFromSave((scene as Panorama), answers)
+          break
+        }
+        case TypeSceneEnum.Puzzle: {
+          convertToSceneFromSave = this.convertToPuzzleFromSave((scene as Puzzle), answers)
+          break
+        }
       }
 
       return convertToSceneFromSave;
 
-    }))
-    ];
+    }))];
 
     try {
       await this.fireStore.collection<any>(this.nameGameCollection)
@@ -159,6 +193,43 @@ export class FirestoreService {
       answers: answers,
       players: scene.players,
       isStartGame: scene.isStartGame
+    };
+  }
+
+  private convertToPanoramaFromSave(panorama: Panorama, answers: any): any {
+    return {
+      id: panorama.id,
+      title: panorama.title,
+      text: panorama.text,
+      soundFileId: panorama.soundFileLink ? panorama.soundFileLink.id : '',
+      color: panorama.color,
+      imageFileId: panorama.imageFileId,
+      coordinate: {
+        x: panorama.coordinate.x,
+        y: panorama.coordinate.y
+      },
+      typesScene: panorama.typesScene,
+      answers: answers,
+      players: panorama.players,
+      isStartGame: panorama.isStartGame
+    };
+  }
+
+  private convertToPuzzleFromSave(puzzle: Puzzle, answers: any): any {
+    return {
+      id: puzzle.id,
+      title: puzzle.title,
+      text: puzzle.text,
+      soundFileId: puzzle.soundFileLink ? puzzle.soundFileLink.id : '',
+      color: puzzle.color,
+      coordinate: {
+        x: puzzle.coordinate.x,
+        y: puzzle.coordinate.y
+      },
+      typesScene: puzzle.typesScene,
+      answers: answers,
+      players: puzzle.players,
+      isStartGame: puzzle.isStartGame
     };
   }
 
