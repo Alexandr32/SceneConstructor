@@ -37,17 +37,22 @@
         </ng-container>
       </div>
 
-      <!-- <div *ngIf="scene.imageFile && scene.imageFile !== ''">
-        <img
-          class="scene__image-box__image"
-          [src]="scene.imageFile"
-          [alt]="scene.title"
-        />
+      <ng-container [ngSwitch]="scene.typesScene">
+        <ng-container *ngSwitchCase="'Answer'">
+          <ng-container *ngTemplateOutlet="sceneAnswer; context: scene">
+          </ng-container>
+        </ng-container>
 
-        <div *ngIf="scene.videoFile; then foundVideo; else notFoundVideo"></div>
-      </div>
+        <ng-container *ngSwitchCase="'Panorama'">
+          <ng-container *ngTemplateOutlet="scenePanorama; context: scene">
+          </ng-container>
+        </ng-container>
 
-      <div *ngIf="!scene.imageFile && scene.imageFile === ''">Загрузка</div> -->
+        <ng-container *ngSwitchCase="'Puzzle'">
+          <ng-container *ngTemplateOutlet="scenePuzzle; context: scene">
+          </ng-container>
+        </ng-container>
+      </ng-container>
 
       <div class="">
         <div class="scene__control-width font-size-11">Название:</div>
@@ -102,7 +107,7 @@
 
 <!-- Шаблон для сцены -->
 <ng-template
-  #sceneType
+  #sceneAnswer
   let-valueImageFile="imageFile"
   let-valueVideoFile="videoFile"
   let-valueTitleImage="title"
@@ -116,4 +121,30 @@
 
     <div *ngIf="valueVideoFile; then foundVideo; else notFoundVideo"></div>
   </div>
+</ng-template>
+
+<!-- Шаблон для панорамы -->
+<ng-template
+  #scenePanorama
+  let-valueImageFile="imageFile"
+  let-valueVideoFile="videoFile"
+  let-valueTitleImage="title"
+>
+  <div *ngIf="valueImageFile && valueImageFile !== ''">
+    <img
+      class="scene__image-box__image"
+      [src]="valueImageFile"
+      [alt]="valueTitleImage"
+    />
+  </div>
+</ng-template>
+
+<!-- Шаблон для панорамы -->
+<ng-template
+  #scenePuzzle
+  let-valueImageFile="imageFile"
+  let-valueVideoFile="videoFile"
+  let-valueTitleImage="title"
+>
+  шаблон для головоломки
 </ng-template>

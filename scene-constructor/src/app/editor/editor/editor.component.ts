@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IBaseScene, Panorama, Scene } from '../../models/scene.model';
+import { IBaseScene, Panorama, Puzzle, Scene } from '../../models/scene.model';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditSceneDialogComponent } from '../edit-scene-dialog/edit-scene-dialog.component';
@@ -427,6 +427,23 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scenes.push(panorama);
 
+  }
+
+  addPuzzle() {
+    const panorama = new Puzzle()
+    panorama.id = this.fireStore.createId();
+    panorama.text = 'Новая сцена';
+    panorama.title = 'Новое описание';
+    panorama.color = '#7B68EE';
+    panorama.coordinate = new Coordinate();
+    panorama.coordinate.y = 0;
+    panorama.coordinate.x = 0;
+
+    const answers1 = new Answer(this.fireStore.createId(), 'Next scene', 0, panorama);
+
+    panorama.answers = [answers1];
+
+    this.scenes.push(panorama);
   }
 
   addMediaFile() {

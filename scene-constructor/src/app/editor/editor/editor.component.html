@@ -84,13 +84,23 @@
   <div #working class="editor__working-space">
     <div class="editor__control-panel">
       <div class="editor__control-panel__btn-control box">
-        <button mat-raised-button color="primary" (click)="addNewScene()">
-          Добавить сцену с выбором ответов
-        </button>
+        <div class="m-10">
+          <button mat-raised-button color="primary" (click)="addNewScene()">
+            Добавить сцену с выбором ответов
+          </button>
+        </div>
 
-        <button mat-raised-button color="primary" (click)="addPanorama()">
-          Добавить сцену с панорамой
-        </button>
+        <div class="m-10">
+          <button mat-raised-button color="primary" (click)="addPanorama()">
+            Добавить сцену с панорамой
+          </button>
+        </div>
+
+        <div class="m-10">
+          <button mat-raised-button color="primary" (click)="addPuzzle()">
+            Добавить сцену с панорамой
+          </button>
+        </div>
       </div>
     </div>
 

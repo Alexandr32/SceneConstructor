@@ -27,6 +27,26 @@ export interface IBaseScene extends Entity {
   maxCountAnswers: number
 }
 
+export class Puzzle implements IBaseScene {
+  id: string
+  title: string
+  text: string
+  color: string
+
+  soundFileId: string
+  soundFileLink: FileLink
+
+  typesScene: TypeSceneEnum = TypeSceneEnum.Puzzle
+
+  isStartGame: boolean = false
+  coordinate: Coordinate
+  players: string[] = []
+
+  answers: Answer[] = []
+  maxCountAnswers: number = 1
+
+}
+
 export class Panorama implements IBaseScene {
 
   id: string
