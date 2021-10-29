@@ -153,7 +153,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
         this.videoSources.push(this.selectScene.videoFile)
 
         // Обнуляем данные
-        this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
+        //this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
 
       })
   }

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { Game as EditGame } from '../models/game.model';
 import { Answer, Game, Player, Scene, StateGame } from '../models/run/run-game.models';
+import { IBaseScene } from '../models/scene.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,8 +44,8 @@ export class RunGameService {
         id: scene.id,
         title: scene.title,
         text: scene.text,
-        imageFileId: scene.imageFileId,
-        videoFileId: scene.videoFileId,
+        //imageFileId: scene.imageFileId,
+        //videoFileId: scene.videoFileId,
         answers: answers,
         players: scene.players,
         isStartGame: scene.isStartGame,
@@ -124,7 +125,7 @@ export class RunGameService {
   // RunGameCollection/NEd2cC8BFsg84VWOU75A/StateGame
   //RunGameCollection/NEd2cC8BFsg84VWOU75A/StateGame/NEd2cC8BFsg84VWOU75A)
 
-  async resetDataStateGame(stateGameId: string, currentScene: Scene) {
+  async resetDataStateGame(stateGameId: string, currentScene: IBaseScene) {
     //const state = await this.getStateGame(stateGameId)
     //  .pipe(first()).toPromise()
 

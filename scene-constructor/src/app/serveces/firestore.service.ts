@@ -14,6 +14,7 @@ import { identifierModuleUrl } from '@angular/compiler';
 import { FileLink } from '../models/file-link.model.ts';
 import { base64ToFile } from '../models/base64-to-file.model';
 import { async } from '@angular/core/testing';
+import { TypeSceneEnum } from '../models/type-scene.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -113,24 +114,14 @@ export class FirestoreService {
           };
         }))];
 
+      let convertToSceneFromSave: any
 
-      return {
-        id: scene.id,
-        title: scene.title,
-        text: scene.text,
-        soundFileId: scene.soundFileLink ? scene.soundFileLink.id : '',
-        color: scene.color,
-        imageFileId: scene.imageFileId,
-        videoFileId: scene.videoFileId,
-        coordinate: {
-          x: scene.coordinate.x,
-          y: scene.coordinate.y
-        },
-        typesScene: scene.typesScene,
-        answers: answers,
-        players: scene.players,
-        isStartGame: scene.isStartGame
-      };
+      if (scene.typesScene === TypeSceneEnum.Answer) {
+        convertToSceneFromSave = this.convertToSceneAnswerFromSave((scene as Scene), answers)
+      }
+
+      return convertToSceneFromSave;
+
     }))
     ];
 
@@ -149,6 +140,26 @@ export class FirestoreService {
       throw error;
     }
 
+  }
+
+  private convertToSceneAnswerFromSave(scene: Scene, answers: any): any {
+    return {
+      id: scene.id,
+      title: scene.title,
+      text: scene.text,
+      soundFileId: scene.soundFileLink ? scene.soundFileLink.id : '',
+      color: scene.color,
+      imageFileId: scene.imageFileId,
+      videoFileId: scene.videoFileId,
+      coordinate: {
+        x: scene.coordinate.x,
+        y: scene.coordinate.y
+      },
+      typesScene: scene.typesScene,
+      answers: answers,
+      players: scene.players,
+      isStartGame: scene.isStartGame
+    };
   }
 
   /**

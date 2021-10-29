@@ -45,6 +45,12 @@ export class Panorama implements IBaseScene {
 
   answers: Answer[] = []
   maxCountAnswers: number = 1
+
+  imageFileId: string
+  imageFile: string
+
+  isTimer: boolean
+  times: number // В мс
 }
 
 export class Scene implements IBaseScene {

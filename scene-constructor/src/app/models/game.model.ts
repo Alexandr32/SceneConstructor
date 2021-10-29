@@ -1,4 +1,4 @@
-import { Scene } from './scene.model';
+import { IBaseScene, Scene } from './scene.model';
 import { Player } from './player.model';
 import { Entity } from './entity.model';
 
@@ -8,7 +8,7 @@ export class Game implements Entity {
     public number: number,
     public name: string,
     public description: string,
-    public scenes: Scene[],
+    public scenes: IBaseScene[],
     public players: Player[],
   ) {
   }

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Scene } from '../../models/scene.model';
+import { IBaseScene, Panorama, Scene } from '../../models/scene.model';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditSceneDialogComponent } from '../edit-scene-dialog/edit-scene-dialog.component';
@@ -17,6 +17,7 @@ import { MediaFileDialogComponent } from '../media-file-dialog/media-file-dialog
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { RunGameService } from 'src/app/serveces/run-game.service';
 import { TypeFile } from 'src/app/models/type-file.model';
+import { TypeSceneEnum } from 'src/app/models/type-scene.enum';
 
 @Component({
   selector: 'app-editor',
@@ -25,7 +26,7 @@ import { TypeFile } from 'src/app/models/type-file.model';
 })
 export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  scenes: Scene[] = [];
+  scenes: IBaseScene[] = [];
   players: Player[] = [];
 
   private fileForDeleteScenes: { id: string, typeFile: 'Video' | 'Image' }[] = [];
@@ -120,42 +121,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    for (const scene of this.game.scenes) {
+    for (const sceneBase of this.game.scenes) {
 
-      if (scene.imageFileId) {
-        try {
-          scene.imageFile = await this.firestoreServiceService
-            .getUrl(this.game.id, scene.imageFileId, TypeFile.SceneImages).toPromise()
-        } catch (error) {
-          scene.imageFile = '/assets/http_scene.jpg';
-          console.error('Изображение не найдено');
-          console.error(error);
-        }
-      } else {
-        scene.imageFile = '/assets/http_scene.jpg';
+      if (sceneBase instanceof Scene) {
+        this.getAnswerScene(sceneBase)
       }
 
-      if (scene.videoFileId) {
-        try {
-
-          scene.videoFile = await this.firestoreServiceService
-            .getUrl(this.game.id, scene.videoFileId, TypeFile.SceneVideos).toPromise()
-
-        } catch (error) {
-          scene.videoFile = '';
-          console.error(error);
-        }
-      } else {
-        scene.videoFile = '';
-      }
-
-      if (scene.soundFileId) {
-
-        scene.soundFileLink =
-          await this.firestoreServiceService
-            .getMediaFileLinkById(this.game.id, TypeFile.Sound, scene.soundFileId)
-
-      }
     }
 
     this.form = new FormGroup({
@@ -175,6 +146,43 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.showForm = true;
 
     this.renderLine();
+  }
+
+  private async getAnswerScene(scene: Scene) {
+    if (scene.imageFileId) {
+      try {
+        scene.imageFile = await this.firestoreServiceService
+          .getUrl(this.game.id, scene.imageFileId, TypeFile.SceneImages).toPromise()
+      } catch (error) {
+        scene.imageFile = '/assets/http_scene.jpg';
+        console.error('Изображение не найдено');
+        console.error(error);
+      }
+    } else {
+      scene.imageFile = '/assets/http_scene.jpg';
+    }
+
+    if (scene.videoFileId) {
+      try {
+
+        scene.videoFile = await this.firestoreServiceService
+          .getUrl(this.game.id, scene.videoFileId, TypeFile.SceneVideos).toPromise()
+
+      } catch (error) {
+        scene.videoFile = '';
+        console.error(error);
+      }
+    } else {
+      scene.videoFile = '';
+    }
+
+    if (scene.soundFileId) {
+
+      scene.soundFileLink =
+        await this.firestoreServiceService
+          .getMediaFileLinkById(this.game.id, TypeFile.Sound, scene.soundFileId)
+
+    }
   }
 
   ngAfterViewInit(): void {
@@ -395,6 +403,30 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scenes.push(scene);
 
     this.renderLine();
+  }
+
+  addPanorama() {
+
+    const panorama = new Panorama()
+    panorama.id = this.fireStore.createId();
+    panorama.text = 'Новая сцена';
+    panorama.title = 'Новое описание';
+    panorama.color = '#7B68EE';
+    panorama.imageFileId = ''
+    panorama.coordinate = new Coordinate();
+    panorama.coordinate.y = 0;
+    panorama.coordinate.x = 0;
+    panorama.imageFile = '/assets/http_scene.jpg';
+    panorama.isTimer = false
+    panorama.times = 0
+
+
+    const answers1 = new Answer(this.fireStore.createId(), 'Next scene', 0, panorama);
+
+    panorama.answers = [answers1];
+
+    this.scenes.push(panorama);
+
   }
 
   addMediaFile() {
