@@ -71,12 +71,13 @@ export class FirestoreService {
             return resultScene()
           });
 
-          game.players = game.players.map((player) => {
+          game.players = game.players.map((item) => {
+
             return new Player(
-              player.id,
-              player.name,
-              player.description,
-              player.imageFileId);
+              item.id,
+              item.name,
+              item.description,
+              item.imageFileId);
           });
 
           game.id = doc.payload.id;
@@ -98,6 +99,20 @@ export class FirestoreService {
               case TypeSceneEnum.Puzzle: {
 
               }
+            }
+          })
+
+          game.players.forEach(async player => {
+            if (player.imageFileId) {
+              try {
+                player.imageFile = await this.getUrl(game.id, player.imageFileId, TypeFile.PlayerImages).toPromise()
+              } catch (error) {
+                player.imageFile = '/assets/http_player.jpg';
+                console.log('Изображение не найдено');
+                console.log(error);
+              }
+            } else {
+              player.imageFile = '/assets/http_player.jpg';
             }
           })
 

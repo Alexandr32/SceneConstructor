@@ -104,24 +104,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.players.push(player);
     });
 
-
-    // вынести в сервис
-    for (const player of this.game.players) {
-
-      if (player.imageFileId) {
-        try {
-          player.imageFile = await this.firestoreServiceService
-            .getUrl(this.game.id, player.imageFileId, TypeFile.PlayerImages).toPromise()
-        } catch (error) {
-          player.imageFile = '/assets/http_player.jpg';
-          console.log('Изображение не найдено');
-          console.log(error);
-        }
-      } else {
-        player.imageFile = '/assets/http_player.jpg';
-      }
-    }
-
     this.form = new FormGroup({
       'name':
         new FormControl(
