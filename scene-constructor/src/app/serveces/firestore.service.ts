@@ -144,6 +144,9 @@ export class FirestoreService {
 
     }))];
 
+    console.log('scenes:', scenes);
+
+
     try {
       await this.fireStore.collection<any>(this.nameGameCollection)
         .doc(game.id)

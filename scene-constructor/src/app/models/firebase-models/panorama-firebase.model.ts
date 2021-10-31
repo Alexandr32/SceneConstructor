@@ -1,7 +1,8 @@
 import { TypeSceneEnum } from "../type-scene.enum";
 import { AnswerFirebase } from "./answer-firebase.model";
+import { IBaseSceneFirebase } from "./base-scene-firebase.mode";
 
-export interface PanoramaFirebase {
+export interface PanoramaFirebase extends IBaseSceneFirebase {
   id: string
   title: string
   text: string

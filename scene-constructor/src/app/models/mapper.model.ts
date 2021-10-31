@@ -94,7 +94,7 @@ export class Mapper {
 
   }
 
-  static panoramaToPanoramaFirebase(panorama: Panorama) {
+  static panoramaToPanoramaFirebase(panorama: Panorama): PanoramaFirebase {
 
     return {
       id: panorama.id,
@@ -124,6 +124,7 @@ export class Mapper {
     const panorama = new Panorama()
     panorama.id = panoramaFirebase.id
     panorama.title = panoramaFirebase.title
+    panorama.text = panoramaFirebase.text
     panorama.color = panoramaFirebase.color
     panorama.soundFileId = panoramaFirebase.soundFileId
     panorama.typesScene = panoramaFirebase.typesScene
@@ -163,6 +164,9 @@ export class Mapper {
         x: puzzle.coordinate.x,
         y: puzzle.coordinate.y
       },
+      answers: puzzle.answers.map(item => {
+        return Mapper.answerToAnswerFirebase(item)
+      }),
       typesScene: puzzle.typesScene,
       players: puzzle.players,
       isStartGame: puzzle.isStartGame

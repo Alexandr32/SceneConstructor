@@ -1,15 +1,13 @@
+import { Entity } from "../entity.model";
 import { TypeSceneEnum } from "../type-scene.enum";
 import { AnswerFirebase } from "./answer-firebase.model";
-import { IBaseSceneFirebase } from "./base-scene-firebase.mode";
 
-export interface PuzzleFirebase extends IBaseSceneFirebase {
+export interface IBaseSceneFirebase extends Entity {
   id: string
   title: string
   text: string
   soundFileId: string
   color: string
-  imageFileId: string
-
   coordinate: {
     x: number,
     y: number

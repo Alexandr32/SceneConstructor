@@ -1,8 +1,9 @@
 import { Player } from "../run/run-game.models"
 import { TypeSceneEnum } from "../type-scene.enum"
 import { AnswerFirebase } from "./answer-firebase.model"
+import { IBaseSceneFirebase } from "./base-scene-firebase.mode"
 
-export interface SceneAnswerFirebase {
+export interface SceneAnswerFirebase extends IBaseSceneFirebase {
   id: string
   title: string
   text: string
