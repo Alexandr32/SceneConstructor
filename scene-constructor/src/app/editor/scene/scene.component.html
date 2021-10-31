@@ -57,14 +57,14 @@
       <div class="">
         <div class="scene__control-width font-size-11">Название:</div>
         <div class="scene__control-width font-size-11">
-          {{ toStringLabel(scene.title, 25) }}
+          {{ scene.title }}
         </div>
         <div class="scene__control-width font-size-11">
           Тип: <span class="text-green">{{ typeScene.name }}</span>
         </div>
         <div class="scene__control-width font-size-11">Описание:</div>
         <div class="scene__control-width font-size-11">
-          {{ toStringLabel(scene.text, 25) }}
+          {{ scene.title }}
         </div>
 
         <div class="scene__control-width font-size-11">Кто отвечает:</div>
@@ -90,7 +90,7 @@
           [class.scene__box__btn-warning]="!answer.sceneId"
           (click)="selectAnswer($event, answer)"
         >
-          {{ toStringLabel(answer.text, 50) }}
+          answer.text
         </button>
       </div>
     </div>
@@ -127,10 +127,9 @@
 <ng-template
   #scenePanorama
   let-valueImageFile="imageFile"
-  let-valueVideoFile="videoFile"
   let-valueTitleImage="title"
 >
-  <div *ngIf="valueImageFile && valueImageFile !== ''">
+  <div *ngIf="valueImageFile">
     <img
       class="scene__image-box__image"
       [src]="valueImageFile"

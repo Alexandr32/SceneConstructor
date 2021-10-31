@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Game } from '../models/game.model';
-import { Panorama, Puzzle, Scene } from '../models/scene.model';
+import { IBaseScene, Panorama, Puzzle, Scene } from '../models/scene.model';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Player } from '../models/player.model';
 import { filter, map, switchMap, first } from 'rxjs/operators';
@@ -15,6 +15,10 @@ import { FileLink } from '../models/file-link.model.ts';
 import { base64ToFile } from '../models/base64-to-file.model';
 import { async } from '@angular/core/testing';
 import { TypeSceneEnum } from '../models/type-scene.enum';
+import { Mapper } from '../models/mapper.model';
+import { SceneAnswerFirebase } from '../models/firebase-models/scene-answer-firestore.model';
+import { PuzzleFirebase } from '../models/firebase-models/puzzle-firebase.model';
+import { PanoramaFirebase } from '../models/firebase-models/panorama-firebase.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,12 +40,6 @@ export class FirestoreService {
       .valueChanges({ idField: 'id' });
   }
 
-  toSceneAnswer(scene: any): Scene { throw new Error('не реализовано') }
-
-  toScenePanorama(panorama: any): Panorama { throw new Error('не реализовано') }
-
-  toScenePuzzle(puzzle: Puzzle): Puzzle { throw new Error('не реализовано') }
-
   getGameById(gameId: string): Observable<Game> {
 
     return this.fireStore.doc<Game>(`Games/${gameId}`)
@@ -50,42 +48,27 @@ export class FirestoreService {
         map((doc) => {
           const game = doc.payload.data() as Game;
 
-          game.scenes.forEach(baseScene => {
+          game.scenes = game.scenes.map(baseScene => {
 
-            let scene: Scene | Panorama | Puzzle
-            switch (baseScene.typesScene) {
-              case TypeSceneEnum.Answer: {
-                scene = this.toSceneAnswer(baseScene)
-                break
-              }
-              case TypeSceneEnum.Panorama: {
-                scene = this.toScenePanorama(baseScene)
-                break
-              }
-              case TypeSceneEnum.Puzzle: {
-                this.toScenePuzzle(baseScene)
-                break
+            // Вернет нужный тип данных
+            const resultScene = (): any => {
+              switch (baseScene.typesScene) {
+                case TypeSceneEnum.Answer: {
+                  return Mapper.sceneAnswerFirebaseToSceneAnswer(baseScene as unknown as SceneAnswerFirebase)
+
+                }
+                case TypeSceneEnum.Panorama: {
+                  return Mapper.panoramaFirebaseToPanorama(baseScene as unknown as PanoramaFirebase)
+
+                }
+                case TypeSceneEnum.Puzzle: {
+                  return Mapper.puzzleFirebaseToPuzzle(baseScene as unknown as PuzzleFirebase)
+
+                }
               }
             }
 
-            const answers: Answer[] = [];
-            baseScene.answers.forEach(answerInFireBase => {
-
-              const answer = new Answer(
-                answerInFireBase.id,
-                answerInFireBase.text,
-                answerInFireBase.position,
-                scene,
-                answerInFireBase.sceneId
-              );
-              answer.coordinate = new Coordinate();
-              answer.coordinate.x = answerInFireBase.coordinate.x;
-              answer.coordinate.y = answerInFireBase.coordinate.y;
-
-              answers.push(answer);
-            });
-
-            scene.answers = answers;
+            return resultScene()
           });
 
           game.players = game.players.map((player) => {
@@ -124,38 +107,21 @@ export class FirestoreService {
 
     const scenes = [...(game.scenes.map(scene => {
 
-      const answers = [...(scene.answers
-        .map(item => {
-          return {
-            id: item.id,
-            text: item.text,
-            position: item.position,
-            sceneId: item.sceneId ? item.sceneId : '',
-            coordinate: {
-              x: item.coordinate.x,
-              y: item.coordinate.y
-            }
-          };
-        }))];
-
-      let convertToSceneFromSave: any
-
-      switch (scene.typesScene) {
-        case TypeSceneEnum.Answer: {
-          convertToSceneFromSave = this.convertToSceneAnswerFromSave((scene as Scene), answers)
-          break
-        }
-        case TypeSceneEnum.Panorama: {
-          convertToSceneFromSave = this.convertToPanoramaFromSave((scene as Panorama), answers)
-          break
-        }
-        case TypeSceneEnum.Puzzle: {
-          convertToSceneFromSave = this.convertToPuzzleFromSave((scene as Puzzle), answers)
-          break
+      const result = (): any => {
+        switch (scene.typesScene) {
+          case TypeSceneEnum.Answer: {
+            return Mapper.sceneAnswerToSceneAnswerFirebase(scene as Scene)
+          }
+          case TypeSceneEnum.Panorama: {
+            return Mapper.panoramaToPanoramaFirebase((scene as Panorama))
+          }
+          case TypeSceneEnum.Puzzle: {
+            return Mapper.puzzleToPuzzleFirebase((scene as Puzzle))
+          }
         }
       }
 
-      return convertToSceneFromSave;
+      return result()
 
     }))];
 
@@ -176,27 +142,7 @@ export class FirestoreService {
 
   }
 
-  private convertToSceneAnswerFromSave(scene: Scene, answers: any): any {
-    return {
-      id: scene.id,
-      title: scene.title,
-      text: scene.text,
-      soundFileId: scene.soundFileLink ? scene.soundFileLink.id : '',
-      color: scene.color,
-      imageFileId: scene.imageFileId,
-      videoFileId: scene.videoFileId,
-      coordinate: {
-        x: scene.coordinate.x,
-        y: scene.coordinate.y
-      },
-      typesScene: scene.typesScene,
-      answers: answers,
-      players: scene.players,
-      isStartGame: scene.isStartGame
-    };
-  }
-
-  private convertToPanoramaFromSave(panorama: Panorama, answers: any): any {
+  private convertToPanoramaFromSave(panorama: Panorama): any {
     return {
       id: panorama.id,
       title: panorama.title,
@@ -209,13 +155,12 @@ export class FirestoreService {
         y: panorama.coordinate.y
       },
       typesScene: panorama.typesScene,
-      answers: answers,
       players: panorama.players,
       isStartGame: panorama.isStartGame
     };
   }
 
-  private convertToPuzzleFromSave(puzzle: Puzzle, answers: any): any {
+  private convertToPuzzleFromSave(puzzle: Puzzle): any {
     return {
       id: puzzle.id,
       title: puzzle.title,
@@ -227,7 +172,6 @@ export class FirestoreService {
         y: puzzle.coordinate.y
       },
       typesScene: puzzle.typesScene,
-      answers: answers,
       players: puzzle.players,
       isStartGame: puzzle.isStartGame
     };

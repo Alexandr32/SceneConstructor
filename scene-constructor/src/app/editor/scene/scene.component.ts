@@ -54,9 +54,6 @@ export class SceneComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('scene:', this.scene);
-
-
     this.typeScene = getTypesScene().find(item => item.type === this.scene.typesScene)
 
     this.dragPosition = { x: this.scene.coordinate.x, y: this.scene.coordinate.y };
@@ -162,12 +159,12 @@ export class SceneComponent implements OnInit {
     this.deleteScene.emit(this.scene);
   }
 
-  toStringLabel(text: string, maxCount: number) {
-    let sliced = text.slice(0, maxCount);
-    if (sliced.length < text.length) {
-      sliced += '...';
-    }
-    return sliced;
-  }
+  // toStringLabel(text: string, maxCount: number) {
+  //   let sliced = text.slice(0, maxCount);
+  //   if (sliced.length < text.length) {
+  //     sliced += '...';
+  //   }
+  //   return sliced;
+  // }
 
 }

@@ -149,6 +149,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async getAnswerScene(scene: Scene) {
+
     if (scene.imageFileId) {
       try {
         scene.imageFile = await this.firestoreServiceService
