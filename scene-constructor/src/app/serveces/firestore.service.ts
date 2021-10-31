@@ -83,7 +83,26 @@ export class FirestoreService {
           return game;
         })
       )
-      .pipe(first());
+      .pipe(first())
+      .pipe(
+        map((game) => {
+
+          game.scenes.forEach(async item => {
+            switch (item.typesScene) {
+              case TypeSceneEnum.Answer: {
+                await this.setAnswerSceneFile(game, item as Scene)
+              }
+              case TypeSceneEnum.Panorama: {
+                await this.setFilePanoramaFile(game, item as Panorama)
+              }
+              case TypeSceneEnum.Puzzle: {
+
+              }
+            }
+          })
+
+          return game
+        }));
   }
 
   async deleteGame(game: Game): Promise<any> {
@@ -140,41 +159,6 @@ export class FirestoreService {
       throw error;
     }
 
-  }
-
-  private convertToPanoramaFromSave(panorama: Panorama): any {
-    return {
-      id: panorama.id,
-      title: panorama.title,
-      text: panorama.text,
-      soundFileId: panorama.soundFileLink ? panorama.soundFileLink.id : '',
-      color: panorama.color,
-      imageFileId: panorama.imageFileId,
-      coordinate: {
-        x: panorama.coordinate.x,
-        y: panorama.coordinate.y
-      },
-      typesScene: panorama.typesScene,
-      players: panorama.players,
-      isStartGame: panorama.isStartGame
-    };
-  }
-
-  private convertToPuzzleFromSave(puzzle: Puzzle): any {
-    return {
-      id: puzzle.id,
-      title: puzzle.title,
-      text: puzzle.text,
-      soundFileId: puzzle.soundFileLink ? puzzle.soundFileLink.id : '',
-      color: puzzle.color,
-      coordinate: {
-        x: puzzle.coordinate.x,
-        y: puzzle.coordinate.y
-      },
-      typesScene: puzzle.typesScene,
-      players: puzzle.players,
-      isStartGame: puzzle.isStartGame
-    };
   }
 
   /**
@@ -367,6 +351,63 @@ export class FirestoreService {
           throw error;
         }
       }
+
+    }
+  }
+
+  private async setFilePanoramaFile(game: Game, scene: Panorama) {
+
+    if (scene.imageFileId) {
+      try {
+        scene.imageFile = await this.getUrl(game.id, scene.imageFileId, TypeFile.SceneImages).toPromise()
+      } catch (error) {
+        scene.imageFile = '/assets/http_scene.jpg';
+        console.error('Изображение не найдено');
+        console.error(error);
+      }
+    } else {
+      scene.imageFile = '/assets/http_scene.jpg';
+    }
+
+    if (scene.soundFileId) {
+
+      scene.soundFileLink =
+        await this.getMediaFileLinkById(game.id, TypeFile.Sound, scene.soundFileId)
+
+    }
+  }
+
+  private async setAnswerSceneFile(game: Game, scene: Scene) {
+
+    if (scene.imageFileId) {
+      try {
+        scene.imageFile = await this.getUrl(game.id, scene.imageFileId, TypeFile.SceneImages).toPromise()
+      } catch (error) {
+        scene.imageFile = '/assets/http_scene.jpg';
+        console.error('Изображение не найдено');
+        console.error(error);
+      }
+    } else {
+      scene.imageFile = '/assets/http_scene.jpg';
+    }
+
+    if (scene.videoFileId) {
+      try {
+
+        scene.videoFile = await this.getUrl(game.id, scene.videoFileId, TypeFile.SceneVideos).toPromise()
+
+      } catch (error) {
+        scene.videoFile = '';
+        console.error(error);
+      }
+    } else {
+      scene.videoFile = '';
+    }
+
+    if (scene.soundFileId) {
+
+      scene.soundFileLink =
+        await this.getMediaFileLinkById(game.id, TypeFile.Sound, scene.soundFileId)
 
     }
   }

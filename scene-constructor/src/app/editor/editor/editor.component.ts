@@ -105,6 +105,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
 
+    // вынести в сервис
     for (const player of this.game.players) {
 
       if (player.imageFileId) {
@@ -119,14 +120,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         player.imageFile = '/assets/http_player.jpg';
       }
-    }
-
-    for (const sceneBase of this.game.scenes) {
-
-      if (sceneBase instanceof Scene) {
-        this.getAnswerScene(sceneBase)
-      }
-
     }
 
     this.form = new FormGroup({
@@ -146,44 +139,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.showForm = true;
 
     this.renderLine();
-  }
-
-  private async getAnswerScene(scene: Scene) {
-
-    if (scene.imageFileId) {
-      try {
-        scene.imageFile = await this.firestoreServiceService
-          .getUrl(this.game.id, scene.imageFileId, TypeFile.SceneImages).toPromise()
-      } catch (error) {
-        scene.imageFile = '/assets/http_scene.jpg';
-        console.error('Изображение не найдено');
-        console.error(error);
-      }
-    } else {
-      scene.imageFile = '/assets/http_scene.jpg';
-    }
-
-    if (scene.videoFileId) {
-      try {
-
-        scene.videoFile = await this.firestoreServiceService
-          .getUrl(this.game.id, scene.videoFileId, TypeFile.SceneVideos).toPromise()
-
-      } catch (error) {
-        scene.videoFile = '';
-        console.error(error);
-      }
-    } else {
-      scene.videoFile = '';
-    }
-
-    if (scene.soundFileId) {
-
-      scene.soundFileLink =
-        await this.firestoreServiceService
-          .getMediaFileLinkById(this.game.id, TypeFile.Sound, scene.soundFileId)
-
-    }
   }
 
   ngAfterViewInit(): void {
