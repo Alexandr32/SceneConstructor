@@ -374,7 +374,7 @@ export class FirestoreService {
 
     if (scene.imageFileId) {
       try {
-        scene.imageFile = await this.getUrl(game.id, scene.imageFileId, TypeFile.SceneImages).toPromise()
+        scene.imageFile = await this.getUrl(game.id, scene.imageFileId, TypeFile.PanoramaImages).toPromise()
       } catch (error) {
         scene.imageFile = '/assets/http_scene.jpg';
         console.error('Изображение не найдено');
