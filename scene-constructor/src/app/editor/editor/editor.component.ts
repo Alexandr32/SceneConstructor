@@ -2,11 +2,9 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { IBaseScene, Panorama, Puzzle, Scene } from '../../models/scene.model';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { EditSceneDialogComponent } from '../edit-scene-dialog/edit-scene-dialog.component';
 import { Answer } from '../../models/answer.model';
 import { Coordinate } from '../../models/coordinate.model';
 import { Player } from '../../models/player.model';
-import { EditPlayerDialogComponent } from '../edit-player-dialog/edit-player-dialog.component';
 import { FirestoreService } from '../../serveces/firestore.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Game } from '../../models/game.model';
@@ -18,6 +16,9 @@ import { FileLink } from 'src/app/models/file-link.model.ts';
 import { RunGameService } from 'src/app/serveces/run-game.service';
 import { TypeFile } from 'src/app/models/type-file.model';
 import { TypeSceneEnum } from 'src/app/models/type-scene.enum';
+import { EditSceneDialogComponent } from '../dialogs/edit-scene-dialog/edit-scene-dialog.component';
+import { EditPlayerDialogComponent } from '../dialogs/edit-player-dialog/edit-player-dialog.component';
+import { EditPanoramaDialogComponent } from '../dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
 
 @Component({
   selector: 'app-editor',
@@ -168,8 +169,36 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  openEditDialog(scene: Scene): void {
+  openEditDialog(scene: IBaseScene): void {
 
+    if (scene.typesScene === TypeSceneEnum.Answer) {
+      this.showSceneAnswerDialog(scene as Scene)
+    }
+
+    if (scene.typesScene === TypeSceneEnum.Panorama) {
+      this.showPanoramaDialog(scene as Panorama)
+    }
+
+
+
+  }
+
+  private showPanoramaDialog(scene: Panorama) {
+    const dialogRef = this.dialog.open(EditPanoramaDialogComponent, {
+      data: { gameId: this.game.id, scene, players: this.players }
+    });
+
+    dialogRef.componentInstance.saveEvent.subscribe(() => {
+      this.clearCanvas();
+      this.renderLine();
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('closeDialog');
+    });
+  }
+
+  private showSceneAnswerDialog(scene: Scene) {
     const dialogRef = this.dialog.open(EditSceneDialogComponent, {
       data: { gameId: this.game.id, scene, players: this.players }
     });

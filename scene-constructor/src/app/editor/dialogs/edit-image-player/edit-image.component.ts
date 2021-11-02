@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {CropperSettings} from 'ngx-img-cropper';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Player} from '../../models/player.model';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { CropperSettings } from 'ngx-img-cropper';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-image',
@@ -17,7 +16,7 @@ export class EditImageComponent implements OnInit {
   saveEvent = new EventEmitter<String>();
 
   constructor(public dialogRef: MatDialogRef<EditImageComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: { image: String, cropperSettings: CropperSettings }) {
+    @Inject(MAT_DIALOG_DATA) public data: { image: String, cropperSettings: CropperSettings }) {
     this.cropperSettings = data.cropperSettings;
     this.dataImage = {};
   }

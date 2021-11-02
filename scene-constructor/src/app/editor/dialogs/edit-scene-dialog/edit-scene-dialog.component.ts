@@ -1,18 +1,17 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Scene } from '../../models/scene.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { Answer } from '../../models/answer.model';
-import { Player } from '../../models/player.model';
 import { CropperSettings } from 'ngx-img-cropper';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { TypeFile } from '../../models/type-file.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
 import { getTypesScene, TypeScene } from 'src/app/models/type-scene.enum';
+import { Answer } from 'src/app/models/answer.model';
+import { Scene } from 'src/app/models/scene.model';
+import { Player } from 'src/app/models/player.model';
 
 @Component({
   selector: 'app-edit-scene-dialog',

@@ -9,11 +9,8 @@ import { ToCoordinatesPipe } from './pipe/toсoordinates.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
-import { EditSceneDialogComponent } from './editor/edit-scene-dialog/edit-scene-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EditPlayerDialogComponent } from './editor/edit-player-dialog/edit-player-dialog.component';
 import { ImageCropperModule } from 'ngx-img-cropper';
-import { EditImageComponent } from './editor/edit-image-player/edit-image.component';
 import { GameListComponent } from './editor/game-list/game-list.component';
 import { RunGameModule } from './run-game/run-game.module';
 import { CoreModule } from './core/core.module';
@@ -22,9 +19,13 @@ import { FireModule } from './fire.module';
 import { MediaFileDialogComponent } from './editor/media-file-dialog/media-file-dialog.component';
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { SelectMediaFileDialogComponent } from './editor/select-media-file-dialog/select-media-file-dialog.component';
 import { ItemGameComponent } from './editor/item-game/item-game.component';
 import { BaseEditSceneDialogComponent } from './editor/shared/base-edit-scene-dialog/base-edit-scene-dialog.component';
+import { EditSceneDialogComponent } from './editor/dialogs/edit-scene-dialog/edit-scene-dialog.component';
+import { EditImageComponent } from './editor/dialogs/edit-image-player/edit-image.component';
+import { EditPlayerDialogComponent } from './editor/dialogs/edit-player-dialog/edit-player-dialog.component';
+import { SelectMediaFileDialogComponent } from './editor/dialogs/select-media-file-dialog/select-media-file-dialog.component';
+import { EditPanoramaDialogComponent } from './editor/dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { BaseEditSceneDialogComponent } from './editor/shared/base-edit-scene-di
     MediaFileDialogComponent,
     SelectMediaFileDialogComponent,
     ItemGameComponent,
-    BaseEditSceneDialogComponent
+    BaseEditSceneDialogComponent,
+    EditPanoramaDialogComponent
   ],
   imports: [
     FormsModule,

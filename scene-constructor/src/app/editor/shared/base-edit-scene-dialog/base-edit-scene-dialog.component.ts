@@ -5,7 +5,7 @@ import { Answer } from 'src/app/models/answer.model';
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { Player } from 'src/app/models/player.model';
 import { Scene } from 'src/app/models/scene.model';
-import { SelectMediaFileDialogComponent } from '../../select-media-file-dialog/select-media-file-dialog.component';
+import { SelectMediaFileDialogComponent } from '../../dialogs/select-media-file-dialog/select-media-file-dialog.component';
 
 @Component({
   selector: 'app-base-edit-scene-dialog',

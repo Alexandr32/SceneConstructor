@@ -8,7 +8,7 @@ import { FileLink } from 'src/app/models/file-link.model.ts';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
 import { TypeFile } from 'src/app/models/type-file.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
-import { EditImageComponent } from '../edit-image-player/edit-image.component';
+import { EditImageComponent } from '../dialogs/edit-image-player/edit-image.component';
 
 @Component({
   selector: 'app-media-file-dialog',

@@ -1,0 +1,46 @@
+<app-base-edit-scene-dialog
+  [form]="form"
+  [soundFileLink]="soundFileLink"
+  [dialog]="dialog"
+  [validData]="validData"
+  [data]="data"
+  (close)="onNoClick()"
+  (save)="onClickSave()"
+>
+  <form [formGroup]="formPanorama" novalidate>
+    <div class="input-box">
+      <div>
+        <label>
+          <input name="isTimer" type="checkbox" formControlName="isTimer" />
+          Время ограничено
+        </label>
+      </div>
+
+      <p>Время на исследование (сек):</p>
+      <input
+        style="width: 100px"
+        type="number"
+        min="0"
+        name="times"
+        formControlName="times"
+      />
+    </div>
+  </form>
+
+  <hr class="m-t-25" />
+
+  <div class="m-t-25">
+    <div class="edit-scene-dialog__image-box" *ngIf="imgFile && imgFile !== ''">
+      <img
+        class="edit-scene-dialog__image-box__image"
+        [src]="imgFile"
+        [alt]="form.value.name"
+      />
+    </div>
+
+    <div>
+      <button (click)="openSelectImageFileDialog()">Выбрать изображение</button>
+      <button (click)="onClickDeletedImg()">Удалить</button>
+    </div>
+  </div>
+</app-base-edit-scene-dialog>
