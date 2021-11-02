@@ -87,7 +87,7 @@ export class EditPanoramaDialogComponent implements OnInit {
       })
   }
 
-  disableIsTimer(isTimer: boolean) {
+  private disableIsTimer(isTimer: boolean) {
     if (isTimer) {
       this.formPanorama.controls['times'].enable({ emitEvent: false })
     } else {
@@ -128,17 +128,6 @@ export class EditPanoramaDialogComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-
-  changeTextAnswer(answer: Answer, event: { target: { value: string; }; }) {
-    const value = event.target.value
-    answer.text = value
-
-    if (value) {
-      this.validData = true
-    } else {
-      this.validData = false
-    }
   }
 
 }
