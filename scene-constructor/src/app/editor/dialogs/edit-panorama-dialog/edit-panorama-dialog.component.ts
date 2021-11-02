@@ -100,9 +100,12 @@ export class EditPanoramaDialogComponent implements OnInit {
       return;
     }
 
-    this.data.scene.answers = this.answers;
     this.data.scene.imageFileId = this.imageFileId;
     this.data.scene.imageFile = this.imgFile;
+
+    this.data.scene.times = Number(this.formPanorama.controls['times'].value)
+
+    this.data.scene.isTimer = Boolean(this.formPanorama.controls['isTimer'].value)
 
     this.saveEvent.emit(this.data);
     this.dialogRef.close();
