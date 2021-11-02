@@ -92,12 +92,14 @@ export class FirestoreService {
             switch (item.typesScene) {
               case TypeSceneEnum.Answer: {
                 await this.setAnswerSceneFile(game, item as Scene)
+                break
               }
               case TypeSceneEnum.Panorama: {
                 await this.setFilePanoramaFile(game, item as Panorama)
+                break
               }
               case TypeSceneEnum.Puzzle: {
-
+                break
               }
             }
           })
