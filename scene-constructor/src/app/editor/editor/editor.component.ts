@@ -19,6 +19,7 @@ import { TypeSceneEnum } from 'src/app/models/type-scene.enum';
 import { EditSceneDialogComponent } from '../dialogs/edit-scene-dialog/edit-scene-dialog.component';
 import { EditPlayerDialogComponent } from '../dialogs/edit-player-dialog/edit-player-dialog.component';
 import { EditPanoramaDialogComponent } from '../dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
+import { EditPuzzleDialogComponent } from '../dialogs/edit-puzzle-dialog/edit-puzzle-dialog.component';
 
 @Component({
   selector: 'app-editor',
@@ -179,6 +180,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.showPanoramaDialog(scene as Panorama)
     }
 
+    if (scene.typesScene === TypeSceneEnum.Puzzle) {
+      this.showPuzzleDialog(scene as Puzzle)
+    }
 
 
   }
@@ -200,6 +204,21 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private showSceneAnswerDialog(scene: Scene) {
     const dialogRef = this.dialog.open(EditSceneDialogComponent, {
+      data: { gameId: this.game.id, scene, players: this.players }
+    });
+
+    dialogRef.componentInstance.saveEvent.subscribe(() => {
+      this.clearCanvas();
+      this.renderLine();
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('closeDialog');
+    });
+  }
+
+  private showPuzzleDialog(scene: Puzzle) {
+    const dialogRef = this.dialog.open(EditPuzzleDialogComponent, {
       data: { gameId: this.game.id, scene, players: this.players }
     });
 

@@ -1,0 +1,31 @@
+<app-base-edit-scene-dialog
+  [form]="form"
+  [soundFileLink]="soundFileLink"
+  [dialog]="dialog"
+  [validData]="validData"
+  [data]="data"
+  (close)="onNoClick()"
+  (save)="onClickSave()"
+>
+  Редактирование головоломки
+
+  <div class="m-t-25">
+    <div>
+      <button (click)="openSelectImageFileDialog()">Выбрать изображение</button>
+      <button (click)="onClickDeletedImg()">Удалить</button>
+    </div>
+  </div>
+
+  <div class="flex justify-content-center" style="background: red">
+    <div
+      class="edit-scene-dialog__puzzle-image-box"
+      *ngIf="imgFile && imgFile !== ''"
+    >
+      <img
+        class="edit-scene-dialog__puzzle-image-box"
+        [src]="imgFile"
+        [alt]="form.value.name"
+      />
+    </div>
+  </div>
+</app-base-edit-scene-dialog>

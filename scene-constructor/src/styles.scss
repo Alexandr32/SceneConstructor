@@ -226,6 +226,12 @@ body {
   position: relative;
 }
 
+.edit-scene-dialog__puzzle-image-box {
+  width: 192px;
+  height: 192px;
+  position: relative;
+}
+
 .edit-scene-dialog__btn-del {
   position: absolute;
   right: 0;
@@ -589,4 +595,12 @@ mat-grid-tile {
 
 .m-8 {
   margin: 8px;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
 }

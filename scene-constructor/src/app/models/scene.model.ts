@@ -45,6 +45,9 @@ export class Puzzle implements IBaseScene {
   answers: Answer[] = []
   maxCountAnswers: number = 1
 
+  imageFileId: string
+  imageFile: string
+
 }
 
 export class Panorama implements IBaseScene {
