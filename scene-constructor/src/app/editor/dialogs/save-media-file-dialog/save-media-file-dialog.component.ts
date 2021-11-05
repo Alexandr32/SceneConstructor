@@ -8,14 +8,14 @@ import { FileLink } from 'src/app/models/file-link.model.ts';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
 import { TypeFile } from 'src/app/models/type-file.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
-import { EditImageComponent } from '../dialogs/edit-image-player/edit-image.component';
+import { EditImageComponent } from '../edit-image-player/edit-image.component';
 
 @Component({
   selector: 'app-media-file-dialog',
-  templateUrl: './media-file-dialog.component.html',
-  styleUrls: ['./media-file-dialog.component.scss']
+  templateUrl: './save-media-file-dialog.component.html',
+  styleUrls: ['./save-media-file-dialog.component.scss']
 })
-export class MediaFileDialogComponent implements OnInit {
+export class SaveMediaFileDialogComponent implements OnInit {
 
   imagesPlayer: FileLink[] = []
   imagesScene: FileLink[] = []
@@ -41,7 +41,7 @@ export class MediaFileDialogComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    public dialogRef: MatDialogRef<MediaFileDialogComponent>,
+    public dialogRef: MatDialogRef<SaveMediaFileDialogComponent>,
     private fireStore: AngularFirestore,
     private firestoreService: FirestoreService,
     @Inject(MAT_DIALOG_DATA) public data: {

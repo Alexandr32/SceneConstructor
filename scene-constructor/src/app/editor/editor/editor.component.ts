@@ -11,7 +11,7 @@ import { Game } from '../../models/game.model';
 import { MessageDialogComponent } from '../../core/message-dialog/message-dialog.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MediaFileDialogComponent } from '../media-file-dialog/media-file-dialog.component';
+import { SaveMediaFileDialogComponent } from '../dialogs/save-media-file-dialog/save-media-file-dialog.component';
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { RunGameService } from 'src/app/serveces/run-game.service';
 import { TypeFile } from 'src/app/models/type-file.model';
@@ -434,7 +434,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addMediaFile() {
 
-    const dialogRef = this.dialog.open(MediaFileDialogComponent, {
+    const dialogRef = this.dialog.open(SaveMediaFileDialogComponent, {
       data: {
         gameId: this.game.id
       }

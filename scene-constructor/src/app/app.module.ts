@@ -16,7 +16,7 @@ import { RunGameModule } from './run-game/run-game.module';
 import { CoreModule } from './core/core.module';
 import { MainComponent } from './editor/main/main.component';
 import { FireModule } from './fire.module';
-import { MediaFileDialogComponent } from './editor/media-file-dialog/media-file-dialog.component';
+import { SaveMediaFileDialogComponent } from './editor/dialogs/save-media-file-dialog/save-media-file-dialog.component';
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ItemGameComponent } from './editor/item-game/item-game.component';
@@ -39,7 +39,7 @@ import { EditPuzzleDialogComponent } from './editor/dialogs/edit-puzzle-dialog/e
     EditImageComponent,
     GameListComponent,
     MainComponent,
-    MediaFileDialogComponent,
+    SaveMediaFileDialogComponent,
     SelectMediaFileDialogComponent,
     ItemGameComponent,
     BaseEditSceneDialogComponent,

@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { TypeFile } from 'src/app/models/type-file.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
-import { MediaFileDialogComponent } from '../../media-file-dialog/media-file-dialog.component';
+import { SaveMediaFileDialogComponent } from '../save-media-file-dialog/save-media-file-dialog.component';
 
 @Component({
   selector: 'app-select-media-file-dialog',
@@ -45,7 +45,7 @@ export class SelectMediaFileDialogComponent implements OnInit {
   private gameId: string
 
   constructor(public dialog: MatDialog,
-    public dialogRef: MatDialogRef<MediaFileDialogComponent>,
+    public dialogRef: MatDialogRef<SaveMediaFileDialogComponent>,
     private fireStore: AngularFirestore,
     private firestoreService: FirestoreService,
     @Inject(MAT_DIALOG_DATA) public data: {

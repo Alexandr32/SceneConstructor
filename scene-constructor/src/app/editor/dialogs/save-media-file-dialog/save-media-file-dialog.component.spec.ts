@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { MediaFileDialogComponent } from './media-file-dialog.component';
+import { SaveMediaFileDialogComponent } from './save-media-file-dialog.component';
 
 describe('MediaFileDialogComponent', () => {
-  let component: MediaFileDialogComponent;
-  let fixture: ComponentFixture<MediaFileDialogComponent>;
+  let component: SaveMediaFileDialogComponent;
+  let fixture: ComponentFixture<SaveMediaFileDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MediaFileDialogComponent ]
+      declarations: [SaveMediaFileDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MediaFileDialogComponent);
+    fixture = TestBed.createComponent(SaveMediaFileDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
