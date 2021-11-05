@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div class="flex justify-content-center" style="background: red">
+  <div class="flex">
     <div
       class="edit-scene-dialog__puzzle-image-box"
       *ngIf="imgFile && imgFile !== ''"
@@ -27,5 +27,19 @@
         [alt]="form.value.name"
       />
     </div>
+  </div>
+
+  <div class="grid-puzzle">
+    <div class="grid-item" draggable="true"></div>
+    <div class="grid-item" draggable="true"></div>
+    <div class="grid-item" draggable="true"></div>
+
+    <div class="grid-item" draggable="true"></div>
+    <div class="grid-item" draggable="true"></div>
+    <div class="grid-item" draggable="true"></div>
+
+    <div class="grid-item" draggable="true"></div>
+    <div class="grid-item" draggable="true"></div>
+    <div class="grid-item" draggable="true"></div>
   </div>
 </app-base-edit-scene-dialog>

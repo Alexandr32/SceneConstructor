@@ -227,8 +227,8 @@ body {
 }
 
 .edit-scene-dialog__puzzle-image-box {
-  width: 192px;
-  height: 192px;
+  width: 300px;
+  height: 300px;
   position: relative;
 }
 
@@ -597,10 +597,19 @@ mat-grid-tile {
   margin: 8px;
 }
 
-.flex {
-  display: flex;
-}
-
 .justify-content-center {
   justify-content: center;
+}
+
+.grid-puzzle {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+}
+
+.grid-item {
+  width: 100px;
+  height: 100px;
+  background: #4e2165;
+  border: 1px solid white;
+  cursor: pointer;
 }

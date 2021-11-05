@@ -48,10 +48,10 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   ngOnInit() {
 
-    // if (this.data.scene.imageFile) {
-    //   this.imgFile = this.data.scene.imageFile;
-    //   this.imageFileId = this.data.scene.imageFileId
-    // }
+    if (this.data.scene.imageFile) {
+      this.imgFile = this.data.scene.imageFile;
+      this.imageFileId = this.data.scene.imageFileId
+    }
 
     if (this.data.scene.soundFileLink) {
       this.soundFileLink = this.data.scene.soundFileLink
@@ -70,8 +70,8 @@ export class EditPuzzleDialogComponent implements OnInit {
 
     this.data.scene.answers = this.answers;
 
-    //this.data.scene.imageFileId = this.imageFileId;
-    //this.data.scene.imageFile = this.imgFile;
+    this.data.scene.imageFileId = this.imageFileId;
+    this.data.scene.imageFile = this.imgFile;
 
     this.saveEvent.emit(this.data);
     this.dialogRef.close();

@@ -164,6 +164,7 @@ export class Mapper {
         x: puzzle.coordinate.x,
         y: puzzle.coordinate.y
       },
+      imageFileId: puzzle.imageFileId,
       answers: puzzle.answers.map(item => {
         return Mapper.answerToAnswerFirebase(item)
       }),
@@ -183,6 +184,7 @@ export class Mapper {
     puzzle.soundFileId = puzzleFirebase.soundFileId
     puzzle.typesScene = puzzleFirebase.typesScene
     puzzle.isStartGame = puzzleFirebase.isStartGame
+    puzzle.imageFileId = puzzleFirebase.imageFileId
 
     const coordinate = new Coordinate()
     coordinate.x = puzzleFirebase.coordinate.x

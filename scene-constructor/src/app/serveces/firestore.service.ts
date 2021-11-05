@@ -99,6 +99,7 @@ export class FirestoreService {
                 break
               }
               case TypeSceneEnum.Puzzle: {
+                await this.setFilePuzzleFile(game, item as Puzzle)
                 break
               }
             }
@@ -384,6 +385,28 @@ export class FirestoreService {
       }
     } else {
       scene.imageFile = '/assets/http_scene.jpg';
+    }
+
+    if (scene.soundFileId) {
+
+      scene.soundFileLink =
+        await this.getMediaFileLinkById(game.id, TypeFile.Sound, scene.soundFileId)
+
+    }
+  }
+
+  private async setFilePuzzleFile(game: Game, scene: Puzzle) {
+
+    if (scene.imageFileId) {
+      try {
+        scene.imageFile = await this.getUrl(game.id, scene.imageFileId, TypeFile.PuzzleImages).toPromise()
+      } catch (error) {
+        scene.imageFile = '/assets/http_puzzle.jpg';
+        console.error('Изображение не найдено');
+        console.error(error);
+      }
+    } else {
+      scene.imageFile = '/assets/http_puzzle.jpg';
     }
 
     if (scene.soundFileId) {
