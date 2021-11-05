@@ -6,6 +6,7 @@
   [data]="data"
   (close)="onNoClick()"
   (save)="onClickSave()"
+  [players]="selectPlayers"
 >
   Редактирование головоломки
 
@@ -33,6 +34,18 @@
     <div *ngFor="let item of partsPuzzleImages">
       <div class="grid-item" draggable="true">
         <img class="width-full height-full" [src]="item.src" />
+      </div>
+    </div>
+  </div>
+
+  <div class="flex">
+    <div *ngFor="let itemPlayer of selectPlayers">
+      <div class="m-10 grid-puzzle" *ngIf="itemPlayer.isSelect">
+        <div *ngFor="let item of partsPuzzleImages">
+          <div class="grid-item" draggable="true">
+            <!-- <img class="width-full height-full" [src]="item.src" /> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>

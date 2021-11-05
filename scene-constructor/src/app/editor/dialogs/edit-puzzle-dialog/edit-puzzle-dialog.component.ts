@@ -38,6 +38,44 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   partsPuzzleImages: PartsPuzzleImage[]
 
+  selectPlayers: { player: Player, isSelect: boolean }[] = [];
+
+  scenePartsPuzzleImages: PartsPuzzleImage[] = [
+    { id: 1, src: '' } as PartsPuzzleImage,
+    { id: 2, src: '' } as PartsPuzzleImage,
+    { id: 3, src: '' } as PartsPuzzleImage,
+    { id: 4, src: '' } as PartsPuzzleImage,
+    { id: 5, src: '' } as PartsPuzzleImage,
+    { id: 6, src: '' } as PartsPuzzleImage,
+    { id: 7, src: '' } as PartsPuzzleImage,
+    { id: 8, src: '' } as PartsPuzzleImage,
+    { id: 9, src: '' } as PartsPuzzleImage
+  ]
+
+  scenePartsPuzzleImages2: PartsPuzzleImage[] = [
+    { id: 1, src: '' } as PartsPuzzleImage,
+    { id: 2, src: '' } as PartsPuzzleImage,
+    { id: 3, src: '' } as PartsPuzzleImage,
+    { id: 4, src: '' } as PartsPuzzleImage,
+    { id: 5, src: '' } as PartsPuzzleImage,
+    { id: 6, src: '' } as PartsPuzzleImage,
+    { id: 7, src: '' } as PartsPuzzleImage,
+    { id: 8, src: '' } as PartsPuzzleImage,
+    { id: 9, src: '' } as PartsPuzzleImage
+  ]
+
+  scenePartsPuzzleImages3: PartsPuzzleImage[] = [
+    { id: 1, src: '' } as PartsPuzzleImage,
+    { id: 2, src: '' } as PartsPuzzleImage,
+    { id: 3, src: '' } as PartsPuzzleImage,
+    { id: 4, src: '' } as PartsPuzzleImage,
+    { id: 5, src: '' } as PartsPuzzleImage,
+    { id: 6, src: '' } as PartsPuzzleImage,
+    { id: 7, src: '' } as PartsPuzzleImage,
+    { id: 8, src: '' } as PartsPuzzleImage,
+    { id: 9, src: '' } as PartsPuzzleImage
+  ]
+
 
   constructor(public dialogRef: MatDialogRef<EditPuzzleDialogComponent>,
     private firestoreService: FirestoreService,
@@ -64,6 +102,7 @@ export class EditPuzzleDialogComponent implements OnInit {
     }
 
     this.partsPuzzleImages = this.data.scene.partsPuzzleImages
+    this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages
 
 
     this.data.scene.answers.forEach(item => {

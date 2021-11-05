@@ -26,7 +26,9 @@ export class BaseEditSceneDialogComponent implements OnInit {
   @Input()
   validData: boolean
 
+  @Input()
   players: { player: Player, isSelect: boolean }[] = [];
+
   answers: Answer[] = [];
 
   @Output()
@@ -71,6 +73,9 @@ export class BaseEditSceneDialogComponent implements OnInit {
 
       const isSelect = this.data.scene.players.includes(item.id);
 
+
+      const player = { player: item, isSelect: isSelect }
+
       this.form.addControl(`playerId${item.id}`,
         new FormControl(
           isSelect,
@@ -79,7 +84,11 @@ export class BaseEditSceneDialogComponent implements OnInit {
           ]));
 
 
-      this.players.push({ player: item, isSelect: isSelect });
+      this.players.push(player);
+
+      this.form.controls[`playerId${item.id}`].valueChanges.subscribe(value => {
+        player.isSelect = value
+      })
     });
   }
 
