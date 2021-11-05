@@ -19,6 +19,7 @@ import { Mapper } from '../models/mapper.model';
 import { SceneAnswerFirebase } from '../models/firebase-models/scene-answer-firestore.model';
 import { PuzzleFirebase } from '../models/firebase-models/puzzle-firebase.model';
 import { PanoramaFirebase } from '../models/firebase-models/panorama-firebase.model';
+import { PartsPuzzleImage } from '../models/parts-puzzle-image.model';
 
 @Injectable({
   providedIn: 'root'
@@ -251,13 +252,13 @@ export class FirestoreService {
     }
   }
 
-  async savePuzzleMediaFile(mediaFile: MediaFile, parts: Array<{ id: number, src: string }>) {
+  async savePuzzleMediaFile(mediaFile: MediaFile, parts: Array<PartsPuzzleImage>) {
 
     if (mediaFile.typeFile != TypeFile.PuzzleImages) {
       throw Error('Не Верный тип файла');
     }
 
-    parts.forEach((async (item: { id: number, src: string }) => {
+    parts.forEach((async (item: PartsPuzzleImage) => {
 
       let file: File
       try {
@@ -415,6 +416,17 @@ export class FirestoreService {
         await this.getMediaFileLinkById(game.id, TypeFile.Sound, scene.soundFileId)
 
     }
+
+    scene.partsPuzzleImages.forEach(async (item) => {
+      item.src = await this.getUplPartsPuzzleImages(game.id, scene.imageFileId, item).toPromise()
+    })
+  }
+
+  public getUplPartsPuzzleImages(gameId: string, imagePuzzleId: string, item: PartsPuzzleImage): Observable<any> {
+
+    const folderName = `SourceStore/${gameId}/PuzzleImages/${imagePuzzleId}/${item.id}`
+    let ref = this.storage.ref(folderName);
+    return ref.getDownloadURL();
   }
 
   private async setAnswerSceneFile(game: Game, scene: Scene) {

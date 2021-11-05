@@ -8,6 +8,7 @@ import { Puzzle } from 'src/app/models/scene.model';
 import { Player } from 'src/app/models/player.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 import { PartsPuzzleImage } from 'src/app/models/parts-puzzle-image.model';
+import { FirestoreService } from 'src/app/serveces/firestore.service';
 
 @Component({
   selector: 'app-edit-puzzle-dialog',
@@ -39,6 +40,7 @@ export class EditPuzzleDialogComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<EditPuzzleDialogComponent>,
+    private firestoreService: FirestoreService,
     private fireStore: AngularFirestore,
     @Inject(MAT_DIALOG_DATA) public data: {
       gameId: string,
@@ -83,7 +85,7 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  openSelectImageFileDialog() {
+  async openSelectImageFileDialog() {
     const dialogRef = this.dialog.open(SelectMediaFileDialogComponent, {
       data: { gameId: this.gameId }
     });
@@ -93,6 +95,12 @@ export class EditPuzzleDialogComponent implements OnInit {
     dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
       this.imgFile = item.url
       this.imageFileId = item.id
+
+
+      this.partsPuzzleImages.forEach(async item => {
+        item.src = await this.firestoreService.getUplPartsPuzzleImages(this.data.gameId, this.imageFileId, item).toPromise()
+      })
+
     });
   }
 
