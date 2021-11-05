@@ -98,7 +98,19 @@ export class EditPuzzleDialogComponent implements OnInit {
 
 
       this.partsPuzzleImages.forEach(async item => {
-        item.src = await this.firestoreService.getUplPartsPuzzleImages(this.data.gameId, this.imageFileId, item).toPromise()
+
+        try {
+
+          item.src = await this.firestoreService.getUplPartsPuzzleImages(this.data.gameId, this.imageFileId, item).toPromise()
+
+        } catch (error) {
+
+          console.log('При получении элементов головоломки произошла ошибка');
+          item.src = `/assets/http_puzzle_${item.id}.png`;
+
+        }
+
+
       })
 
     });
