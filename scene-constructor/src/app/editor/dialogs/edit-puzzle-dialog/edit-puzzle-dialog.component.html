@@ -29,17 +29,11 @@
     </div>
   </div>
 
-  <div class="grid-puzzle">
-    <div class="grid-item" draggable="true"></div>
-    <div class="grid-item" draggable="true"></div>
-    <div class="grid-item" draggable="true"></div>
-
-    <div class="grid-item" draggable="true"></div>
-    <div class="grid-item" draggable="true"></div>
-    <div class="grid-item" draggable="true"></div>
-
-    <div class="grid-item" draggable="true"></div>
-    <div class="grid-item" draggable="true"></div>
-    <div class="grid-item" draggable="true"></div>
+  <div class="grid-puzzle" *ngIf="imgFile && imgFile !== ''">
+    <div *ngFor="let item of partsPuzzleImages">
+      <div class="grid-item" draggable="true">
+        <img class="width-full height-full" [src]="item.src" />
+      </div>
+    </div>
   </div>
 </app-base-edit-scene-dialog>

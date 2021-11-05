@@ -4,6 +4,7 @@ import { AnswerFirebase } from "./firebase-models/answer-firebase.model"
 import { PanoramaFirebase } from "./firebase-models/panorama-firebase.model"
 import { PuzzleFirebase } from "./firebase-models/puzzle-firebase.model"
 import { SceneAnswerFirebase } from "./firebase-models/scene-answer-firestore.model"
+import { PartsPuzzleImage } from "./parts-puzzle-image.model"
 import { Player } from "./run/run-game.models"
 import { IBaseScene, Panorama, Puzzle, Scene } from "./scene.model"
 
@@ -199,6 +200,19 @@ export class Mapper {
     })
 
     puzzle.maxCountAnswers = puzzleFirebase.maxCountAnswers
+
+    const partsPuzzleImages: PartsPuzzleImage[] = []
+
+    for (let i: number = 1; i <= 9; i++) {
+
+      const partsPuzzleImage = new PartsPuzzleImage()
+      partsPuzzleImage.id = i
+      partsPuzzleImage.src = ''
+
+      partsPuzzleImages.push(partsPuzzleImage)
+    }
+
+    puzzle.partsPuzzleImages = partsPuzzleImages
 
     return puzzle
   }

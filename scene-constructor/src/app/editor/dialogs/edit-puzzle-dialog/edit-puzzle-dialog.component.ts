@@ -7,6 +7,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Puzzle } from 'src/app/models/scene.model';
 import { Player } from 'src/app/models/player.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
+import { PartsPuzzleImage } from 'src/app/models/parts-puzzle-image.model';
 
 @Component({
   selector: 'app-edit-puzzle-dialog',
@@ -34,6 +35,9 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   gameId: string
 
+  partsPuzzleImages: PartsPuzzleImage[]
+
+
   constructor(public dialogRef: MatDialogRef<EditPuzzleDialogComponent>,
     private fireStore: AngularFirestore,
     @Inject(MAT_DIALOG_DATA) public data: {
@@ -56,6 +60,8 @@ export class EditPuzzleDialogComponent implements OnInit {
     if (this.data.scene.soundFileLink) {
       this.soundFileLink = this.data.scene.soundFileLink
     }
+
+    this.partsPuzzleImages = this.data.scene.partsPuzzleImages
 
 
     this.data.scene.answers.forEach(item => {

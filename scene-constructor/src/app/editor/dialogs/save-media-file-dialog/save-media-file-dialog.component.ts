@@ -6,6 +6,7 @@ import { MessageDialogComponent } from 'src/app/core/message-dialog/message-dial
 import { base64ToFile, fileToBase64 } from 'src/app/models/base64-to-file.model';
 import { FileLink } from 'src/app/models/file-link.model.ts';
 import { MediaFile } from 'src/app/models/media-file.model.ts';
+import { PartsPuzzleImage } from 'src/app/models/parts-puzzle-image.model';
 import { TypeFile } from 'src/app/models/type-file.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
@@ -256,7 +257,7 @@ export class SaveMediaFileDialogComponent implements OnInit {
       console.log('Ошибка сохранения', error);
     }
 
-    let parts: Array<{ id: number, src: string }>
+    let parts: Array<PartsPuzzleImage>
 
     try {
       parts = await this.getPromiseImagePuzzle(this.imgPuzzleFile)
