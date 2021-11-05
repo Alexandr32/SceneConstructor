@@ -145,5 +145,11 @@
   let-valueVideoFile="videoFile"
   let-valueTitleImage="title"
 >
-  шаблон для головоломки
+  <div *ngIf="valueImageFile">
+    <img
+      class="scene__image-box__image-puzzle"
+      [src]="valueImageFile"
+      [alt]="valueTitleImage"
+    />
+  </div>
 </ng-template>
