@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Answer } from 'src/app/models/answer.model';
@@ -40,45 +40,46 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   selectPlayers: { player: Player, isSelect: boolean }[] = [];
 
-  scenePartsPuzzleImages: PartsPuzzleImage[] = [
-    { id: 1, src: '' } as PartsPuzzleImage,
-    { id: 2, src: '' } as PartsPuzzleImage,
-    { id: 3, src: '' } as PartsPuzzleImage,
-    { id: 4, src: '' } as PartsPuzzleImage,
-    { id: 5, src: '' } as PartsPuzzleImage,
-    { id: 6, src: '' } as PartsPuzzleImage,
-    { id: 7, src: '' } as PartsPuzzleImage,
-    { id: 8, src: '' } as PartsPuzzleImage,
-    { id: 9, src: '' } as PartsPuzzleImage
+  scenePartsPuzzleImages: { id: number, value: PartsPuzzleImage }[] = [
+    { id: 1, value: { id: 1, src: '/assets/http_puzzle_1.png' } as PartsPuzzleImage },
+    { id: 2, value: { id: 2, src: '/assets/http_puzzle_2.png' } as PartsPuzzleImage },
+    { id: 3, value: { id: 3, src: '/assets/http_puzzle_3.png' } as PartsPuzzleImage },
+    { id: 4, value: { id: 4, src: '/assets/http_puzzle_4.png' } as PartsPuzzleImage },
+    { id: 5, value: { id: 5, src: '/assets/http_puzzle_5.png' } as PartsPuzzleImage },
+    { id: 6, value: { id: 6, src: '/assets/http_puzzle_6.png' } as PartsPuzzleImage },
+    { id: 7, value: { id: 7, src: '/assets/http_puzzle_7.png' } as PartsPuzzleImage },
+    { id: 8, value: { id: 8, src: '/assets/http_puzzle_8.png' } as PartsPuzzleImage },
+    { id: 9, value: { id: 9, src: '/assets/http_puzzle_9.png' } as PartsPuzzleImage },
   ]
 
-  scenePartsPuzzleImages2: PartsPuzzleImage[] = [
-    { id: 1, src: '' } as PartsPuzzleImage,
-    { id: 2, src: '' } as PartsPuzzleImage,
-    { id: 3, src: '' } as PartsPuzzleImage,
-    { id: 4, src: '' } as PartsPuzzleImage,
-    { id: 5, src: '' } as PartsPuzzleImage,
-    { id: 6, src: '' } as PartsPuzzleImage,
-    { id: 7, src: '' } as PartsPuzzleImage,
-    { id: 8, src: '' } as PartsPuzzleImage,
-    { id: 9, src: '' } as PartsPuzzleImage
+  scenePartsPuzzleImages2: { id: number, value: PartsPuzzleImage }[] = [
+    { id: 1, value: null },
+    { id: 2, value: null },
+    { id: 3, value: null },
+    { id: 4, value: null },
+    { id: 5, value: null },
+    { id: 6, value: null },
+    { id: 7, value: null },
+    { id: 8, value: null },
+    { id: 9, value: null },
   ]
 
-  scenePartsPuzzleImages3: PartsPuzzleImage[] = [
-    { id: 1, src: '' } as PartsPuzzleImage,
-    { id: 2, src: '' } as PartsPuzzleImage,
-    { id: 3, src: '' } as PartsPuzzleImage,
-    { id: 4, src: '' } as PartsPuzzleImage,
-    { id: 5, src: '' } as PartsPuzzleImage,
-    { id: 6, src: '' } as PartsPuzzleImage,
-    { id: 7, src: '' } as PartsPuzzleImage,
-    { id: 8, src: '' } as PartsPuzzleImage,
-    { id: 9, src: '' } as PartsPuzzleImage
+  scenePartsPuzzleImages3: { id: number, value: PartsPuzzleImage }[] = [
+    { id: 1, value: null },
+    { id: 2, value: null },
+    { id: 3, value: null },
+    { id: 4, value: null },
+    { id: 5, value: null },
+    { id: 6, value: null },
+    { id: 7, value: null },
+    { id: 8, value: null },
+    { id: 9, value: null },
   ]
 
 
   constructor(public dialogRef: MatDialogRef<EditPuzzleDialogComponent>,
     private firestoreService: FirestoreService,
+    private changeDetection: ChangeDetectorRef,
     private fireStore: AngularFirestore,
     @Inject(MAT_DIALOG_DATA) public data: {
       gameId: string,
@@ -102,7 +103,7 @@ export class EditPuzzleDialogComponent implements OnInit {
     }
 
     this.partsPuzzleImages = this.data.scene.partsPuzzleImages
-    this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages
+    //this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages
 
 
     this.data.scene.answers.forEach(item => {
@@ -162,6 +163,60 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  // Вызывается при старте перетаскивания
+  dragStar(event, value: { id: number, value: PartsPuzzleImage }) {
+
+    console.log('dragStar');
+
+    if (value.value) {
+      event.dataTransfer.setData('id', value.value.id)
+      event.dataTransfer.setData('src', value.value.src)
+    }
+
+  }
+
+  dragOver(event, value: { id: number, value: PartsPuzzleImage }) {
+    event.preventDefault()
+  }
+
+  dropEnd(event, value: { id: number, value: PartsPuzzleImage }) {
+
+    console.log('dropEnd:', value);
+
+    const id = event.dataTransfer.getData('id')
+
+    if (!id) {
+      value.value = null
+    }
+
+  }
+
+  /**
+   * Срабатывает при отпускании перетаскивания
+   * @param event
+   * @param value Значение ячейки на котором было произведено отпускание
+   */
+  drop(event, value: { id: number, value: PartsPuzzleImage }) {
+
+    console.log('drop');
+
+    const id = event.dataTransfer.getData('id')
+
+    if (!id) {
+      return
+    }
+
+    const src = event.dataTransfer.getData('src')
+
+    value.value = {
+      id: id,
+      src: src
+    }
+
+    event.dataTransfer.setData('id', null)
+    event.dataTransfer.setData('src', null)
   }
 
 }

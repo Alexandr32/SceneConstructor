@@ -19,7 +19,7 @@
 
   <div class="flex">
     <div
-      class="edit-scene-dialog__puzzle-image-box"
+      class="edit-scene-dialog__puzzle-image-box m-10"
       *ngIf="imgFile && imgFile !== ''"
     >
       <img
@@ -30,7 +30,54 @@
     </div>
   </div>
 
-  <div class="grid-puzzle" *ngIf="imgFile && imgFile !== ''">
+  <div class="grid-puzzle m-10">
+    <div *ngFor="let item of scenePartsPuzzleImages">
+      <div
+        class="grid-item"
+        draggable="true"
+        (dragover)="dragOver($event, item)"
+        (dragstart)="dragStar($event, item)"
+        (drop)="drop($event, item)"
+        (dragend)="dropEnd($event, item)"
+      >
+        <div *ngIf="item.value">
+          <img class="width-full height-full" [src]="item.value.src" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex">
+    <div class="grid-puzzle m-10">
+      <div *ngFor="let item of scenePartsPuzzleImages2">
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event, item)"
+          (dragstart)="dragStar($event, item)"
+          (drop)="drop($event, item)"
+          (dragend)="dropEnd($event, item)"
+        >
+          <div *ngIf="item.value">
+            <img class="width-full height-full" [src]="item.value.src" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="grid-puzzle m-10">
+      <div *ngFor="let item of scenePartsPuzzleImages3">
+        <div class="grid-item" draggable="true">
+          {{ item | json }}
+          <ng-template *ngIf="item.src">
+            <img class="width-full height-full" [src]="item.src" />
+          </ng-template>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <!-- <div class="grid-puzzle" *ngIf="imgFile && imgFile !== ''">
     <div *ngFor="let item of partsPuzzleImages">
       <div class="grid-item" draggable="true">
         <img class="width-full height-full" [src]="item.src" />
@@ -43,10 +90,10 @@
       <div class="m-10 grid-puzzle" *ngIf="itemPlayer.isSelect">
         <div *ngFor="let item of partsPuzzleImages">
           <div class="grid-item" draggable="true">
-            <!-- <img class="width-full height-full" [src]="item.src" /> -->
+            <img class="width-full height-full" [src]="item.src" />
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </app-base-edit-scene-dialog>
