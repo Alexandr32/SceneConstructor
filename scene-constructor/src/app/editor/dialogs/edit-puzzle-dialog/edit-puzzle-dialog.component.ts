@@ -9,6 +9,7 @@ import { Player } from 'src/app/models/player.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 import { PartsPuzzleImage } from 'src/app/models/parts-puzzle-image.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
+import { ItemPartsPuzzleImage } from 'src/app/models/item-parts -puzzle-image.model';
 
 @Component({
   selector: 'app-edit-puzzle-dialog',
@@ -40,7 +41,7 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   selectPlayers: { player: Player, isSelect: boolean }[] = [];
 
-  scenePartsPuzzleImages: { number: number, value: PartsPuzzleImage }[] = [
+  scenePartsPuzzleImages: ItemPartsPuzzleImage[] = [
     { number: 1, value: { id: 1, src: '/assets/http_puzzle_1.png' } as PartsPuzzleImage },
     { number: 2, value: { id: 2, src: '/assets/http_puzzle_2.png' } as PartsPuzzleImage },
     { number: 3, value: { id: 3, src: '/assets/http_puzzle_3.png' } as PartsPuzzleImage },
@@ -50,6 +51,10 @@ export class EditPuzzleDialogComponent implements OnInit {
     { number: 7, value: { id: 7, src: '/assets/http_puzzle_7.png' } as PartsPuzzleImage },
     { number: 8, value: { id: 8, src: '/assets/http_puzzle_8.png' } as PartsPuzzleImage },
     { number: 9, value: { id: 9, src: '/assets/http_puzzle_9.png' } as PartsPuzzleImage },
+  ]
+
+  playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = [
+
   ]
 
   scenePartsPuzzleImages2: { number: number, value: PartsPuzzleImage }[] = [
@@ -173,18 +178,18 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  selectPartsPuzzleImage: { number: number, value: PartsPuzzleImage } = null
+  selectPartsPuzzleImage: ItemPartsPuzzleImage = null
 
   // Вызывается при старте перетаскивания
-  dragStar(event, value: { number: number, value: PartsPuzzleImage }) {
+  dragStar(event, value: ItemPartsPuzzleImage) {
     this.selectPartsPuzzleImage = value
   }
 
-  dragOver(event, value: { number: number, value: PartsPuzzleImage }) {
+  dragOver(event, value: ItemPartsPuzzleImage) {
     event.preventDefault()
   }
 
-  private setValueCurrentPartsPuzzleImage(value: { number: number, value: PartsPuzzleImage }) {
+  private setValueCurrentPartsPuzzleImage(value: ItemPartsPuzzleImage) {
     if (value.value) {
 
       if (this.selectPartsPuzzleImage.value) {
@@ -233,7 +238,7 @@ export class EditPuzzleDialogComponent implements OnInit {
    * @param event
    * @param value Значение ячейки на котором было произведено отпускание
    */
-  drop(event, value: { number: number, value: PartsPuzzleImage }) {
+  drop(event, value: ItemPartsPuzzleImage) {
 
     const oldId = value.value?.id
     const oldSrc = value.value?.src
