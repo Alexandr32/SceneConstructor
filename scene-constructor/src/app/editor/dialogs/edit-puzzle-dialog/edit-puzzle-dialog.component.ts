@@ -40,40 +40,40 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   selectPlayers: { player: Player, isSelect: boolean }[] = [];
 
-  scenePartsPuzzleImages: { id: number, value: PartsPuzzleImage }[] = [
-    { id: 1, value: { id: 1, src: '/assets/http_puzzle_1.png' } as PartsPuzzleImage },
-    { id: 2, value: { id: 2, src: '/assets/http_puzzle_2.png' } as PartsPuzzleImage },
-    { id: 3, value: { id: 3, src: '/assets/http_puzzle_3.png' } as PartsPuzzleImage },
-    { id: 4, value: { id: 4, src: '/assets/http_puzzle_4.png' } as PartsPuzzleImage },
-    { id: 5, value: { id: 5, src: '/assets/http_puzzle_5.png' } as PartsPuzzleImage },
-    { id: 6, value: { id: 6, src: '/assets/http_puzzle_6.png' } as PartsPuzzleImage },
-    { id: 7, value: { id: 7, src: '/assets/http_puzzle_7.png' } as PartsPuzzleImage },
-    { id: 8, value: { id: 8, src: '/assets/http_puzzle_8.png' } as PartsPuzzleImage },
-    { id: 9, value: { id: 9, src: '/assets/http_puzzle_9.png' } as PartsPuzzleImage },
+  scenePartsPuzzleImages: { number: number, value: PartsPuzzleImage }[] = [
+    { number: 1, value: { id: 1, src: '/assets/http_puzzle_1.png' } as PartsPuzzleImage },
+    { number: 2, value: { id: 2, src: '/assets/http_puzzle_2.png' } as PartsPuzzleImage },
+    { number: 3, value: { id: 3, src: '/assets/http_puzzle_3.png' } as PartsPuzzleImage },
+    { number: 4, value: { id: 4, src: '/assets/http_puzzle_4.png' } as PartsPuzzleImage },
+    { number: 5, value: { id: 5, src: '/assets/http_puzzle_5.png' } as PartsPuzzleImage },
+    { number: 6, value: { id: 6, src: '/assets/http_puzzle_6.png' } as PartsPuzzleImage },
+    { number: 7, value: { id: 7, src: '/assets/http_puzzle_7.png' } as PartsPuzzleImage },
+    { number: 8, value: { id: 8, src: '/assets/http_puzzle_8.png' } as PartsPuzzleImage },
+    { number: 9, value: { id: 9, src: '/assets/http_puzzle_9.png' } as PartsPuzzleImage },
   ]
 
-  scenePartsPuzzleImages2: { id: number, value: PartsPuzzleImage }[] = [
-    { id: 1, value: null },
-    { id: 2, value: null },
-    { id: 3, value: null },
-    { id: 4, value: null },
-    { id: 5, value: null },
-    { id: 6, value: null },
-    { id: 7, value: null },
-    { id: 8, value: null },
-    { id: 9, value: null },
+  scenePartsPuzzleImages2: { number: number, value: PartsPuzzleImage }[] = [
+    { number: 1, value: null },
+    { number: 2, value: null },
+    { number: 3, value: null },
+    { number: 4, value: null },
+    { number: 5, value: null },
+    { number: 6, value: null },
+    { number: 7, value: null },
+    { number: 8, value: null },
+    { number: 9, value: null },
   ]
 
-  scenePartsPuzzleImages3: { id: number, value: PartsPuzzleImage }[] = [
-    { id: 1, value: null },
-    { id: 2, value: null },
-    { id: 3, value: null },
-    { id: 4, value: null },
-    { id: 5, value: null },
-    { id: 6, value: null },
-    { id: 7, value: null },
-    { id: 8, value: null },
-    { id: 9, value: null },
+  scenePartsPuzzleImages3: { number: number, value: PartsPuzzleImage }[] = [
+    { number: 1, value: null },
+    { number: 2, value: null },
+    { number: 3, value: null },
+    { number: 4, value: null },
+    { number: 5, value: null },
+    { number: 6, value: null },
+    { number: 7, value: null },
+    { number: 8, value: null },
+    { number: 9, value: null },
   ]
 
 
@@ -105,7 +105,7 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.partsPuzzleImages = this.data.scene.partsPuzzleImages
     this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
       return {
-        id: index + 1,
+        number: index + 1,
         value: {
           id: item.id,
           src: item.src
@@ -173,31 +173,58 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  selectPartsPuzzleImage: { number: number, value: PartsPuzzleImage } = null
+
   // Вызывается при старте перетаскивания
-  dragStar(event, value: { id: number, value: PartsPuzzleImage }) {
-
-    console.log('dragStar');
-
-    if (value.value) {
-      event.dataTransfer.setData('id', value.value.id)
-      event.dataTransfer.setData('src', value.value.src)
-    }
-
+  dragStar(event, value: { number: number, value: PartsPuzzleImage }) {
+    this.selectPartsPuzzleImage = value
   }
 
-  dragOver(event, value: { id: number, value: PartsPuzzleImage }) {
+  dragOver(event, value: { number: number, value: PartsPuzzleImage }) {
     event.preventDefault()
   }
 
-  dropEnd(event, value: { id: number, value: PartsPuzzleImage }) {
+  private setValueCurrentPartsPuzzleImage(value: { number: number, value: PartsPuzzleImage }) {
+    if (value.value) {
 
-    console.log('dropEnd:', value);
+      if (this.selectPartsPuzzleImage.value) {
+        value.value.id = this.selectPartsPuzzleImage.value.id
+        value.value.src = this.selectPartsPuzzleImage.value.src
+      } else {
+        value.value = null
+      }
 
-    const id = event.dataTransfer.getData('id')
+      return
+    }
 
-    if (!id) {
+    if (this.selectPartsPuzzleImage.value) {
+      value.value = {
+        id: this.selectPartsPuzzleImage.value.id,
+        src: this.selectPartsPuzzleImage.value.src
+      }
+    } else {
       value.value = null
     }
+  }
+
+  private setValueSelectPartsPuzzleImage(oldId: number, oldSrc: string) {
+
+    if (oldSrc) {
+      if (this.selectPartsPuzzleImage.value) {
+        this.selectPartsPuzzleImage.value.id = oldId
+        this.selectPartsPuzzleImage.value.src = oldSrc
+      } else {
+        this.selectPartsPuzzleImage.value = {
+          id: oldId,
+          src: oldSrc
+        }
+      }
+
+      return
+
+    }
+
+    this.selectPartsPuzzleImage.value = null
 
   }
 
@@ -206,25 +233,14 @@ export class EditPuzzleDialogComponent implements OnInit {
    * @param event
    * @param value Значение ячейки на котором было произведено отпускание
    */
-  drop(event, value: { id: number, value: PartsPuzzleImage }) {
+  drop(event, value: { number: number, value: PartsPuzzleImage }) {
 
-    console.log('drop');
+    const oldId = value.value?.id
+    const oldSrc = value.value?.src
 
-    const id = event.dataTransfer.getData('id')
+    this.setValueCurrentPartsPuzzleImage(value)
 
-    if (!id) {
-      return
-    }
-
-    const src = event.dataTransfer.getData('src')
-
-    value.value = {
-      id: id,
-      src: src
-    }
-
-    event.dataTransfer.setData('id', null)
-    event.dataTransfer.setData('src', null)
+    this.setValueSelectPartsPuzzleImage(oldId, oldSrc)
   }
 
 }
