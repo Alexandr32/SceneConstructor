@@ -103,7 +103,15 @@ export class EditPuzzleDialogComponent implements OnInit {
     }
 
     this.partsPuzzleImages = this.data.scene.partsPuzzleImages
-    //this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages
+    this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
+      return {
+        id: index + 1,
+        value: {
+          id: item.id,
+          src: item.src
+        } as PartsPuzzleImage
+      }
+    })
 
 
     this.data.scene.answers.forEach(item => {

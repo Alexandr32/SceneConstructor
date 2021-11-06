@@ -30,6 +30,8 @@
     </div>
   </div>
 
+  Изображение на сцене
+
   <div class="grid-puzzle m-10">
     <div *ngFor="let item of scenePartsPuzzleImages">
       <div
@@ -65,16 +67,22 @@
       </div>
     </div>
 
-    <!-- <div class="grid-puzzle m-10">
+    <div class="grid-puzzle m-10">
       <div *ngFor="let item of scenePartsPuzzleImages3">
-        <div class="grid-item" draggable="true">
-          {{ item | json }}
-          <ng-template *ngIf="item.src">
-            <img class="width-full height-full" [src]="item.src" />
-          </ng-template>
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event, item)"
+          (dragstart)="dragStar($event, item)"
+          (drop)="drop($event, item)"
+          (dragend)="dropEnd($event, item)"
+        >
+          <div *ngIf="item.value">
+            <img class="width-full height-full" [src]="item.value.src" />
+          </div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 
   <!-- <div class="grid-puzzle" *ngIf="imgFile && imgFile !== ''">
