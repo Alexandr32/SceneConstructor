@@ -54,31 +54,58 @@ export class EditPuzzleDialogComponent implements OnInit {
   ]
 
   playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = [
-
-  ]
-
-  scenePartsPuzzleImages2: { number: number, value: PartsPuzzleImage }[] = [
-    { number: 1, value: null },
-    { number: 2, value: null },
-    { number: 3, value: null },
-    { number: 4, value: null },
-    { number: 5, value: null },
-    { number: 6, value: null },
-    { number: 7, value: null },
-    { number: 8, value: null },
-    { number: 9, value: null },
-  ]
-
-  scenePartsPuzzleImages3: { number: number, value: PartsPuzzleImage }[] = [
-    { number: 1, value: null },
-    { number: 2, value: null },
-    { number: 3, value: null },
-    { number: 4, value: null },
-    { number: 5, value: null },
-    { number: 6, value: null },
-    { number: 7, value: null },
-    { number: 8, value: null },
-    { number: 9, value: null },
+    {
+      playerId: '1', scenePartsPuzzleImages: [
+        { number: 1, value: null },
+        { number: 2, value: null },
+        { number: 3, value: null },
+        { number: 4, value: null },
+        { number: 5, value: null },
+        { number: 6, value: null },
+        { number: 7, value: null },
+        { number: 8, value: null },
+        { number: 9, value: null },
+      ]
+    },
+    {
+      playerId: '2', scenePartsPuzzleImages: [
+        { number: 1, value: null },
+        { number: 2, value: null },
+        { number: 3, value: null },
+        { number: 4, value: null },
+        { number: 5, value: null },
+        { number: 6, value: null },
+        { number: 7, value: null },
+        { number: 8, value: null },
+        { number: 9, value: null },
+      ]
+    },
+    {
+      playerId: '3', scenePartsPuzzleImages: [
+        { number: 1, value: null },
+        { number: 2, value: null },
+        { number: 3, value: null },
+        { number: 4, value: null },
+        { number: 5, value: null },
+        { number: 6, value: null },
+        { number: 7, value: null },
+        { number: 8, value: null },
+        { number: 9, value: null },
+      ]
+    },
+    {
+      playerId: '4', scenePartsPuzzleImages: [
+        { number: 1, value: null },
+        { number: 2, value: null },
+        { number: 3, value: null },
+        { number: 4, value: null },
+        { number: 5, value: null },
+        { number: 6, value: null },
+        { number: 7, value: null },
+        { number: 8, value: null },
+        { number: 9, value: null },
+      ]
+    }
   ]
 
 
@@ -246,6 +273,24 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.setValueCurrentPartsPuzzleImage(value)
 
     this.setValueSelectPartsPuzzleImage(oldId, oldSrc)
+  }
+
+  /**
+   *  Срабатывает когда картинка возвращается от игрока на сцену
+   * @param event
+   * @param value
+   */
+  dropScene(event, value: ItemPartsPuzzleImage) {
+
+    if (!this.selectPartsPuzzleImage.value) {
+      return
+    }
+
+    const part = this.scenePartsPuzzleImages.find(item => item.number === this.selectPartsPuzzleImage.value.id)
+
+    part.value = this.selectPartsPuzzleImage.value
+
+    this.selectPartsPuzzleImage.value = null
   }
 
 }
