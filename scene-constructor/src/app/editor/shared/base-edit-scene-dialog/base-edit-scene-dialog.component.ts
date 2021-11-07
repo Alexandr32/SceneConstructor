@@ -90,12 +90,16 @@ export class BaseEditSceneDialogComponent implements OnInit {
       this.players.push(player);
 
       this.form.controls[`playerId${item.id}`].valueChanges.subscribe(value => {
+
+        console.log(value);
+
+
         player.isSelect = value
         this.changeSelectPlayers.emit()
       })
     });
 
-    this.changeSelectPlayers.emit()
+    //this.changeSelectPlayers.emit()
   }
 
   selectSoundFileLink() {

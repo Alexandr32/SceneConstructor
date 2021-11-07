@@ -10,6 +10,7 @@ import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/sele
 import { PartsPuzzleImage } from 'src/app/models/parts-puzzle-image.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { ItemPartsPuzzleImage } from 'src/app/models/item-parts -puzzle-image.model';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-puzzle-dialog',
@@ -41,19 +42,11 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   selectPlayers: { player: Player, isSelect: boolean }[] = [];
 
-  scenePartsPuzzleImages: ItemPartsPuzzleImage[] = [
-    { number: 1, value: { id: 1, src: '/assets/http_puzzle_1.png' } as PartsPuzzleImage },
-    { number: 2, value: { id: 2, src: '/assets/http_puzzle_2.png' } as PartsPuzzleImage },
-    { number: 3, value: { id: 3, src: '/assets/http_puzzle_3.png' } as PartsPuzzleImage },
-    { number: 4, value: { id: 4, src: '/assets/http_puzzle_4.png' } as PartsPuzzleImage },
-    { number: 5, value: { id: 5, src: '/assets/http_puzzle_5.png' } as PartsPuzzleImage },
-    { number: 6, value: { id: 6, src: '/assets/http_puzzle_6.png' } as PartsPuzzleImage },
-    { number: 7, value: { id: 7, src: '/assets/http_puzzle_7.png' } as PartsPuzzleImage },
-    { number: 8, value: { id: 8, src: '/assets/http_puzzle_8.png' } as PartsPuzzleImage },
-    { number: 9, value: { id: 9, src: '/assets/http_puzzle_9.png' } as PartsPuzzleImage },
-  ]
+  // Список изображений для сцены
+  scenePartsPuzzleImages: ItemPartsPuzzleImage[] = []
 
-  playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = []
+  // Список изображений для игроков
+  playerScenePartsPuzzleImages: { playerId: string, name: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = []
 
   selectPartsPuzzleImage: {
     select: ItemPartsPuzzleImage,
@@ -88,18 +81,46 @@ export class EditPuzzleDialogComponent implements OnInit {
     }
 
     this.partsPuzzleImages = this.data.scene.partsPuzzleImages
-    // this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
-    //   return {
-    //     number: index + 1,
-    //     value: {
-    //       id: item.id,
-    //       src: item.src
-    //     } as PartsPuzzleImage
-    //   }
-    // })
 
-    this.setPlayerScenePartsPuzzleImages()
+    this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
+      return {
+        number: index + 1,
+        value: {
+          id: item.id,
+          src: item.src
+        } as PartsPuzzleImage
+      }
+    })
 
+    console.log('this.scene:', this.data.scene);
+
+    this.playerScenePartsPuzzleImages = []
+    this.data.scene.players.forEach(playerId => {
+
+      const res = this.data.scene.playerScenePartsPuzzleImages.find(item => item.playerId === playerId)
+      const name = this.data.players.find(item => item.id === playerId).name
+
+      const value = {
+        playerId: playerId,
+        name: name,
+        scenePartsPuzzleImages:
+          res
+            ? res.scenePartsPuzzleImages
+            : [
+              { number: 1, value: null },
+              { number: 2, value: null },
+              { number: 3, value: null },
+              { number: 4, value: null },
+              { number: 5, value: null },
+              { number: 6, value: null },
+              { number: 7, value: null },
+              { number: 8, value: null },
+              { number: 9, value: null },
+            ]
+      }
+
+      this.playerScenePartsPuzzleImages.push(value)
+    })
 
     this.data.scene.answers.forEach(item => {
       this.answers.push(item);
@@ -115,6 +136,9 @@ export class EditPuzzleDialogComponent implements OnInit {
 
     this.data.scene.imageFileId = this.imageFileId;
     this.data.scene.imageFile = this.imgFile;
+
+
+    this.data.scene.playerScenePartsPuzzleImages = this.playerScenePartsPuzzleImages
 
     this.saveEvent.emit(this.data);
     this.dialogRef.close();
@@ -251,10 +275,11 @@ export class EditPuzzleDialogComponent implements OnInit {
   }
 
   eventChangeSelectPlayers() {
-    this.setPlayerScenePartsPuzzleImages()
-  }
 
-  setPlayerScenePartsPuzzleImages() {
+    const playerScenePartsPuzzleImages = Object.assign([], this.playerScenePartsPuzzleImages);
+
+    this.playerScenePartsPuzzleImages = []
+
     const players = this.selectPlayers
       .filter(item => {
         if (item.isSelect) {
@@ -263,28 +288,61 @@ export class EditPuzzleDialogComponent implements OnInit {
       })
       .map(item => item.player)
 
-    this.playerScenePartsPuzzleImages = []
+    players.forEach(player => {
 
-    players.forEach(item => {
+      const res = playerScenePartsPuzzleImages.find(item => item.playerId === player.id)
 
-      const value = {
-        playerId: item.name, scenePartsPuzzleImages: [
-          { number: 1, value: null },
-          { number: 2, value: null },
-          { number: 3, value: null },
-          { number: 4, value: null },
-          { number: 5, value: null },
-          { number: 6, value: null },
-          { number: 7, value: null },
-          { number: 8, value: null },
-          { number: 9, value: null },
-        ]
+      if (res) {
+        // Добавляем уже существующую
+        this.playerScenePartsPuzzleImages.push(res)
+
+      } else {
+
+        // Создаем новую
+        const value = {
+          playerId: player.id,
+          name: player.name,
+          scenePartsPuzzleImages:
+            [
+              { number: 1, value: null },
+              { number: 2, value: null },
+              { number: 3, value: null },
+              { number: 4, value: null },
+              { number: 5, value: null },
+              { number: 6, value: null },
+              { number: 7, value: null },
+              { number: 8, value: null },
+              { number: 9, value: null },
+            ]
+        }
+
+        this.playerScenePartsPuzzleImages.push(value)
       }
-
-      this.playerScenePartsPuzzleImages.push(value)
     })
 
-    this.resetParts()
+    // Проверяем есть ли не используемые фото
+    const differencePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] =
+      playerScenePartsPuzzleImages
+        .filter(x => !this.playerScenePartsPuzzleImages
+          .includes(x));
+
+    // Вложения
+    const differenceScenePartsPuzzleImages = differencePartsPuzzleImages.flatMap(item => {
+      return item.scenePartsPuzzleImages.filter(p => p.value)
+    })
+
+    console.log(differenceScenePartsPuzzleImages);
+    console.log(this.scenePartsPuzzleImages);
+
+
+    differenceScenePartsPuzzleImages.forEach(item => {
+      // Обнуляем данные у сцены
+      const findEl = this.scenePartsPuzzleImages.find(p => p.number === item.value.id)
+      if (findEl) {
+        findEl.value = item.value
+      }
+    })
+
   }
 
   resetParts() {
@@ -296,6 +354,12 @@ export class EditPuzzleDialogComponent implements OnInit {
           src: item.src
         } as PartsPuzzleImage
       }
+    })
+
+    this.playerScenePartsPuzzleImages.forEach(item => {
+      item.scenePartsPuzzleImages.forEach(parts => {
+        parts.value = null
+      })
     })
   }
 

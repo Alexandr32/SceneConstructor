@@ -7,6 +7,7 @@ import { Entity } from './entity.model';
 import { FileLink } from './file-link.model.ts';
 import { TypeSceneEnum } from './type-scene.enum';
 import { PartsPuzzleImage } from './parts-puzzle-image.model';
+import { ItemPartsPuzzleImage } from './item-parts -puzzle-image.model';
 
 export interface IBaseScene extends Entity {
   id: string
@@ -50,6 +51,8 @@ export class Puzzle implements IBaseScene {
   imageFile: string
 
   partsPuzzleImages: PartsPuzzleImage[]
+
+  playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = []
 }
 
 export class Panorama implements IBaseScene {
