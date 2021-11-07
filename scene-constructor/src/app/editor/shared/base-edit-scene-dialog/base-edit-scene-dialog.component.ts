@@ -29,6 +29,9 @@ export class BaseEditSceneDialogComponent implements OnInit {
   @Input()
   players: { player: Player, isSelect: boolean }[] = [];
 
+  @Output()
+  changeSelectPlayers: EventEmitter<any> = new EventEmitter<any>()
+
   answers: Answer[] = [];
 
   @Output()
@@ -88,8 +91,11 @@ export class BaseEditSceneDialogComponent implements OnInit {
 
       this.form.controls[`playerId${item.id}`].valueChanges.subscribe(value => {
         player.isSelect = value
+        this.changeSelectPlayers.emit()
       })
     });
+
+    this.changeSelectPlayers.emit()
   }
 
   selectSoundFileLink() {

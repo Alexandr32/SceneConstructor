@@ -7,6 +7,7 @@
   (close)="onNoClick()"
   (save)="onClickSave()"
   [players]="selectPlayers"
+  (changeSelectPlayers)="eventChangeSelectPlayers()"
 >
   Редактирование головоломки
 
@@ -32,6 +33,7 @@
 
   <div class="editor__border">
     Изображение на сцене
+    <button (click)="resetParts()">Сброс</button>
 
     <div class="grid-puzzle m-10">
       <div *ngFor="let item of scenePartsPuzzleImages">
@@ -39,7 +41,7 @@
           class="grid-item"
           draggable="true"
           (dragover)="dragOver($event, item)"
-          (dragstart)="dragStar($event, item)"
+          (dragstart)="dragStar($event, item, 'scene')"
           (drop)="dropScene($event, item)"
         >
           <div *ngIf="item.value">
@@ -59,7 +61,7 @@
             class="grid-item"
             draggable="true"
             (dragover)="dragOver($event, item)"
-            (dragstart)="dragStar($event, item)"
+            (dragstart)="dragStar($event, item, 'player')"
             (drop)="drop($event, item)"
           >
             <div *ngIf="item.value">
@@ -70,24 +72,4 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="grid-puzzle" *ngIf="imgFile && imgFile !== ''">
-    <div *ngFor="let item of partsPuzzleImages">
-      <div class="grid-item" draggable="true">
-        <img class="width-full height-full" [src]="item.src" />
-      </div>
-    </div>
-  </div>
-
-  <div class="flex">
-    <div *ngFor="let itemPlayer of selectPlayers">
-      <div class="m-10 grid-puzzle" *ngIf="itemPlayer.isSelect">
-        <div *ngFor="let item of partsPuzzleImages">
-          <div class="grid-item" draggable="true">
-            <img class="width-full height-full" [src]="item.src" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
 </app-base-edit-scene-dialog>

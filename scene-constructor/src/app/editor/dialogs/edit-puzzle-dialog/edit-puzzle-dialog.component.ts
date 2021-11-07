@@ -53,65 +53,18 @@ export class EditPuzzleDialogComponent implements OnInit {
     { number: 9, value: { id: 9, src: '/assets/http_puzzle_9.png' } as PartsPuzzleImage },
   ]
 
-  playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = [
-    {
-      playerId: '1', scenePartsPuzzleImages: [
-        { number: 1, value: null },
-        { number: 2, value: null },
-        { number: 3, value: null },
-        { number: 4, value: null },
-        { number: 5, value: null },
-        { number: 6, value: null },
-        { number: 7, value: null },
-        { number: 8, value: null },
-        { number: 9, value: null },
-      ]
-    },
-    {
-      playerId: '2', scenePartsPuzzleImages: [
-        { number: 1, value: null },
-        { number: 2, value: null },
-        { number: 3, value: null },
-        { number: 4, value: null },
-        { number: 5, value: null },
-        { number: 6, value: null },
-        { number: 7, value: null },
-        { number: 8, value: null },
-        { number: 9, value: null },
-      ]
-    },
-    {
-      playerId: '3', scenePartsPuzzleImages: [
-        { number: 1, value: null },
-        { number: 2, value: null },
-        { number: 3, value: null },
-        { number: 4, value: null },
-        { number: 5, value: null },
-        { number: 6, value: null },
-        { number: 7, value: null },
-        { number: 8, value: null },
-        { number: 9, value: null },
-      ]
-    },
-    {
-      playerId: '4', scenePartsPuzzleImages: [
-        { number: 1, value: null },
-        { number: 2, value: null },
-        { number: 3, value: null },
-        { number: 4, value: null },
-        { number: 5, value: null },
-        { number: 6, value: null },
-        { number: 7, value: null },
-        { number: 8, value: null },
-        { number: 9, value: null },
-      ]
-    }
-  ]
+  playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = []
 
+  selectPartsPuzzleImage: {
+    select: ItemPartsPuzzleImage,
+    type: 'scene' | 'player' | null
+  } = {
+      select: null,
+      type: null
+    }
 
   constructor(public dialogRef: MatDialogRef<EditPuzzleDialogComponent>,
     private firestoreService: FirestoreService,
-    private changeDetection: ChangeDetectorRef,
     private fireStore: AngularFirestore,
     @Inject(MAT_DIALOG_DATA) public data: {
       gameId: string,
@@ -135,15 +88,17 @@ export class EditPuzzleDialogComponent implements OnInit {
     }
 
     this.partsPuzzleImages = this.data.scene.partsPuzzleImages
-    this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
-      return {
-        number: index + 1,
-        value: {
-          id: item.id,
-          src: item.src
-        } as PartsPuzzleImage
-      }
-    })
+    // this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
+    //   return {
+    //     number: index + 1,
+    //     value: {
+    //       id: item.id,
+    //       src: item.src
+    //     } as PartsPuzzleImage
+    //   }
+    // })
+
+    this.setPlayerScenePartsPuzzleImages()
 
 
     this.data.scene.answers.forEach(item => {
@@ -205,11 +160,10 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  selectPartsPuzzleImage: ItemPartsPuzzleImage = null
-
   // Вызывается при старте перетаскивания
-  dragStar(event, value: ItemPartsPuzzleImage) {
-    this.selectPartsPuzzleImage = value
+  dragStar(event, value: ItemPartsPuzzleImage, type: 'scene' | 'player' | null) {
+    this.selectPartsPuzzleImage.select = value
+    this.selectPartsPuzzleImage.type = type
   }
 
   dragOver(event, value: ItemPartsPuzzleImage) {
@@ -219,9 +173,9 @@ export class EditPuzzleDialogComponent implements OnInit {
   private setValueCurrentPartsPuzzleImage(value: ItemPartsPuzzleImage) {
     if (value.value) {
 
-      if (this.selectPartsPuzzleImage.value) {
-        value.value.id = this.selectPartsPuzzleImage.value.id
-        value.value.src = this.selectPartsPuzzleImage.value.src
+      if (this.selectPartsPuzzleImage.select.value) {
+        value.value.id = this.selectPartsPuzzleImage.select.value.id
+        value.value.src = this.selectPartsPuzzleImage.select.value.src
       } else {
         value.value = null
       }
@@ -229,10 +183,10 @@ export class EditPuzzleDialogComponent implements OnInit {
       return
     }
 
-    if (this.selectPartsPuzzleImage.value) {
+    if (this.selectPartsPuzzleImage.select.value) {
       value.value = {
-        id: this.selectPartsPuzzleImage.value.id,
-        src: this.selectPartsPuzzleImage.value.src
+        id: this.selectPartsPuzzleImage.select.value.id,
+        src: this.selectPartsPuzzleImage.select.value.src
       }
     } else {
       value.value = null
@@ -242,11 +196,11 @@ export class EditPuzzleDialogComponent implements OnInit {
   private setValueSelectPartsPuzzleImage(oldId: number, oldSrc: string) {
 
     if (oldSrc) {
-      if (this.selectPartsPuzzleImage.value) {
-        this.selectPartsPuzzleImage.value.id = oldId
-        this.selectPartsPuzzleImage.value.src = oldSrc
+      if (this.selectPartsPuzzleImage.select.value) {
+        this.selectPartsPuzzleImage.select.value.id = oldId
+        this.selectPartsPuzzleImage.select.value.src = oldSrc
       } else {
-        this.selectPartsPuzzleImage.value = {
+        this.selectPartsPuzzleImage.select.value = {
           id: oldId,
           src: oldSrc
         }
@@ -256,7 +210,7 @@ export class EditPuzzleDialogComponent implements OnInit {
 
     }
 
-    this.selectPartsPuzzleImage.value = null
+    this.selectPartsPuzzleImage.select.value = null
 
   }
 
@@ -282,15 +236,67 @@ export class EditPuzzleDialogComponent implements OnInit {
    */
   dropScene(event, value: ItemPartsPuzzleImage) {
 
-    if (!this.selectPartsPuzzleImage.value) {
+    if (!this.selectPartsPuzzleImage.select.value) {
       return
     }
 
-    const part = this.scenePartsPuzzleImages.find(item => item.number === this.selectPartsPuzzleImage.value.id)
+    const part = this.scenePartsPuzzleImages.find(item => item.number === this.selectPartsPuzzleImage.select.value.id)
 
-    part.value = this.selectPartsPuzzleImage.value
+    part.value = this.selectPartsPuzzleImage.select.value
 
-    this.selectPartsPuzzleImage.value = null
+    if (this.selectPartsPuzzleImage.type === 'player') {
+      this.selectPartsPuzzleImage.select.value = null
+      this.selectPartsPuzzleImage.type = null
+    }
+  }
+
+  eventChangeSelectPlayers() {
+    this.setPlayerScenePartsPuzzleImages()
+  }
+
+  setPlayerScenePartsPuzzleImages() {
+    const players = this.selectPlayers
+      .filter(item => {
+        if (item.isSelect) {
+          return item.player
+        }
+      })
+      .map(item => item.player)
+
+    this.playerScenePartsPuzzleImages = []
+
+    players.forEach(item => {
+
+      const value = {
+        playerId: item.name, scenePartsPuzzleImages: [
+          { number: 1, value: null },
+          { number: 2, value: null },
+          { number: 3, value: null },
+          { number: 4, value: null },
+          { number: 5, value: null },
+          { number: 6, value: null },
+          { number: 7, value: null },
+          { number: 8, value: null },
+          { number: 9, value: null },
+        ]
+      }
+
+      this.playerScenePartsPuzzleImages.push(value)
+    })
+
+    this.resetParts()
+  }
+
+  resetParts() {
+    this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
+      return {
+        number: index + 1,
+        value: {
+          id: item.id,
+          src: item.src
+        } as PartsPuzzleImage
+      }
+    })
   }
 
 }
