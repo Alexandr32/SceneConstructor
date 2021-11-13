@@ -50,8 +50,13 @@ export class Puzzle implements IBaseScene {
   imageFileId: string
   imageFile: string
 
+  // Список доступных изображений
   partsPuzzleImages: PartsPuzzleImage[]
 
+  // Изображение на экране сцены
+  scenePartsPuzzleImages: ItemPartsPuzzleImage[]
+
+  // Изображения для игроков
   playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = []
 }
 

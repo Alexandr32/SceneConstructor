@@ -418,7 +418,15 @@ export class FirestoreService {
     }
 
     scene.partsPuzzleImages.forEach(async (item) => {
-      item.src = await this.getUplPartsPuzzleImages(game.id, scene.imageFileId, item).toPromise()
+      const src = await this.getUplPartsPuzzleImages(game.id, scene.imageFileId, item).toPromise()
+      item.src = src
+
+      const scenePartsPuzzleImages = scene.scenePartsPuzzleImages.find(p => p.value.id === item.id)
+
+      if (scenePartsPuzzleImages) {
+        scenePartsPuzzleImages.value.src = src
+      }
+
     })
   }
 

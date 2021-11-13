@@ -214,6 +214,17 @@ export class Mapper {
 
     puzzle.partsPuzzleImages = partsPuzzleImages
 
+
+    puzzle.scenePartsPuzzleImages = puzzle.partsPuzzleImages.map((item, index) => {
+      return {
+        number: index + 1,
+        value: {
+          id: item.id,
+          src: item.src
+        } as PartsPuzzleImage
+      }
+    })
+
     return puzzle
   }
 

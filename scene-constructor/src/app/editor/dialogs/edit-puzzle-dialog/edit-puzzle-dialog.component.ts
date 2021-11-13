@@ -38,7 +38,7 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   gameId: string
 
-  partsPuzzleImages: PartsPuzzleImage[]
+  //partsPuzzleImages: PartsPuzzleImage[]
 
   selectPlayers: { player: Player, isSelect: boolean }[] = [];
 
@@ -71,6 +71,9 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   ngOnInit() {
 
+    console.log('ngOnInit');
+
+
     if (this.data.scene.imageFile) {
       this.imgFile = this.data.scene.imageFile;
       this.imageFileId = this.data.scene.imageFileId
@@ -80,17 +83,19 @@ export class EditPuzzleDialogComponent implements OnInit {
       this.soundFileLink = this.data.scene.soundFileLink
     }
 
-    this.partsPuzzleImages = this.data.scene.partsPuzzleImages
+    //this.partsPuzzleImages = this.data.scene.partsPuzzleImages
 
-    this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
-      return {
-        number: index + 1,
-        value: {
-          id: item.id,
-          src: item.src
-        } as PartsPuzzleImage
-      }
-    })
+    this.scenePartsPuzzleImages = this.data.scene.scenePartsPuzzleImages
+
+    // this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
+    //   return {
+    //     number: index + 1,
+    //     value: {
+    //       id: item.id,
+    //       src: item.src
+    //     } as PartsPuzzleImage
+    //   }
+    // })
 
     console.log('this.scene:', this.data.scene);
 
@@ -138,6 +143,13 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.data.scene.imageFile = this.imgFile;
 
 
+    console.log('this.data.scene.scenePartsPuzzleImages', this.data.scene.scenePartsPuzzleImages);
+    console.log('this.scenePartsPuzzleImages', this.scenePartsPuzzleImages);
+    // Изображение на экране сцены
+    this.data.scene.scenePartsPuzzleImages = this.scenePartsPuzzleImages
+
+
+
     this.data.scene.playerScenePartsPuzzleImages = this.playerScenePartsPuzzleImages
 
     this.saveEvent.emit(this.data);
@@ -156,21 +168,20 @@ export class EditPuzzleDialogComponent implements OnInit {
       this.imageFileId = item.id
 
 
-      this.partsPuzzleImages.forEach(async item => {
+      // this.partsPuzzleImages.forEach(async item => {
 
-        try {
+      //   try {
 
-          item.src = await this.firestoreService.getUplPartsPuzzleImages(this.data.gameId, this.imageFileId, item).toPromise()
+      //     item.src = await this.firestoreService.getUplPartsPuzzleImages(this.data.gameId, this.imageFileId, item).toPromise()
 
-        } catch (error) {
+      //   } catch (error) {
 
-          console.log('При получении элементов головоломки произошла ошибка');
-          item.src = `/assets/http_puzzle_${item.id}.png`;
+      //     console.log('При получении элементов головоломки произошла ошибка');
+      //     item.src = `/assets/http_puzzle_${item.id}.png`;
 
-        }
+      //   }
 
-
-      })
+      // })
 
     });
   }
@@ -295,29 +306,28 @@ export class EditPuzzleDialogComponent implements OnInit {
       if (res) {
         // Добавляем уже существующую
         this.playerScenePartsPuzzleImages.push(res)
-
-      } else {
-
-        // Создаем новую
-        const value = {
-          playerId: player.id,
-          name: player.name,
-          scenePartsPuzzleImages:
-            [
-              { number: 1, value: null },
-              { number: 2, value: null },
-              { number: 3, value: null },
-              { number: 4, value: null },
-              { number: 5, value: null },
-              { number: 6, value: null },
-              { number: 7, value: null },
-              { number: 8, value: null },
-              { number: 9, value: null },
-            ]
-        }
-
-        this.playerScenePartsPuzzleImages.push(value)
+        return
       }
+
+      // Создаем новую
+      const value = {
+        playerId: player.id,
+        name: player.name,
+        scenePartsPuzzleImages:
+          [
+            { number: 1, value: null },
+            { number: 2, value: null },
+            { number: 3, value: null },
+            { number: 4, value: null },
+            { number: 5, value: null },
+            { number: 6, value: null },
+            { number: 7, value: null },
+            { number: 8, value: null },
+            { number: 9, value: null },
+          ]
+      }
+
+      this.playerScenePartsPuzzleImages.push(value)
     })
 
     // Проверяем есть ли не используемые фото
@@ -330,10 +340,6 @@ export class EditPuzzleDialogComponent implements OnInit {
     const differenceScenePartsPuzzleImages = differencePartsPuzzleImages.flatMap(item => {
       return item.scenePartsPuzzleImages.filter(p => p.value)
     })
-
-    console.log(differenceScenePartsPuzzleImages);
-    console.log(this.scenePartsPuzzleImages);
-
 
     differenceScenePartsPuzzleImages.forEach(item => {
       // Обнуляем данные у сцены
