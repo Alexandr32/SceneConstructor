@@ -10,7 +10,7 @@ import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/sele
 import { PartsPuzzleImage } from 'src/app/models/parts-puzzle-image.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { ItemPartsPuzzleImage } from 'src/app/models/item-parts -puzzle-image.model';
-import { first } from 'rxjs/operators';
+import { delay, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-puzzle-dialog',
@@ -37,8 +37,6 @@ export class EditPuzzleDialogComponent implements OnInit {
   soundFileLink: FileLink
 
   gameId: string
-
-  //partsPuzzleImages: PartsPuzzleImage[]
 
   selectPlayers: { player: Player, isSelect: boolean }[] = [];
 
@@ -71,9 +69,6 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('ngOnInit');
-
-
     if (this.data.scene.imageFile) {
       this.imgFile = this.data.scene.imageFile;
       this.imageFileId = this.data.scene.imageFileId
@@ -83,26 +78,15 @@ export class EditPuzzleDialogComponent implements OnInit {
       this.soundFileLink = this.data.scene.soundFileLink
     }
 
-    //this.partsPuzzleImages = this.data.scene.partsPuzzleImages
-
-    this.scenePartsPuzzleImages = this.data.scene.scenePartsPuzzleImages
-
-    // this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
-    //   return {
-    //     number: index + 1,
-    //     value: {
-    //       id: item.id,
-    //       src: item.src
-    //     } as PartsPuzzleImage
-    //   }
-    // })
-
-    console.log('this.scene:', this.data.scene);
+    this.scenePartsPuzzleImages = JSON.parse(JSON.stringify(this.data.scene.scenePartsPuzzleImages));
 
     this.playerScenePartsPuzzleImages = []
+
+    const playerScenePartsPuzzleImages = JSON.parse(JSON.stringify(this.data.scene.playerScenePartsPuzzleImages));
+
     this.data.scene.players.forEach(playerId => {
 
-      const res = this.data.scene.playerScenePartsPuzzleImages.find(item => item.playerId === playerId)
+      const res = playerScenePartsPuzzleImages.find(item => item.playerId === playerId)
       const name = this.data.players.find(item => item.id === playerId).name
 
       const value = {
