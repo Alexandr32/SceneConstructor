@@ -126,9 +126,6 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.data.scene.imageFileId = this.imageFileId;
     this.data.scene.imageFile = this.imgFile;
 
-
-    console.log('this.data.scene.scenePartsPuzzleImages', this.data.scene.scenePartsPuzzleImages);
-    console.log('this.scenePartsPuzzleImages', this.scenePartsPuzzleImages);
     // Изображение на экране сцены
     this.data.scene.scenePartsPuzzleImages = this.scenePartsPuzzleImages
 
@@ -150,23 +147,6 @@ export class EditPuzzleDialogComponent implements OnInit {
     dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
       this.imgFile = item.url
       this.imageFileId = item.id
-
-
-      // this.partsPuzzleImages.forEach(async item => {
-
-      //   try {
-
-      //     item.src = await this.firestoreService.getUplPartsPuzzleImages(this.data.gameId, this.imageFileId, item).toPromise()
-
-      //   } catch (error) {
-
-      //     console.log('При получении элементов головоломки произошла ошибка');
-      //     item.src = `/assets/http_puzzle_${item.id}.png`;
-
-      //   }
-
-      // })
-
     });
   }
 
@@ -212,27 +192,6 @@ export class EditPuzzleDialogComponent implements OnInit {
     }
   }
 
-  private setValueSelectPartsPuzzleImage(oldId: number, oldSrc: string) {
-
-    if (oldSrc) {
-      if (this.selectPartsPuzzleImage.select.value) {
-        this.selectPartsPuzzleImage.select.value.id = oldId
-        this.selectPartsPuzzleImage.select.value.src = oldSrc
-      } else {
-        this.selectPartsPuzzleImage.select.value = {
-          id: oldId,
-          src: oldSrc
-        }
-      }
-
-      return
-
-    }
-
-    this.selectPartsPuzzleImage.select.value = null
-
-  }
-
   /**
    * Срабатывает при отпускании перетаскивания
    * @param event
@@ -240,12 +199,12 @@ export class EditPuzzleDialogComponent implements OnInit {
    */
   drop(event, value: ItemPartsPuzzleImage) {
 
-    const oldId = value.value?.id
-    const oldSrc = value.value?.src
+    if (value.value) {
+      return
+    }
 
     this.setValueCurrentPartsPuzzleImage(value)
-
-    this.setValueSelectPartsPuzzleImage(oldId, oldSrc)
+    this.selectPartsPuzzleImage.select.value = null
   }
 
   /**
