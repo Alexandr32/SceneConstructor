@@ -417,17 +417,29 @@ export class FirestoreService {
 
     }
 
-    scene.partsPuzzleImages.forEach(async (item) => {
+    for (const item of scene.partsPuzzleImages) {
       const src = await this.getUplPartsPuzzleImages(game.id, scene.imageFileId, item).toPromise()
       item.src = src
 
+      // !!! нужно извлечь только нужные изображения
       const scenePartsPuzzleImages = scene.scenePartsPuzzleImages.find(p => p.value.id === item.id)
 
       if (scenePartsPuzzleImages) {
         scenePartsPuzzleImages.value.src = src
       }
+    }
 
+    scene.playerScenePartsPuzzleImages.map(x => {
+      x.scenePartsPuzzleImages.map(i => {
+        if (i.value) {
+          i.value.src = scene.partsPuzzleImages.find(f => f.id === i.value.id).src
+        }
+      })
     })
+
+    console.log('scene.scenePartsPuzzleImages', scene.partsPuzzleImages);
+    console.log('scene.scenePartsPuzzleImages', scene.scenePartsPuzzleImages);
+
   }
 
   public getUplPartsPuzzleImages(gameId: string, imagePuzzleId: string, item: PartsPuzzleImage): Observable<any> {

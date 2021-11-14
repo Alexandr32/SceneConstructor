@@ -4,6 +4,7 @@ import { AnswerFirebase } from "./firebase-models/answer-firebase.model"
 import { PanoramaFirebase } from "./firebase-models/panorama-firebase.model"
 import { PuzzleFirebase } from "./firebase-models/puzzle-firebase.model"
 import { SceneAnswerFirebase } from "./firebase-models/scene-answer-firestore.model"
+import { ItemPartsPuzzleImage } from "./item-parts -puzzle-image.model"
 import { PartsPuzzleImage } from "./parts-puzzle-image.model"
 import { Player } from "./run/run-game.models"
 import { IBaseScene, Panorama, Puzzle, Scene } from "./scene.model"
@@ -155,6 +156,37 @@ export class Mapper {
 
   static puzzleToPuzzleFirebase(puzzle: Puzzle): PuzzleFirebase {
 
+    const playerScenePartsPuzzleImages: {
+      playerId: string,
+      scenePartsPuzzleImages: {
+        number: number,
+        imgId: number
+      }[]
+    }[] = puzzle.playerScenePartsPuzzleImages.map(item => {
+      return {
+        playerId: item.playerId,
+        scenePartsPuzzleImages: item.scenePartsPuzzleImages.map(x => {
+          return {
+            number: x.number,
+            imgId: x.value ? x.value.id : null
+          }
+        })
+      }
+    })
+
+
+    // Изображение на экране сцены
+    const scenePartsPuzzleImages: {
+      number: number,
+      imgId: number
+    }[] = puzzle.scenePartsPuzzleImages.map(item => {
+      return {
+        number: item.number,
+        imgId: item.value ? item.value.id : null
+      }
+    })
+
+
     return {
       id: puzzle.id,
       title: puzzle.title,
@@ -171,7 +203,9 @@ export class Mapper {
       }),
       typesScene: puzzle.typesScene,
       players: puzzle.players,
-      isStartGame: puzzle.isStartGame
+      isStartGame: puzzle.isStartGame,
+      scenePartsPuzzleImages: scenePartsPuzzleImages,
+      playerScenePartsPuzzleImages: playerScenePartsPuzzleImages
     } as PuzzleFirebase;
 
   }
@@ -215,6 +249,7 @@ export class Mapper {
     puzzle.partsPuzzleImages = partsPuzzleImages
 
 
+    // puzzleFirebase.scenePartsPuzzleImages
     puzzle.scenePartsPuzzleImages = puzzle.partsPuzzleImages.map((item, index) => {
       return {
         number: index + 1,
@@ -224,6 +259,26 @@ export class Mapper {
         } as PartsPuzzleImage
       }
     })
+
+    puzzle.playerScenePartsPuzzleImages = puzzleFirebase
+      .playerScenePartsPuzzleImages.map((item, index) => {
+
+        return {
+          playerId: item.playerId,
+          scenePartsPuzzleImages: item.scenePartsPuzzleImages.map(x => {
+            return {
+              number: x.number,
+              value: x.imgId
+                ? {
+                  id: x.imgId,
+                  src: ''
+                } as PartsPuzzleImage
+                : null
+            } as ItemPartsPuzzleImage
+          })
+
+        }
+      })
 
     return puzzle
   }

@@ -19,4 +19,14 @@ export interface PuzzleFirebase extends IBaseSceneFirebase {
   maxCountAnswers: number
   players: string[]
   isStartGame: boolean
+
+  scenePartsPuzzleImages: { number: number, imgId: number }[]
+
+  playerScenePartsPuzzleImages: {
+    playerId: string,
+    scenePartsPuzzleImages: {
+      number: number,
+      imgId: number
+    }[]
+  }[]
 }

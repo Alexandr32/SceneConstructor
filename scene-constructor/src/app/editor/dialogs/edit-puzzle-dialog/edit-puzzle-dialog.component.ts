@@ -20,7 +20,7 @@ import { delay, first } from 'rxjs/operators';
 export class EditPuzzleDialogComponent implements OnInit {
 
 
-  validData: boolean = true
+  validData: boolean = true;
 
   @Output()
   saveEvent = new EventEmitter();
