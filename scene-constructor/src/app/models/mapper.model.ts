@@ -248,15 +248,10 @@ export class Mapper {
 
     puzzle.partsPuzzleImages = partsPuzzleImages
 
-
-    // puzzleFirebase.scenePartsPuzzleImages
-    puzzle.scenePartsPuzzleImages = puzzle.partsPuzzleImages.map((item, index) => {
+    puzzle.scenePartsPuzzleImages = puzzleFirebase.scenePartsPuzzleImages.map((item: { number: number, imgId: number }, index) => {
       return {
-        number: index + 1,
-        value: {
-          id: item.id,
-          src: item.src
-        } as PartsPuzzleImage
+        number: item.number,
+        value: item.imgId ? ({ id: item.imgId, src: '' } as PartsPuzzleImage) : null
       }
     })
 

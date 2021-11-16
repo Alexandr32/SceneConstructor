@@ -421,12 +421,14 @@ export class FirestoreService {
       const src = await this.getUplPartsPuzzleImages(game.id, scene.imageFileId, item).toPromise()
       item.src = src
 
-      // !!! нужно извлечь только нужные изображения
-      const scenePartsPuzzleImages = scene.scenePartsPuzzleImages.find(p => p.value.id === item.id)
+      const scenePartsPuzzleImages = scene.scenePartsPuzzleImages
+        .filter(x => x.value !== null)
+        .find(p => p.value.id === item.id)
 
       if (scenePartsPuzzleImages) {
         scenePartsPuzzleImages.value.src = src
       }
+
     }
 
     scene.playerScenePartsPuzzleImages.map(x => {
@@ -436,9 +438,6 @@ export class FirestoreService {
         }
       })
     })
-
-    console.log('scene.scenePartsPuzzleImages', scene.partsPuzzleImages);
-    console.log('scene.scenePartsPuzzleImages', scene.scenePartsPuzzleImages);
 
   }
 
