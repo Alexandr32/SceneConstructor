@@ -11,6 +11,7 @@ import { PartsPuzzleImage } from 'src/app/models/parts-puzzle-image.model';
 import { FirestoreService } from 'src/app/serveces/firestore.service';
 import { ItemPartsPuzzleImage } from 'src/app/models/item-parts -puzzle-image.model';
 import { delay, first } from 'rxjs/operators';
+import { async } from 'rxjs/internal/scheduler/async';
 
 @Component({
   selector: 'app-edit-puzzle-dialog',
@@ -145,14 +146,44 @@ export class EditPuzzleDialogComponent implements OnInit {
     dialogRef.componentInstance.isShowImagePuzzle = true
 
     dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
+
+      this.resetParts()
+
       this.imgFile = item.url
       this.imageFileId = item.id
+
+      const partsPuzzleImages: ItemPartsPuzzleImage[] = []
+
+      for (let i: number = 1; i <= 9; i++) {
+
+        const partsPuzzleImage = new PartsPuzzleImage()
+        partsPuzzleImage.id = i
+        this.firestoreService
+          .getUplPartsPuzzleImages(this.data.gameId, item.id, partsPuzzleImage)
+          .toPromise()
+          .then(src => {
+            partsPuzzleImage.src = src
+          })
+
+        const itemPartsPuzzleImage = {
+          number: i,
+          value: partsPuzzleImage
+        } as ItemPartsPuzzleImage;
+
+        partsPuzzleImages.push(itemPartsPuzzleImage)
+      }
+
+      this.scenePartsPuzzleImages = partsPuzzleImages
     });
   }
 
   onClickDeletedImg() {
     this.imgFile = '';
     this.imageFileId = ''
+
+    this.resetParts()
+
+    this.scenePartsPuzzleImages = []
   }
 
   onNoClick(): void {
