@@ -366,7 +366,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Создает новую сцену
    */
-  addNewScene() {
+  addNewScene(param: 'top' | 'bottom') {
 
     const scene = new Scene();
     scene.id = this.fireStore.createId();
@@ -376,7 +376,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     scene.imageFileId = ''
     scene.videoFileId = ''
     scene.coordinate = new Coordinate();
-    scene.coordinate.y = 0;
+    scene.coordinate.y = param === 'top' ? 0 : this.canvas.nativeElement.height - 350;
     scene.coordinate.x = 0;
     scene.imageFile = '/assets/http_scene.jpg';
 
@@ -391,7 +391,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.renderLine();
   }
 
-  addPanorama() {
+  addPanorama(param: 'top' | 'bottom') {
 
     const panorama = new Panorama()
     panorama.id = this.fireStore.createId();
@@ -400,7 +400,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     panorama.color = '#7B68EE';
     panorama.imageFileId = ''
     panorama.coordinate = new Coordinate();
-    panorama.coordinate.y = 0;
+    panorama.coordinate.y = param === 'top' ? 0 : this.canvas.nativeElement.height - 350;
     panorama.coordinate.x = 0;
     panorama.imageFile = '/assets/http_scene.jpg';
     panorama.isTimer = false
@@ -415,14 +415,14 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  addPuzzle() {
+  addPuzzle(param: 'top' | 'bottom') {
     const panorama = new Puzzle()
     panorama.id = this.fireStore.createId();
     panorama.text = 'Новая сцена';
     panorama.title = 'Новое описание';
     panorama.color = '#7B68EE';
     panorama.coordinate = new Coordinate();
-    panorama.coordinate.y = 0;
+    panorama.coordinate.y = param === 'top' ? 0 : this.canvas.nativeElement.height - 350;
     panorama.coordinate.x = 0;
 
     const answers1 = new Answer(this.fireStore.createId(), 'Next scene', 0, panorama);

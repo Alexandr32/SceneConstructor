@@ -85,19 +85,27 @@
     <div class="editor__control-panel">
       <div class="editor__control-panel__btn-control box">
         <div class="m-10">
-          <button mat-raised-button color="primary" (click)="addNewScene()">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="addNewScene('top')"
+          >
             Добавить сцену с выбором ответов
           </button>
         </div>
 
         <div class="m-10">
-          <button mat-raised-button color="primary" (click)="addPanorama()">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="addPanorama('top')"
+          >
             Добавить сцену с панорамой
           </button>
         </div>
 
         <div class="m-10">
-          <button mat-raised-button color="primary" (click)="addPuzzle()">
+          <button mat-raised-button color="primary" (click)="addPuzzle('top')">
             Добавить сцену с головоломкой
           </button>
         </div>
@@ -135,5 +143,41 @@
     <button mat-raised-button color="primary" (click)="increaseWorkingSpace()">
       Увеличить холст
     </button>
+  </div>
+
+  <div #working class="editor__working-space">
+    <div class="editor__control-panel">
+      <div class="editor__control-panel__btn-control">
+        <div class="m-10">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="addNewScene('bottom')"
+          >
+            Добавить сцену с выбором ответов
+          </button>
+        </div>
+
+        <div class="m-10">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="addPanorama('bottom')"
+          >
+            Добавить сцену с панорамой
+          </button>
+        </div>
+
+        <div class="m-10">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="addPuzzle('bottom')"
+          >
+            Добавить сцену с головоломкой
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
