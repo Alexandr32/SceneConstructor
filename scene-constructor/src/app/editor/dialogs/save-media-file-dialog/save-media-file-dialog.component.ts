@@ -69,8 +69,6 @@ export class SaveMediaFileDialogComponent implements OnInit {
     this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
 
     this.sounds = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.Sound)
-
-    console.log('sounds:', this.sounds);
   }
 
   async deleteMediaFile(id: string) {

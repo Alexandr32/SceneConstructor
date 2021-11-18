@@ -79,7 +79,9 @@ export class EditPuzzleDialogComponent implements OnInit {
       this.soundFileLink = this.data.scene.soundFileLink
     }
 
-    this.scenePartsPuzzleImages = JSON.parse(JSON.stringify(this.data.scene.scenePartsPuzzleImages));
+    if (this.data.scene.scenePartsPuzzleImages) {
+      this.scenePartsPuzzleImages = JSON.parse(JSON.stringify(this.data.scene.scenePartsPuzzleImages));
+    }
 
     this.playerScenePartsPuzzleImages = []
 
@@ -326,7 +328,7 @@ export class EditPuzzleDialogComponent implements OnInit {
   }
 
   resetParts() {
-    this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages.map((item, index) => {
+    this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages?.map((item, index) => {
       return {
         number: index + 1,
         value: {
