@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { first, timeout } from 'rxjs/operators';
 import { TypeFile } from 'src/app/editor/models/type-file.model';
 import { RunGame } from '../models/other-models/run-game.model';
+import { IBaseSceneRunGame } from '../models/other-models/base-scene-run-game.model';
 
 @Component({
   selector: 'app-run-game',
@@ -21,7 +22,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
   title: string
 
-  //private scenes: Map<string, Scene> = new Map<string, Scene>()
+  private scenes: Map<string, IBaseSceneRunGame> = new Map<string, IBaseSceneRunGame>()
 
   url = 'assets/scene.jpg'
 
@@ -45,6 +46,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
 
   }
+
   ngOnDestroy(): void {
     console.log('ngOnDestroy');
   }
@@ -52,6 +54,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
   static count = 0
 
   async ngOnInit() {
+
     this.route.data.subscribe(data => {
       this.runGame = data.runGame
       console.log('runGame:', this.runGame);

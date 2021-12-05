@@ -175,9 +175,9 @@ export class RunGameService {
       .snapshotChanges()
       .pipe(
         map((doc) => {
-          const game = doc.payload.data() as RunGame;
+          const gameFirebase = doc.payload.data() as RunGame;
 
-          game.scenes = game.scenes.map(baseScene => {
+          const scenes = gameFirebase.scenes.map(baseScene => {
 
             // Вернет нужный тип данных
             const resultScene = (): any => {
@@ -199,7 +199,7 @@ export class RunGameService {
             return resultScene()
           });
 
-          game.players = game.players.map((item) => {
+          const players = gameFirebase.players.map((item) => {
 
             return new Player(
               item.id,
@@ -208,8 +208,18 @@ export class RunGameService {
               item.imageFileId);
           });
 
-          game.id = doc.payload.id;
-          return game;
+          const newRunGame = new RunGame(
+            doc.payload.id,
+            gameFirebase.number,
+            gameFirebase.name,
+            gameFirebase.description,
+            scenes,
+            players
+          )
+
+          newRunGame.createsScenesMap()
+
+          return newRunGame;
         })
       )
       .pipe(first())

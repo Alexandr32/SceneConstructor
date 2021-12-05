@@ -5,7 +5,7 @@ import { RunGame } from "../models/other-models/run-game.model";
 import { RunGameService } from "../services/run-game.service";
 
 @Injectable({ providedIn: 'root' })
-export class RunGameResolver implements Resolve<any> {
+export class RunGameResolver implements Resolve<RunGame> {
 
   constructor(private runGameService: RunGameService) {
 
