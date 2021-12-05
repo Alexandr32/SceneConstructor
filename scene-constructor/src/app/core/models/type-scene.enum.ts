@@ -13,7 +13,6 @@ export class TypeScene {
 }
 
 export const getDefaultScene = (): TypeScene => {
-  //return new TypeScene(TypeSceneEnum.Answer, 'Сцена ответов')
   return new TypeScene(TypeSceneEnum.Puzzle, 'Головоломка')
 }
 

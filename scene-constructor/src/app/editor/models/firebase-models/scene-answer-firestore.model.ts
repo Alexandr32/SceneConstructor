@@ -1,5 +1,5 @@
-import { Player } from "../run/run-game.models"
-import { TypeSceneEnum } from "../type-scene.enum"
+import { Player } from "../../../run-game/models/other-models/player.model"
+import { TypeSceneEnum } from "../../../core/models/type-scene.enum"
 import { AnswerFirebase } from "./answer-firebase.model"
 import { IBaseSceneFirebase } from "./base-scene-firebase.mode"
 

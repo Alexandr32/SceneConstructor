@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FileLink } from 'src/app/models/file-link.model.ts';
-import { TypeFile } from 'src/app/models/type-file.model';
-import { FirestoreService } from 'src/app/serveces/firestore.service';
+import { FileLink } from 'src/app/core/models/file-link.model.ts';
+import { FileService } from 'src/app/core/services/file.service';
+import { TypeFile } from 'src/app/editor/models/type-file.model';
+import { FirestoreService } from 'src/app/editor/services/firestore.service';
 import { SaveMediaFileDialogComponent } from '../save-media-file-dialog/save-media-file-dialog.component';
 
 @Component({
@@ -48,6 +49,7 @@ export class SelectMediaFileDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<SaveMediaFileDialogComponent>,
     private fireStore: AngularFirestore,
     private firestoreService: FirestoreService,
+    private fileService: FileService,
     @Inject(MAT_DIALOG_DATA) public data: {
       gameId: string
     }) {
@@ -62,29 +64,29 @@ export class SelectMediaFileDialogComponent implements OnInit {
   private async loadData() {
 
     if (this.isShowImagesScene) {
-      this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneImages)
+      this.imagesScene = await this.fileService.getMediaFileLink(this.gameId, TypeFile.SceneImages)
 
     }
 
     if (this.isShowImagesPlayer) {
-      this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PlayerImages)
+      this.imagesPlayer = await this.fileService.getMediaFileLink(this.gameId, TypeFile.PlayerImages)
     }
 
 
     if (this.isShowVideosScene) {
-      this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
+      this.videosScene = await this.fileService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
     }
 
     if (this.isShowImagesPanoramas) {
-      this.imagesPanoramas = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PanoramaImages)
+      this.imagesPanoramas = await this.fileService.getMediaFileLink(this.gameId, TypeFile.PanoramaImages)
     }
 
     if (this.isShowImagePuzzle) {
-      this.imagePuzzle = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PuzzleImages)
+      this.imagePuzzle = await this.fileService.getMediaFileLink(this.gameId, TypeFile.PuzzleImages)
     }
 
     if (this.isShowSounds) {
-      this.sounds = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.Sound)
+      this.sounds = await this.fileService.getMediaFileLink(this.gameId, TypeFile.Sound)
     }
 
   }

@@ -6,12 +6,12 @@ import { CropperSettings } from 'ngx-img-cropper';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
-import { FileLink } from 'src/app/models/file-link.model.ts';
-import { MediaFile } from 'src/app/models/media-file.model.ts';
-import { getTypesScene, TypeScene } from 'src/app/models/type-scene.enum';
-import { Answer } from 'src/app/models/answer.model';
-import { Scene } from 'src/app/models/scene.model';
-import { Player } from 'src/app/models/player.model';
+import { FileLink } from 'src/app/core/models/file-link.model.ts';
+import { MediaFile } from 'src/app/editor/models/media-file.model.ts';
+import { getTypesScene, TypeScene } from 'src/app/core/models/type-scene.enum';
+import { Answer } from 'src/app/editor/models/answer.model';
+import { Scene } from 'src/app/editor/models/scenes.models';
+import { Player } from 'src/app/core/models/player.model';
 
 @Component({
   selector: 'app-edit-scene-dialog',

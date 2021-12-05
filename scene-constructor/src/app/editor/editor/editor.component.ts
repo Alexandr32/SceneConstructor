@@ -1,21 +1,21 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IBaseScene, Panorama, Puzzle, Scene } from '../../models/scene.model';
+import { IBaseScene, Panorama, Puzzle, Scene } from '../models/scenes.models';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { Answer } from '../../models/answer.model';
-import { Coordinate } from '../../models/coordinate.model';
-import { Player } from '../../models/player.model';
-import { FirestoreService } from '../../serveces/firestore.service';
+import { Answer } from '../models/answer.model';
+import { Coordinate } from '../models/coordinate.model';
+import { Player } from '../../core/models/player.model';
+import { FirestoreService } from '../services/firestore.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Game } from '../../models/game.model';
+import { Game } from '../models/game.model';
 import { MessageDialogComponent } from '../../core/message-dialog/message-dialog.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SaveMediaFileDialogComponent } from '../dialogs/save-media-file-dialog/save-media-file-dialog.component';
-import { FileLink } from 'src/app/models/file-link.model.ts';
-import { RunGameService } from 'src/app/serveces/run-game.service';
-import { TypeFile } from 'src/app/models/type-file.model';
-import { TypeSceneEnum } from 'src/app/models/type-scene.enum';
+import { FileLink } from 'src/app/core/models/file-link.model.ts';
+import { RunGameService } from 'src/app/run-game/services/run-game.service';
+import { TypeFile } from 'src/app/editor/models/type-file.model';
+import { TypeSceneEnum } from 'src/app/core/models/type-scene.enum';
 import { EditSceneDialogComponent } from '../dialogs/edit-scene-dialog/edit-scene-dialog.component';
 import { EditPlayerDialogComponent } from '../dialogs/edit-player-dialog/edit-player-dialog.component';
 import { EditPanoramaDialogComponent } from '../dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
@@ -446,7 +446,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  deletedScene(scene: Scene) {
+  deletedScene(scene: IBaseScene) {
 
     this.fileForDeleteScenes.push({ id: scene.id, typeFile: 'Video' });
     this.fileForDeleteScenes.push({ id: scene.id, typeFile: 'Image' });
@@ -546,7 +546,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
    * Выбор сцены для связывания
    * @param scene
    */
-  selectScene(scene: Scene) {
+  selectScene(scene: IBaseScene) {
 
     const isChangeSelectMode = this.changeSelectModeEvent$.getValue();
 

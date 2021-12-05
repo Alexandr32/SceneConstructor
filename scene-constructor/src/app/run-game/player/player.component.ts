@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { debounceTime } from 'rxjs/operators';
-import { Answer, Scene } from 'src/app/models/run/run-game.models';
-import { TypeFile } from 'src/app/models/type-file.model';
-import { FirestoreService } from 'src/app/serveces/firestore.service';
-import { RunGameService } from 'src/app/serveces/run-game.service';
-import { Player } from '../../models/player.model';
+import { AnswerRunGame } from "src/app/run-game/models/other-models/answer.model";
+import { TypeFile } from 'src/app/editor/models/type-file.model';
+import { FirestoreService } from 'src/app/editor/services/firestore.service';
+import { RunGameService } from 'src/app/run-game/services/run-game.service';
+import { Player } from '../../core/models/player.model';
+import { FileService } from 'src/app/core/services/file.service';
+import { IBaseSceneRunGame } from '../models/other-models/base-scene-run-game.model';
 
 @Component({
   selector: 'app-player',
@@ -19,16 +20,17 @@ export class PlayerComponent implements OnInit {
   @Input()
   gameId: string
 
-  private scenes: Scene[]
-  currentScene: Scene
+  private scenes: IBaseSceneRunGame[]
+  currentScene: IBaseSceneRunGame
 
   player: Player
 
-  answers: Answer[] = []
+  answers: AnswerRunGame[] = []
 
   constructor(
     private runGameService: RunGameService,
-    private firestoreService: FirestoreService) {
+    private firestoreService: FirestoreService,
+    private fileService: FileService) {
 
   }
 
@@ -39,7 +41,7 @@ export class PlayerComponent implements OnInit {
     this.player = game.players.find(item => item.id === this.playerId)
 
     try {
-      this.player.imageFile = await this.firestoreService
+      this.player.imageFile = await this.fileService
         .getUrl(game.id, this.player.imageFileId, TypeFile.PlayerImages).toPromise()
     } catch (error) {
       this.player.imageFile = 'assets/http_player.jpg'
@@ -69,7 +71,7 @@ export class PlayerComponent implements OnInit {
       })
   }
 
-  async selectAnswer(answer: Answer) {
+  async selectAnswer(answer: AnswerRunGame) {
     await this.runGameService.saveSelectAnswerStateGame(this.gameId, this.player, answer)
   }
 }

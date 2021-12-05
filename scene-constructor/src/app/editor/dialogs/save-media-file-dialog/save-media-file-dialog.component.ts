@@ -3,13 +3,14 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CropperSettings } from 'ngx-img-cropper';
 import { MessageDialogComponent } from 'src/app/core/message-dialog/message-dialog.component';
-import { base64ToFile, fileToBase64 } from 'src/app/models/base64-to-file.model';
-import { FileLink } from 'src/app/models/file-link.model.ts';
-import { MediaFile } from 'src/app/models/media-file.model.ts';
-import { PartsPuzzleImage } from 'src/app/models/parts-puzzle-image.model';
-import { TypeFile } from 'src/app/models/type-file.model';
-import { FirestoreService } from 'src/app/serveces/firestore.service';
+import { base64ToFile, fileToBase64 } from 'src/app/editor/models/base64-to-file.model';
+import { FileLink } from 'src/app/core/models/file-link.model.ts';
+import { MediaFile } from 'src/app/editor/models/media-file.model.ts';
+import { PartsPuzzleImage } from 'src/app/core/models/parts-puzzle-image.model';
+import { TypeFile } from 'src/app/editor/models/type-file.model';
+import { FirestoreService } from 'src/app/editor/services/firestore.service';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
+import { FileService } from 'src/app/core/services/file.service';
 
 @Component({
   selector: 'app-media-file-dialog',
@@ -45,6 +46,7 @@ export class SaveMediaFileDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<SaveMediaFileDialogComponent>,
     private fireStore: AngularFirestore,
     private firestoreService: FirestoreService,
+    private fileService: FileService,
     @Inject(MAT_DIALOG_DATA) public data: {
       gameId: string
     }) {
@@ -58,21 +60,21 @@ export class SaveMediaFileDialogComponent implements OnInit {
   }
 
   private async loadData() {
-    this.imagesScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneImages)
+    this.imagesScene = await this.fileService.getMediaFileLink(this.gameId, TypeFile.SceneImages)
 
-    this.imagesPlayer = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PlayerImages)
+    this.imagesPlayer = await this.fileService.getMediaFileLink(this.gameId, TypeFile.PlayerImages)
 
-    this.imagesPanoramas = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PanoramaImages)
+    this.imagesPanoramas = await this.fileService.getMediaFileLink(this.gameId, TypeFile.PanoramaImages)
 
-    this.imagePuzzle = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.PuzzleImages)
+    this.imagePuzzle = await this.fileService.getMediaFileLink(this.gameId, TypeFile.PuzzleImages)
 
-    this.videosScene = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
+    this.videosScene = await this.fileService.getMediaFileLink(this.gameId, TypeFile.SceneVideos)
 
-    this.sounds = await this.firestoreService.getMediaFileLink(this.gameId, TypeFile.Sound)
+    this.sounds = await this.fileService.getMediaFileLink(this.gameId, TypeFile.Sound)
   }
 
   async deleteMediaFile(id: string) {
-    await this.firestoreService.deleteMediaFile(id)
+    await this.fileService.deleteMediaFile(id)
     this.loadData()
   }
 
@@ -214,7 +216,7 @@ export class SaveMediaFileDialogComponent implements OnInit {
     mediaFile.typeFile = TypeFile.PlayerImages
 
     try {
-      await this.firestoreService.saveMediaFile(mediaFile)
+      await this.fileService.saveMediaFile(mediaFile)
     } catch (error) {
       console.log('Ошибка сохранения', error);
     }
@@ -232,7 +234,7 @@ export class SaveMediaFileDialogComponent implements OnInit {
     mediaFile.typeFile = TypeFile.SceneImages
 
     try {
-      await this.firestoreService.saveMediaFile(mediaFile)
+      await this.fileService.saveMediaFile(mediaFile)
     } catch (error) {
       console.log('Ошибка сохранения', error);
     }
@@ -250,7 +252,7 @@ export class SaveMediaFileDialogComponent implements OnInit {
     mediaFile.typeFile = TypeFile.PuzzleImages
 
     try {
-      await this.firestoreService.saveMediaFile(mediaFile)
+      await this.fileService.saveMediaFile(mediaFile)
     } catch (error) {
       console.log('Ошибка сохранения', error);
     }
@@ -282,7 +284,7 @@ export class SaveMediaFileDialogComponent implements OnInit {
     mediaFile.typeFile = TypeFile.Sound
 
     try {
-      await this.firestoreService.saveMediaFile(mediaFile)
+      await this.fileService.saveMediaFile(mediaFile)
     } catch (error) {
       console.log('Ошибка сохранения', error);
     }
@@ -347,7 +349,7 @@ export class SaveMediaFileDialogComponent implements OnInit {
     mediaFile.typeFile = TypeFile.PanoramaImages
 
     try {
-      await this.firestoreService.saveMediaFile(mediaFile)
+      await this.fileService.saveMediaFile(mediaFile)
     } catch (error) {
       console.log('Ошибка сохранения', error);
     }
@@ -365,7 +367,7 @@ export class SaveMediaFileDialogComponent implements OnInit {
     mediaFile.typeFile = TypeFile.SceneVideos
 
     try {
-      await this.firestoreService.saveMediaFile(mediaFile)
+      await this.fileService.saveMediaFile(mediaFile)
     } catch (error) {
       console.log('Ошибка сохранения', error);
     }

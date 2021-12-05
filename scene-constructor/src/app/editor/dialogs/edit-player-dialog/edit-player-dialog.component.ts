@@ -4,8 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CropperSettings } from 'ngx-img-cropper';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
-import { FileLink } from 'src/app/models/file-link.model.ts';
-import { Player } from 'src/app/models/player.model';
+import { FileLink } from 'src/app/core/models/file-link.model.ts';
+import { Player } from 'src/app/core/models/player.model';
 
 @Component({
   selector: 'app-edit-player-dialog',

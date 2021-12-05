@@ -1,9 +1,9 @@
 import { Component, ElementRef, Input, OnInit, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
-import { IBaseScene, Scene } from '../../models/scene.model';
+import { IBaseScene, Scene } from '../models/scenes.models';
 import { Subject } from 'rxjs';
-import { Answer } from '../../models/answer.model';
-import { Player } from '../../models/player.model';
-import { getTypesScene, TypeScene } from 'src/app/models/type-scene.enum';
+import { Answer } from '../models/answer.model';
+import { Player } from '../../core/models/player.model';
+import { getTypesScene, TypeScene } from 'src/app/core/models/type-scene.enum';
 
 @Component({
   selector: 'app-scene',

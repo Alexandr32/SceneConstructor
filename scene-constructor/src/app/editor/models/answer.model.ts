@@ -1,6 +1,6 @@
 import { Coordinate } from './coordinate.model';
-import { IBaseScene, Scene } from './scene.model';
-import { Entity } from './entity.model';
+import { IBaseScene, Scene } from './scenes.models';
+import { Entity } from '../../core/models/entity.model';
 
 
 /**

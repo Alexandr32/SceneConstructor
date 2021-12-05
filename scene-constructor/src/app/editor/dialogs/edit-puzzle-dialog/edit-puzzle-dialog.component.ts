@@ -1,17 +1,18 @@
 import { ChangeDetectorRef, Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Answer } from 'src/app/models/answer.model';
-import { FileLink } from 'src/app/models/file-link.model.ts';
+import { Answer } from 'src/app/editor/models/answer.model';
+import { FileLink } from 'src/app/core/models/file-link.model.ts';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Puzzle } from 'src/app/models/scene.model';
-import { Player } from 'src/app/models/player.model';
+import { Puzzle } from 'src/app/editor/models/scenes.models';
+import { Player } from 'src/app/core/models/player.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
-import { PartsPuzzleImage } from 'src/app/models/parts-puzzle-image.model';
-import { FirestoreService } from 'src/app/serveces/firestore.service';
-import { ItemPartsPuzzleImage } from 'src/app/models/item-parts -puzzle-image.model';
+import { PartsPuzzleImage } from 'src/app/core/models/parts-puzzle-image.model';
+import { FirestoreService } from 'src/app/editor/services/firestore.service';
+import { ItemPartsPuzzleImage } from 'src/app/core/models/item-parts-puzzle-image.model';
 import { delay, first } from 'rxjs/operators';
 import { async } from 'rxjs/internal/scheduler/async';
+import { FileService } from 'src/app/core/services/file.service';
 
 @Component({
   selector: 'app-edit-puzzle-dialog',
@@ -58,6 +59,7 @@ export class EditPuzzleDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<EditPuzzleDialogComponent>,
     private firestoreService: FirestoreService,
     private fireStore: AngularFirestore,
+    private fileService: FileService,
     @Inject(MAT_DIALOG_DATA) public data: {
       gameId: string,
       scene: Puzzle,
@@ -160,7 +162,7 @@ export class EditPuzzleDialogComponent implements OnInit {
 
         const partsPuzzleImage = new PartsPuzzleImage()
         partsPuzzleImage.id = i
-        this.firestoreService
+        this.fileService
           .getUplPartsPuzzleImages(this.data.gameId, item.id, partsPuzzleImage)
           .toPromise()
           .then(src => {

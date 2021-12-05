@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Answer } from 'src/app/models/answer.model';
-import { FileLink } from 'src/app/models/file-link.model.ts';
-import { Player } from 'src/app/models/player.model';
-import { Scene } from 'src/app/models/scene.model';
+import { Answer } from 'src/app/editor/models/answer.model';
+import { FileLink } from 'src/app/core/models/file-link.model.ts';
+import { Player } from 'src/app/core/models/player.model';
+import { Scene } from 'src/app/editor/models/scenes.models';
 import { SelectMediaFileDialogComponent } from '../../dialogs/select-media-file-dialog/select-media-file-dialog.component';
 
 @Component({

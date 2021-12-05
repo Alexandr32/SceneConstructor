@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Answer } from 'src/app/models/run/run-game.models';
+import { AnswerRunGame } from "src/app/run-game/models/other-models/answer.model";
 
 @Component({
   selector: 'app-item-answer',
@@ -10,7 +10,7 @@ import { Answer } from 'src/app/models/run/run-game.models';
 export class ItemAnswerComponent implements OnInit {
 
   @Input()
-  answer: Answer
+  answer: AnswerRunGame
 
   @Input()
   answers$: Observable<{ id: string, value: string }[]>

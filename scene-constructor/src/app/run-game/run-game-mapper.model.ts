@@ -1,33 +1,30 @@
-import { Answer } from "./answer.model"
-import { Coordinate } from "./coordinate.model"
-import { AnswerFirebase } from "./firebase-models/answer-firebase.model"
-import { PanoramaFirebase } from "./firebase-models/panorama-firebase.model"
-import { PuzzleFirebase } from "./firebase-models/puzzle-firebase.model"
-import { SceneAnswerFirebase } from "./firebase-models/scene-answer-firestore.model"
-import { ItemPartsPuzzleImage } from "./item-parts -puzzle-image.model"
-import { PartsPuzzleImage } from "./parts-puzzle-image.model"
-import { Player } from "./run/run-game.models"
-import { IBaseScene, Panorama, Puzzle, Scene } from "./scene.model"
+import { ItemPartsPuzzleImage } from "../core/models/item-parts-puzzle-image.model";
+import { PartsPuzzleImage } from "../core/models/parts-puzzle-image.model";
+import { Answer } from "../editor/models/answer.model";
+import { Puzzle, Scene } from "../editor/models/scenes.models";
+import { AnswerRunGameFirebase } from "./models/firebase-models/answer-run-game-firebase.model";
+import { PanoramaRunGameFirebase } from "./models/firebase-models/panorama-scene-run-game-firebase.model";
+import { PuzzleSceneRunGameFirebase } from "./models/firebase-models/puzzle-scene-run-game-firebase.model";
+import { SceneAnswerRunGameFirebase } from "./models/firebase-models/scene-answer-run-game-firebase.model";
+import { AnswerRunGame } from "./models/other-models/answer.model";
+import { IBaseSceneRunGame } from "./models/other-models/base-scene-run-game.model";
+import { PanoramaRunGame, PuzzleRunGame, SceneRunGame } from "./models/other-models/scenes.models";
 
-export class Mapper {
 
-  static answerToAnswerFirebase(answer: Answer): AnswerFirebase {
+export class RunGameMapper {
 
+  static answerToAnswerFirebase(answer: AnswerRunGame): AnswerRunGameFirebase {
     return {
       id: answer.id,
       text: answer.text,
       position: answer.position,
-      sceneId: answer.sceneId ? answer.sceneId : '',
-      coordinate: {
-        x: answer.coordinate.x,
-        y: answer.coordinate.y
-      }
-    } as AnswerFirebase;
+      sceneId: answer.sceneId,
+    } as AnswerRunGameFirebase
   }
 
-  static answerFirebaseToAnswer(answerFirebase: AnswerFirebase, parentScene: IBaseScene): Answer {
+  static answerFirebaseToAnswer(answerFirebase: AnswerRunGameFirebase, parentScene: IBaseSceneRunGame): AnswerRunGame {
 
-    return new Answer(
+    return new AnswerRunGame(
       answerFirebase.id,
       answerFirebase.text,
       answerFirebase.position,
@@ -36,37 +33,31 @@ export class Mapper {
     )
   }
 
-  static sceneAnswerToSceneAnswerFirebase(scene: Scene): SceneAnswerFirebase {
+  static sceneAnswerToSceneAnswerFirebase(scene: Scene): SceneAnswerRunGameFirebase {
 
     return {
       id: scene.id,
       title: scene.title,
       text: scene.text,
       soundFileId: scene.soundFileLink ? scene.soundFileLink.id : '',
-      color: scene.color,
       imageFileId: scene.imageFileId,
       videoFileId: scene.videoFileId,
-      coordinate: {
-        x: scene.coordinate.x,
-        y: scene.coordinate.y
-      },
       typesScene: scene.typesScene,
       answers: scene.answers.map(item => {
-        return Mapper.answerToAnswerFirebase(item)
+        return RunGameMapper.answerToAnswerFirebase(item)
       }),
       players: scene.players,
       isStartGame: scene.isStartGame
-    } as SceneAnswerFirebase;
+    } as SceneAnswerRunGameFirebase;
 
   }
 
-  static sceneAnswerFirebaseToSceneAnswer(sceneAnswerFirebase: SceneAnswerFirebase): Scene {
+  static sceneAnswerFirebaseToSceneAnswer(sceneAnswerFirebase: SceneAnswerRunGameFirebase): SceneRunGame {
 
-    const scene = new Scene()
+    const scene = new SceneRunGame()
     scene.id = sceneAnswerFirebase.id
     scene.title = sceneAnswerFirebase.title
     scene.text = sceneAnswerFirebase.text
-    scene.color = sceneAnswerFirebase.color
 
     scene.soundFileId = sceneAnswerFirebase.soundFileId
 
@@ -74,29 +65,20 @@ export class Mapper {
 
     scene.isStartGame = sceneAnswerFirebase.isStartGame
 
-    const coordinate = {
-      x: sceneAnswerFirebase.coordinate.x,
-      y: sceneAnswerFirebase.coordinate.y
-    }
-
-    scene.coordinate = coordinate
-
     scene.players = sceneAnswerFirebase.players
 
     scene.imageFileId = sceneAnswerFirebase.imageFileId
     scene.videoFileId = sceneAnswerFirebase.videoFileId
 
     scene.answers = sceneAnswerFirebase.answers.map(item => {
-      return Mapper.answerFirebaseToAnswer(item, scene)
+      return RunGameMapper.answerFirebaseToAnswer(item, scene)
     })
-
-    scene.maxCountAnswers = sceneAnswerFirebase.maxCountAnswers
 
     return scene
 
   }
 
-  static panoramaToPanoramaFirebase(panorama: Panorama): PanoramaFirebase {
+  static panoramaToPanoramaFirebase(panorama: PanoramaRunGame): PanoramaRunGameFirebase {
 
     return {
       id: panorama.id,
@@ -106,55 +88,41 @@ export class Mapper {
       soundFileId: panorama.soundFileLink ? panorama.soundFileLink.id : '',
       typesScene: panorama.typesScene,
       isStartGame: panorama.isStartGame,
-      coordinate: {
-        x: panorama.coordinate.x,
-        y: panorama.coordinate.y
-      },
+
       players: panorama.players,
       answers: panorama.answers.map(item => {
-        return Mapper.answerToAnswerFirebase(item)
+        return RunGameMapper.answerToAnswerFirebase(item)
       }),
 
-      maxCountAnswers: panorama.maxCountAnswers,
       imageFileId: panorama.imageFileId,
       isTimer: panorama.isTimer,
       times: panorama.times
-    } as PanoramaFirebase;
+    } as PanoramaRunGameFirebase;
   }
 
-  static panoramaFirebaseToPanorama(panoramaFirebase: PanoramaFirebase): Panorama {
-    const panorama = new Panorama()
+  static panoramaFirebaseToPanorama(panoramaFirebase: PanoramaRunGameFirebase): PanoramaRunGame {
+    const panorama = new PanoramaRunGame()
     panorama.id = panoramaFirebase.id
     panorama.title = panoramaFirebase.title
     panorama.text = panoramaFirebase.text
-    panorama.color = panoramaFirebase.color
+
     panorama.soundFileId = panoramaFirebase.soundFileId
     panorama.typesScene = panoramaFirebase.typesScene
     panorama.isStartGame = panoramaFirebase.isStartGame
 
-    const coordinate = new Coordinate()
-    coordinate.x = panoramaFirebase.coordinate.x
-    coordinate.y = panoramaFirebase.coordinate.y
-
-    panorama.coordinate = coordinate
-
-    panorama.color = panoramaFirebase.color
     panorama.players = panoramaFirebase.players
     panorama.answers = panoramaFirebase.answers.map(item => {
-      return Mapper.answerFirebaseToAnswer(item, panorama)
+      return RunGameMapper.answerFirebaseToAnswer(item, panorama)
     })
 
-    panorama.maxCountAnswers = panoramaFirebase.maxCountAnswers
     panorama.imageFileId = panoramaFirebase.imageFileId
     panorama.isTimer = panoramaFirebase.isTimer
     panorama.times = panoramaFirebase.times
 
-
     return panorama
-
   }
 
-  static puzzleToPuzzleFirebase(puzzle: Puzzle): PuzzleFirebase {
+  static puzzleToPuzzleFirebase(puzzle: Puzzle): PuzzleSceneRunGameFirebase {
 
     const playerScenePartsPuzzleImages: {
       playerId: string,
@@ -174,7 +142,6 @@ export class Mapper {
       }
     })
 
-
     // Изображение на экране сцены
     const scenePartsPuzzleImages: {
       number: number,
@@ -186,54 +153,41 @@ export class Mapper {
       }
     })
 
-
     return {
       id: puzzle.id,
       title: puzzle.title,
       text: puzzle.text,
       soundFileId: puzzle.soundFileLink ? puzzle.soundFileLink.id : '',
-      color: puzzle.color,
-      coordinate: {
-        x: puzzle.coordinate.x,
-        y: puzzle.coordinate.y
-      },
       imageFileId: puzzle.imageFileId,
+
       answers: puzzle.answers.map(item => {
-        return Mapper.answerToAnswerFirebase(item)
+        return RunGameMapper.answerToAnswerFirebase(item)
       }),
       typesScene: puzzle.typesScene,
       players: puzzle.players,
       isStartGame: puzzle.isStartGame,
       scenePartsPuzzleImages: scenePartsPuzzleImages,
       playerScenePartsPuzzleImages: playerScenePartsPuzzleImages
-    } as PuzzleFirebase;
+    } as PuzzleSceneRunGameFirebase;
 
   }
 
-  static puzzleFirebaseToPuzzle(puzzleFirebase: PuzzleFirebase): Puzzle {
-    const puzzle = new Puzzle()
+  static puzzleFirebaseToPuzzle(puzzleFirebase: PuzzleSceneRunGameFirebase): PuzzleRunGame {
+    const puzzle = new PuzzleRunGame()
     puzzle.id = puzzleFirebase.id
     puzzle.title = puzzleFirebase.title
     puzzle.text = puzzleFirebase.text
-    puzzle.color = puzzleFirebase.color
+
     puzzle.soundFileId = puzzleFirebase.soundFileId
     puzzle.typesScene = puzzleFirebase.typesScene
     puzzle.isStartGame = puzzleFirebase.isStartGame
     puzzle.imageFileId = puzzleFirebase.imageFileId
 
-    const coordinate = new Coordinate()
-    coordinate.x = puzzleFirebase.coordinate.x
-    coordinate.y = puzzleFirebase.coordinate.y
-
-    puzzle.coordinate = coordinate
-
     puzzle.players = puzzleFirebase.players
 
     puzzle.answers = puzzleFirebase.answers.map(item => {
-      return Mapper.answerFirebaseToAnswer(item, puzzle)
+      return RunGameMapper.answerFirebaseToAnswer(item, puzzle)
     })
-
-    puzzle.maxCountAnswers = puzzleFirebase.maxCountAnswers
 
     const partsPuzzleImages: PartsPuzzleImage[] = []
 
@@ -277,5 +231,4 @@ export class Mapper {
 
     return puzzle
   }
-
 }

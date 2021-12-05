@@ -1,35 +1,11 @@
-/**
- * Описание сцены
- */
-import { Coordinate } from './coordinate.model';
-import { Answer } from './answer.model';
-import { Entity } from './entity.model';
-import { FileLink } from './file-link.model.ts';
-import { TypeSceneEnum } from './type-scene.enum';
-import { PartsPuzzleImage } from './parts-puzzle-image.model';
-import { ItemPartsPuzzleImage } from './item-parts -puzzle-image.model';
+import { FileLink } from "src/app/core/models/file-link.model.ts";
+import { ItemPartsPuzzleImage } from "src/app/core/models/item-parts-puzzle-image.model";
+import { PartsPuzzleImage } from "src/app/core/models/parts-puzzle-image.model";
+import { TypeSceneEnum } from "src/app/core/models/type-scene.enum";
+import { AnswerRunGame } from "./answer.model";
+import { IBaseSceneRunGame } from "./base-scene-run-game.model";
 
-export interface IBaseScene extends Entity {
-  id: string
-  title: string
-  text: string
-  color: string
-
-  soundFileId: string
-  soundFileLink: FileLink
-
-  typesScene: TypeSceneEnum
-
-  isStartGame: boolean
-  coordinate: Coordinate
-  players: string[]
-
-  answers: Answer[]
-
-  maxCountAnswers: number
-}
-
-export class Puzzle implements IBaseScene {
+export class PuzzleRunGame implements IBaseSceneRunGame {
   id: string
   title: string
   text: string
@@ -41,11 +17,10 @@ export class Puzzle implements IBaseScene {
   typesScene: TypeSceneEnum = TypeSceneEnum.Puzzle
 
   isStartGame: boolean = false
-  coordinate: Coordinate
+
   players: string[] = []
 
-  answers: Answer[] = []
-  maxCountAnswers: number = 1
+  answers: AnswerRunGame[] = []
 
   imageFileId: string
   imageFile: string
@@ -60,7 +35,7 @@ export class Puzzle implements IBaseScene {
   playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = []
 }
 
-export class Panorama implements IBaseScene {
+export class PanoramaRunGame implements IBaseSceneRunGame {
 
   id: string
   title: string
@@ -73,11 +48,10 @@ export class Panorama implements IBaseScene {
   typesScene: TypeSceneEnum = TypeSceneEnum.Panorama
 
   isStartGame: boolean = false
-  coordinate: Coordinate
+
   players: string[] = []
 
-  answers: Answer[] = []
-  maxCountAnswers: number = 1
+  answers: AnswerRunGame[] = []
 
   imageFileId: string
   imageFile: string
@@ -86,7 +60,7 @@ export class Panorama implements IBaseScene {
   times: number // В мс
 }
 
-export class Scene implements IBaseScene {
+export class SceneRunGame implements IBaseSceneRunGame {
   id: string
   title: string
   text: string
@@ -98,14 +72,13 @@ export class Scene implements IBaseScene {
   typesScene: TypeSceneEnum = TypeSceneEnum.Answer
 
   isStartGame: boolean = false
-  coordinate: Coordinate
+
   players: string[] = []
 
   imageFileId: string
   videoFileId: string
 
-  answers: Answer[] = []
-  maxCountAnswers = 3
+  answers: AnswerRunGame[] = []
 
   imageFile: string
   videoFile: string

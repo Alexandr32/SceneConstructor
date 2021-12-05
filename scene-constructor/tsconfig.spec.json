@@ -9,7 +9,17 @@
   },
   "files": [
     "src/test.ts",
-    "src/polyfills.ts"
+    "src/polyfills.ts",
+    "src/app/run-game/models/firebase-models/ibase-scene-run-game-firebase.model.ts",
+    "src/app/run-game/models/SceneAnswerRunGameFirebase.ts",
+    "src/app/run-game/models/PanoramaSceneRunGameFirebase.ts",
+    "src/app/run-game/models/firebase-models/puzzle-scene-run-game-firebase.model.ts",
+    "src/app/run-game/models/StateGame.ts",
+    "src/app/run-game/models/Game.ts",
+    "src/app/run-game/models/AnswerRunGameFirebase.ts",
+    "src/app/run-game/models/Player.ts",
+    "src/app/run-game/models/Answer.ts",
+    "src/app/run-game/models/Scene.ts"
   ],
   "include": [
     "**/*.spec.ts",

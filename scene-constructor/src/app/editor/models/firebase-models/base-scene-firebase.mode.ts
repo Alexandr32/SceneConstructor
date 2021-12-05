@@ -1,5 +1,5 @@
-import { Entity } from "../entity.model";
-import { TypeSceneEnum } from "../type-scene.enum";
+import { Entity } from "../../../core/models/entity.model";
+import { TypeSceneEnum } from "../../../core/models/type-scene.enum";
 import { AnswerFirebase } from "./answer-firebase.model";
 
 export interface IBaseSceneFirebase extends Entity {

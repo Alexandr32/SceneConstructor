@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { RunGameService } from 'src/app/serveces/run-game.service';
-import { FirestoreService } from 'src/app/serveces/firestore.service';
-import { Answer, Scene } from 'src/app/models/run/run-game.models';
-import { Player } from 'src/app/models/player.model';
+import { RunGameService } from 'src/app/run-game/services/run-game.service';
+import { FirestoreService } from 'src/app/editor/services/firestore.service';
+import { AnswerRunGame } from "src/app/run-game/models/other-models/answer.model";
+import { Player } from 'src/app/core/models/player.model';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { first, timeout } from 'rxjs/operators';
-import { TypeFile } from 'src/app/models/type-file.model';
+import { TypeFile } from 'src/app/editor/models/type-file.model';
+import { RunGame } from '../models/other-models/run-game.model';
 
 @Component({
   selector: 'app-run-game',
@@ -16,15 +17,17 @@ import { TypeFile } from 'src/app/models/type-file.model';
 })
 export class RunGameComponent implements OnInit, OnDestroy {
 
+  runGame: RunGame
+
   title: string
 
-  private scenes: Map<string, Scene> = new Map<string, Scene>()
+  //private scenes: Map<string, Scene> = new Map<string, Scene>()
 
   url = 'assets/scene.jpg'
 
   isShowListPlayers: boolean = false
 
-  selectScene: Scene
+  //selectScene: Scene
 
   videoSources: string[] = [];
   players: string[] = []
@@ -36,7 +39,10 @@ export class RunGameComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
     private dialog: MatDialog,
     private runGameService: RunGameService,
-    private firestoreService: FirestoreService,) {
+    private firestoreService: FirestoreService) {
+
+
+
 
   }
   ngOnDestroy(): void {
@@ -46,7 +52,12 @@ export class RunGameComponent implements OnInit, OnDestroy {
   static count = 0
 
   async ngOnInit() {
-    this.gameId = this.route.snapshot.params.gameId;
+    this.route.data.subscribe(data => {
+      this.runGame = data.runGame
+      console.log('runGame:', this.runGame);
+    })
+
+    /*this.gameId = this.route.snapshot.params.gameId;
 
     const game = await (await this.runGameService.getGameById(this.gameId)).toPromise()
 
@@ -98,11 +109,11 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
     this.subscribeStateGame()
 
-    this.playSound()
+    this.playSound()*/
   }
 
   private subscribeStateGame() {
-    this.runGameService.getStateGame(this.gameId)
+    /*this.runGameService.getStateGame(this.gameId)
       .subscribe(async (stateGame) => {
 
         console.log('stateGame::::', stateGame);
@@ -155,7 +166,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
         // Обнуляем данные
         //this.runGameService.resetDataStateGame(this.gameId, this.selectScene)
 
-      })
+      })*/
   }
 
   private delay = (time: number): Promise<any> => {

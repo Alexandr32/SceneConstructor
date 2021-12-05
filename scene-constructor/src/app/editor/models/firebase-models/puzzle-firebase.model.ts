@@ -1,4 +1,4 @@
-import { TypeSceneEnum } from "../type-scene.enum";
+import { TypeSceneEnum } from "../../../core/models/type-scene.enum";
 import { AnswerFirebase } from "./answer-firebase.model";
 import { IBaseSceneFirebase } from "./base-scene-firebase.mode";
 

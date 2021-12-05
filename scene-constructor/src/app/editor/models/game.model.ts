@@ -1,6 +1,6 @@
-import { IBaseScene, Scene } from './scene.model';
-import { Player } from './player.model';
-import { Entity } from './entity.model';
+import { IBaseScene, Scene } from './scenes.models';
+import { Player } from '../../core/models/player.model';
+import { Entity } from '../../core/models/entity.model';
 
 export class Game implements Entity {
   constructor(
