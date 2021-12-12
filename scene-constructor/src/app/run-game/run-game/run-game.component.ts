@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { RunGameService } from 'src/app/run-game/services/run-game.service';
@@ -18,7 +18,8 @@ import { IBaseSceneRunGame } from '../models/other-models/base-scene-run-game.mo
 })
 export class RunGameComponent implements OnInit, OnDestroy {
 
-  runGame: RunGame
+  @Input()
+  runGame$: Observable<RunGame>
 
   title: string
 
@@ -48,17 +49,22 @@ export class RunGameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy');
+    //console.log('ngOnDestroy');
   }
 
   static count = 0
 
   async ngOnInit() {
 
-    this.route.data.subscribe(data => {
-      this.runGame = data.runGame
-      console.log('runGame:', this.runGame);
-    })
+    // this.runGame$.subscribe(item => {
+    //   console.log('item:', item)
+    // })
+
+
+    // this.route.data.subscribe(data => {
+    //   this.runGame = data.runGame
+    //   console.log('runGame:', this.runGame);
+    // })
 
     /*this.gameId = this.route.snapshot.params.gameId;
 

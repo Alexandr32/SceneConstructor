@@ -122,8 +122,6 @@ export class SceneComponent implements OnInit {
 
   selectAnswer(event, answer: Answer) {
 
-    console.log('selectAnswer');
-
     this.changeSelectModeEvent$.next(false);
 
     this.toggleSelectMode();

@@ -63,7 +63,7 @@ body {
 }
 
 .m-10 {
-  margin: 10;
+  margin: 10px;
 }
 
 .p-t-10 {
@@ -452,9 +452,9 @@ body {
 }
 
 .game-run__list-player {
-  background: white;
   opacity: 0.9;
   border-radius: 8px;
+  height: 10px;
 }
 
 .game-run__list-player-control {
@@ -533,6 +533,8 @@ body {
 }
 
 .game-run__players {
+  background: white;
+  border-radius: 0 0 10px 10px;
   display: flex;
 }
 
@@ -586,11 +588,6 @@ mat-grid-tile {
 
 .w-10 {
   width: 10%;
-}
-
-#panoramaContainer {
-  //width: 600px;
-  height: 600px;
 }
 
 .edit-scene-dialog__image-box__panorama-image {

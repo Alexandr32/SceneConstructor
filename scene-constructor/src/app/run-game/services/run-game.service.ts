@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {concatMap, first, map, take} from 'rxjs/operators';
 import { Game as EditGame } from '../../editor/models/game.model';
 import { StateGame } from "../models/other-models/state-game.model";
 import { Player } from "../models/other-models/player.model";
@@ -24,6 +24,12 @@ export class RunGameService {
 
   private readonly runGameCollection = 'RunGameCollection'
   private readonly stateGame = 'StateGame'
+
+  get runGame$(): Observable<RunGame> {
+    return this._runGame$.asObservable()
+  }
+
+  private _runGame$: Subject<RunGame> = new BehaviorSubject(null)
 
   constructor(
     private fireStore: AngularFirestore,
@@ -169,12 +175,13 @@ export class RunGameService {
       )
   }
 
-  getGameById(gameId: string): Observable<RunGame> {
+  async getGameById(gameId: string): Promise<RunGame> {
 
-    return this.fireStore.doc<RunGame>(`Games/${gameId}`)
+    const resultGame = await this.fireStore.doc<RunGame>(`Games/${gameId}`)
       .snapshotChanges()
       .pipe(
         map((doc) => {
+
           const gameFirebase = doc.payload.data() as RunGame;
 
           const scenes = gameFirebase.scenes.map(baseScene => {
@@ -222,44 +229,45 @@ export class RunGameService {
           return newRunGame;
         })
       )
-      .pipe(first())
       .pipe(
-        map((game) => {
+        first(),
+        take(1))
+      .toPromise()
 
-          game.scenes.forEach(async item => {
-            switch (item.typesScene) {
-              case TypeSceneEnum.Answer: {
-                await this.fileService.setAnswerSceneFile(game.id, item as Scene)
-                break
-              }
-              case TypeSceneEnum.Panorama: {
-                await this.fileService.setFilePanoramaFile(game.id, item as Panorama)
-                break
-              }
-              case TypeSceneEnum.Puzzle: {
-                await this.fileService.setFilePuzzleFile(game.id, item as Puzzle)
-                break
-              }
-            }
-          })
+    for(let player of resultGame.players) {
+      if (player.imageFileId) {
+        try {
+          player.imageFile = await this.fileService.getUrl(resultGame.id, player.imageFileId, TypeFile.PlayerImages).toPromise()
+        } catch (error) {
+          player.imageFile = '/assets/http_player.jpg';
+          console.log('Изображение не найдено');
+          console.log(error);
+        }
+      } else {
+        player.imageFile = '/assets/http_player.jpg';
+      }
+    }
 
-          game.players.forEach(async player => {
-            if (player.imageFileId) {
-              try {
-                player.imageFile = await this.fileService.getUrl(game.id, player.imageFileId, TypeFile.PlayerImages).toPromise()
-              } catch (error) {
-                player.imageFile = '/assets/http_player.jpg';
-                console.log('Изображение не найдено');
-                console.log(error);
-              }
-            } else {
-              player.imageFile = '/assets/http_player.jpg';
-            }
-          })
+    for(let item of resultGame.scenes) {
+      switch (item.typesScene) {
+        case TypeSceneEnum.Answer: {
+          await this.fileService.setAnswerSceneFile(resultGame.id, item as Scene)
+          break
+        }
+        case TypeSceneEnum.Panorama: {
+          await this.fileService.setFilePanoramaFile(resultGame.id, item as Panorama)
+          break
+        }
+        case TypeSceneEnum.Puzzle: {
+          await this.fileService.setFilePuzzleFile(resultGame.id, item as Puzzle)
+          break
+        }
+      }
+    }
 
-          return game
-        }))
-      .pipe(first());
+    this._runGame$.next(resultGame)
+
+    return resultGame
   }
 
 }

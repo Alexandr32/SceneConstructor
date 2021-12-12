@@ -4,26 +4,6 @@
   </button>
 </div>
 
-<div>
-  <div>
-    <button class="w-10" (click)="topLeft()">Вверх-лево</button>
-    <button class="w-10" (click)="top()">Вверх</button>
-    <button class="w-10" (click)="topRight()">Вверх-право</button>
-  </div>
-  <div class="flex">
-    <button class="w-10" (click)="left()">Лево</button>
-    <button class="w-10" (click)="center()">Центр</button>
-    <button class="w-10" (click)="right()">Право</button>
-  </div>
-  <div>
-    <button class="w-10" (click)="bottomLeft()">Вниз-лево</button>
-    <button class="w-10" (click)="bottom()">Вниз</button>
-    <button class="w-10" (click)="bottomRight()">Вниз-право</button>
-  </div>
-</div>
-
-<div id="panoramaContainer"></div>
-
 <app-item-game
   *ngFor="let game of gameList; let i = index; trackBy: identify"
   [game]="game"

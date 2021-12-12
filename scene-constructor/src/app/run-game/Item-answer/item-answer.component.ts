@@ -21,7 +21,7 @@ export class ItemAnswerComponent implements OnInit {
 
   ngOnInit() {
 
-    this.answers$.subscribe(value => {
+    this.answers$?.subscribe(value => {
 
       const count = value.filter(item => item.value === this.answer.id)
 

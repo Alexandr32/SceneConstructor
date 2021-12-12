@@ -29,28 +29,6 @@ export class GameListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    console.log('pannellum', pannellum);
-
-
-    this.viewer = pannellum.viewer('panoramaContainer', {
-      "type": "equirectangular",
-      "panorama": "../assets/2.jpg",
-      "autoLoad": true,
-      "autoRotate": true,
-      'showFullscreenCtrl': false,
-      'autoRotateInactivityDelay': 1,
-      'minYaw': -160,
-      'maxYaw': 160,
-      'hfov': 160,
-      'minPitch': -80,
-      'maxPitch': 80,
-      'showZoomCtrl': false,
-      'keyboardZoom': false,
-      'mouseZoom': false,
-      'showControls': false
-
-    });
-
     const dialogSave = this.dialog.open(MessageDialogComponent, {
       data: 'Загрузка'
     });
@@ -102,46 +80,5 @@ export class GameListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.game$.unsubscribe()
-  }
-
-  top() {
-    this.viewer.setPitch(this.viewer.getPitch() + 20);
-  }
-
-  topLeft() {
-    this.top()
-    this.left()
-  }
-
-  topRight() {
-    this.top()
-    this.right()
-  }
-
-  center() {
-    this.viewer.setPitch(0);
-    this.viewer.setYaw(0);
-  }
-
-  bottom() {
-    this.viewer.setPitch(this.viewer.getPitch() - 20);
-  }
-
-  bottomLeft() {
-    this.bottom()
-    this.left()
-  }
-
-  bottomRight() {
-    this.bottom()
-    this.right()
-  }
-
-  left() {
-    this.viewer.setYaw(this.viewer.getYaw() - 50);
-  }
-
-  right() {
-    this.viewer.setYaw(this.viewer.getYaw() + 50);
   }
 }

@@ -1,0 +1,11 @@
+<app-run-game
+  [runGame$]="runGame$"
+></app-run-game>
+
+<ng-container *ngIf="runGame$ | async as rumGame">
+  <app-list-player-component
+  [players]="rumGame.players"
+  [gameId]="rumGame.id"
+  >
+  </app-list-player-component>
+</ng-container>

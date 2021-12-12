@@ -1,0 +1,40 @@
+<div class="game-run">
+
+  <div id="panoramaContainer"></div>
+
+  <div>
+    <div class="game-run__answers">
+      <app-item-answer
+        *ngFor="let item of scene?.answers"
+        [answer]="item"
+      ></app-item-answer>
+
+      <!--      <div class="game-run__description">-->
+      <!--        <div class="game-run__description-background blur"></div>-->
+
+      <!--        <div class="game-run__text-description">-->
+      <!--          {{ scene?.title }} <br />-->
+      <!--          {{ scene?.text }}-->
+      <!--        </div>-->
+      <!--      </div>-->
+    </div>
+  </div>
+
+  <div class="app-panorama-scene-component__btn-controls">
+    <div>
+      <button class="" (click)="topLeft()">Вверх-лево</button>
+      <button class="" (click)="top()">Вверх</button>
+      <button class="" (click)="topRight()">Вверх-право</button>
+    </div>
+    <div class="flex">
+      <button class="" (click)="left()">Лево</button>
+      <button class="" (click)="center()">Центр</button>
+      <button class="" (click)="right()">Право</button>
+    </div>
+    <div>
+      <button class="" (click)="bottomLeft()">Вниз-лево</button>
+      <button class="" (click)="bottom()">Вниз</button>
+      <button class="" (click)="bottomRight()">Вниз-право</button>
+    </div>
+  </div>
+</div>

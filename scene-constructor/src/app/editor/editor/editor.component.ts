@@ -407,7 +407,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     panorama.times = 0
 
 
-    const answers1 = new Answer(this.fireStore.createId(), 'Next scene', 0, panorama);
+    const answers1 = new Answer(this.fireStore.createId(), 'Следующая сцена', 0, panorama);
 
     panorama.answers = [answers1];
 
@@ -425,7 +425,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     panorama.coordinate.y = param === 'top' ? 0 : this.canvas.nativeElement.height - 350;
     panorama.coordinate.x = 0;
 
-    const answers1 = new Answer(this.fireStore.createId(), 'Next scene', 0, panorama);
+    const answers1 = new Answer(this.fireStore.createId(), 'Следующая сцена', 0, panorama);
 
     panorama.answers = [answers1];
 

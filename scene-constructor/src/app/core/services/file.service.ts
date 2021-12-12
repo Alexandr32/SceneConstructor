@@ -169,8 +169,7 @@ export class FileService {
 
     const resultLink: FileLink[] = []
 
-    mediaFileList.forEach(async (item) => {
-
+    for(let item of mediaFileList) {
       const folderName = `SourceStore/${gameId}/${typeFile.toString()}/${item.id}`
 
       const ref = this.storage.ref(folderName);
@@ -179,7 +178,7 @@ export class FileService {
       const fileLink = new FileLink(item.id, item.nameFile, url)
 
       resultLink.push(fileLink)
-    })
+    }
 
     return resultLink
   }
@@ -206,7 +205,7 @@ export class FileService {
 
     if (mediaFile.typeFile === TypeFile.PuzzleImages) {
 
-      for (var i = 1; i <= 9; i++) {
+      for (let i = 1; i <= 9; i++) {
         const pathSubFile = `SourceStore/${mediaFile.gameId}/${mediaFile.typeFile.toString()}/${mediaFile.id}/${i}`
 
         try {
