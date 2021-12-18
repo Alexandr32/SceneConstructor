@@ -11,6 +11,7 @@ import {TypeFile} from 'src/app/editor/models/type-file.model';
 import {RunGame} from '../models/other-models/run-game.model';
 import {IBaseSceneRunGame} from '../models/other-models/base-scene-run-game.model';
 import {StateService} from "../services/state.service";
+import {ScenesListComponent} from "../settings-run-game/scenes-list/scenes-list.component";
 
 @Component({
   selector: 'app-run-game',
@@ -50,6 +51,11 @@ export class RunGameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+
+    // this.scenesListComponent.selectedScene.subscribe(value => {
+    //   this.selectScene = this.scenesMap.get(value.id)
+    // })
+
     //console.log('ngOnDestroy');
   }
 
@@ -202,4 +208,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
     audio.play();
   }
 
+  selectedScene(scene: IBaseSceneRunGame) {
+    this.selectScene = this.scenesMap.get(scene.id)
+  }
 }

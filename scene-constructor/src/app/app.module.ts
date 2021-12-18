@@ -28,6 +28,7 @@ import { SelectMediaFileDialogComponent } from './editor/dialogs/select-media-fi
 import { EditPanoramaDialogComponent } from './editor/dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
 import { EditPuzzleDialogComponent } from './editor/dialogs/edit-puzzle-dialog/edit-puzzle-dialog.component';
 import {VideoComponent} from "./run-game/answer-scene-component/video/video.component";
+import {ScenesListComponent} from "./run-game/settings-run-game/scenes-list/scenes-list.component";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,7 @@ import {VideoComponent} from "./run-game/answer-scene-component/video/video.comp
     ItemGameComponent,
     BaseEditSceneDialogComponent,
     EditPanoramaDialogComponent,
-    EditPuzzleDialogComponent
+    EditPuzzleDialogComponent,
   ],
   imports: [
     FormsModule,

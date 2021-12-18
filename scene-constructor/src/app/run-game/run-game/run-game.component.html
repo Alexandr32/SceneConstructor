@@ -1,23 +1,31 @@
 <ng-container [ngSwitch]="selectScene?.typesScene">
   <ng-container *ngSwitchCase="'Answer'">
-      <app-answer-scene-component
-        [scene]="selectScene"
-      ></app-answer-scene-component>
+    <app-answer-scene-component
+      [scene]="selectScene"
+    ></app-answer-scene-component>
   </ng-container>
 
   <ng-container *ngSwitchCase="'Panorama'">
-      <app-panorama-scene-component
-        [scene]="selectScene">
-      </app-panorama-scene-component>
+    <app-panorama-scene-component
+      [scene]="selectScene">
+    </app-panorama-scene-component>
   </ng-container>
 
   <ng-container *ngSwitchCase="'Puzzle'">
-      <app-puzzle-scene-component
-        [scene]="selectScene">
-      </app-puzzle-scene-component>
+    <app-puzzle-scene-component
+      [scene]="selectScene">
+    </app-puzzle-scene-component>
   </ng-container>
 </ng-container>
 
 <div class="settings-run-game__settings">
-  <app-settings-run-game></app-settings-run-game>
+  <app-settings-run-game
+    [runGame$]="runGame$"
+    (selectedScene)="selectedScene($event)"
+  >
+
+  </app-settings-run-game>
 </div>
+
+
+

@@ -14,6 +14,7 @@ import { PanoramaSceneComponentComponent } from './panorama-scene-component/pano
 import { PuzzleSceneComponentComponent } from './puzzle-scene-component/puzzle-scene-component.component';
 import { VideoComponent } from './answer-scene-component/video/video.component';
 import {RefDirective} from "../core/directive/ref.directive";
+import { ScenesListComponent } from './settings-run-game/scenes-list/scenes-list.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {RefDirective} from "../core/directive/ref.directive";
     PanoramaSceneComponentComponent,
     PuzzleSceneComponentComponent,
     VideoComponent,
-    RefDirective
+    RefDirective,
+    ScenesListComponent
   ],
   imports: [
     CommonModule,
