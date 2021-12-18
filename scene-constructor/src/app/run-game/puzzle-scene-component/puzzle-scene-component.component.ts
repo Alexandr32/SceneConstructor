@@ -10,7 +10,7 @@ import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.mode
 export class PuzzleSceneComponentComponent implements OnInit {
 
   @Input()
-  scene: PuzzleRunGame | IBaseSceneRunGame | undefined
+  scene: PuzzleRunGame | IBaseSceneRunGame | any | undefined
 
   constructor() { }
 
