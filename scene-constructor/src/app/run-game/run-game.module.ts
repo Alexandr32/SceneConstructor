@@ -12,6 +12,8 @@ import { SettingsRunGameComponent } from './settings-run-game/settings-run-game.
 import { AnswerSceneComponentComponent } from './answer-scene-component/answer-scene-component.component';
 import { PanoramaSceneComponentComponent } from './panorama-scene-component/panorama-scene-component.component';
 import { PuzzleSceneComponentComponent } from './puzzle-scene-component/puzzle-scene-component.component';
+import { VideoComponent } from './answer-scene-component/video/video.component';
+import {RefDirective} from "../core/directive/ref.directive";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { PuzzleSceneComponentComponent } from './puzzle-scene-component/puzzle-s
     SettingsRunGameComponent,
     AnswerSceneComponentComponent,
     PanoramaSceneComponentComponent,
-    PuzzleSceneComponentComponent
+    PuzzleSceneComponentComponent,
+    VideoComponent,
+    RefDirective
   ],
   imports: [
     CommonModule,

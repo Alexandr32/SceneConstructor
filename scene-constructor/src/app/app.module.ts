@@ -27,6 +27,7 @@ import { EditPlayerDialogComponent } from './editor/dialogs/edit-player-dialog/e
 import { SelectMediaFileDialogComponent } from './editor/dialogs/select-media-file-dialog/select-media-file-dialog.component';
 import { EditPanoramaDialogComponent } from './editor/dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
 import { EditPuzzleDialogComponent } from './editor/dialogs/edit-puzzle-dialog/edit-puzzle-dialog.component';
+import {VideoComponent} from "./run-game/answer-scene-component/video/video.component";
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { EditPuzzleDialogComponent } from './editor/dialogs/edit-puzzle-dialog/e
     RunGameModule
   ],
   providers: [],
+  entryComponents: [VideoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

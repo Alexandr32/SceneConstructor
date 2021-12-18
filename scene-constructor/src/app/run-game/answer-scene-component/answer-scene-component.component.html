@@ -5,19 +5,22 @@
     alt="image"
   />
 
-  <ng-container *ngIf="scene?.videoFile">
-    <video
-      #videoPlayer
-      id="video"
-      preload="auto"
-      autoplay="true"
-      loop="true"
-      muted="muted"
-      controls
-    >
-      <source [src]="scene?.videoFile" type="video/mp4" />
-    </video>
-  </ng-container>
+  <ng-template appRef></ng-template>
+
+<!--  <app-video #videoPlayer [src]="scene?.videoFile"></app-video>-->
+
+<!--  <ng-container *ngIf="scene?.videoFile">-->
+<!--    <video-->
+<!--      id="video"-->
+<!--      preload="auto"-->
+<!--      autoplay="true"-->
+<!--      loop="true"-->
+<!--      muted="muted"-->
+<!--      controls-->
+<!--    >-->
+<!--      <source [src]="scene?.videoFile" type="video/mp4" />-->
+<!--    </video>-->
+<!--  </ng-container>-->
 
   <div>
     <div class="game-run__answers">

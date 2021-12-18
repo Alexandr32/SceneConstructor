@@ -67,7 +67,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
     this.stateService.getStateGame(this.gameId).subscribe(state => {
       this.selectScene = this.scenesMap.get(state.currentSceneId)
 
-      console.log('getStateGame:', state.currentSceneId)
+      console.log('getStateGame:', this.selectScene)
     })
 
     // this.route.data.subscribe(data => {
