@@ -1,11 +1,21 @@
-<ng-container *ngIf="runGame$ | async as runGame">
-<!--  <app-answer-scene-component-->
-<!--    [scene]="runGame?.scenes[0]"-->
-<!--  ></app-answer-scene-component>-->
+<ng-container [ngSwitch]="selectScene?.typesScene">
+  <ng-container *ngSwitchCase="'Answer'">
+      <app-answer-scene-component
+        [scene]="selectScene"
+      ></app-answer-scene-component>
+  </ng-container>
 
-  <app-panorama-scene-component
-    [scene]="runGame?.scenes[1]">
-  </app-panorama-scene-component>
+  <ng-container *ngSwitchCase="'Panorama'">
+      <app-panorama-scene-component
+        [scene]="selectScene">
+      </app-panorama-scene-component>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'Puzzle'">
+      <app-puzzle-scene-component
+        [scene]="selectScene">
+      </app-puzzle-scene-component>
+  </ng-container>
 </ng-container>
 
 <div class="settings-run-game__settings">

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PanoramaRunGame} from "../models/other-models/scenes.models";
+import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 
 declare let pannellum: any;
 
@@ -10,8 +11,10 @@ declare let pannellum: any;
 })
 export class PanoramaSceneComponentComponent implements OnInit {
 
+  // редактор кода не умеет определять что PanoramaRunGame реализует IBaseSceneRunGame
+  // any, позволяет исправить это
   @Input()
-  scene: PanoramaRunGame | undefined
+  scene: PanoramaRunGame | IBaseSceneRunGame | any |  undefined
 
   viewer: any
 
@@ -22,7 +25,7 @@ export class PanoramaSceneComponentComponent implements OnInit {
 
     this.viewer = pannellum.viewer('panoramaContainer', {
       "type": "equirectangular",
-      "panorama": this.scene.imageFile,
+      "panorama": this.scene?.imageFile,
       "autoLoad": true,
       "autoRotate": true,
       'showFullscreenCtrl': false,

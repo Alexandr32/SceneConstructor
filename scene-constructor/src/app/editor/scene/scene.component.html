@@ -32,10 +32,10 @@
     </div>
 
     <div class="flex scene__control-height">
-      <div *ngIf="scene.typesScene === 'Answer'">
-        <ng-container *ngTemplateOutlet="sceneType; context: scene">
-        </ng-container>
-      </div>
+<!--      <div *ngIf="scene.typesScene === 'Answer'">-->
+<!--        <ng-container *ngTemplateOutlet="sceneType; context: scene">-->
+<!--        </ng-container>-->
+<!--      </div>-->
 
       <ng-container [ngSwitch]="scene.typesScene">
         <ng-container *ngSwitchCase="'Answer'">

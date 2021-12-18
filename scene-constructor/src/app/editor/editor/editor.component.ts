@@ -20,6 +20,7 @@ import { EditSceneDialogComponent } from '../dialogs/edit-scene-dialog/edit-scen
 import { EditPlayerDialogComponent } from '../dialogs/edit-player-dialog/edit-player-dialog.component';
 import { EditPanoramaDialogComponent } from '../dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
 import { EditPuzzleDialogComponent } from '../dialogs/edit-puzzle-dialog/edit-puzzle-dialog.component';
+import {StateService} from "../../run-game/services/state.service";
 
 @Component({
   selector: 'app-editor',
@@ -61,6 +62,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     private fireStore: AngularFirestore,
     private firestoreServiceService: FirestoreService,
     private runGameService: RunGameService,
+    private stateService: StateService,
     private route: ActivatedRoute,
     private router: Router) {
   }
@@ -330,6 +332,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     await this.runGameService.saveNewGame(this.game)
+    await this.stateService.saveNewStateGame(this.game)
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run', this.game.id])

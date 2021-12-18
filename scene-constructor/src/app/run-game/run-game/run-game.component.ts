@@ -1,15 +1,16 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { RunGameService } from 'src/app/run-game/services/run-game.service';
-import { FirestoreService } from 'src/app/editor/services/firestore.service';
-import { AnswerRunGame } from "src/app/run-game/models/other-models/answer.model";
-import { Player } from 'src/app/core/models/player.model';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { first, timeout } from 'rxjs/operators';
-import { TypeFile } from 'src/app/editor/models/type-file.model';
-import { RunGame } from '../models/other-models/run-game.model';
-import { IBaseSceneRunGame } from '../models/other-models/base-scene-run-game.model';
+import {ActivatedRoute} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {RunGameService} from 'src/app/run-game/services/run-game.service';
+import {FirestoreService} from 'src/app/editor/services/firestore.service';
+import {AnswerRunGame} from "src/app/run-game/models/other-models/answer.model";
+import {Player} from 'src/app/core/models/player.model';
+import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {first, timeout} from 'rxjs/operators';
+import {TypeFile} from 'src/app/editor/models/type-file.model';
+import {RunGame} from '../models/other-models/run-game.model';
+import {IBaseSceneRunGame} from '../models/other-models/base-scene-run-game.model';
+import {StateService} from "../services/state.service";
 
 @Component({
   selector: 'app-run-game',
@@ -21,30 +22,30 @@ export class RunGameComponent implements OnInit, OnDestroy {
   @Input()
   runGame$: Observable<RunGame>
 
-  title: string
+  //title: string
 
-  private scenes: Map<string, IBaseSceneRunGame> = new Map<string, IBaseSceneRunGame>()
+  private scenesMap: Map<string, IBaseSceneRunGame> = new Map<string, IBaseSceneRunGame>()
 
-  url = 'assets/scene.jpg'
+  selectScene: IBaseSceneRunGame
 
-  isShowListPlayers: boolean = false
+  //url = 'assets/scene.jpg'
+
+  //isShowListPlayers: boolean = false
 
   //selectScene: Scene
 
   videoSources: string[] = [];
-  players: string[] = []
+  //players: string[] = []
 
-  gameId: string
+  private gameId: string
 
-  answers$: BehaviorSubject<{ id: string, value: string }[]> = new BehaviorSubject([])
+  //answers$: BehaviorSubject<{ id: string, value: string }[]> = new BehaviorSubject([])
 
   constructor(private route: ActivatedRoute,
-    private dialog: MatDialog,
-    private runGameService: RunGameService,
-    private firestoreService: FirestoreService) {
-
-
-
+              private dialog: MatDialog,
+              private runGameService: RunGameService,
+              private stateService: StateService,
+              private firestoreService: FirestoreService) {
 
   }
 
@@ -52,14 +53,22 @@ export class RunGameComponent implements OnInit, OnDestroy {
     //console.log('ngOnDestroy');
   }
 
-  static count = 0
+  //static count = 0
 
   async ngOnInit() {
 
-    // this.runGame$.subscribe(item => {
-    //   console.log('item:', item)
-    // })
+    this.runGame$.subscribe(game => {
+      this.gameId = game.id
+      this.scenesMap = game.scenesMap
 
+      console.log(this.scenesMap)
+    })
+
+    this.stateService.getStateGame(this.gameId).subscribe(state => {
+      this.selectScene = this.scenesMap.get(state.currentSceneId)
+
+      console.log('getStateGame:', state.currentSceneId)
+    })
 
     // this.route.data.subscribe(data => {
     //   this.runGame = data.runGame

@@ -6,6 +6,7 @@ import { RunGameService } from 'src/app/run-game/services/run-game.service';
 import { Player } from '../../../core/models/player.model';
 import { FileService } from 'src/app/core/services/file.service';
 import { IBaseSceneRunGame } from '../../models/other-models/base-scene-run-game.model';
+import {StateService} from "../../services/state.service";
 
 @Component({
   selector: 'app-player',
@@ -20,7 +21,7 @@ export class PlayerComponent implements OnInit {
   @Input()
   gameId: string
 
-  private scenes: IBaseSceneRunGame[]
+  private scenesMap: Map<string, IBaseSceneRunGame>
   currentScene: IBaseSceneRunGame
 
   player: Player
@@ -29,19 +30,30 @@ export class PlayerComponent implements OnInit {
 
   constructor(
     private runGameService: RunGameService,
+    private stateService: StateService,
     private firestoreService: FirestoreService,
     private fileService: FileService) {
 
     //console.log('constructor')
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    // const runGame = await this.runGameService.runGame$.toPromise()
+    // this.scenesMap = runGame.scenesMap
+    // if(!this.player) {
+    //   this.player = runGame.players.find(item => item.id === this.playerId)
+    // }
 
     this.runGameService.runGame$.subscribe(runGame => {
-      this.scenes = runGame.scenes
+      this.scenesMap = runGame.scenesMap
       if(!this.player) {
         this.player = runGame.players.find(item => item.id === this.playerId)
       }
+    })
+
+    this.stateService.getStateGame(this.gameId).subscribe(state => {
+      this.scenesMap.get(state.currentSceneId)
     })
 
     //const game = await this.runGameService.runGame$
@@ -85,6 +97,6 @@ export class PlayerComponent implements OnInit {
   }
 
   async selectAnswer(answer: AnswerRunGame) {
-    await this.runGameService.saveSelectAnswerStateGame(this.gameId, this.player, answer)
+    await this.stateService.saveSelectAnswerStateGame(this.gameId, this.player, answer)
   }
 }

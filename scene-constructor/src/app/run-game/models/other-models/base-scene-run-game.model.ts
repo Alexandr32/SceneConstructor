@@ -1,6 +1,7 @@
 import { FileLink } from "src/app/core/models/file-link.model.ts";
 import { TypeSceneEnum } from "src/app/core/models/type-scene.enum";
 import { AnswerRunGame } from "./answer.model";
+import {any} from "codelyzer/util/function";
 
 export interface IBaseSceneRunGame {
   id: string

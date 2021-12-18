@@ -25,6 +25,7 @@ export class MainRunGameComponentComponent implements OnInit {
 
     this.runGame$.subscribe(runGame => {
       this.players = runGame.players
+      console.log('runGame:', runGame)
       console.log('MainRunGame:', runGame.players)
     })
   }

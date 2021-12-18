@@ -1,0 +1,51 @@
+<!--<div class="game-run">-->
+<div class="game-run height-full">
+<!--  <img *ngIf="!scene?.videoFile"-->
+<!--       id="image"-->
+<!--       [src]="scene?.imageFile"-->
+<!--       alt="image"-->
+<!--  />-->
+
+  <div>
+    <video
+      id="video"
+      preload="auto"
+      autoplay="true"
+      loop="true"
+      muted="muted"
+    >
+      <source src="assets/video-cyber.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <div class="position-absolute flex justify-content-center puzzle-scene__grid-puzzle">
+    <div class="grid-puzzle m-10">
+      <div *ngFor="let item of scene.scenePartsPuzzleImages">
+        <div
+          class="grid-item cursor-default"
+        >
+          <div *ngIf="item.value">
+            <img class="width-full height-full" [src]="item.value.src" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div>
+    <div class="game-run__answers">
+
+      <div class="game-run__description">
+        <div class="game-run__description-background blur"></div>
+
+        <div class="game-run__text-description">
+          {{ scene?.title }} <br />
+          {{ scene?.text }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

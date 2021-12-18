@@ -11,6 +11,7 @@ import { ListPlayerComponentComponent } from './list-player-component/list-playe
 import { SettingsRunGameComponent } from './settings-run-game/settings-run-game.component';
 import { AnswerSceneComponentComponent } from './answer-scene-component/answer-scene-component.component';
 import { PanoramaSceneComponentComponent } from './panorama-scene-component/panorama-scene-component.component';
+import { PuzzleSceneComponentComponent } from './puzzle-scene-component/puzzle-scene-component.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { PanoramaSceneComponentComponent } from './panorama-scene-component/pano
     ListPlayerComponentComponent,
     SettingsRunGameComponent,
     AnswerSceneComponentComponent,
-    PanoramaSceneComponentComponent
+    PanoramaSceneComponentComponent,
+    PuzzleSceneComponentComponent
   ],
   imports: [
     CommonModule,
