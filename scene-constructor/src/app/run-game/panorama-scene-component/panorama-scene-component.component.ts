@@ -14,7 +14,7 @@ export class PanoramaSceneComponentComponent implements OnInit {
   // редактор кода не умеет определять что PanoramaRunGame реализует IBaseSceneRunGame
   // any, позволяет исправить это
   @Input()
-  scene: PanoramaRunGame | IBaseSceneRunGame | any |  undefined
+  scene: PanoramaRunGame | IBaseSceneRunGame | any | undefined
 
   viewer: any
 
@@ -22,8 +22,7 @@ export class PanoramaSceneComponentComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-
+  private showPanorama() {
     this.viewer = pannellum.viewer('panoramaContainer', {
       "type": "equirectangular",
       "panorama": this.scene?.imageFile,
@@ -45,8 +44,12 @@ export class PanoramaSceneComponentComponent implements OnInit {
     });
   }
 
+  ngOnInit() {
+    this.showPanorama()
+  }
+
   top() {
-    //this.viewer.setPitch(this.viewer.getPitch() + 20);
+    this.viewer.setPitch(this.viewer.getPitch() + 20);
   }
 
   topLeft() {
@@ -60,12 +63,12 @@ export class PanoramaSceneComponentComponent implements OnInit {
   }
 
   center() {
-    // this.viewer.setPitch(0);
-    // this.viewer.setYaw(0);
+    this.viewer.setPitch(0);
+    this.viewer.setYaw(0);
   }
 
   bottom() {
-    //this.viewer.setPitch(this.viewer.getPitch() - 20);
+    this.viewer.setPitch(this.viewer.getPitch() - 20);
   }
 
   bottomLeft() {
@@ -79,11 +82,15 @@ export class PanoramaSceneComponentComponent implements OnInit {
   }
 
   left() {
-    //this.viewer.setYaw(this.viewer.getYaw() - 50);
+    this.viewer.setYaw(this.viewer.getYaw() - 50);
   }
 
   right() {
-    //this.viewer.setYaw(this.viewer.getYaw() + 50);
+    this.viewer.setYaw(this.viewer.getYaw() + 50);
+  }
+
+  ngOnDestroy(): void {
+    this.viewer.destroy()
   }
 
 }
