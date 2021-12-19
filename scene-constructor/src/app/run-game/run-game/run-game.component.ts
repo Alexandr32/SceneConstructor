@@ -230,7 +230,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
     if (this.selectScene.typesScene == TypeSceneEnum.Panorama) {
       this.refDirective.containerRef?.clear()
       const panoramaSceneComponentComponent = this.componentFactoryResolver.resolveComponentFactory(PanoramaSceneComponentComponent)
-      const component =this.refDirective.containerRef.createComponent(panoramaSceneComponentComponent)
+      const component = this.refDirective.containerRef.createComponent(panoramaSceneComponentComponent)
       component.instance.scene = this.selectScene
       component.instance.showPanorama()
     }
@@ -238,7 +238,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
     if (this.selectScene.typesScene == TypeSceneEnum.Puzzle) {
       this.refDirective.containerRef?.clear()
       const puzzleSceneComponentComponent = this.componentFactoryResolver.resolveComponentFactory(PuzzleSceneComponentComponent)
-      const component =this.refDirective.containerRef.createComponent(puzzleSceneComponentComponent)
+      const component = this.refDirective.containerRef.createComponent(puzzleSceneComponentComponent)
       component.instance.scene = this.selectScene
     }
   }
