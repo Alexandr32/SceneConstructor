@@ -1,17 +1,17 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ComponentFactoryResolver, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {RunGameService} from 'src/app/run-game/services/run-game.service';
 import {FirestoreService} from 'src/app/editor/services/firestore.service';
-import {AnswerRunGame} from "src/app/run-game/models/other-models/answer.model";
-import {Player} from 'src/app/core/models/player.model';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
-import {first, timeout} from 'rxjs/operators';
-import {TypeFile} from 'src/app/editor/models/type-file.model';
+import {Observable} from 'rxjs';
 import {RunGame} from '../models/other-models/run-game.model';
 import {IBaseSceneRunGame} from '../models/other-models/base-scene-run-game.model';
 import {StateService} from "../services/state.service";
-import {ScenesListComponent} from "../settings-run-game/scenes-list/scenes-list.component";
+import {RefDirective} from "../../core/directive/ref.directive";
+import {TypeSceneEnum} from "../../core/models/type-scene.enum";
+import {AnswerSceneComponentComponent} from "../answer-scene-component/answer-scene-component.component";
+import {PanoramaSceneComponentComponent} from "../panorama-scene-component/panorama-scene-component.component";
+import {PuzzleSceneComponentComponent} from "../puzzle-scene-component/puzzle-scene-component.component";
 
 @Component({
   selector: 'app-run-game',
@@ -22,6 +22,8 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
   @Input()
   runGame$: Observable<RunGame>
+
+  @ViewChild(RefDirective) refDirective: RefDirective | undefined;
 
   //title: string
 
@@ -46,7 +48,8 @@ export class RunGameComponent implements OnInit, OnDestroy {
               private dialog: MatDialog,
               private runGameService: RunGameService,
               private stateService: StateService,
-              private firestoreService: FirestoreService) {
+              private firestoreService: FirestoreService,
+              private componentFactoryResolver: ComponentFactoryResolver) {
 
   }
 
@@ -71,8 +74,9 @@ export class RunGameComponent implements OnInit, OnDestroy {
     })
 
     this.stateService.getStateGame(this.gameId).subscribe(state => {
-      this.selectScene = this.scenesMap.get(state.currentSceneId)
 
+      this.selectScene = this.scenesMap.get(state.currentSceneId)
+      this.setScene()
       console.log('getStateGame:', this.selectScene)
     })
 
@@ -209,6 +213,32 @@ export class RunGameComponent implements OnInit, OnDestroy {
   }
 
   selectedScene(scene: IBaseSceneRunGame) {
+    console.log('selectedScene')
     this.selectScene = this.scenesMap.get(scene.id)
+    this.setScene()
+  }
+
+  private setScene() {
+
+    if (this.selectScene.typesScene == TypeSceneEnum.Answer) {
+      this.refDirective.containerRef?.clear()
+      const answerSceneComponent = this.componentFactoryResolver.resolveComponentFactory(AnswerSceneComponentComponent)
+      const component = this.refDirective.containerRef.createComponent(answerSceneComponent)
+      component.instance.scene = this.selectScene
+    }
+
+    if (this.selectScene.typesScene == TypeSceneEnum.Panorama) {
+      this.refDirective.containerRef?.clear()
+      const panoramaSceneComponentComponent = this.componentFactoryResolver.resolveComponentFactory(PanoramaSceneComponentComponent)
+      const component =this.refDirective.containerRef.createComponent(panoramaSceneComponentComponent)
+      component.instance.scene = this.selectScene
+    }
+
+    if (this.selectScene.typesScene == TypeSceneEnum.Puzzle) {
+      this.refDirective.containerRef?.clear()
+      const puzzleSceneComponentComponent = this.componentFactoryResolver.resolveComponentFactory(PuzzleSceneComponentComponent)
+      const component =this.refDirective.containerRef.createComponent(puzzleSceneComponentComponent)
+      component.instance.scene = this.selectScene
+    }
   }
 }
