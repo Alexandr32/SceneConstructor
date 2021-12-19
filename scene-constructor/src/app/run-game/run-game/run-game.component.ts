@@ -232,6 +232,7 @@ export class RunGameComponent implements OnInit, OnDestroy {
       const panoramaSceneComponentComponent = this.componentFactoryResolver.resolveComponentFactory(PanoramaSceneComponentComponent)
       const component =this.refDirective.containerRef.createComponent(panoramaSceneComponentComponent)
       component.instance.scene = this.selectScene
+      component.instance.showPanorama()
     }
 
     if (this.selectScene.typesScene == TypeSceneEnum.Puzzle) {
