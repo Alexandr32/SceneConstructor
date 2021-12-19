@@ -19,6 +19,7 @@ export class PanoramaSceneComponentComponent implements OnInit {
   viewer: any
 
   constructor() {
+
   }
 
   ngOnInit() {
@@ -38,13 +39,14 @@ export class PanoramaSceneComponentComponent implements OnInit {
       'showZoomCtrl': false,
       'keyboardZoom': false,
       'mouseZoom': false,
-      'showControls': false
+      'showControls': false,
+      'dynamic': false
 
     });
   }
 
   top() {
-    this.viewer.setPitch(this.viewer.getPitch() + 20);
+    //this.viewer.setPitch(this.viewer.getPitch() + 20);
   }
 
   topLeft() {
@@ -58,12 +60,12 @@ export class PanoramaSceneComponentComponent implements OnInit {
   }
 
   center() {
-    this.viewer.setPitch(0);
-    this.viewer.setYaw(0);
+    // this.viewer.setPitch(0);
+    // this.viewer.setYaw(0);
   }
 
   bottom() {
-    this.viewer.setPitch(this.viewer.getPitch() - 20);
+    //this.viewer.setPitch(this.viewer.getPitch() - 20);
   }
 
   bottomLeft() {
@@ -77,11 +79,11 @@ export class PanoramaSceneComponentComponent implements OnInit {
   }
 
   left() {
-    this.viewer.setYaw(this.viewer.getYaw() - 50);
+    //this.viewer.setYaw(this.viewer.getYaw() - 50);
   }
 
   right() {
-    this.viewer.setYaw(this.viewer.getYaw() + 50);
+    //this.viewer.setYaw(this.viewer.getYaw() + 50);
   }
 
 }
