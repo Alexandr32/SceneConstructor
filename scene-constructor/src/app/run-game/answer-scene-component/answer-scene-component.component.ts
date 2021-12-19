@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, ComponentFactoryResolver, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {SceneRunGame} from "../models/other-models/scenes.models";
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 import {RefDirective} from "../../core/directive/ref.directive";
@@ -11,6 +20,8 @@ import {VideoComponent} from "./video/video.component";
 })
 export class AnswerSceneComponentComponent implements OnInit, AfterViewInit {
 
+  showImage: boolean = false
+  showVideo: boolean = false
 
   @ViewChild(RefDirective) refDirective: RefDirective | undefined;
 
@@ -18,10 +29,10 @@ export class AnswerSceneComponentComponent implements OnInit, AfterViewInit {
 
   @Input()
   set scene(value: SceneRunGame | IBaseSceneRunGame | any | undefined) {
+
     this._scene = value
-    if(this.refDirective && this.scene.videoFile) {
-      this.createVideo()
-    }
+    this.showVideo = !!value.videoFile
+    this.showImage = !!value.imageFile && !this.showVideo
   }
 
   get scene(): SceneRunGame | IBaseSceneRunGame | any | undefined {
