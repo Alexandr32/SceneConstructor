@@ -11,10 +11,19 @@ declare let pannellum: any;
 })
 export class PanoramaSceneComponentComponent implements OnInit {
 
+  private _scene: PanoramaRunGame | IBaseSceneRunGame | any | undefined
+
   // редактор кода не умеет определять что PanoramaRunGame реализует IBaseSceneRunGame
   // any, позволяет исправить это
   @Input()
-  scene: PanoramaRunGame | IBaseSceneRunGame | any | undefined
+  set scene(value: PanoramaRunGame | IBaseSceneRunGame | any | undefined) {
+    this._scene = value
+    this.showPanorama()
+  }
+
+  get scene(): PanoramaRunGame | IBaseSceneRunGame | any | undefined {
+    return this._scene
+  }
 
   viewer: any
 
@@ -26,6 +35,11 @@ export class PanoramaSceneComponentComponent implements OnInit {
 
     // setTimeout костыль для бага с обновлением
     setTimeout(() => {
+
+      if(this.viewer) {
+        this.viewer?.destroy()
+      }
+
       this.viewer = pannellum.viewer('panoramaContainer', {
         "type": "equirectangular",
         "panorama": this.scene?.imageFile,
@@ -49,6 +63,7 @@ export class PanoramaSceneComponentComponent implements OnInit {
   }
 
   ngOnInit() {
+    //this.showPanorama()
   }
 
   top() {
@@ -93,7 +108,7 @@ export class PanoramaSceneComponentComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.viewer.destroy()
+    this.viewer?.destroy()
   }
 
 }

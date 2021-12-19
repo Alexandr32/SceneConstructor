@@ -30,9 +30,29 @@ export class AnswerSceneComponentComponent implements OnInit, AfterViewInit {
   @Input()
   set scene(value: SceneRunGame | IBaseSceneRunGame | any | undefined) {
 
-    this._scene = value
+
     this.showVideo = !!value.videoFile
     this.showImage = !!value.imageFile && !this.showVideo
+
+    setTimeout(() => {
+
+      if(value.videoFile) {
+
+        if(this._scene?.videoFile) {
+          if(this._scene.videoFile != value.videoFile) {
+            this.createVideo(value.videoFile)
+          }
+        } else {
+          this.createVideo(value.videoFile)
+        }
+
+      } else {
+        this.refDirective?.containerRef?.clear()
+      }
+
+      this._scene = value
+
+    }, 0);
   }
 
   get scene(): SceneRunGame | IBaseSceneRunGame | any | undefined {
@@ -48,21 +68,22 @@ export class AnswerSceneComponentComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
 
       if(this.scene.videoFile) {
-        this.createVideo()
+        this.createVideo(this.scene.videoFile)
       }
 
     }, 0);
   }
 
-  private createVideo() {
+  private createVideo(srcVideo: string) {
 
     if(!this.refDirective) {
       return
     }
 
+    this.refDirective.containerRef.clear()
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(VideoComponent)
     const component = this.refDirective.containerRef.createComponent(componentFactory)
-    component.instance.src = this.scene.videoFile
+    component.instance.src = srcVideo
     component.instance.play()
   }
 

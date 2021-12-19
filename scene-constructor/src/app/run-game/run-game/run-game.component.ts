@@ -1,4 +1,13 @@
-import {Component, ComponentFactoryResolver, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ComponentFactory,
+  ComponentFactoryResolver,
+  ComponentRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {RunGameService} from 'src/app/run-game/services/run-game.service';
@@ -218,28 +227,38 @@ export class RunGameComponent implements OnInit, OnDestroy {
     this.setScene()
   }
 
+  componentRef: ComponentRef<AnswerSceneComponentComponent>
+  resolveComponentFactory: ComponentFactory<AnswerSceneComponentComponent>
+
   private setScene() {
 
-    if (this.selectScene.typesScene == TypeSceneEnum.Answer) {
-      this.refDirective.containerRef?.clear()
-      const answerSceneComponent = this.componentFactoryResolver.resolveComponentFactory(AnswerSceneComponentComponent)
-      const component = this.refDirective.containerRef.createComponent(answerSceneComponent)
-      component.instance.scene = this.selectScene
-    }
-
-    if (this.selectScene.typesScene == TypeSceneEnum.Panorama) {
-      this.refDirective.containerRef?.clear()
-      const panoramaSceneComponentComponent = this.componentFactoryResolver.resolveComponentFactory(PanoramaSceneComponentComponent)
-      const component = this.refDirective.containerRef.createComponent(panoramaSceneComponentComponent)
-      component.instance.scene = this.selectScene
-      component.instance.showPanorama()
-    }
-
-    if (this.selectScene.typesScene == TypeSceneEnum.Puzzle) {
-      this.refDirective.containerRef?.clear()
-      const puzzleSceneComponentComponent = this.componentFactoryResolver.resolveComponentFactory(PuzzleSceneComponentComponent)
-      const component = this.refDirective.containerRef.createComponent(puzzleSceneComponentComponent)
-      component.instance.scene = this.selectScene
-    }
+    // if (this.selectScene.typesScene == TypeSceneEnum.Answer) {
+    //   this.refDirective.containerRef?.clear()
+    //
+    //   if (!this.resolveComponentFactory) {
+    //    this.resolveComponentFactory = this.componentFactoryResolver.resolveComponentFactory(AnswerSceneComponentComponent)
+    //   }
+    //
+    //   if(!this.componentRef) {
+    //     this.componentRef = this.refDirective.containerRef.createComponent(this.resolveComponentFactory)
+    //   }
+    //
+    //   this.componentRef.instance.scene = this.selectScene
+    // }
+    //
+    // if (this.selectScene.typesScene == TypeSceneEnum.Panorama) {
+    //   this.refDirective.containerRef?.clear()
+    //   const panoramaSceneComponentComponent = this.componentFactoryResolver.resolveComponentFactory(PanoramaSceneComponentComponent)
+    //   const component = this.refDirective.containerRef.createComponent(panoramaSceneComponentComponent)
+    //   component.instance.scene = this.selectScene
+    //   component.instance.showPanorama()
+    // }
+    //
+    // if (this.selectScene.typesScene == TypeSceneEnum.Puzzle) {
+    //   this.refDirective.containerRef?.clear()
+    //   const puzzleSceneComponentComponent = this.componentFactoryResolver.resolveComponentFactory(PuzzleSceneComponentComponent)
+    //   const component = this.refDirective.containerRef.createComponent(puzzleSceneComponentComponent)
+    //   component.instance.scene = this.selectScene
+    // }
   }
 }
