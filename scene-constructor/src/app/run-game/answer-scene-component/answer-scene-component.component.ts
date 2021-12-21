@@ -23,7 +23,7 @@ export class AnswerSceneComponentComponent implements OnInit, AfterViewInit {
   showImage: boolean = false
   showVideo: boolean = false
 
-  @ViewChild(RefDirective) refDirective: RefDirective | undefined;
+  videoFile: string
 
   private _scene: SceneRunGame
 
@@ -34,57 +34,21 @@ export class AnswerSceneComponentComponent implements OnInit, AfterViewInit {
     this.showVideo = !!value.videoFile
     this.showImage = !!value.imageFile && !this.showVideo
 
-    setTimeout(() => {
+    this.videoFile = value.videoFile
 
-      if(value.videoFile) {
-
-        if(this._scene?.videoFile) {
-          if(this._scene.videoFile != value.videoFile) {
-            this.createVideo(value.videoFile)
-          }
-        } else {
-          this.createVideo(value.videoFile)
-        }
-
-      } else {
-        this.refDirective?.containerRef?.clear()
-      }
-
-      this._scene = value
-
-    }, 0);
+    this._scene = value
   }
 
   get scene(): SceneRunGame | IBaseSceneRunGame | any | undefined {
     return this._scene
   }
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-
-      if(this.scene.videoFile) {
-        this.createVideo(this.scene.videoFile)
-      }
-
-    }, 0);
-  }
-
-  private createVideo(srcVideo: string) {
-
-    if(!this.refDirective) {
-      return
-    }
-
-    this.refDirective.containerRef.clear()
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(VideoComponent)
-    const component = this.refDirective.containerRef.createComponent(componentFactory)
-    component.instance.src = srcVideo
-    component.instance.play()
   }
 
 }
