@@ -33,37 +33,32 @@ export class PanoramaSceneComponentComponent implements OnInit {
 
   showPanorama() {
 
-    // setTimeout костыль для бага с обновлением
-    setTimeout(() => {
+    if(this.viewer) {
+      this.viewer?.destroy()
+    }
 
-      if(this.viewer) {
-        this.viewer?.destroy()
-      }
-
-      this.viewer = pannellum.viewer('panoramaContainer', {
-        "type": "equirectangular",
-        "panorama": this.scene?.imageFile,
-        "autoLoad": true,
-        "autoRotate": true,
-        'showFullscreenCtrl': false,
-        'autoRotateInactivityDelay': 1,
-        'minYaw': -160,
-        'maxYaw': 160,
-        'hfov': 160,
-        'minPitch': -80,
-        'maxPitch': 80,
-        'showZoomCtrl': false,
-        'keyboardZoom': false,
-        'mouseZoom': false,
-        'showControls': false,
-        'dynamic': false
-      });
-
-    }, 0)
+    this.viewer = pannellum.viewer('panoramaContainer', {
+      "type": "equirectangular",
+      "panorama": this.scene?.imageFile,
+      "autoLoad": true,
+      "autoRotate": true,
+      'showFullscreenCtrl': false,
+      'autoRotateInactivityDelay': 1,
+      'minYaw': -160,
+      'maxYaw': 160,
+      'hfov': 160,
+      'minPitch': -80,
+      'maxPitch': 80,
+      'showZoomCtrl': false,
+      'keyboardZoom': false,
+      'mouseZoom': false,
+      'showControls': false,
+      'dynamic': false
+    });
   }
 
   ngOnInit() {
-    //this.showPanorama()
+
   }
 
   top() {
