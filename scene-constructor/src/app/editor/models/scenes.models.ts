@@ -9,6 +9,16 @@ import { TypeSceneEnum } from '../../core/models/type-scene.enum';
 import { PartsPuzzleImage } from '../../core/models/parts-puzzle-image.model';
 import { ItemPartsPuzzleImage } from '../../core/models/item-parts-puzzle-image.model';
 
+export interface IBackgroundScene {
+  // Изображение фона
+  imageFileId: string
+  imageFile: string
+
+  // Видео фона
+  videoFileId: string
+  videoFile: string
+}
+
 export interface IBaseScene extends Entity {
   id: string
   title: string
@@ -29,7 +39,7 @@ export interface IBaseScene extends Entity {
   maxCountAnswers: number
 }
 
-export class Puzzle implements IBaseScene {
+export class Puzzle implements IBaseScene, IBackgroundScene {
   id: string
   title: string
   text: string
@@ -47,8 +57,9 @@ export class Puzzle implements IBaseScene {
   answers: Answer[] = []
   maxCountAnswers: number = 1
 
-  imageFileId: string
-  imageFile: string
+  // Изображение пазла
+  imagePuzzleFileId: string
+  imagePuzzleFile: string
 
   // Список доступных изображений
   partsPuzzleImages: PartsPuzzleImage[]
@@ -58,6 +69,14 @@ export class Puzzle implements IBaseScene {
 
   // Изображения для игроков
   playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = []
+
+  // Изображение фона
+  imageFileId: string
+  imageFile: string
+
+  // Видео фона
+  videoFileId: string
+  videoFile: string
 }
 
 export class Panorama implements IBaseScene {
@@ -86,7 +105,7 @@ export class Panorama implements IBaseScene {
   times: number // В мс
 }
 
-export class Scene implements IBaseScene {
+export class Scene implements IBaseScene, IBackgroundScene {
   id: string
   title: string
   text: string

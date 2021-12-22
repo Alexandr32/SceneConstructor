@@ -158,7 +158,7 @@ export class RunGameMapper {
       title: puzzle.title,
       text: puzzle.text,
       soundFileId: puzzle.soundFileLink ? puzzle.soundFileLink.id : '',
-      imageFileId: puzzle.imageFileId,
+      imagePuzzleFileId: puzzle.imagePuzzleFileId,
 
       answers: puzzle.answers.map(item => {
         return RunGameMapper.answerToAnswerFirebase(item)
@@ -181,7 +181,7 @@ export class RunGameMapper {
     puzzle.soundFileId = puzzleFirebase.soundFileId
     puzzle.typesScene = puzzleFirebase.typesScene
     puzzle.isStartGame = puzzleFirebase.isStartGame
-    puzzle.imageFileId = puzzleFirebase.imageFileId
+    puzzle.imageFileId = puzzleFirebase.imagePuzzleFileId
 
     puzzle.players = puzzleFirebase.players
 

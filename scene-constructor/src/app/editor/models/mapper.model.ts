@@ -186,18 +186,23 @@ export class Mapper {
       }
     })
 
-
     return {
       id: puzzle.id,
       title: puzzle.title,
       text: puzzle.text,
       soundFileId: puzzle.soundFileLink ? puzzle.soundFileLink.id : '',
       color: puzzle.color,
+
+      imagePuzzleFileId: puzzle.imagePuzzleFileId ? puzzle.imagePuzzleFileId : '',
+
+      imageFileId: puzzle.imageFileId ? puzzle.imageFileId : '',
+      videoFileId: puzzle.videoFileId ? puzzle.videoFileId : '',
+
       coordinate: {
         x: puzzle.coordinate.x,
         y: puzzle.coordinate.y
       },
-      imageFileId: puzzle.imageFileId,
+
       answers: puzzle.answers.map(item => {
         return Mapper.answerToAnswerFirebase(item)
       }),
@@ -219,7 +224,10 @@ export class Mapper {
     puzzle.soundFileId = puzzleFirebase.soundFileId
     puzzle.typesScene = puzzleFirebase.typesScene
     puzzle.isStartGame = puzzleFirebase.isStartGame
+    puzzle.imagePuzzleFileId = puzzleFirebase.imagePuzzleFileId
+
     puzzle.imageFileId = puzzleFirebase.imageFileId
+    puzzle.videoFileId = puzzleFirebase.videoFileId
 
     const coordinate = new Coordinate()
     coordinate.x = puzzleFirebase.coordinate.x

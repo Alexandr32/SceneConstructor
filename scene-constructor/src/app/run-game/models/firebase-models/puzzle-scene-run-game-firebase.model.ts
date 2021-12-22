@@ -10,7 +10,7 @@ export interface PuzzleSceneRunGameFirebase extends IBaseSceneRunGameFirebase {
   title: string;
   text: string;
   soundFileId: string;
-  imageFileId: string;
+  imagePuzzleFileId: string;
   answers: AnswerRunGameFirebase[];
   players: string[];
   isStartGame: boolean;

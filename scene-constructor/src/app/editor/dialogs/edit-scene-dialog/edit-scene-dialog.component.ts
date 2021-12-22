@@ -213,7 +213,7 @@ export class EditSceneDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  changeTextAnswer(answer: Answer, event: { target: { value: string; }; }) {
+  changeTextAnswer(answer: Answer, event: { target: { value: string; } | any; }) {
     const value = event.target.value
     answer.text = value
 

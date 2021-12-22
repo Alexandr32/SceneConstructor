@@ -1,13 +1,22 @@
 import { FileLink } from "./file-link.model.ts";
 import { ItemPartsPuzzleImage } from "./item-parts-puzzle-image.model";
 import { PartsPuzzleImage } from "./parts-puzzle-image.model";
+import {IBackgroundScene} from "../../editor/models/scenes.models";
 
-export interface IPuzzleCore {
+export interface IPuzzleCore extends IBackgroundScene {
   soundFileId: string
 
-  imageFileId: string
+  // Изображение пазла
+  imagePuzzleFileId: string
+  imagePuzzleFile: string
 
+  // Изображение фона
+  imageFileId: string
   imageFile: string
+
+  // Видео фона
+  videoFileId: string
+  videoFile: string
 
   soundFileLink: FileLink
 

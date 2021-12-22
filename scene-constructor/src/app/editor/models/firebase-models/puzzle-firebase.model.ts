@@ -8,7 +8,11 @@ export interface PuzzleFirebase extends IBaseSceneFirebase {
   text: string
   soundFileId: string
   color: string
+  imagePuzzleFileId: string
+  // Изображение фона
   imageFileId: string
+  // Видео фона
+  videoFileId: string
 
   coordinate: {
     x: number,

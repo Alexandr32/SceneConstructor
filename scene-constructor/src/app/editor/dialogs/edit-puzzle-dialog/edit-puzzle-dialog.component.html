@@ -11,6 +11,45 @@
 >
   Редактирование головоломки
 
+<!-- Фоновые изображение сцены -->
+  <hr class="m-t-25" />
+
+  <div class="m-t-25">
+    <div class="edit-scene-dialog__image-box" *ngIf="imgFile && imgFile !== ''">
+      <img
+        class="edit-scene-dialog__image-box__image"
+        [src]="imgFile"
+        [alt]="form.value.name"
+      />
+    </div>
+
+    <div>
+      <button (click)="openSelectBackgroundImageFileDialog()">Выбрать изображение</button>
+      <button (click)="onClickDeletedBackgroundImg()">Удалить</button>
+    </div>
+  </div>
+
+  <hr class="m-t-25" />
+
+  <div class="">
+    <div *ngFor="let video of videoSources">
+      <video
+        controls
+        class="edit-scene-dialog__image-box__image"
+        disabled="true"
+        (click)="toggleVideo()"
+      >
+        <source [src]="video" type="video/mp4" />
+        Browser not supported
+      </video>
+    </div>
+
+    <div>
+      <button (click)="openSelectBackgroundVideoFileDialog()">Выбрать видео</button>
+      <button (click)="onClickBackgroundDeletedVideo()">Убрать видео</button>
+    </div>
+  </div>
+
   <div class="m-t-25">
     <div>
       <button (click)="openSelectImageFileDialog()">Выбрать изображение</button>
@@ -21,11 +60,11 @@
   <div class="flex">
     <div
       class="edit-scene-dialog__puzzle-image-box m-10"
-      *ngIf="imgFile && imgFile !== ''"
+      *ngIf="imgPuzzleFile && imgPuzzleFile !== ''"
     >
       <img
         class="edit-scene-dialog__puzzle-image-box"
-        [src]="imgFile"
+        [src]="imgPuzzleFile"
         [alt]="form.value.name"
       />
     </div>

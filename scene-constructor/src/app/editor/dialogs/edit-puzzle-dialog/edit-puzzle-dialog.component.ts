@@ -31,8 +31,16 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   formAnswer: FormGroup = new FormGroup({})
 
+  imgPuzzleFile: string;
+  imagePuzzleFileId: string
+
+  // Фоновое изображение
   imgFile: string;
   imageFileId: string
+
+  // Фоновое видео
+  videoSources: string[] = [];
+  videoFileId: string
 
   answers: Answer[] = [];
 
@@ -72,13 +80,23 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   ngOnInit() {
 
-    if (this.data.scene.imageFile) {
-      this.imgFile = this.data.scene.imageFile;
-      this.imageFileId = this.data.scene.imageFileId
+    if (this.data.scene.imagePuzzleFile) {
+      this.imgPuzzleFile = this.data.scene.imagePuzzleFile;
+      this.imagePuzzleFileId = this.data.scene.imagePuzzleFileId
     }
 
     if (this.data.scene.soundFileLink) {
       this.soundFileLink = this.data.scene.soundFileLink
+    }
+
+    if (this.data.scene.imageFile) {
+      this.videoSources.push(this.data.scene.videoFile);
+      this.videoFileId = this.data.scene.videoFileId
+    }
+
+    if (this.data.scene.imageFile) {
+      this.imgFile = this.data.scene.imageFile;
+      this.imageFileId = this.data.scene.imageFileId
     }
 
     if (this.data.scene.scenePartsPuzzleImages) {
@@ -128,15 +146,24 @@ export class EditPuzzleDialogComponent implements OnInit {
 
     this.data.scene.answers = this.answers;
 
+    this.data.scene.imagePuzzleFileId = this.imagePuzzleFileId;
+    this.data.scene.imagePuzzleFile = this.imgPuzzleFile;
+
+    this.data.scene.scenePartsPuzzleImages = this.scenePartsPuzzleImages
+
+    this.data.scene.playerScenePartsPuzzleImages = this.playerScenePartsPuzzleImages
+
     this.data.scene.imageFileId = this.imageFileId;
     this.data.scene.imageFile = this.imgFile;
 
-    // Изображение на экране сцены
-    this.data.scene.scenePartsPuzzleImages = this.scenePartsPuzzleImages
+    this.data.scene.videoFileId = this.videoFileId
+    if (this.videoFileId) {
+      this.data.scene.videoFile = this.videoSources[0];
+    } else {
+      this.data.scene.videoFile = ''
+    }
 
-
-
-    this.data.scene.playerScenePartsPuzzleImages = this.playerScenePartsPuzzleImages
+    console.log(this.data.scene)
 
     this.saveEvent.emit(this.data);
     this.dialogRef.close();
@@ -153,8 +180,8 @@ export class EditPuzzleDialogComponent implements OnInit {
 
       this.resetParts()
 
-      this.imgFile = item.url
-      this.imageFileId = item.id
+      this.imgPuzzleFile = item.url
+      this.imagePuzzleFileId = item.id
 
       const partsPuzzleImages: ItemPartsPuzzleImage[] = []
 
@@ -182,8 +209,8 @@ export class EditPuzzleDialogComponent implements OnInit {
   }
 
   onClickDeletedImg() {
-    this.imgFile = '';
-    this.imageFileId = ''
+    this.imgPuzzleFile = '';
+    this.imagePuzzleFileId = ''
 
     this.resetParts()
 
@@ -347,4 +374,44 @@ export class EditPuzzleDialogComponent implements OnInit {
     })
   }
 
+  openSelectBackgroundImageFileDialog() {
+    const dialogRef = this.dialog.open(SelectMediaFileDialogComponent, {
+      data: { gameId: this.gameId }
+    });
+
+    dialogRef.componentInstance.isShowImagesScene = true
+
+    dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
+      this.imgFile = item.url
+      this.imageFileId = item.id
+    });
+  }
+
+  onClickDeletedBackgroundImg() {
+    this.imgFile = '';
+    this.imageFileId = ''
+  }
+
+  openSelectBackgroundVideoFileDialog() {
+    const dialogRef = this.dialog.open(SelectMediaFileDialogComponent, {
+      data: { gameId: this.gameId }
+    });
+
+    dialogRef.componentInstance.isShowVideosScene = true
+
+    dialogRef.componentInstance.selectItem.subscribe((item: FileLink) => {
+      this.videoSources = []
+      this.videoSources.push(item.url)
+      this.videoFileId = item.id
+    });
+  }
+
+  onClickBackgroundDeletedVideo() {
+    this.videoFileId = ''
+    this.videoSources = []
+  }
+
+  toggleVideo() {
+    //this.videoPlayer.nativeElement.play()
+  }
 }

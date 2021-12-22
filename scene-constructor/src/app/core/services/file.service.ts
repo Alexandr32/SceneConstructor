@@ -83,6 +83,29 @@ export class FileService {
 
   async setFilePuzzleFile(gameId: string, scene: IPuzzleCore) {
 
+    if (scene.imagePuzzleFileId) {
+      try {
+        scene.imagePuzzleFile = await this.getUrl(gameId, scene.imagePuzzleFileId, TypeFile.PuzzleImages).toPromise()
+      } catch (error) {
+        scene.imagePuzzleFile = '/assets/http_puzzle.jpg';
+        console.error('Изображение не найдено');
+        console.error(error);
+      }
+    } else {
+      scene.imagePuzzleFile = '/assets/http_puzzle.jpg';
+    }
+
+    if (scene.videoFileId) {
+      try {
+        scene.videoFile = await this.getUrl(gameId, scene.videoFileId, TypeFile.SceneVideos).toPromise()
+      } catch (error) {
+        scene.videoFile = '';
+        console.error(error);
+      }
+    } else {
+      scene.videoFile = '';
+    }
+
     if (scene.imageFileId) {
       try {
         scene.imageFile = await this.getUrl(gameId, scene.imageFileId, TypeFile.PuzzleImages).toPromise()
@@ -103,7 +126,8 @@ export class FileService {
     }
 
     for (const item of scene.partsPuzzleImages) {
-      const src = await this.getUplPartsPuzzleImages(gameId, scene.imageFileId, item).toPromise()
+
+      const src = await this.getUplPartsPuzzleImages(gameId, scene.imagePuzzleFileId, item).toPromise()
       item.src = src
 
       const scenePartsPuzzleImages = scene.scenePartsPuzzleImages
