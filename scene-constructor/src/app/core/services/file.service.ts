@@ -108,7 +108,7 @@ export class FileService {
 
     if (scene.imageFileId) {
       try {
-        scene.imageFile = await this.getUrl(gameId, scene.imageFileId, TypeFile.PuzzleImages).toPromise()
+        scene.imageFile = await this.getUrl(gameId, scene.imageFileId, TypeFile.SceneImages).toPromise()
       } catch (error) {
         scene.imageFile = '/assets/http_puzzle.jpg';
         console.error('Изображение не найдено');
