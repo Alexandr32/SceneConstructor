@@ -38,8 +38,9 @@ export class StateService {
       .pipe(
         map((doc) => {
           const stateGame = doc.payload.data() as StateGame;
-          stateGame.id = doc.payload.id;
-          return new StateGame(stateGame.id, stateGame.currentSceneId);
+          const newStateGame = new StateGame(doc.payload.id, stateGame.currentSceneId)
+          newStateGame.answer = stateGame.answer
+          return newStateGame;
         })
       )
   }
@@ -83,21 +84,18 @@ export class StateService {
    */
   async saveSelectAnswerStateGame(stateGameId: string, player: Player, selectAnswer: AnswerRunGame) {
 
-    // const state = await this.getStateGame(stateGameId)
-    //   .pipe(first()).toPromise()
-    //
-    // const statePlayer = [...state.answer.map(item => {
-    //   return item
-    // })]
-    //
-    // const answer = statePlayer.find((item) => player.id === item.id)
-    // answer.value = selectAnswer.id
-    //
-    // state.answer = statePlayer
-    //
-    // await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
-    //   .doc(stateGameId)
-    //   .update({...state})
+    const state = await this.getStateGame(stateGameId)
+      .pipe(first()).toPromise()
+
+    if(!state.answer) {
+      state.answer = []
+    }
+
+    state.answer.push({playerId: player.id, answerId: selectAnswer.id})
+
+    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
+      .doc(stateGameId)
+      .update({...state})
   }
 
   async resetDataStateGame(stateGameId: string, currentScene: IBaseEditScene) {
