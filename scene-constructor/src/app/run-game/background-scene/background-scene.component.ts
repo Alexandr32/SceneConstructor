@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {PuzzleRunGame} from "../models/other-models/scenes.models";
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 import {SceneRunGame} from "../models/other-models/scene-run-game";
+import {Observable} from "rxjs";
+import {StateGame} from "../models/other-models/state-game.model";
 
 @Component({
   selector: 'app-background-scene',
@@ -31,6 +33,9 @@ export class BackgroundSceneComponent implements OnInit {
   get scene(): SceneRunGame | PuzzleRunGame | IBaseSceneRunGame | any | undefined {
     return this._scene
   }
+
+  @Input()
+  state$: Observable<StateGame>
 
   constructor() { }
 

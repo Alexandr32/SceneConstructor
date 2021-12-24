@@ -8,11 +8,13 @@ import {
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {RunGameService} from 'src/app/run-game/services/run-game.service';
-import {Observable} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import {RunGame} from '../models/other-models/run-game.model';
 import {IBaseSceneRunGame} from '../models/other-models/base-scene-run-game.model';
 import {StateService} from "../services/state.service";
 import {RefDirective} from "../../core/directive/ref.directive";
+import {StateGame} from "../models/other-models/state-game.model";
+import {flatMap, map} from "rxjs/operators";
 
 @Component({
   selector: 'app-run-game',
@@ -32,6 +34,8 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
   private gameId: string
 
+  state$: Observable<StateGame>
+
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
               private runGameService: RunGameService,
@@ -50,16 +54,44 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
 
-    this.runGame$.subscribe(game => {
-      this.gameId = game.id
-      this.scenesMap = game.scenesMap
+    // this.runGame$
+    //   .subscribe(game => {
+    //   this.gameId = game.id
+    //   this.scenesMap = game.scenesMap
+    //   this.selectScene = game.scenes.find(i => i.isStartGame)
+    // })
 
-      this.selectScene = game.scenes.find(i => i.isStartGame)
+    this.state$ = this.runGame$.pipe(
+      flatMap(game => {
+        this.gameId = game.id
+        this.scenesMap = game.scenesMap
+        this.selectScene = game.scenes.find(i => i.isStartGame)
+        return this.stateService.getStateGame(game.id)
+      })
+    )
+
+    this.state$.subscribe(state => {
+        this.selectScene = this.scenesMap.get(state.currentSceneId)
     })
 
-    this.stateService.getStateGame(this.gameId).subscribe(state => {
-      this.selectScene = this.scenesMap.get(state.currentSceneId)
-    })
+    //const state$ = this.stateService.getStateGame(this.gameId)
+
+    // combineLatest(this.runGame$, state$, (runGame, state) => ({runGame, state}))
+    //   .pipe(
+    //     map(pair => {
+    //       this.selectScene = this.scenesMap.get(pair.state.currentSceneId)
+    //
+    //       return
+    //
+    //       // this.name = pair.name;
+    //       // this.document = pair.document;
+    //       // this.showForm();
+    //     })
+    //   )
+
+    // this.stateService.getStateGame(this.gameId).subscribe(state => {
+    //   this.selectScene = this.scenesMap.get(state.currentSceneId)
+    // })
 
     // this.route.data.subscribe(data => {
     //   this.runGame = data.runGame

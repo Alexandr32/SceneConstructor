@@ -2,12 +2,14 @@
 
   <ng-container *ngSwitchCase="'Panorama'">
     <app-panorama-scene-component
+      [state$]="state$"
       [scene]="selectScene">
     </app-panorama-scene-component>
   </ng-container>
 
   <ng-container *ngSwitchDefault>
     <app-background-scene
+      [state$]="state$"
       [scene]="selectScene">
     </app-background-scene>
   </ng-container>

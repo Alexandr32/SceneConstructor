@@ -22,12 +22,14 @@
     <ng-container [ngSwitch]="scene.typesScene">
       <ng-container *ngSwitchCase="'Answer'">
         <app-answer-scene-component
+          [state$]="state$"
           [scene]="scene"
         ></app-answer-scene-component>
       </ng-container>
 
       <ng-container *ngSwitchCase="'Puzzle'">
         <app-puzzle-scene-component
+          [state$]="state$"
           [scene]="scene">
         </app-puzzle-scene-component>
       </ng-container>

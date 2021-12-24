@@ -1,6 +1,8 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
+import {Observable} from "rxjs";
+import {StateGame} from "../models/other-models/state-game.model";
 
 declare let pannellum: any;
 
@@ -24,6 +26,9 @@ export class PanoramaSceneComponentComponent implements OnInit {
   get scene(): PanoramaRunGame | IBaseSceneRunGame | any | undefined {
     return this._scene
   }
+
+  @Input()
+  state$: Observable<StateGame>
 
   viewer: any
 

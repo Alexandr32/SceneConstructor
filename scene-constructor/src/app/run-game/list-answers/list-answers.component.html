@@ -1,4 +1,6 @@
 <app-item-answer
   *ngFor="let item of scene?.answers"
   [answer]="item"
+  [state$]="state$"
+  [players]="scene?.players"
 ></app-item-answer>

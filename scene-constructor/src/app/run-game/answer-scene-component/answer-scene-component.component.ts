@@ -6,6 +6,8 @@ import {
 } from '@angular/core';
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 import {SceneRunGame} from "../models/other-models/scene-run-game";
+import {Observable} from "rxjs";
+import {StateGame} from "../models/other-models/state-game.model";
 
 @Component({
   selector: 'app-answer-scene-component',
@@ -36,6 +38,9 @@ export class AnswerSceneComponentComponent implements OnInit, AfterViewInit {
   get scene(): SceneRunGame | IBaseSceneRunGame | any | undefined {
     return this._scene
   }
+
+  @Input()
+  state$: Observable<StateGame>
 
   constructor() { }
 
