@@ -17,6 +17,7 @@ import {RefDirective} from "../core/directive/ref.directive";
 import { ScenesListComponent } from './settings-run-game/scenes-list/scenes-list.component';
 import { BackgroundSceneComponent } from './background-scene/background-scene.component';
 import { ListAnswersComponent } from './list-answers/list-answers.component';
+import { DescriptionSceneComponent } from './description-scene/description-scene.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ListAnswersComponent } from './list-answers/list-answers.component';
     ScenesListComponent,
     BackgroundSceneComponent,
     ListAnswersComponent,
+    DescriptionSceneComponent,
   ],
   imports: [
     CommonModule,
