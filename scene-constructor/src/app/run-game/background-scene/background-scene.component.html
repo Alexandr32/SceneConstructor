@@ -1,39 +1,38 @@
-<div class="game-run">
+<img *ngIf="showImage"
+     id="image"
+     [src]="scene?.imageFile"
+     alt="image"
+/>
 
-  <img *ngIf="showImage"
-       id="image"
-       [src]="scene?.imageFile"
-       alt="image"
-  />
+<video
+  *ngIf="showVideo"
+  #videoPlayer
+  id="video"
+  autoplay="autoplay"
+  loop="true"
+  muted="muted"
+  [src]="videoFile"
+>
+  <source type="video/mp4"/>
+</video>
 
-  <video
-    *ngIf="showVideo"
-    #videoPlayer
-    id="video"
-    autoplay="autoplay"
-    loop="true"
-    muted="muted"
-    [src]="videoFile"
-  >
-    <source type="video/mp4"/>
-  </video>
+<div class="run-game__background__container">
 
-<!--  <div>-->
-<!--    <div class="game-run__answers">-->
-<!--      <app-item-answer-->
-<!--        *ngFor="let item of scene?.answers"-->
-<!--        [answer]="item"-->
-<!--      ></app-item-answer>-->
+  <div class="flex-grow-1 m-l-100 m-r-100 m-b-50">
+    <ng-container [ngSwitch]="scene.typesScene">
+      <ng-container *ngSwitchCase="'Answer'">
+        <app-answer-scene-component
+          [scene]="scene"
+        ></app-answer-scene-component>
+      </ng-container>
 
-<!--      <div class="game-run__description">-->
-<!--        <div class="game-run__description-background blur"></div>-->
+      <ng-container *ngSwitchCase="'Puzzle'">
+        <app-puzzle-scene-component
+          [scene]="scene">
+        </app-puzzle-scene-component>
+      </ng-container>
+    </ng-container>
+  </div>
 
-<!--        <div class="game-run__text-description">-->
-<!--          {{ scene?.title }} <br />-->
-<!--          {{ scene?.text }}-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
 
-<!--  </div>-->
 </div>

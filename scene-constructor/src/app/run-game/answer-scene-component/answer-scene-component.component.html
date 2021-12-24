@@ -1,39 +1,14 @@
-<div class="game-run">
+<app-item-answer
+  *ngFor="let item of scene?.answers"
+  [answer]="item"
+></app-item-answer>
 
-  <img *ngIf="showImage"
-    id="image"
-    [src]="scene?.imageFile"
-    alt="image"
-  />
+<div class="game-run__description">
+  <div class="game-run__description-background blur"></div>
 
-  <video
-    *ngIf="showVideo"
-    #videoPlayer
-    id="video"
-    autoplay="autoplay"
-    loop="true"
-    muted="muted"
-    [src]="videoFile"
-  >
-    <source type="video/mp4"/>
-  </video>
-
-  <div>
-    <div class="game-run__answers">
-      <app-item-answer
-        *ngFor="let item of scene?.answers"
-        [answer]="item"
-      ></app-item-answer>
-
-      <div class="game-run__description">
-        <div class="game-run__description-background blur"></div>
-
-        <div class="game-run__text-description">
-          {{ scene?.title }} <br />
-          {{ scene?.text }}
-        </div>
-      </div>
-    </div>
-
+  <div class="game-run__text-description">
+    {{ scene?.title }} <br />
+    {{ scene?.text }}
   </div>
 </div>
+

@@ -1,17 +1,4 @@
-<!--<div class="game-run">-->
-<div class="game-run height-full">
-
-<!--  <div>-->
-<!--    <video-->
-<!--      id="video"-->
-<!--      preload="auto"-->
-<!--      autoplay="true"-->
-<!--      loop="true"-->
-<!--      muted="muted"-->
-<!--    >-->
-<!--      <source src="assets/video-cyber.mp4" type="video/mp4" />-->
-<!--    </video>-->
-<!--  </div>-->
+<div class="height-full">
 
   <div class="position-absolute flex justify-content-center puzzle-scene__grid-puzzle">
     <div class="grid-puzzle m-10">
@@ -27,20 +14,14 @@
     </div>
   </div>
 
-
-
   <div>
-    <div class="game-run__answers">
+    <div class="game-run__description">
+      <div class="game-run__description-background blur"></div>
 
-      <div class="game-run__description">
-        <div class="game-run__description-background blur"></div>
-
-        <div class="game-run__text-description">
-          {{ scene?.title }} <br />
-          {{ scene?.text }}
-        </div>
+      <div class="game-run__text-description">
+        {{ scene?.title }} <br />
+        {{ scene?.text }}
       </div>
     </div>
-
   </div>
 </div>

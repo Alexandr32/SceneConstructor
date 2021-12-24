@@ -1,16 +1,10 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
-  ElementRef,
   Input,
-  OnInit,
-  ViewChild
+  OnInit
 } from '@angular/core';
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
-import {RefDirective} from "../../core/directive/ref.directive";
-import {VideoComponent} from "./video/video.component";
 import {SceneRunGame} from "../models/other-models/scene-run-game";
 
 @Component({
