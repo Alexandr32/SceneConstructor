@@ -2,11 +2,9 @@
 
   <div id="panoramaContainer"></div>
 
-  <div class="flex-grow-1 m-l-100 m-r-100 m-b-50">
-    <app-item-answer
-      *ngFor="let item of scene?.answers"
-      [answer]="item"
-    ></app-item-answer>
+  <div class="flex-grow-1 m-l-200 m-r-200 m-b-50">
+
+    <app-list-answers [scene]="scene"></app-list-answers>
 
     <div class="game-run__description">
       <div class="game-run__description-background blur"></div>
