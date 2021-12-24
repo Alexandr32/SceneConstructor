@@ -1,9 +1,10 @@
 <div class="player-test">
-  <img class="player-test__image" [src]="player?.imageFile" alt="player" />
+  <img class="player-test__image" [src]="(player$ | async)?.imageFile" alt="player" />
   <div class="player-test__content">
-    <div class="player-test__name">{{ player?.name }}</div>
+    <div class="player-test__name">{{ (player$ | async)?.name }}</div>
+
     <button
-      *ngFor="let item of answers"
+      *ngFor="let item of (answers$ | async)"
       class="player-test__btn-answer"
       (click)="selectAnswer(item)"
     >

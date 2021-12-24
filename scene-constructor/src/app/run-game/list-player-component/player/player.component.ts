@@ -7,6 +7,8 @@ import { Player } from '../../../core/models/player.model';
 import { FileService } from 'src/app/core/services/file.service';
 import { IBaseSceneRunGame } from '../../models/other-models/base-scene-run-game.model';
 import {StateService} from "../../services/state.service";
+import {Observable, of, Subject} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-player',
@@ -22,11 +24,11 @@ export class PlayerComponent implements OnInit {
   gameId: string
 
   private scenesMap: Map<string, IBaseSceneRunGame>
-  currentScene: IBaseSceneRunGame
 
-  player: Player
+  player$: Observable<Player>
+  private player: Player
 
-  answers: AnswerRunGame[] = []
+  answers$: Observable<AnswerRunGame[]>
 
   constructor(
     private runGameService: RunGameService,
@@ -34,66 +36,18 @@ export class PlayerComponent implements OnInit {
     private firestoreService: FirestoreService,
     private fileService: FileService) {
 
-    //console.log('constructor')
   }
 
-  async ngOnInit() {
+  ngOnInit() {
 
-    // const runGame = await this.runGameService.runGame$.toPromise()
-    // this.scenesMap = runGame.scenesMap
-    // if(!this.player) {
-    //   this.player = runGame.players.find(item => item.id === this.playerId)
-    // }
+    const runGame$ = this.runGameService.runGame$
 
-    this.runGameService.runGame$.subscribe(runGame => {
-      this.scenesMap = runGame.scenesMap
-      if(!this.player) {
-        this.player = runGame.players.find(item => item.id === this.playerId)
-      }
-    })
-
-    this.stateService.getStateGame(this.gameId).subscribe(state => {
-      this.scenesMap.get(state.currentSceneId)
-    })
-
-    //const game = await this.runGameService.runGame$
-    //this.scenes = game.scenes
-
-    /*if(!this.player) {
-      this.player = game.players.find(item => item.id === this.playerId)
-
-      // try {
-      //   this.player.imageFile = await this.fileService
-      //     .getUrl(game.id, this.player.imageFileId, TypeFile.PlayerImages).toPromise()
-      // } catch (error) {
-      //   this.player.imageFile = 'assets/http_player.jpg'
-      // }
-    }*/
-
-    //console.log(this.player)
-
-    // this.runGameService.getStateGame(this.gameId)
-    //   // .pipe(
-    //   //   debounceTime(1000)
-    //   // )
-    //   .subscribe(stateGame => {
-    //     this.currentScene = this.scenes.find(f => f.id === stateGame.currentScene)
-    //
-    //     if (this.currentScene.players.includes(this.player.id)) {
-    //
-    //       const answer = stateGame.answer.find(i => i.id == this.player.id)
-    //
-    //       if (answer.value) {
-    //         this.answers = []
-    //       } else {
-    //         this.answers = this.currentScene.answers
-    //       }
-    //
-    //     } else {
-    //       this.answers = []
-    //     }
-    //
-    //   })
+    this.player$ = runGame$.pipe(
+      map(runGame => {
+        this.scenesMap = runGame.scenesMap
+        return runGame.players.find(item => item.id === this.playerId)
+      })
+    )
   }
 
   async selectAnswer(answer: AnswerRunGame) {
