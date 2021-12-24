@@ -15,6 +15,7 @@ import { PuzzleSceneComponentComponent } from './puzzle-scene-component/puzzle-s
 import { VideoComponent } from './answer-scene-component/video/video.component';
 import {RefDirective} from "../core/directive/ref.directive";
 import { ScenesListComponent } from './settings-run-game/scenes-list/scenes-list.component';
+import { BackgroundSceneComponent } from './background-scene/background-scene.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ScenesListComponent } from './settings-run-game/scenes-list/scenes-list
     PuzzleSceneComponentComponent,
     VideoComponent,
     RefDirective,
-    ScenesListComponent
+    ScenesListComponent,
+    BackgroundSceneComponent
   ],
   imports: [
     CommonModule,

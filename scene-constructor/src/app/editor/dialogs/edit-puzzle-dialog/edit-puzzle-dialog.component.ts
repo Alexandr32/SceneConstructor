@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Answer } from 'src/app/editor/models/answer.model';
 import { FileLink } from 'src/app/core/models/file-link.model.ts';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Puzzle } from 'src/app/editor/models/scenes.models';
+import { PuzzleEditScene } from 'src/app/editor/models/puzzle-edit-scene';
 import { Player } from 'src/app/core/models/player.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 import { PartsPuzzleImage } from 'src/app/core/models/parts-puzzle-image.model';
@@ -70,7 +70,7 @@ export class EditPuzzleDialogComponent implements OnInit {
     private fileService: FileService,
     @Inject(MAT_DIALOG_DATA) public data: {
       gameId: string,
-      scene: Puzzle,
+      scene: PuzzleEditScene,
       players: Player[]
     },
     public dialog: MatDialog) {

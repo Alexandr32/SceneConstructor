@@ -7,9 +7,9 @@ import {StateGame} from "../models/other-models/state-game.model";
 import {first, map} from "rxjs/operators";
 import {Player} from "../models/other-models/player.model";
 import {AnswerRunGame} from "../models/other-models/answer.model";
-import {IBaseScene} from "../../editor/models/scenes.models";
 import {Game as EditGame} from "../../editor/models/game.model";
 import {TypeScene} from "../../core/models/type-scene.enum";
+import {IBaseEditScene} from "../../editor/models/base-edit-scene.model";
 
 export interface StateGameFirebase {
   id: string,
@@ -100,7 +100,7 @@ export class StateService {
     //   .update({...state})
   }
 
-  async resetDataStateGame(stateGameId: string, currentScene: IBaseScene) {
+  async resetDataStateGame(stateGameId: string, currentScene: IBaseEditScene) {
     //const state = await this.getStateGame(stateGameId)
     //  .pipe(first()).toPromise()
 

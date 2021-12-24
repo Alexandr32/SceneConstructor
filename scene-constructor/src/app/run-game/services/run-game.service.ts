@@ -9,7 +9,7 @@ import {Player} from "../models/other-models/player.model";
 import {AnswerRunGame} from "../models/other-models/answer.model";
 import {TypeSceneEnum} from 'src/app/core/models/type-scene.enum';
 import {RunGameMapper} from '../run-game-mapper.model';
-import {IBaseScene, Panorama, Puzzle, Scene} from 'src/app/editor/models/scenes.models';
+import {PuzzleEditScene} from 'src/app/editor/models/puzzle-edit-scene';
 import {SceneAnswerRunGameFirebase} from '../models/firebase-models/scene-answer-run-game-firebase.model';
 import {PanoramaRunGameFirebase} from '../models/firebase-models/panorama-scene-run-game-firebase.model';
 import {PuzzleSceneRunGameFirebase} from '../models/firebase-models/puzzle-scene-run-game-firebase.model';
@@ -17,7 +17,12 @@ import {FileService} from 'src/app/core/services/file.service';
 import {TypeFile} from 'src/app/editor/models/type-file.model';
 import {RunGame} from '../models/other-models/run-game.model';
 import {IPanoramaCore} from "../../core/models/base-panorama.model";
-import {PanoramaRunGame, PuzzleRunGame, SceneRunGame} from "../models/other-models/scenes.models";
+import {PuzzleRunGame} from "../models/other-models/scenes.models";
+import {IBaseEditScene} from "../../editor/models/base-edit-scene.model";
+import {PanoramaEditScene} from "../../editor/models/panorama-edit-scene";
+import {SceneRunGame} from "../models/other-models/scene-run-game";
+import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
+import {SceneEditScene} from "../../editor/models/scene-edit-scene";
 
 @Injectable({
   providedIn: 'root'
@@ -56,13 +61,13 @@ export class RunGameService {
       const result = (): any => {
         switch (scene.typesScene) {
           case TypeSceneEnum.Answer: {
-            return RunGameMapper.sceneAnswerToSceneAnswerFirebase(scene as Scene)
+            return RunGameMapper.sceneAnswerToSceneAnswerFirebase(scene as SceneEditScene)
           }
           case TypeSceneEnum.Panorama: {
-            return RunGameMapper.panoramaToPanoramaFirebase((scene as Panorama))
+            return RunGameMapper.panoramaToPanoramaFirebase((scene as PanoramaEditScene))
           }
           case TypeSceneEnum.Puzzle: {
-            return RunGameMapper.puzzleToPuzzleFirebase((scene as Puzzle))
+            return RunGameMapper.puzzleToPuzzleFirebase((scene as PuzzleEditScene))
           }
         }
       }
@@ -117,7 +122,7 @@ export class RunGameService {
   }
 
 
-  async resetDataStateGame(stateGameId: string, currentScene: IBaseScene) {
+  async resetDataStateGame(stateGameId: string, currentScene: IBaseEditScene) {
     //const state = await this.getStateGame(stateGameId)
     //  .pipe(first()).toPromise()
 
@@ -227,7 +232,7 @@ export class RunGameService {
 
           const promiseImg = this.promiseAnswerImageScene(
             resultGame.id,
-            (item as Scene)
+            (item as SceneEditScene)
           )
           promiseList.push(promiseImg)
           // //
@@ -284,11 +289,23 @@ export class RunGameService {
 
   private async promisePuzzleImageScene(resultGameId: string, scene: PuzzleRunGame) {
 
+    if (scene.videoFileId) {
+
+      try {
+        scene.videoFile = await this.fileService
+          .getUrl(resultGameId, scene.videoFileId, TypeFile.SceneVideos)
+          .toPromise()
+      } catch (error) {
+        console.log('Видео не найдено');
+        console.log(error);
+      }
+    }
+
     if (scene.imageFileId) {
       try {
-        scene.imageFile = await this.fileService.getUrl(resultGameId, scene.imageFileId, TypeFile.PuzzleImages).toPromise()
+        scene.imageFile = await this.fileService.getUrl(resultGameId, scene.imageFileId, TypeFile.SceneImages).toPromise()
       } catch (error) {
-        scene.imageFile = '/assets/http_puzzle.jpg';
+        scene.imageFile = '/assets/http_scene.jpg';
         console.error('Изображение не найдено');
         console.error(error);
       }
@@ -304,7 +321,7 @@ export class RunGameService {
     // }
 
     for (const item of scene.partsPuzzleImages) {
-      const src = await this.fileService.getUplPartsPuzzleImages(resultGameId, scene.imageFileId, item).toPromise()
+      const src = await this.fileService.getUplPartsPuzzleImages(resultGameId, scene.imagePuzzleFileId, item).toPromise()
       item.src = src
 
       const scenePartsPuzzleImages = scene.scenePartsPuzzleImages
@@ -373,13 +390,17 @@ export class RunGameService {
 
   private async promiseAnswerImageScene(resultGameId: string, scene: SceneRunGame) {
 
-    try {
-      scene.imageFile = await this.fileService.getUrl(resultGameId, scene.imageFileId, TypeFile.SceneImages)
-        .toPromise()
-    } catch (error) {
+    if(scene.imageFile) {
+      try {
+        scene.imageFile = await this.fileService.getUrl(resultGameId, scene.imageFileId, TypeFile.SceneImages)
+          .toPromise()
+      } catch (error) {
+        scene.imageFile = '/assets/http_scene.jpg';
+        console.error('Изображение не найдено');
+        console.error(error);
+      }
+    } else {
       scene.imageFile = '/assets/http_scene.jpg';
-      console.error('Изображение не найдено');
-      console.error(error);
     }
 
 

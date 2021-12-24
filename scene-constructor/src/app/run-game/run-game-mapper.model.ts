@@ -1,14 +1,17 @@
 import { ItemPartsPuzzleImage } from "../core/models/item-parts-puzzle-image.model";
 import { PartsPuzzleImage } from "../core/models/parts-puzzle-image.model";
 import { Answer } from "../editor/models/answer.model";
-import { Puzzle, Scene } from "../editor/models/scenes.models";
+import { PuzzleEditScene } from "../editor/models/puzzle-edit-scene";
 import { AnswerRunGameFirebase } from "./models/firebase-models/answer-run-game-firebase.model";
 import { PanoramaRunGameFirebase } from "./models/firebase-models/panorama-scene-run-game-firebase.model";
 import { PuzzleSceneRunGameFirebase } from "./models/firebase-models/puzzle-scene-run-game-firebase.model";
 import { SceneAnswerRunGameFirebase } from "./models/firebase-models/scene-answer-run-game-firebase.model";
 import { AnswerRunGame } from "./models/other-models/answer.model";
 import { IBaseSceneRunGame } from "./models/other-models/base-scene-run-game.model";
-import { PanoramaRunGame, PuzzleRunGame, SceneRunGame } from "./models/other-models/scenes.models";
+import { PuzzleRunGame} from "./models/other-models/scenes.models";
+import {SceneRunGame} from "./models/other-models/scene-run-game";
+import {PanoramaRunGame} from "./models/other-models/panorama-run-game";
+import {SceneEditScene} from "../editor/models/scene-edit-scene";
 
 
 export class RunGameMapper {
@@ -33,7 +36,7 @@ export class RunGameMapper {
     )
   }
 
-  static sceneAnswerToSceneAnswerFirebase(scene: Scene): SceneAnswerRunGameFirebase {
+  static sceneAnswerToSceneAnswerFirebase(scene: SceneEditScene): SceneAnswerRunGameFirebase {
 
     return {
       id: scene.id,
@@ -122,7 +125,7 @@ export class RunGameMapper {
     return panorama
   }
 
-  static puzzleToPuzzleFirebase(puzzle: Puzzle): PuzzleSceneRunGameFirebase {
+  static puzzleToPuzzleFirebase(puzzle: PuzzleEditScene): PuzzleSceneRunGameFirebase {
 
     const playerScenePartsPuzzleImages: {
       playerId: string,
@@ -159,7 +162,10 @@ export class RunGameMapper {
       text: puzzle.text,
       soundFileId: puzzle.soundFileLink ? puzzle.soundFileLink.id : '',
       imagePuzzleFileId: puzzle.imagePuzzleFileId,
-
+      // Изображение фона
+      imageFileId: puzzle.imageFileId,
+      // Видео фона
+      videoFileId: puzzle.videoFileId,
       answers: puzzle.answers.map(item => {
         return RunGameMapper.answerToAnswerFirebase(item)
       }),
@@ -181,7 +187,10 @@ export class RunGameMapper {
     puzzle.soundFileId = puzzleFirebase.soundFileId
     puzzle.typesScene = puzzleFirebase.typesScene
     puzzle.isStartGame = puzzleFirebase.isStartGame
-    puzzle.imageFileId = puzzleFirebase.imagePuzzleFileId
+
+    puzzle.imagePuzzleFileId = puzzleFirebase.imagePuzzleFileId
+    puzzle.imageFileId = puzzleFirebase.imageFileId
+    puzzle.videoFileId = puzzleFirebase.videoFileId
 
     puzzle.players = puzzleFirebase.players
 

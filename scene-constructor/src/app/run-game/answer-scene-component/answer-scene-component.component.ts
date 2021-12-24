@@ -8,10 +8,10 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import {SceneRunGame} from "../models/other-models/scenes.models";
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 import {RefDirective} from "../../core/directive/ref.directive";
 import {VideoComponent} from "./video/video.component";
+import {SceneRunGame} from "../models/other-models/scene-run-game";
 
 @Component({
   selector: 'app-answer-scene-component',

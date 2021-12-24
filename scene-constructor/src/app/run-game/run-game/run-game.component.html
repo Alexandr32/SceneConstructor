@@ -1,9 +1,9 @@
 <ng-container [ngSwitch]="selectScene?.typesScene">
-  <ng-container *ngSwitchCase="'Answer'">
-    <app-answer-scene-component
-      [scene]="selectScene"
-    ></app-answer-scene-component>
-  </ng-container>
+  <!--  <ng-container *ngSwitchCase="'Answer'">-->
+  <!--    <app-answer-scene-component-->
+  <!--      [scene]="selectScene"-->
+  <!--    ></app-answer-scene-component>-->
+  <!--  </ng-container>-->
 
   <ng-container *ngSwitchCase="'Panorama'">
     <app-panorama-scene-component
@@ -11,11 +11,23 @@
     </app-panorama-scene-component>
   </ng-container>
 
-  <ng-container *ngSwitchCase="'Puzzle'">
-    <app-puzzle-scene-component
+  <ng-container *ngSwitchDefault>
+    <app-background-scene
       [scene]="selectScene">
-    </app-puzzle-scene-component>
+    </app-background-scene>
   </ng-container>
+
+  <!--  <ng-container *ngSwitchCase="'Panorama'">-->
+  <!--    <app-panorama-scene-component-->
+  <!--      [scene]="selectScene">-->
+  <!--    </app-panorama-scene-component>-->
+  <!--  </ng-container>-->
+
+  <!--  <ng-container *ngSwitchCase="'Puzzle'">-->
+  <!--    <app-puzzle-scene-component-->
+  <!--      [scene]="selectScene">-->
+  <!--    </app-puzzle-scene-component>-->
+  <!--  </ng-container>-->
 </ng-container>
 
 <!--<ng-template appRef></ng-template>-->

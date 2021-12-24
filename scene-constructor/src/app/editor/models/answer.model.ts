@@ -1,6 +1,6 @@
 import { Coordinate } from './coordinate.model';
-import { IBaseScene, Scene } from './scenes.models';
 import { Entity } from '../../core/models/entity.model';
+import {IBaseEditScene} from "./base-edit-scene.model";
 
 
 /**
@@ -34,7 +34,7 @@ export class Answer implements Entity {
   constructor(public id: string,
     public text: string,
     position: number,
-    public parentScene: IBaseScene,
+    public parentScene: IBaseEditScene,
     public sceneId: string = null,
   ) {
 

@@ -79,6 +79,8 @@ export class RunGameComponent implements OnInit, OnDestroy {
       this.gameId = game.id
       this.scenesMap = game.scenesMap
 
+      this.selectScene = game.scenes.find(i => i.isStartGame)
+
       console.log(this.scenesMap)
     })
 

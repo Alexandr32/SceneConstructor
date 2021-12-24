@@ -4,8 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Answer } from 'src/app/editor/models/answer.model';
 import { FileLink } from 'src/app/core/models/file-link.model.ts';
 import { Player } from 'src/app/core/models/player.model';
-import { Scene } from 'src/app/editor/models/scenes.models';
 import { SelectMediaFileDialogComponent } from '../../dialogs/select-media-file-dialog/select-media-file-dialog.component';
+import {SceneEditScene} from "../../models/scene-edit-scene";
 
 @Component({
   selector: 'app-base-edit-scene-dialog',
@@ -43,7 +43,7 @@ export class BaseEditSceneDialogComponent implements OnInit {
   @Input()
   data: {
     gameId: string,
-    scene: Scene,
+    scene: SceneEditScene,
     players: Player[]
   }
 

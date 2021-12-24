@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IBaseScene, Panorama, Puzzle, Scene } from '../models/scenes.models';
+import { PuzzleEditScene } from '../models/puzzle-edit-scene';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Answer } from '../models/answer.model';
@@ -21,6 +21,9 @@ import { EditPlayerDialogComponent } from '../dialogs/edit-player-dialog/edit-pl
 import { EditPanoramaDialogComponent } from '../dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
 import { EditPuzzleDialogComponent } from '../dialogs/edit-puzzle-dialog/edit-puzzle-dialog.component';
 import {StateService} from "../../run-game/services/state.service";
+import {IBaseEditScene} from "../models/base-edit-scene.model";
+import {PanoramaEditScene} from "../models/panorama-edit-scene";
+import {SceneEditScene} from "../models/scene-edit-scene";
 
 @Component({
   selector: 'app-editor',
@@ -29,7 +32,7 @@ import {StateService} from "../../run-game/services/state.service";
 })
 export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  scenes: IBaseScene[] = [];
+  scenes: IBaseEditScene[] = [];
   players: Player[] = [];
 
   private fileForDeleteScenes: { id: string, typeFile: 'Video' | 'Image' }[] = [];
@@ -56,7 +59,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   widthScreen: number
 
-  startScene$: Subject<Scene> = new Subject<Scene>()
+  startScene$: Subject<SceneEditScene> = new Subject<SceneEditScene>()
 
   constructor(public dialog: MatDialog,
     private fireStore: AngularFirestore,
@@ -172,24 +175,24 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  openEditDialog(scene: IBaseScene): void {
+  openEditDialog(scene: IBaseEditScene): void {
 
     if (scene.typesScene === TypeSceneEnum.Answer) {
-      this.showSceneAnswerDialog(scene as Scene)
+      this.showSceneAnswerDialog(scene as SceneEditScene)
     }
 
     if (scene.typesScene === TypeSceneEnum.Panorama) {
-      this.showPanoramaDialog(scene as Panorama)
+      this.showPanoramaDialog(scene as PanoramaEditScene)
     }
 
     if (scene.typesScene === TypeSceneEnum.Puzzle) {
-      this.showPuzzleDialog(scene as Puzzle)
+      this.showPuzzleDialog(scene as PuzzleEditScene)
     }
 
 
   }
 
-  private showPanoramaDialog(scene: Panorama) {
+  private showPanoramaDialog(scene: PanoramaEditScene) {
     const dialogRef = this.dialog.open(EditPanoramaDialogComponent, {
       data: { gameId: this.game.id, scene, players: this.players }
     });
@@ -204,7 +207,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private showSceneAnswerDialog(scene: Scene) {
+  private showSceneAnswerDialog(scene: SceneEditScene) {
     const dialogRef = this.dialog.open(EditSceneDialogComponent, {
       data: { gameId: this.game.id, scene, players: this.players }
     });
@@ -219,7 +222,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private showPuzzleDialog(scene: Puzzle) {
+  private showPuzzleDialog(scene: PuzzleEditScene) {
     const dialogRef = this.dialog.open(EditPuzzleDialogComponent, {
       data: { gameId: this.game.id, scene, players: this.players }
     });
@@ -341,7 +344,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  async runGameByScene(scene: Scene) {
+  async runGameByScene(scene: SceneEditScene) {
 
     const isCheckingSceneStart = this.isCheckingSceneStart()
     if (!isCheckingSceneStart.isChecking) {
@@ -371,7 +374,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   addNewScene(param: 'top' | 'bottom') {
 
-    const scene = new Scene();
+    const scene = new SceneEditScene();
     scene.id = this.fireStore.createId();
     scene.text = 'Новая сцена';
     scene.title = 'Новое описание';
@@ -396,7 +399,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addPanorama(param: 'top' | 'bottom') {
 
-    const panorama = new Panorama()
+    const panorama = new PanoramaEditScene()
     panorama.id = this.fireStore.createId();
     panorama.text = 'Новая сцена';
     panorama.title = 'Новое описание';
@@ -419,7 +422,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addPuzzle(param: 'top' | 'bottom') {
-    const panorama = new Puzzle()
+    const panorama = new PuzzleEditScene()
     panorama.id = this.fireStore.createId();
     panorama.text = 'Новая сцена';
     panorama.title = 'Новое описание';
@@ -449,7 +452,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  deletedScene(scene: IBaseScene) {
+  deletedScene(scene: IBaseEditScene) {
 
     this.fileForDeleteScenes.push({ id: scene.id, typeFile: 'Video' });
     this.fileForDeleteScenes.push({ id: scene.id, typeFile: 'Image' });
@@ -549,7 +552,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
    * Выбор сцены для связывания
    * @param scene
    */
-  selectScene(scene: IBaseScene) {
+  selectScene(scene: IBaseEditScene) {
 
     const isChangeSelectMode = this.changeSelectModeEvent$.getValue();
 

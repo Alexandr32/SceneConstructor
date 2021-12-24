@@ -10,8 +10,8 @@ import { FileLink } from 'src/app/core/models/file-link.model.ts';
 import { MediaFile } from 'src/app/editor/models/media-file.model.ts';
 import { getTypesScene, TypeScene } from 'src/app/core/models/type-scene.enum';
 import { Answer } from 'src/app/editor/models/answer.model';
-import { Scene } from 'src/app/editor/models/scenes.models';
 import { Player } from 'src/app/core/models/player.model';
+import {SceneEditScene} from "../../models/scene-edit-scene";
 
 @Component({
   selector: 'app-edit-scene-dialog',
@@ -45,7 +45,7 @@ export class EditSceneDialogComponent implements OnInit {
     private fireStore: AngularFirestore,
     @Inject(MAT_DIALOG_DATA) public data: {
       gameId: string,
-      scene: Scene,
+      scene: SceneEditScene,
       players: Player[]
     },
     public dialog: MatDialog) {

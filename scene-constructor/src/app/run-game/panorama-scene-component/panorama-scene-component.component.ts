@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {PanoramaRunGame} from "../models/other-models/scenes.models";
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
+import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
 
 declare let pannellum: any;
 

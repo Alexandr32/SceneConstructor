@@ -7,7 +7,10 @@ import { SceneAnswerFirebase } from "./firebase-models/scene-answer-firestore.mo
 import { ItemPartsPuzzleImage } from "../../core/models/item-parts-puzzle-image.model"
 import { PartsPuzzleImage } from "../../core/models/parts-puzzle-image.model"
 import { Player } from "../../run-game/models/other-models/player.model"
-import { IBaseScene, Panorama, Puzzle, Scene } from "./scenes.models"
+import {IBaseEditScene} from "./base-edit-scene.model";
+import {PanoramaEditScene} from "./panorama-edit-scene";
+import {SceneEditScene} from "./scene-edit-scene";
+import {PuzzleEditScene} from "./puzzle-edit-scene";
 
 export class Mapper {
 
@@ -25,7 +28,7 @@ export class Mapper {
     } as AnswerFirebase;
   }
 
-  static answerFirebaseToAnswer(answerFirebase: AnswerFirebase, parentScene: IBaseScene): Answer {
+  static answerFirebaseToAnswer(answerFirebase: AnswerFirebase, parentScene: IBaseEditScene): Answer {
 
     return new Answer(
       answerFirebase.id,
@@ -36,7 +39,7 @@ export class Mapper {
     )
   }
 
-  static sceneAnswerToSceneAnswerFirebase(scene: Scene): SceneAnswerFirebase {
+  static sceneAnswerToSceneAnswerFirebase(scene: SceneEditScene): SceneAnswerFirebase {
 
     return {
       id: scene.id,
@@ -60,9 +63,9 @@ export class Mapper {
 
   }
 
-  static sceneAnswerFirebaseToSceneAnswer(sceneAnswerFirebase: SceneAnswerFirebase): Scene {
+  static sceneAnswerFirebaseToSceneAnswer(sceneAnswerFirebase: SceneAnswerFirebase): SceneEditScene {
 
-    const scene = new Scene()
+    const scene = new SceneEditScene()
     scene.id = sceneAnswerFirebase.id
     scene.title = sceneAnswerFirebase.title
     scene.text = sceneAnswerFirebase.text
@@ -96,7 +99,7 @@ export class Mapper {
 
   }
 
-  static panoramaToPanoramaFirebase(panorama: Panorama): PanoramaFirebase {
+  static panoramaToPanoramaFirebase(panorama: PanoramaEditScene): PanoramaFirebase {
 
     return {
       id: panorama.id,
@@ -122,8 +125,8 @@ export class Mapper {
     } as PanoramaFirebase;
   }
 
-  static panoramaFirebaseToPanorama(panoramaFirebase: PanoramaFirebase): Panorama {
-    const panorama = new Panorama()
+  static panoramaFirebaseToPanorama(panoramaFirebase: PanoramaFirebase): PanoramaEditScene {
+    const panorama = new PanoramaEditScene()
     panorama.id = panoramaFirebase.id
     panorama.title = panoramaFirebase.title
     panorama.text = panoramaFirebase.text
@@ -154,7 +157,7 @@ export class Mapper {
 
   }
 
-  static puzzleToPuzzleFirebase(puzzle: Puzzle): PuzzleFirebase {
+  static puzzleToPuzzleFirebase(puzzle: PuzzleEditScene): PuzzleFirebase {
 
     const playerScenePartsPuzzleImages: {
       playerId: string,
@@ -215,8 +218,8 @@ export class Mapper {
 
   }
 
-  static puzzleFirebaseToPuzzle(puzzleFirebase: PuzzleFirebase): Puzzle {
-    const puzzle = new Puzzle()
+  static puzzleFirebaseToPuzzle(puzzleFirebase: PuzzleFirebase): PuzzleEditScene {
+    const puzzle = new PuzzleEditScene()
     puzzle.id = puzzleFirebase.id
     puzzle.title = puzzleFirebase.title
     puzzle.text = puzzleFirebase.text

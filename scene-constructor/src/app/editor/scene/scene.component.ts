@@ -1,9 +1,9 @@
 import { Component, ElementRef, Input, OnInit, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
-import { IBaseScene, Scene } from '../models/scenes.models';
 import { Subject } from 'rxjs';
 import { Answer } from '../models/answer.model';
 import { Player } from '../../core/models/player.model';
 import { getTypesScene, TypeScene } from 'src/app/core/models/type-scene.enum';
+import {IBaseEditScene} from "../models/base-edit-scene.model";
 
 @Component({
   selector: 'app-scene',
@@ -15,7 +15,7 @@ export class SceneComponent implements OnInit {
   typeScene: TypeScene
 
   @Input()
-  scene: IBaseScene;
+  scene: IBaseEditScene;
 
   @Input()
   players: Player[];
@@ -24,10 +24,10 @@ export class SceneComponent implements OnInit {
   selectAnswerScene = new EventEmitter<Answer>();
 
   @Output()
-  editScene = new EventEmitter<IBaseScene>();
+  editScene = new EventEmitter<IBaseEditScene>();
 
   @Output()
-  deleteScene = new EventEmitter<IBaseScene>();
+  deleteScene = new EventEmitter<IBaseEditScene>();
 
   dragPosition = { x: 0, y: 0 };
 
@@ -41,12 +41,12 @@ export class SceneComponent implements OnInit {
   changeSelectModeEvent$: Subject<boolean>;
 
   @Output()
-  selectScene = new EventEmitter<IBaseScene>();
+  selectScene = new EventEmitter<IBaseEditScene>();
 
   isSelectMode = false;
 
   @Input()
-  startScene$: Subject<IBaseScene> = new Subject<IBaseScene>()
+  startScene$: Subject<IBaseEditScene> = new Subject<IBaseEditScene>()
 
   constructor(public elementRef: ElementRef) {
 

@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Game } from '../models/game.model';
-import { IBaseScene, Panorama, Puzzle, Scene } from '../models/scenes.models';
+import { PuzzleEditScene } from '../models/puzzle-edit-scene';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Player } from '../../core/models/player.model';
 import { map, first } from 'rxjs/operators';
@@ -16,6 +16,9 @@ import { PuzzleFirebase } from '../models/firebase-models/puzzle-firebase.model'
 import { PanoramaFirebase } from '../models/firebase-models/panorama-firebase.model';
 import { PartsPuzzleImage } from '../../core/models/parts-puzzle-image.model';
 import { FileService } from 'src/app/core/services/file.service';
+import {IBaseEditScene} from "../models/base-edit-scene.model";
+import {PanoramaEditScene} from "../models/panorama-edit-scene";
+import {SceneEditScene} from "../models/scene-edit-scene";
 
 @Injectable({
   providedIn: 'root'
@@ -89,15 +92,15 @@ export class FirestoreService {
           game.scenes.forEach(async item => {
             switch (item.typesScene) {
               case TypeSceneEnum.Answer: {
-                await this.fileService.setAnswerSceneFile(game.id, item as Scene)
+                await this.fileService.setAnswerSceneFile(game.id, item as SceneEditScene)
                 break
               }
               case TypeSceneEnum.Panorama: {
-                await this.fileService.setFilePanoramaFile(game.id, item as Panorama)
+                await this.fileService.setFilePanoramaFile(game.id, item as PanoramaEditScene)
                 break
               }
               case TypeSceneEnum.Puzzle: {
-                await this.fileService.setFilePuzzleFile(game.id, item as Puzzle)
+                await this.fileService.setFilePuzzleFile(game.id, item as PuzzleEditScene)
                 break
               }
             }
@@ -125,7 +128,7 @@ export class FirestoreService {
     await this.fireStore.collection('Games').doc(game.id).delete();
   }
 
-  deleteScene(gameId: string, scene: Scene): Promise<any> {
+  deleteScene(gameId: string, scene: SceneEditScene): Promise<any> {
     return this.fireStore.collection(`Games/${gameId}/Scenes`).doc(scene.id).delete();
   }
 
@@ -145,13 +148,13 @@ export class FirestoreService {
       const result = (): any => {
         switch (scene.typesScene) {
           case TypeSceneEnum.Answer: {
-            return Mapper.sceneAnswerToSceneAnswerFirebase(scene as Scene)
+            return Mapper.sceneAnswerToSceneAnswerFirebase(scene as SceneEditScene)
           }
           case TypeSceneEnum.Panorama: {
-            return Mapper.panoramaToPanoramaFirebase((scene as Panorama))
+            return Mapper.panoramaToPanoramaFirebase((scene as PanoramaEditScene))
           }
           case TypeSceneEnum.Puzzle: {
-            return Mapper.puzzleToPuzzleFirebase((scene as Puzzle))
+            return Mapper.puzzleToPuzzleFirebase((scene as PuzzleEditScene))
           }
         }
       }
@@ -181,7 +184,7 @@ export class FirestoreService {
    * Сохраняет сцену как запись в БД в base64
    * @param scene
    */
-  async saveImageSceneToBase64(scene: Scene) {
+  async saveImageSceneToBase64(scene: SceneEditScene) {
     try {
       await this.fireStore.collection<any>(this.ImageFileSceneCollection)
         .doc(scene.id)
