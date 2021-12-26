@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {RunGameService} from "../services/run-game.service";
 import {Player} from "../models/other-models/player.model";
+import {StateRunGameService} from "../services/state-run-game.service";
 
 @Component({
   selector: 'app-main-run-game-component',
@@ -13,21 +14,26 @@ import {Player} from "../models/other-models/player.model";
 })
 export class MainRunGameComponentComponent implements OnInit {
 
-  players: Player[]
+  players$: Observable<Player[]>
 
   runGame$: Observable<RunGame>
 
-  constructor(private route: ActivatedRoute, private runGameService: RunGameService) { }
+  constructor(private route: ActivatedRoute,
+              private stateRunGameService: StateRunGameService,
+              private runGameService: RunGameService) { }
 
   ngOnInit(): void {
 
-    this.runGame$ = this.runGameService.runGame$
+    this.players$ = this.stateRunGameService.players$
+    this.runGame$ = this.stateRunGameService.runGame$
 
-    this.runGame$.subscribe(runGame => {
-      this.players = runGame.players
-      console.log('runGame:', runGame)
-      console.log('MainRunGame:', runGame.players)
-    })
+    // this.runGame$ = this.runGameService.runGame$
+    //
+    // this.runGame$.subscribe(runGame => {
+    //   this.players = runGame.players
+    //   console.log('runGame:', runGame)
+    //   console.log('MainRunGame:', runGame.players)
+    // })
   }
 
 }

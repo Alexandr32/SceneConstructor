@@ -3,13 +3,14 @@ import {AngularFirestore} from "@angular/fire/firestore";
 import {AngularFireStorage} from "@angular/fire/storage";
 import {FileService} from "../../core/services/file.service";
 import {Observable} from "rxjs";
-import {StateGame} from "../models/other-models/state-game.model";
+import {StateGame, StateGameAnswer} from "../models/other-models/state-game.model";
 import {first, map} from "rxjs/operators";
 import {Player} from "../models/other-models/player.model";
 import {AnswerRunGame} from "../models/other-models/answer.model";
 import {Game as EditGame} from "../../editor/models/game.model";
 import {TypeScene} from "../../core/models/type-scene.enum";
 import {IBaseEditScene} from "../../editor/models/base-edit-scene.model";
+import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 
 export interface StateGameFirebase {
   id: string,
@@ -24,6 +25,7 @@ export interface StateGameFirebase {
 export class StateService {
 
   private readonly runGameCollection = 'RunGameCollection'
+  private readonly stateGameAnswerCollection = 'stateGameAnswerCollection'
   private readonly stateGame = 'StateGame'
 
   constructor(
@@ -44,6 +46,19 @@ export class StateService {
         })
       )
   }
+
+  // getStateAnswerGame(gameId: string): Observable<StateGameAnswer> {
+  //   return this.fireStore.doc<StateGameAnswer>(`${this.stateGameAnswerCollection}/${gameId}/${this.stateGame}/${gameId}`)
+  //     .snapshotChanges()
+  //     .pipe(
+  //       map((doc) => {
+  //         const stateGame = doc.payload.data() as StateGameAnswer;
+  //         const newStateGame = new StateGameAnswer(doc.payload.id)
+  //         newStateGame.answer = stateGame.answer
+  //         return newStateGame;
+  //       })
+  //     )
+  // }
 
   async saveNewStateGame(game: EditGame) {
 
@@ -97,6 +112,17 @@ export class StateService {
       .doc(stateGameId)
       .update({...state})
   }
+  async nextDataStateGame(stateGameId: string, currentScene: IBaseSceneRunGame) {
+    const state = await this.getStateGame(stateGameId)
+     .pipe(first()).toPromise()
+
+    state.currentSceneId = currentScene.id
+    state.answer = []
+
+    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
+      .doc(stateGameId)
+      .set({...state})
+  }
 
   async resetDataStateGame(stateGameId: string, currentScene: IBaseEditScene) {
     //const state = await this.getStateGame(stateGameId)
@@ -112,11 +138,16 @@ export class StateService {
     // })
 
     //state.answer = answer
-    const answer = currentScene.players.map(item => {
-      return {id: item, value: ''}
-    })
+    // const answer = currentScene.players.map(item => {
+    //   return {id: item, value: ''}
+    // })
 
     //console.log('currentSceneId:::::::::', currentScene.id);
+
+    // const stateGameFirebase = {
+    //   currentSceneId: currentScene.id,
+    //   a
+    // }as StateGameFirebase
 
     await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
       .doc(stateGameId)

@@ -15,6 +15,8 @@ import {StateService} from "../services/state.service";
 import {RefDirective} from "../../core/directive/ref.directive";
 import {StateGame} from "../models/other-models/state-game.model";
 import {flatMap, map} from "rxjs/operators";
+import {Player} from "../models/other-models/player.model";
+import {StateRunGameService} from "../services/state-run-game.service";
 
 @Component({
   selector: 'app-run-game',
@@ -23,21 +25,26 @@ import {flatMap, map} from "rxjs/operators";
 })
 export class RunGameComponent implements OnInit, OnDestroy {
 
-  @Input()
+  players: Player[]
+
   runGame$: Observable<RunGame>
+
+  // @Input()
+  // runGame$: Observable<RunGame>
 
   @ViewChild(RefDirective) refDirective: RefDirective | undefined;
 
-  private scenesMap: Map<string, IBaseSceneRunGame> = new Map<string, IBaseSceneRunGame>()
+ // private scenesMap: Map<string, IBaseSceneRunGame> = new Map<string, IBaseSceneRunGame>()
 
-  selectScene: IBaseSceneRunGame
+  selectScene$: Observable<IBaseSceneRunGame>
 
-  private gameId: string
+  //private gameId: string
 
   state$: Observable<StateGame>
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
+              private stateRunGameService: StateRunGameService,
               private runGameService: RunGameService,
               private stateService: StateService) {
 
@@ -54,6 +61,16 @@ export class RunGameComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
 
+    this.selectScene$ = this.stateRunGameService.currentScene$
+    this.selectScene$.subscribe(v => {
+      console.log('RunGameComponent: ngOnInit', v)
+    })
+
+
+    this.runGame$ = this.stateRunGameService.runGame$
+
+    // ЗАФИГАЧИТЬ СЕРВИС С КАКИМ ТО СОСТОЯНИЕМ ИЛИ КАК МИНИМУМ ДЛЯ ПЕРЕКЛЮЧЕНИЯ СЦЕНЫ
+
     // this.runGame$
     //   .subscribe(game => {
     //   this.gameId = game.id
@@ -61,18 +78,18 @@ export class RunGameComponent implements OnInit, OnDestroy {
     //   this.selectScene = game.scenes.find(i => i.isStartGame)
     // })
 
-    this.state$ = this.runGame$.pipe(
-      flatMap(game => {
-        this.gameId = game.id
-        this.scenesMap = game.scenesMap
-        this.selectScene = game.scenes.find(i => i.isStartGame)
-        return this.stateService.getStateGame(game.id)
-      })
-    )
-
-    this.state$.subscribe(state => {
-        this.selectScene = this.scenesMap.get(state.currentSceneId)
-    })
+    // this.state$ = this.runGame$.pipe(
+    //   flatMap(game => {
+    //     this.gameId = game.id
+    //     this.scenesMap = game.scenesMap
+    //     this.selectScene = game.scenes.find(i => i.isStartGame)
+    //     return this.stateService.getStateGame(game.id)
+    //   })
+    // )
+    //
+    // this.state$.subscribe(state => {
+    //     this.selectScene = this.scenesMap.get(state.currentSceneId)
+    // })
 
     //const state$ = this.stateService.getStateGame(this.gameId)
 
@@ -169,6 +186,6 @@ export class RunGameComponent implements OnInit, OnDestroy {
   }
 
   selectedScene(scene: IBaseSceneRunGame) {
-    this.selectScene = this.scenesMap.get(scene.id)
+   this.stateRunGameService.selectedScene(scene.id)
   }
 }

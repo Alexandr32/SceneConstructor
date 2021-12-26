@@ -30,7 +30,6 @@ import {SceneEditScene} from "../../editor/models/scene-edit-scene";
 export class RunGameService {
 
   private readonly runGameCollection = 'RunGameCollection'
-  //private readonly stateGame = 'StateGame'
 
   get runGame$(): Observable<RunGame> {
     return this._runGame$.asObservable()
@@ -100,25 +99,6 @@ export class RunGameService {
       console.error('При сохранении данных игры произошла ошибка', error);
       throw error;
     }
-
-    // const statePlayer = [...game.players.map(item => {
-    //   return {id: item.id, value: ''}
-    // })]
-    //
-    // try {
-    //
-    //   this.fireStore.collection<any>(`${this.runGameCollection}/${game.id}/${this.stateGame}`)
-    //     .doc(game.id)
-    //     .set({
-    //       currentScene: startScene.id,
-    //       answer: statePlayer
-    //     })
-    //
-    // } catch (error) {
-    //   console.error('При сохранении данных состояния игры произошла ошибка', error);
-    //   throw error;
-    // }
-
   }
 
 
@@ -146,8 +126,6 @@ export class RunGameService {
     //   .doc(stateGameId)
     //   .set({currentScene: currentScene.id, answer: answer})
   }
-
-
 
   async getGameById(gameId: string): Promise<RunGame> {
 
