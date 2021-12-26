@@ -62,12 +62,8 @@ export class RunGameComponent implements OnInit, OnDestroy {
   async ngOnInit() {
 
     this.selectScene$ = this.stateRunGameService.currentScene$
-    this.selectScene$.subscribe(v => {
-      console.log('RunGameComponent: ngOnInit', v)
-    })
-
-
     this.runGame$ = this.stateRunGameService.runGame$
+    this.state$ = this.stateRunGameService.stateGame$
 
     // ЗАФИГАЧИТЬ СЕРВИС С КАКИМ ТО СОСТОЯНИЕМ ИЛИ КАК МИНИМУМ ДЛЯ ПЕРЕКЛЮЧЕНИЯ СЦЕНЫ
 

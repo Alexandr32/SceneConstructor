@@ -25,8 +25,6 @@ export class AnswerSceneComponentComponent implements OnInit, AfterViewInit {
 
   @Input()
   set scene(value: SceneRunGame | IBaseSceneRunGame | any | undefined) {
-
-
     this.showVideo = !!value.videoFile
     this.showImage = !!value.imageFile && !this.showVideo
 

@@ -47,7 +47,6 @@ export class ItemAnswerComponent implements OnInit {
   ngOnInit() {
 
     this.state$?.subscribe(value => {
-
       const count = value.answer?.filter(item => item.answerId === this.answer.id)
 
       if (!count) {
