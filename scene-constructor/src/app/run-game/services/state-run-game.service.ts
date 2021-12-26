@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 import {RunGame} from "../models/other-models/run-game.model";
 import {RunGameService} from "./run-game.service";
-import {Observable, of, Subject} from "rxjs";
+import {BehaviorSubject, Observable, of, Subject} from "rxjs";
 import {StateService} from "./state.service";
 import {Player} from "../models/other-models/player.model";
 import {TypeSceneEnum} from "../../core/models/type-scene.enum";
@@ -18,9 +18,16 @@ export class StateRunGameService {
 
   runGame$: Observable<RunGame>
   players$: Observable<Player[]>
-  currentScene$: Subject<IBaseSceneRunGame> = new Subject<IBaseSceneRunGame>()
+  private _currentScene$: Subject<IBaseSceneRunGame> = new BehaviorSubject<IBaseSceneRunGame>(null)
 
-  constructor(private runGameService: RunGameService, private stateService: StateService) { }
+  get currentScene$(): Observable<IBaseSceneRunGame> {
+    return this._currentScene$
+  }
+
+  stateGame$ :Observable<StateGame>
+
+  constructor(private runGameService: RunGameService,
+              private stateService: StateService) { }
 
   async getGameById(gameId: string): Promise<RunGame> {
 
@@ -36,11 +43,14 @@ export class StateRunGameService {
   }
 
   private subscribeState(gameId: string) {
-    this.stateService.getStateGame(gameId).subscribe(x => {
+
+    this.stateGame$ = this.stateService.getStateGame(gameId)
+
+    this.stateGame$.subscribe(x => {
       const currentScene =  this.scenesMap.get(x.currentSceneId)
 
       if(currentScene.id !== this.currentSceneId) {
-        this.currentScene$.next(currentScene)
+        this._currentScene$.next(currentScene)
       }
 
       if(currentScene.typesScene === TypeSceneEnum.Answer) {
@@ -91,8 +101,8 @@ export class StateRunGameService {
     const answers = currentScene.answers.find(a => a.id === selectAnswer[0])
     const scene = this.scenesMap.get(answers.sceneId)
 
-    this.stateService.nextDataStateGame(stateGame.id, scene).then((error) => {
-      console.error('При смене сцены произошла ошибка:', error)
+    this.stateService.nextDataStateGame(stateGame.id, scene).catch(error => {
+      console.log(error)
     })
   }
 
@@ -100,7 +110,7 @@ export class StateRunGameService {
   selectedScene(selectSceneId: string) {
     const scene = this.scenesMap.get(selectSceneId)
     this.currentSceneId = scene.id
-    this.currentScene$.next(scene)
+    this._currentScene$.next(scene)
   }
 
 

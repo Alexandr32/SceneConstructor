@@ -1,14 +1,27 @@
 <div class="player-test">
-  <img class="player-test__image" [src]="(player$ | async)?.imageFile" alt="player" />
+  <img class="player-test__image" [src]="(player$ | async)?.imageFile" alt="player"/>
   <div class="player-test__content">
     <div class="player-test__name">{{ (player$ | async)?.name }}</div>
 
-    <button
-      *ngFor="let item of (answers$ | async)"
-      class="player-test__btn-answer"
-      (click)="selectAnswer(item)"
-    >
-      {{ item.text }}
-    </button>
+    <div *ngIf="(currentScene$ | async)?.typesScene === 'Answer'">
+      <app-player-list-answers
+        [playerId]="playerId"
+        [currentScene$]="currentScene$"
+        [stateGame$]="stateGame$"
+        (selectAnswer)="selectAnswer($event)"
+      ></app-player-list-answers>
+    </div>
+
+
+<!--    <ng-container [ngSwitch]="(currentScene$ | async)?.typesScene">-->
+<!--      <ng-container *ngSwitchCase="'Answer'">-->
+<!--        <app-player-list-answers-->
+<!--          [playerId]="playerId"-->
+<!--          [currentScene$]="currentScene$"-->
+<!--          [stateGame$]="stateGame$"-->
+<!--          (selectAnswer)="selectAnswer($event)"-->
+<!--        ></app-player-list-answers>-->
+<!--      </ng-container>-->
+<!--    </ng-container>-->
   </div>
 </div>

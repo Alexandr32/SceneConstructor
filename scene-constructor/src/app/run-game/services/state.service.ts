@@ -112,7 +112,9 @@ export class StateService {
       .doc(stateGameId)
       .update({...state})
   }
+
   async nextDataStateGame(stateGameId: string, currentScene: IBaseSceneRunGame) {
+
     const state = await this.getStateGame(stateGameId)
      .pipe(first()).toPromise()
 

@@ -1,0 +1,7 @@
+<button
+  *ngFor="let item of (answers$ | async)"
+  class="player-test__btn-answer"
+  (click)="selectedAnswer(item)"
+>
+  {{ item.text }}
+</button>

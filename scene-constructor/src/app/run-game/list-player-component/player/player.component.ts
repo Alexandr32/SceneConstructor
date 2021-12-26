@@ -1,12 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AnswerRunGame } from "src/app/run-game/models/other-models/answer.model";
-import { RunGameService } from 'src/app/run-game/services/run-game.service';
-import { Player } from '../../../core/models/player.model';
-import { IBaseSceneRunGame } from '../../models/other-models/base-scene-run-game.model';
+import {Component, Input, OnInit} from '@angular/core';
+import {AnswerRunGame} from "src/app/run-game/models/other-models/answer.model";
+import {RunGameService} from 'src/app/run-game/services/run-game.service';
+import {Player} from '../../../core/models/player.model';
+import {IBaseSceneRunGame} from '../../models/other-models/base-scene-run-game.model';
 import {StateService} from "../../services/state.service";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {map} from "rxjs/operators";
-import { combineLatest } from 'rxjs';
+import {combineLatest} from 'rxjs';
+import {StateRunGameService} from "../../services/state-run-game.service";
+import {StateGame} from "../../models/other-models/state-game.model";
 
 @Component({
   selector: 'app-player',
@@ -21,47 +23,31 @@ export class PlayerComponent implements OnInit {
   @Input()
   gameId: string
 
-  private scenesMap: Map<string, IBaseSceneRunGame>
-
   player$: Observable<Player>
   private player: Player
 
-  answers$: Observable<AnswerRunGame[]>
+  currentScene$: Observable<IBaseSceneRunGame>
+  stateGame$ :Observable<StateGame>
 
   constructor(
-    private runGameService: RunGameService,
-    private stateService: StateService) {
+    private stateRunGameService: StateRunGameService,
+    private stateService: StateService
+  ) {
 
   }
 
   ngOnInit() {
-
-    const runGame$ = this.runGameService.runGame$
-
-    this.player$ = runGame$.pipe(
-      map(runGame => {
-        this.scenesMap = runGame.scenesMap
-        this.player = runGame.players.find(item => item.id === this.playerId)
-        return this.player
+    this.player$ = this.stateRunGameService.players$.pipe(
+      map(x => {
+        const player = x.find(player => player.id === this.playerId)
+        this.player = player
+        return player
       })
     )
 
-    const state$ = this.stateService.getStateGame(this.gameId)
-
-    this.answers$ = combineLatest(this.player$, state$, (player, state) => ({player, state}))
-      .pipe(
-        map(pair => {
-
-          const findAnswer = pair.state.answer?.find(a => a.playerId === pair.player.id)
-
-          if(!findAnswer) {
-            return this.scenesMap.get(pair.state.currentSceneId).answers
-          }
-
-          return []
-        })
-      )
-
+    this.currentScene$ = this.stateRunGameService.currentScene$
+    
+    this.stateGame$ = this.stateRunGameService.stateGame$
   }
 
   async selectAnswer(answer: AnswerRunGame) {
