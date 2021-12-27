@@ -1,0 +1,26 @@
+.btm-control {
+  width: 40px;
+  height: 40px;
+}
+
+.arrow {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid gray;
+  border-left: 2px solid gray;
+}
+
+.btm-control-center {
+  background: cadetblue;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.container__btn-controls {
+  position: absolute;
+  top: 300px;
+  right: 100px;
+  width: 200px;
+}

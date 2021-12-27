@@ -44,9 +44,7 @@ export class PlayerComponent implements OnInit {
         return player
       })
     )
-
     this.currentScene$ = this.stateRunGameService.currentScene$
-
     this.stateGame$ = this.stateRunGameService.stateGame$
   }
 

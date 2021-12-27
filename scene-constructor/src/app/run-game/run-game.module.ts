@@ -19,6 +19,7 @@ import { BackgroundSceneComponent } from './background-scene/background-scene.co
 import { ListAnswersComponent } from './list-answers/list-answers.component';
 import { DescriptionSceneComponent } from './description-scene/description-scene.component';
 import {PlayerListAnswersComponent} from "./list-player-component/list-answers/player-list-answers.component";
+import { PanoramaControlsComponent } from './list-player-component/panoram-controls/panorama-controls.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {PlayerListAnswersComponent} from "./list-player-component/list-answers/p
     BackgroundSceneComponent,
     ListAnswersComponent,
     DescriptionSceneComponent,
-    PlayerListAnswersComponent
+    PlayerListAnswersComponent,
+    PanoramaControlsComponent
   ],
   imports: [
     CommonModule,

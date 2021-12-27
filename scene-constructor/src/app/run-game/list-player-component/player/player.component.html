@@ -3,25 +3,30 @@
   <div class="player-test__content">
     <div class="player-test__name">{{ (player$ | async)?.name }}</div>
 
-    <div *ngIf="(currentScene$ | async)?.typesScene === 'Answer'">
-      <app-player-list-answers
-        [playerId]="playerId"
-        [currentScene$]="currentScene$"
-        [stateGame$]="stateGame$"
-        (selectAnswer)="selectAnswer($event)"
-      ></app-player-list-answers>
-    </div>
+<!--    <div *ngIf="(currentScene$ | async)?.typesScene === 'Answer'">-->
+<!--      <app-player-list-answers-->
+<!--        [playerId]="playerId"-->
+<!--        [currentScene$]="currentScene$"-->
+<!--        [stateGame$]="stateGame$"-->
+<!--        (selectAnswer)="selectAnswer($event)"-->
+<!--      ></app-player-list-answers>-->
+<!--    </div>-->
 
 
-<!--    <ng-container [ngSwitch]="(currentScene$ | async)?.typesScene">-->
-<!--      <ng-container *ngSwitchCase="'Answer'">-->
-<!--        <app-player-list-answers-->
-<!--          [playerId]="playerId"-->
-<!--          [currentScene$]="currentScene$"-->
-<!--          [stateGame$]="stateGame$"-->
-<!--          (selectAnswer)="selectAnswer($event)"-->
-<!--        ></app-player-list-answers>-->
-<!--      </ng-container>-->
-<!--    </ng-container>-->
+    <ng-container [ngSwitch]="(currentScene$ | async)?.typesScene">
+      <ng-container *ngSwitchCase="'Answer'">
+        <app-player-list-answers
+          [playerId]="playerId"
+          [currentScene$]="currentScene$"
+          [stateGame$]="stateGame$"
+          (selectAnswer)="selectAnswer($event)"
+        ></app-player-list-answers>
+      </ng-container>
+      <ng-container *ngSwitchCase="'Panorama'">
+        <app-panorama-controls>
+        </app-panorama-controls>
+      </ng-container>
+
+    </ng-container>
   </div>
 </div>
