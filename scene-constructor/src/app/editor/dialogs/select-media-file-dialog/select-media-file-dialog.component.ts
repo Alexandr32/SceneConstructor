@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileLink } from 'src/app/core/models/file-link.model.ts';
 import { FileService } from 'src/app/core/services/file.service';
 import { TypeFile } from 'src/app/editor/models/type-file.model';
 import { FirestoreService } from 'src/app/editor/services/firestore.service';
 import { SaveMediaFileDialogComponent } from '../save-media-file-dialog/save-media-file-dialog.component';
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 @Component({
   selector: 'app-select-media-file-dialog',

@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CropperSettings } from 'ngx-img-cropper';
 import { MessageDialogComponent } from 'src/app/core/message-dialog/message-dialog.component';
@@ -11,6 +10,7 @@ import { TypeFile } from 'src/app/editor/models/type-file.model';
 import { FirestoreService } from 'src/app/editor/services/firestore.service';
 import { EditImageComponent } from '../edit-image-player/edit-image.component';
 import { FileService } from 'src/app/core/services/file.service';
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 @Component({
   selector: 'app-media-file-dialog',

@@ -6,7 +6,6 @@ import { Answer } from '../models/answer.model';
 import { Coordinate } from '../models/coordinate.model';
 import { Player } from '../../core/models/player.model';
 import { FirestoreService } from '../services/firestore.service';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Game } from '../models/game.model';
 import { MessageDialogComponent } from '../../core/message-dialog/message-dialog.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -24,6 +23,7 @@ import {StateService} from "../../run-game/services/state.service";
 import {IBaseEditScene} from "../models/base-edit-scene.model";
 import {PanoramaEditScene} from "../models/panorama-edit-scene";
 import {SceneEditScene} from "../models/scene-edit-scene";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 @Component({
   selector: 'app-editor',

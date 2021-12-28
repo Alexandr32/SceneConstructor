@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {AngularFireStorage} from '@angular/fire/storage';
+//import {AngularFirestore} from '@angular/fire/firestore';
+//import {AngularFireStorage} from '@angular/fire/storage';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {concatMap, first, map, take} from 'rxjs/operators';
 import {Game as EditGame} from '../../editor/models/game.model';
@@ -23,6 +23,8 @@ import {PanoramaEditScene} from "../../editor/models/panorama-edit-scene";
 import {SceneRunGame} from "../models/other-models/scene-run-game";
 import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
 import {SceneEditScene} from "../../editor/models/scene-edit-scene";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 @Injectable({
   providedIn: 'root'

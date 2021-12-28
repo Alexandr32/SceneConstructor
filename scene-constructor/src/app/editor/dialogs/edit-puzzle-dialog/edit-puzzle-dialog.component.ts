@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Answer } from 'src/app/editor/models/answer.model';
 import { FileLink } from 'src/app/core/models/file-link.model.ts';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { PuzzleEditScene } from 'src/app/editor/models/puzzle-edit-scene';
 import { Player } from 'src/app/core/models/player.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
@@ -13,6 +12,7 @@ import { ItemPartsPuzzleImage } from 'src/app/core/models/item-parts-puzzle-imag
 import { delay, first } from 'rxjs/operators';
 import { async } from 'rxjs/internal/scheduler/async';
 import { FileService } from 'src/app/core/services/file.service';
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 @Component({
   selector: 'app-edit-puzzle-dialog',

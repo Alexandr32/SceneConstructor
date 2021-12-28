@@ -1,8 +1,6 @@
 import { Injectable, Type } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Game } from '../models/game.model';
 import { PuzzleEditScene } from '../models/puzzle-edit-scene';
-import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Player } from '../../core/models/player.model';
 import { map, first } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -19,6 +17,8 @@ import { FileService } from 'src/app/core/services/file.service';
 import {IBaseEditScene} from "../models/base-edit-scene.model";
 import {PanoramaEditScene} from "../models/panorama-edit-scene";
 import {SceneEditScene} from "../models/scene-edit-scene";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 @Injectable({
   providedIn: 'root'

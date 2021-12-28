@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Answer } from 'src/app/editor/models/answer.model';
@@ -7,6 +6,7 @@ import { FileLink } from 'src/app/core/models/file-link.model.ts';
 import { Player } from 'src/app/core/models/player.model';
 import { SelectMediaFileDialogComponent } from '../select-media-file-dialog/select-media-file-dialog.component';
 import {PanoramaEditScene} from "../../models/panorama-edit-scene";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 @Component({
   selector: 'app-edit-panorama-dialog',

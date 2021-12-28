@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Game } from '../models/game.model';
 import { FirestoreService } from '../services/firestore.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { MessageDialogComponent } from '../../core/message-dialog/message-dialog.component';
 import { Subscriber, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 //import * as pannellum from 'node_modules/pannellum'
 declare let pannellum: any;
 

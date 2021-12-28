@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore} from "@angular/fire/firestore";
-import {AngularFireStorage} from "@angular/fire/storage";
 import {FileService} from "../../core/services/file.service";
 import {Observable} from "rxjs";
 import {StateGame, StateGameAnswer} from "../models/other-models/state-game.model";
@@ -11,6 +9,8 @@ import {Game as EditGame} from "../../editor/models/game.model";
 import {TypeScene} from "../../core/models/type-scene.enum";
 import {IBaseEditScene} from "../../editor/models/base-edit-scene.model";
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 export interface StateGameFirebase {
   id: string,

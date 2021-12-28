@@ -32,7 +32,7 @@ export class SceneComponent implements OnInit {
   dragPosition = { x: 0, y: 0 };
 
   @Output()
-  changeDrag = new EventEmitter();
+  changeDrag = new EventEmitter<void>();
 
   @ViewChildren('answer', { read: ElementRef })
   answers: QueryList<ElementRef>;

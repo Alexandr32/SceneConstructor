@@ -1,6 +1,4 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
-import { AngularFireStorage } from "@angular/fire/storage";
 import { Observable } from "rxjs";
 import { first, map } from "rxjs/operators";
 import { base64ToFile } from "src/app/editor/models/base64-to-file.model";
@@ -11,6 +9,8 @@ import { IPuzzleCore } from "../models/base-puzzle.model";
 import { ISceneCore } from "../models/base-scene.model";
 import { FileLink } from "../models/file-link.model.ts";
 import { PartsPuzzleImage } from "../models/parts-puzzle-image.model";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 @Injectable({
   providedIn: 'root'
