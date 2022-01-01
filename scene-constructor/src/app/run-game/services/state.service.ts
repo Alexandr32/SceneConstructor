@@ -11,6 +11,7 @@ import {IBaseEditScene} from "../../editor/models/base-edit-scene.model";
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {TypeControls} from "../models/other-models/type-controls.enum";
 
 export interface StateGameFirebase {
   id: string,
@@ -42,6 +43,7 @@ export class StateService {
           const stateGame = doc.payload.data() as StateGame;
           const newStateGame = new StateGame(doc.payload.id, stateGame.currentSceneId)
           newStateGame.answer = stateGame.answer
+          newStateGame.typeControls = stateGame.typeControls
           return newStateGame;
         })
       )
@@ -107,6 +109,20 @@ export class StateService {
     }
 
     state.answer.push({playerId: player.id, answerId: selectAnswer.id})
+
+    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
+      .doc(stateGameId)
+      .update({...state})
+  }
+
+  async saveSelectTypeControls(stateGameId: string, typeControls: TypeControls) {
+    const state = await this.getStateGame(stateGameId)
+      .pipe(first()).toPromise()
+    state.typeControls = typeControls
+
+    if(!state.answer) {
+      state.answer = []
+    }
 
     await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
       .doc(stateGameId)

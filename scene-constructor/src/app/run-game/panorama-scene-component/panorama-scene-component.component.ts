@@ -81,9 +81,6 @@ export class PanoramaSceneComponentComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.state$
-      .pipe(
-        //debounce(() => timer(500))
-      )
       .subscribe(state => {
 
         console.log(this._scene)
