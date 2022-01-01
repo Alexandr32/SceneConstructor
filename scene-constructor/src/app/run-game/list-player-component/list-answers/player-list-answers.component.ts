@@ -34,8 +34,6 @@ export class PlayerListAnswersComponent implements OnInit {
       .pipe(
         map(pair => {
 
-          //debugger
-
           if(!pair.currentScene.players.includes(this.playerId)) {
             return []
           }

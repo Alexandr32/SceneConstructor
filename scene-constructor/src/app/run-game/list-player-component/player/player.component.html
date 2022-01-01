@@ -23,7 +23,13 @@
         ></app-player-list-answers>
       </ng-container>
       <ng-container *ngSwitchCase="'Panorama'">
-        <app-panorama-controls>
+        <app-panorama-controls
+          [playerId]="playerId"
+          [currentScene$]="currentScene$"
+          [stateGame$]="stateGame$"
+          (selectControls)="selectControls($event)"
+          (selectAnswer)="selectAnswer($event)"
+        >
         </app-panorama-controls>
       </ng-container>
 

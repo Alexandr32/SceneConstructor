@@ -9,6 +9,7 @@ import {map} from "rxjs/operators";
 import {combineLatest} from 'rxjs';
 import {StateRunGameService} from "../../services/state-run-game.service";
 import {StateGame} from "../../models/other-models/state-game.model";
+import {TypeControls} from "../../models/other-models/type-controls.enum";
 
 @Component({
   selector: 'app-player',
@@ -50,5 +51,12 @@ export class PlayerComponent implements OnInit {
 
   async selectAnswer(answer: AnswerRunGame) {
     await this.stateService.saveSelectAnswerStateGame(this.gameId, this.player, answer)
+  }
+
+  async selectControls(typeControls: TypeControls) {
+
+    console.log('selectControls')
+
+    await this.stateService.saveSelectTypeControls(this.gameId, typeControls)
   }
 }

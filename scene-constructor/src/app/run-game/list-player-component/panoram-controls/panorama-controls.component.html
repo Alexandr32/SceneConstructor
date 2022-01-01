@@ -37,3 +37,10 @@
   </div>
 
 </div>
+
+<app-player-list-answers
+  [playerId]="playerId"
+  [currentScene$]="currentScene$"
+  [stateGame$]="stateGame$"
+  (selectAnswer)="selectAnswer.emit($event)"
+></app-player-list-answers>

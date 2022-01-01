@@ -11,22 +11,58 @@
 
   <div class="app-panorama-scene-component__btn-controls">
 
-    {{scene.id}}
+<!--    {{scene.id}}-->
 
     <div>
-      <button class="" (click)="topLeft()">Вверх-лево</button>
-      <button class="" (click)="top()">Вверх</button>
-      <button class="" (click)="topRight()">Вверх-право</button>
+      <div>
+        <button class="btm-control" (click)="topLeft()">
+          <div class="arrow"></div>
+        </button>
+        <button class="btm-control" (click)="top()">
+          <div class="arrow" style="transform: rotate(45deg)"></div>
+        </button>
+        <button class="btm-control" style="transform: rotate(90deg)" (click)="topRight()">
+          <div class="arrow"></div>
+        </button>
+      </div>
+      <div class="flex">
+        <button class="btm-control" (click)="left()">
+          <div class="arrow" style="transform: rotate(-45deg)"></div>
+        </button>
+        <button class="btm-control flex justify-content-center align-items-center" (click)="center()">
+          <div class="btm-control-center"></div>
+        </button>
+        <button class="btm-control" (click)="right()">
+          <div class="arrow" style="transform: rotate(135deg)"></div>
+        </button>
+      </div>
+      <div>
+        <button class="btm-control" (click)="bottomLeft()">
+          <div class="arrow" style="transform: rotate(270deg)"></div>
+        </button>
+        <button class="btm-control" (click)="bottom()">
+          <div class="arrow" style="transform: rotate(225deg)"></div>
+        </button>
+        <button class="btm-control" (click)="bottomRight()">
+          <div class="arrow" style="transform: rotate(180deg)"></div>
+        </button>
+      </div>
     </div>
-    <div class="flex">
-      <button class="" (click)="left()">Лево</button>
-      <button class="" (click)="center()">Центр</button>
-      <button class="" (click)="right()">Право</button>
-    </div>
-    <div>
-      <button class="" (click)="bottomLeft()">Вниз-лево</button>
-      <button class="" (click)="bottom()">Вниз</button>
-      <button class="" (click)="bottomRight()">Вниз-право</button>
-    </div>
+
+<!--    <div>-->
+<!--      <button class="" (click)="topLeft()">Вверх-лево</button>-->
+<!--      <button class="" (click)="top()">Вверх</button>-->
+<!--      <button class="" (click)="topRight()">Вверх-право</button>-->
+<!--    </div>-->
+<!--    <div class="flex">-->
+<!--      <button class="" (click)="left()">Лево</button>-->
+<!--      <button class="" (click)="center()">Центр</button>-->
+<!--      <button class="" (click)="right()">Право</button>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <button class="" (click)="bottomLeft()">Вниз-лево</button>-->
+<!--      <button class="" (click)="bottom()">Вниз</button>-->
+<!--      <button class="" (click)="bottomRight()">Вниз-право</button>-->
+<!--    </div>-->
   </div>
 </div>

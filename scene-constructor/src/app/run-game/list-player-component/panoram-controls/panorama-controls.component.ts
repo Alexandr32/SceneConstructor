@@ -1,11 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Observable} from "rxjs";
+import {AnswerRunGame} from "../../models/other-models/answer.model";
+import {IBaseSceneRunGame} from "../../models/other-models/base-scene-run-game.model";
+import {StateGame} from "../../models/other-models/state-game.model";
+import {TypeControls} from "../../models/other-models/type-controls.enum";
 
 @Component({
   selector: 'app-panorama-controls',
   templateUrl: './panorama-controls.component.html',
-  styleUrls: ['./panorama-controls.component.scss']
+  styleUrls: ['./panorama-controls.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PanoramaControlsComponent implements OnInit {
+
+  @Input()
+  playerId: string
+  @Input()
+  currentScene$: Observable<IBaseSceneRunGame>
+  @Input()
+  stateGame$ :Observable<StateGame>
+
+  @Output()
+  selectControls: EventEmitter<TypeControls> = new EventEmitter<TypeControls>()
+
+  @Output()
+  selectAnswer: EventEmitter<AnswerRunGame> = new EventEmitter<AnswerRunGame>()
 
   constructor() { }
 
@@ -13,44 +32,39 @@ export class PanoramaControlsComponent implements OnInit {
   }
 
   top() {
-    //this.viewer.setPitch(this.viewer.getPitch() + 20);
+    this.selectControls.emit(TypeControls.top)
   }
 
   topLeft() {
-    //this.top()
-    //this.left()
+    this.selectControls.emit(TypeControls.topLeft)
   }
 
   topRight() {
-    //this.top()
-    //this.right()
+    this.selectControls.emit(TypeControls.topRight)
   }
 
   center() {
-    //this.viewer.setPitch(0);
-    //this.viewer.setYaw(0);
+    this.selectControls.emit(TypeControls.center)
   }
 
   bottom() {
-    //this.viewer.setPitch(this.viewer.getPitch() - 20);
+    this.selectControls.emit(TypeControls.bottom)
   }
 
   bottomLeft() {
-    //this.bottom()
-    //this.left()
+    this.selectControls.emit(TypeControls.bottomLeft)
   }
 
   bottomRight() {
-    //this.bottom()
-    //this.right()
+    this.selectControls.emit(TypeControls.bottomRight)
   }
 
   left() {
-    //this.viewer.setYaw(this.viewer.getYaw() - 50);
+    this.selectControls.emit(TypeControls.left)
   }
 
   right() {
-    //this.viewer.setYaw(this.viewer.getYaw() + 50);
+    this.selectControls.emit(TypeControls.right)
   }
 
 }
