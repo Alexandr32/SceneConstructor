@@ -1,15 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 import { AnswerRunGame } from "src/app/run-game/models/other-models/answer.model";
 import {StateService} from "../services/state.service";
 import {StateGame} from "../models/other-models/state-game.model";
+import {takeUntil} from "rxjs/operators";
+import {BaseComponent} from "../../base-component/base-component.component";
 
 @Component({
   selector: 'app-item-answer',
   templateUrl: './item-answer.component.html',
   styleUrls: ['./item-answer.component.scss']
 })
-export class ItemAnswerComponent implements OnInit {
+export class ItemAnswerComponent extends BaseComponent implements OnInit, OnDestroy {
 
   @Input()
   answer: AnswerRunGame
@@ -42,11 +44,11 @@ export class ItemAnswerComponent implements OnInit {
 
   count: number = 0
 
-  constructor() { }
+  constructor() { super() }
 
   ngOnInit() {
 
-    this.state$?.subscribe(value => {
+    this.state$?.pipe(takeUntil(this.ngUnsubscribe)).subscribe(value => {
       const count = value.answer?.filter(item => item.answerId === this.answer.id)
 
       if (!count) {
@@ -55,6 +57,10 @@ export class ItemAnswerComponent implements OnInit {
         this.count = count.length
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    super.unsubscribe()
   }
 
 }

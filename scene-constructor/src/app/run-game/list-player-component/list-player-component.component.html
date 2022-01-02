@@ -17,8 +17,7 @@
         class="game-run__players">
         <app-player
           *ngFor="let player of players"
-          [playerId]="player.id"
-          [gameId]="gameId"
+          [player]="player"
         ></app-player>
       </div>
 

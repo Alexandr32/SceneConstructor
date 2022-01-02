@@ -1,32 +1,18 @@
 <div class="player-test">
-  <img class="player-test__image" [src]="(player$ | async)?.imageFile" alt="player"/>
+  <img class="player-test__image" [src]="player?.imageFile" alt="player"/>
   <div class="player-test__content">
-    <div class="player-test__name">{{ (player$ | async)?.name }}</div>
+    <div class="player-test__name">{{ player?.name }}</div>
 
-<!--    <div *ngIf="(currentScene$ | async)?.typesScene === 'Answer'">-->
-<!--      <app-player-list-answers-->
-<!--        [playerId]="playerId"-->
-<!--        [currentScene$]="currentScene$"-->
-<!--        [stateGame$]="stateGame$"-->
-<!--        (selectAnswer)="selectAnswer($event)"-->
-<!--      ></app-player-list-answers>-->
-<!--    </div>-->
-
-
-    <ng-container [ngSwitch]="(currentScene$ | async)?.typesScene">
+    <ng-container [ngSwitch]="currentScene?.typesScene">
       <ng-container *ngSwitchCase="'Answer'">
         <app-player-list-answers
-          [playerId]="playerId"
-          [currentScene$]="currentScene$"
-          [stateGame$]="stateGame$"
+          [player]="player"
           (selectAnswer)="selectAnswer($event)"
         ></app-player-list-answers>
       </ng-container>
       <ng-container *ngSwitchCase="'Panorama'">
         <app-panorama-controls
-          [playerId]="playerId"
-          [currentScene$]="currentScene$"
-          [stateGame$]="stateGame$"
+          [player]="player"
           (selectControls)="selectControls($event)"
           (selectAnswer)="selectAnswer($event)"
         >

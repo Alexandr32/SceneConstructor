@@ -1,10 +1,12 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
-import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
-import {Observable, timer} from "rxjs";
-import {StateGame} from "../models/other-models/state-game.model";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Observable, Subscription} from "rxjs";
 import {TypeControls} from "../models/other-models/type-controls.enum";
-import {debounce} from "rxjs/operators";
+import {StoreRunGameService} from "../services/store-run-game.service";
+import {TypeSceneEnum} from "../../core/models/type-scene.enum";
+import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
+import {StateGame} from "../models/other-models/state-game.model";
+import {BaseComponent} from "../../base-component/base-component.component";
+import {takeUntil} from "rxjs/operators";
 
 declare let pannellum: any;
 
@@ -13,30 +15,21 @@ declare let pannellum: any;
   templateUrl: './panorama-scene-component.component.html',
   styleUrls: ['./panorama-scene-component.component.scss']
 })
-export class PanoramaSceneComponentComponent implements OnInit, AfterViewInit {
+export class PanoramaSceneComponentComponent extends BaseComponent implements OnInit, AfterViewInit {
 
-  private _scene: PanoramaRunGame | IBaseSceneRunGame | any | undefined
 
-  // редактор кода не умеет определять что PanoramaRunGame реализует IBaseSceneRunGame
-  // any, позволяет исправить это
-  @Input()
-  set scene(value: PanoramaRunGame | IBaseSceneRunGame | any | undefined) {
-    this._scene = value
-    this.showPanorama()
-  }
+  //Костыль считает сколько ответов чтобы камера не дергалась при ответе пропустить сцену
+  private countAnswer: number = 0
+  state$: Observable<StateGame> = this.storeRunGameService.stateGame$
 
-  get scene(): PanoramaRunGame | IBaseSceneRunGame | any | undefined {
-    return this._scene
-  }
-
-  @Input()
-  state$: Observable<StateGame>
+  scene: PanoramaRunGame
 
   viewer: any
 
   private typesControls: Map<TypeControls, () => void> = new Map<TypeControls, () => () => void>();
 
-  constructor() {
+  constructor(private storeRunGameService: StoreRunGameService) {
+    super()
     this.typesControls.set(TypeControls.top, this.top)
     this.typesControls.set(TypeControls.topLeft, this.topLeft)
     this.typesControls.set(TypeControls.topRight, this.topRight)
@@ -50,7 +43,7 @@ export class PanoramaSceneComponentComponent implements OnInit, AfterViewInit {
 
   showPanorama() {
 
-    if(this.viewer) {
+    if (this.viewer) {
       this.viewer?.destroy()
     }
 
@@ -76,46 +69,40 @@ export class PanoramaSceneComponentComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
+    this.storeRunGameService.currentScene$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((currentScene) => {
+
+        if (currentScene.typesScene !== TypeSceneEnum.Panorama) {
+          return
+        }
+
+        this.scene = (currentScene as PanoramaRunGame)
+        this.showPanorama()
+      })
+
+    this.storeRunGameService.stateGame$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(state => {
+
+        //Костыль считает сколько ответов чтобы камера не дергалась при ответе пропустить сцену
+        if(state.answer) {
+          if(state.answer.length !== this.countAnswer) {
+            this.countAnswer = state.answer.length
+            return
+          }
+        }
+
+        const action = this.typesControls.get(state.typeControls)
+        if (action) {
+          action()
+        }
+      })
 
   }
 
   ngAfterViewInit(): void {
-    this.state$
-      .subscribe(state => {
 
-        console.log(this._scene)
-        console.log(state)
-
-      // top,
-      //   topLeft,
-      //   topRight,
-      //   center,
-      //   bottom,
-      //   bottomLeft,
-      //   bottomRight,
-      //   left,
-      //   right
-
-      // switch (state.typeControls) {
-      //   case constant_expr2: {
-      //     // операторы;
-      //     break;
-      //   }
-      // }
-
-      //this.left()
-
-        const action = this.typesControls.get(state.typeControls)
-        if(action) {
-          action()
-        }
-
-
-      // setTimeout(() => {
-      //   const action = this.typesControls.get(state.typeControls)
-      //   action()
-      // }, 0)
-    })
   }
 
   top = () => {
@@ -160,6 +147,8 @@ export class PanoramaSceneComponentComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    console.log('ngOnDestroy')
+    super.unsubscribe()
     this.viewer?.destroy()
   }
 

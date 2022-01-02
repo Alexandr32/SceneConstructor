@@ -1,9 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Observable} from "rxjs";
 import {AnswerRunGame} from "../../models/other-models/answer.model";
 import {IBaseSceneRunGame} from "../../models/other-models/base-scene-run-game.model";
 import {StateGame} from "../../models/other-models/state-game.model";
 import {TypeControls} from "../../models/other-models/type-controls.enum";
+import {Player} from "../../../core/models/player.model";
+import {StoreRunGameService} from "../../services/store-run-game.service";
+import {BaseComponent} from "../../../base-component/base-component.component";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-panorama-controls',
@@ -11,14 +15,12 @@ import {TypeControls} from "../../models/other-models/type-controls.enum";
   styleUrls: ['./panorama-controls.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class PanoramaControlsComponent implements OnInit {
+export class PanoramaControlsComponent extends BaseComponent implements OnInit, OnDestroy {
 
   @Input()
-  playerId: string
-  @Input()
-  currentScene$: Observable<IBaseSceneRunGame>
-  @Input()
-  stateGame$ :Observable<StateGame>
+  player: Player
+
+  isShowControls: boolean = false
 
   @Output()
   selectControls: EventEmitter<TypeControls> = new EventEmitter<TypeControls>()
@@ -26,9 +28,16 @@ export class PanoramaControlsComponent implements OnInit {
   @Output()
   selectAnswer: EventEmitter<AnswerRunGame> = new EventEmitter<AnswerRunGame>()
 
-  constructor() { }
+  constructor(private storeRunGameService: StoreRunGameService) {
+    super()
+  }
 
   ngOnInit(): void {
+    this.storeRunGameService.currentScene$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(currentScene => {
+        this.isShowControls = currentScene.players.includes(this.player.id)
+      })
   }
 
   top() {
@@ -65,6 +74,10 @@ export class PanoramaControlsComponent implements OnInit {
 
   right() {
     this.selectControls.emit(TypeControls.right)
+  }
+
+  ngOnDestroy(): void {
+    super.unsubscribe()
   }
 
 }

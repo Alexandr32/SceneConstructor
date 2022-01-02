@@ -1,6 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { RunGameResolver } from './resolvers/run-game.resolver';
 import {MainRunGameComponentComponent} from "./main-run-game-component/main-run-game-component.component";
 
 const routes: Routes = [
@@ -8,9 +7,9 @@ const routes: Routes = [
   {
     path: ':gameId',
     component: MainRunGameComponentComponent, pathMatch: 'full',
-    resolve: {
-      runGame: RunGameResolver
-    }
+    // resolve: {
+    //   runGame: RunGameResolver
+    // }
   },
 ];
 

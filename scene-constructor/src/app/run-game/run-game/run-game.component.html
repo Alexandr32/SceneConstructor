@@ -1,29 +1,21 @@
-<div *ngIf="selectScene$ | async as selectScene">
-
+<div *ngIf="selectScene">
   <ng-container [ngSwitch]="selectScene?.typesScene">
 
     <ng-container *ngSwitchCase="'Panorama'">
-      <app-panorama-scene-component
-        [state$]="state$"
-        [scene]="selectScene">
+      <app-panorama-scene-component>
       </app-panorama-scene-component>
     </ng-container>
 
     <ng-container *ngSwitchDefault>
-      <app-background-scene
-        [state$]="state$"
-        [scene]="selectScene">
+      <app-background-scene>
       </app-background-scene>
     </ng-container>
 
   </ng-container>
 </div>
 
-
-
 <div class="settings-run-game__settings">
   <app-settings-run-game
-    [runGame$]="runGame$"
     (selectedScene)="selectedScene($event)"
   >
 

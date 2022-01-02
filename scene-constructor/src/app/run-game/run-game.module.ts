@@ -20,6 +20,7 @@ import { ListAnswersComponent } from './list-answers/list-answers.component';
 import { DescriptionSceneComponent } from './description-scene/description-scene.component';
 import {PlayerListAnswersComponent} from "./list-player-component/list-answers/player-list-answers.component";
 import { PanoramaControlsComponent } from './list-player-component/panoram-controls/panorama-controls.component';
+import {StateService} from "./services/state.service";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,9 @@ import { PanoramaControlsComponent } from './list-player-component/panoram-contr
     RunGameRoutingModule,
     RouterModule,
     DragDropModule,
+  ],
+  providers: [
+    StateService
   ]
 })
 export class RunGameModule { }

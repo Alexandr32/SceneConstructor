@@ -4,14 +4,16 @@
 
   <div class="flex-grow-1 m-l-200 m-r-200 m-b-50">
 
-    <app-list-answers [scene]="scene" [state$]="state$"></app-list-answers>
+    <app-list-answers [scene]="scene"
+                      [state$]="state$">
 
-    <app-description-scene [scene]="scene"></app-description-scene>
+    </app-list-answers>
+
+    <app-description-scene [scene]="scene"
+    ></app-description-scene>
   </div>
 
   <div class="app-panorama-scene-component__btn-controls">
-
-<!--    {{scene.id}}-->
 
     <div>
       <div>
@@ -48,21 +50,5 @@
         </button>
       </div>
     </div>
-
-<!--    <div>-->
-<!--      <button class="" (click)="topLeft()">Вверх-лево</button>-->
-<!--      <button class="" (click)="top()">Вверх</button>-->
-<!--      <button class="" (click)="topRight()">Вверх-право</button>-->
-<!--    </div>-->
-<!--    <div class="flex">-->
-<!--      <button class="" (click)="left()">Лево</button>-->
-<!--      <button class="" (click)="center()">Центр</button>-->
-<!--      <button class="" (click)="right()">Право</button>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      <button class="" (click)="bottomLeft()">Вниз-лево</button>-->
-<!--      <button class="" (click)="bottom()">Вниз</button>-->
-<!--      <button class="" (click)="bottomRight()">Вниз-право</button>-->
-<!--    </div>-->
   </div>
 </div>

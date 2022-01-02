@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from 
 import {Observable} from "rxjs";
 import {RunGame} from "../models/other-models/run-game.model";
 import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
+import {StoreRunGameService} from "../services/store-run-game.service";
 
 @Component({
   selector: 'app-settings-run-game',
@@ -13,15 +14,17 @@ export class SettingsRunGameComponent implements OnInit {
 
   isShow: boolean = true
 
-  @Input()
-  runGame$: Observable<RunGame>
+  runGame: RunGame
 
   @Output()
   selectedScene: EventEmitter<IBaseSceneRunGame> = new EventEmitter<IBaseSceneRunGame>()
 
-  constructor() { }
+  constructor(private storeRunGameService: StoreRunGameService) { }
 
   ngOnInit(): void {
+    this.storeRunGameService.runGame$.subscribe(runGame => {
+      this.runGame = runGame
+    })
   }
 
 }

@@ -1,12 +1,7 @@
 import {Injectable} from '@angular/core';
-//import {AngularFirestore} from '@angular/fire/firestore';
-//import {AngularFireStorage} from '@angular/fire/storage';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {concatMap, first, map, take} from 'rxjs/operators';
+import { first, map, take} from 'rxjs/operators';
 import {Game as EditGame} from '../../editor/models/game.model';
-import {StateGame} from "../models/other-models/state-game.model";
 import {Player} from "../models/other-models/player.model";
-import {AnswerRunGame} from "../models/other-models/answer.model";
 import {TypeSceneEnum} from 'src/app/core/models/type-scene.enum';
 import {RunGameMapper} from '../run-game-mapper.model';
 import {PuzzleEditScene} from 'src/app/editor/models/puzzle-edit-scene';
@@ -16,7 +11,6 @@ import {PuzzleSceneRunGameFirebase} from '../models/firebase-models/puzzle-scene
 import {FileService} from 'src/app/core/services/file.service';
 import {TypeFile} from 'src/app/editor/models/type-file.model';
 import {RunGame} from '../models/other-models/run-game.model';
-import {IPanoramaCore} from "../../core/models/base-panorama.model";
 import {PuzzleRunGame} from "../models/other-models/scenes.models";
 import {IBaseEditScene} from "../../editor/models/base-edit-scene.model";
 import {PanoramaEditScene} from "../../editor/models/panorama-edit-scene";
@@ -32,12 +26,6 @@ import {AngularFireStorage} from "@angular/fire/compat/storage";
 export class RunGameService {
 
   private readonly runGameCollection = 'RunGameCollection'
-
-  get runGame$(): Observable<RunGame> {
-    return this._runGame$.asObservable()
-  }
-
-  private _runGame$: Subject<RunGame> = new BehaviorSubject(null)
 
   constructor(
     private fireStore: AngularFirestore,
@@ -102,7 +90,6 @@ export class RunGameService {
       throw error;
     }
   }
-
 
   async resetDataStateGame(stateGameId: string, currentScene: IBaseEditScene) {
     //const state = await this.getStateGame(stateGameId)
@@ -206,31 +193,14 @@ export class RunGameService {
       switch (item.typesScene) {
         case TypeSceneEnum.Answer: {
 
-
-          // const promiseImg = this.fileService.setAnswerSceneFile(resultGame.id, item as Scene)
-          // promiseList.push(promiseImg)
-
           const promiseImg = this.promiseAnswerImageScene(
             resultGame.id,
             (item as SceneEditScene)
           )
           promiseList.push(promiseImg)
-          // //
-          // const promiseAnswerVideoScene = this.promiseAnswerVideoScene(
-          //   resultGame.id,
-          //   (item as Scene)
-          // )
-          // promiseList.push(promiseAnswerVideoScene)
-
-          // const answer =  this.fileService.setAnswerSceneFile(resultGame.id, item as Scene)
-          // const answer = this.fileService.getUrl(resultGame.id, (item as SceneRunGame).imageFileId, TypeFile.SceneImages).toPromise()
-          // promiseList.push(answer)
           break
         }
         case TypeSceneEnum.Panorama: {
-
-          // const promise = await this.fileService.setFilePanoramaFile(resultGame.id, item as Panorama)
-          // promiseList.push(promise)
 
           const promise = this.promisePanoramaImageScene(
             resultGame.id,
@@ -238,22 +208,15 @@ export class RunGameService {
           )
           promiseList.push(promise)
 
-          //const panorama = await this.fileService.setFilePanoramaFile(resultGame.id, item as Panorama)
-          // promiseList.push(panorama)
           break
         }
         case TypeSceneEnum.Puzzle: {
-
-          // const promise = await this.fileService.setFilePuzzleFile(resultGame.id, item as Puzzle)
-          // promiseList.push(promise)
 
           const promise = this.promisePuzzleImageScene(
             resultGame.id,
             (item as PuzzleRunGame)
           )
           promiseList.push(promise)
-          //const puzzle = await this.fileService.setFilePuzzleFile(resultGame.id, item as Puzzle)
-          // promiseList.push(puzzle)
           break
         }
       }
@@ -261,8 +224,6 @@ export class RunGameService {
 
     await Promise.all(promisePlayerList)
     await Promise.all(promiseList)
-
-    this._runGame$.next(resultGame)
 
     return resultGame
   }
@@ -293,13 +254,6 @@ export class RunGameService {
       scene.imageFile = '/assets/http_puzzle.jpg';
     }
 
-    // if (scene.soundFileId) {
-    //
-    //   scene.soundFileLink =
-    //     await this.getMediaFileLinkById(resultGameId, TypeFile.Sound, scene.soundFileId)
-    //
-    // }
-
     for (const item of scene.partsPuzzleImages) {
       const src = await this.fileService.getUplPartsPuzzleImages(resultGameId, scene.imagePuzzleFileId, item).toPromise()
       item.src = src
@@ -321,23 +275,6 @@ export class RunGameService {
         }
       })
     })
-
-
-    // return new Promise((resolve, reject) => {
-    //
-    //   this.fileService.getUrl(resultGameId, scene.imageFileId, TypeFile.PuzzleImages)
-    //     .toPromise()
-    //     .then((value) => {
-    //       scene.imageFile = value
-    //       resolve()
-    //     })
-    //     .catch((error) => {
-    //       scene.imageFile = '/assets/http_puzzle.jpg';
-    //       console.error('Изображение не найдено');
-    //       console.error(error);
-    //       reject()
-    //     })
-    // })
   }
 
   private async promisePanoramaImageScene(resultGameId: string, scene: PanoramaRunGame) {
@@ -349,23 +286,6 @@ export class RunGameService {
       console.error('Изображение не найдено');
       console.error(error);
     }
-
-
-    // return new Promise((resolve, reject) => {
-    //
-    //   this.fileService.getUrl(resultGameId, scene.imageFileId, TypeFile.PanoramaImages)
-    //     .toPromise()
-    //     .then((value) => {
-    //       scene.imageFile = value
-    //       resolve()
-    //     })
-    //     .catch((error) => {
-    //       scene.imageFile = '/assets/http_scene.jpg';
-    //       console.error('Изображение не найдено');
-    //       console.error(error);
-    //       reject()
-    //     })
-    // })
   }
 
   private async promiseAnswerImageScene(resultGameId: string, scene: SceneRunGame) {
@@ -396,26 +316,6 @@ export class RunGameService {
       }
 
     }
-
-    // return new Promise((resolve, reject) => {
-    //
-    //   if (scene.videoFileId) {
-    //     this.fileService.getUrl(resultGameId, scene.imageFileId, TypeFile.SceneImages)
-    //       .toPromise()
-    //       .then((value) => {
-    //         scene.imageFile = value
-    //         resolve()
-    //       })
-    //       .catch((error) => {
-    //         scene.imageFile = '/assets/http_scene.jpg';
-    //         console.log('Изображение не найдено');
-    //         console.log(error);
-    //         reject()
-    //       })
-    //   } else {
-    //     resolve()
-    //   }
-    // })
   }
 
   private async promiseImgPlayer(resultGameId: string, player: Player) {
@@ -429,44 +329,6 @@ export class RunGameService {
       console.log(error);
     }
 
-
-    // return new Promise((resolve, reject) => {
-    //   this.fileService
-    //     .getUrl(resultGameId, player.imageFileId, TypeFile.PlayerImages)
-    //     .toPromise()
-    //     .then((value) => {
-    //       player.imageFile = value
-    //       resolve()
-    //     })
-    //     .catch((error) => {
-    //       player.imageFile = '/assets/http_player.jpg';
-    //       console.log('Изображение не найдено');
-    //       console.log(error);
-    //       reject()
-    //     })
-    // })
   }
-
-  // private promiseImgPlayer
-  //   = (resultGameId: string, player: Player): Promise<any> => {
-  //   return new Promise((resolve, reject) => {
-  //     this.fileService
-  //       .getUrl(resultGameId, player.imageFileId, TypeFile.PlayerImages)
-  //       .toPromise()
-  //       .then((value) => {
-  //         player.imageFile = value
-  //         resolve()
-  //       })
-  //       .catch((error) => {
-  //         player.imageFile = '/assets/http_player.jpg';
-  //         console.log('Изображение не найдено');
-  //         console.log(error);
-  //         reject()
-  //       })
-  //   })
-  // }
-
-  // добавить звук!!!
-  // добавить изображения сцен
 
 }

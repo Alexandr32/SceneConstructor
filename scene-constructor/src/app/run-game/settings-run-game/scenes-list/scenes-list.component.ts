@@ -10,10 +10,8 @@ import {RunGame} from "../../models/other-models/run-game.model";
 })
 export class ScenesListComponent implements OnInit {
 
-  scenes: IBaseSceneRunGame[] = []
-
   @Input()
-  runGame$: Observable<RunGame>
+  scenes: IBaseSceneRunGame[] = []
 
   @Output()
   selectedScene: EventEmitter<IBaseSceneRunGame> = new EventEmitter<IBaseSceneRunGame>()
@@ -21,9 +19,7 @@ export class ScenesListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.runGame$.subscribe(runGame => {
-     this.scenes = runGame.scenes
-    })
+
   }
 
   select(scene: IBaseSceneRunGame) {

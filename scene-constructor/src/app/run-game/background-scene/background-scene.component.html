@@ -19,7 +19,7 @@
 <div class="run-game__background__container">
 
   <div class="flex-grow-1 m-l-200 m-r-200 m-b-50">
-    <ng-container [ngSwitch]="scene.typesScene">
+    <ng-container [ngSwitch]="scene?.typesScene">
       <ng-container *ngSwitchCase="'Answer'">
         <app-answer-scene-component
           [state$]="state$"

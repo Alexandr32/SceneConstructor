@@ -1,62 +1,50 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AnswerRunGame} from "src/app/run-game/models/other-models/answer.model";
-import {RunGameService} from 'src/app/run-game/services/run-game.service';
 import {Player} from '../../../core/models/player.model';
 import {IBaseSceneRunGame} from '../../models/other-models/base-scene-run-game.model';
-import {StateService} from "../../services/state.service";
-import {Observable, Subject} from "rxjs";
-import {map} from "rxjs/operators";
-import {combineLatest} from 'rxjs';
-import {StateRunGameService} from "../../services/state-run-game.service";
+import {map, takeUntil} from "rxjs/operators";
 import {StateGame} from "../../models/other-models/state-game.model";
 import {TypeControls} from "../../models/other-models/type-controls.enum";
+import {StoreRunGameService} from "../../services/store-run-game.service";
+import {BaseComponent} from "../../../base-component/base-component.component";
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit {
+export class PlayerComponent extends BaseComponent implements OnInit, OnDestroy {
 
   @Input()
-  playerId: string
+  player: Player
 
-  @Input()
-  gameId: string
-
-  player$: Observable<Player>
-  private player: Player
-
-  currentScene$: Observable<IBaseSceneRunGame>
-  stateGame$ :Observable<StateGame>
+  currentScene: IBaseSceneRunGame
+  stateGame: StateGame
 
   constructor(
-    private stateRunGameService: StateRunGameService,
-    private stateService: StateService
+    private storeRunGameService: StoreRunGameService
   ) {
+    super()
+  }
 
+  ngOnDestroy(): void {
+    super.unsubscribe()
   }
 
   ngOnInit() {
-    this.player$ = this.stateRunGameService.players$.pipe(
-      map(x => {
-        const player = x.find(player => player.id === this.playerId)
-        this.player = player
-        return player
+
+    this.storeRunGameService.currentScene$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(currentScene => {
+        this.currentScene = currentScene
       })
-    )
-    this.currentScene$ = this.stateRunGameService.currentScene$
-    this.stateGame$ = this.stateRunGameService.stateGame$
   }
 
   async selectAnswer(answer: AnswerRunGame) {
-    await this.stateService.saveSelectAnswerStateGame(this.gameId, this.player, answer)
+    await this.storeRunGameService.saveSelectAnswerStateGame(this.player, answer)
   }
 
   async selectControls(typeControls: TypeControls) {
-
-    console.log('selectControls')
-
-    await this.stateService.saveSelectTypeControls(this.gameId, typeControls)
+    await this.storeRunGameService.saveSelectTypeControls(typeControls)
   }
 }

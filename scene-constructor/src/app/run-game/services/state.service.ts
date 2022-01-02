@@ -13,23 +13,9 @@ import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {TypeControls} from "../models/other-models/type-controls.enum";
 
-export interface StateGameFirebase {
-  id: string,
-  currentSceneId: string
-  //typeScene: TypeScene
-}
 
-
-// @Injectable({
-//   providedIn: 'root'
-// })
 @Injectable()
 export class StateService {
-
-  stateGame$: Subject<StateGame> = new Subject<StateGame>()
-  stateGame: StateGame
-
-  typeControls: TypeControls
 
   private readonly runGameCollection = 'RunGameCollection'
   private readonly stateGameAnswerCollection = 'stateGameAnswerCollection'
@@ -38,14 +24,12 @@ export class StateService {
   private isFirstTap = false
 
   constructor(
-    private fireStore: AngularFirestore,
-    private storage: AngularFireStorage,
-    private fileService: FileService) {
+    private fireStore: AngularFirestore) {
   }
 
-  initStateGame(gameId: string) {
+  getStateGame(gameId: string): Observable<StateGame> {
 
-    this.fireStore.doc<StateGame>(`${this.runGameCollection}/${gameId}/${this.stateGameKey}/${gameId}`)
+    return this.fireStore.doc<StateGame>(`${this.runGameCollection}/${gameId}/${this.stateGameKey}/${gameId}`)
       .snapshotChanges()
       .pipe(
         map((doc) => {
@@ -54,14 +38,9 @@ export class StateService {
           const newStateGame = new StateGame(doc.payload.id, stateGame.currentSceneId)
           newStateGame.answer = stateGame.answer
           newStateGame.typeControls = stateGame.typeControls
-          this.stateGame = newStateGame
-
           return {state: newStateGame, hasPendingWrites: doc.payload.metadata.hasPendingWrites};
         }),
         filter((doc) => {
-
-          debugger
-
           if(!this.isFirstTap) {
             this.isFirstTap = true
             return true
@@ -71,14 +50,6 @@ export class StateService {
         }),
         map(doc => doc.state)
       )
-      .subscribe((x) => {
-
-        this.stateGame = x
-
-        this.stateGame$.next(x)
-
-        console.log('Простая подписка')
-      })
   }
 
   async saveNewStateGame(game: EditGame) {
@@ -95,18 +66,13 @@ export class StateService {
       throw new Error('Стартовая сцена не найдена')
     }
 
-    // const statePlayer = [...game.players.map(item => {
-    //   return {id: item.id, value: ''}
-    // })]
-
     try {
 
       await this.fireStore.collection<any>(`${this.runGameCollection}/${game.id}/${this.stateGameKey}`)
         .doc(game.id)
         .set({
           currentSceneId: startScene.id,
-          //answer: statePlayer
-        } as StateGameFirebase)
+        })
 
     } catch (error) {
       console.error('При сохранении данных состояния игры произошла ошибка', error);
@@ -114,56 +80,32 @@ export class StateService {
     }
   }
 
-  /**
-   *  Сохранение выбранного ответа у сцены
-   * @param stateGameId
-   * @param player
-   * @param selectAnswer
-   */
-  async saveSelectAnswerStateGame(stateGameId: string, player: Player, selectAnswer: AnswerRunGame) {
 
-    debugger
-
-    const state = this.stateGame
-
-    if (!state.answer) {
-      state.answer = []
-    }
-
-    state.answer.push({playerId: player.id, answerId: selectAnswer.id})
-
-    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
+  async updateState(stateGameId: string, stateGame: StateGame) {
+    return this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
       .doc(stateGameId)
-      .update({...state})
+      .update(stateGame)
   }
 
-  async saveSelectTypeControls(stateGameId: string, typeControls: TypeControls) {
-
-    const state = this.stateGame
-    state.typeControls = typeControls
-
-    if (!state.answer) {
-      state.answer = []
-    }
-
-    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
-      .doc(stateGameId)
-      .update({...state})
+  async setState(stateGameId: string, stateGame: StateGame) {
+      return this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
+        .doc(stateGameId)
+        .set(stateGame)
   }
 
-  async nextDataStateGame(stateGameId: string, currentScene: IBaseSceneRunGame) {
-
-    debugger
-
-    const state = this.stateGame
-
-    state.currentSceneId = currentScene.id
-    state.answer = []
-
-    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
-      .doc(stateGameId)
-      .set({...state})
-  }
+  // async nextDataStateGame(stateGameId: string, currentScene: IBaseSceneRunGame) {
+  //
+  //   debugger
+  //
+  //   const state = this.stateGame
+  //
+  //   state.currentSceneId = currentScene.id
+  //   state.answer = []
+  //
+  //   await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
+  //     .doc(stateGameId)
+  //     .set({...state})
+  // }
 
   async resetDataStateGame(stateGameId: string, currentScene: IBaseEditScene) {
     //const state = await this.getStateGame(stateGameId)
@@ -192,6 +134,6 @@ export class StateService {
 
     await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
       .doc(stateGameId)
-      .set({currentSceneId: currentScene.id} as StateGameFirebase)
+      .set({currentSceneId: currentScene.id})
   }
 }

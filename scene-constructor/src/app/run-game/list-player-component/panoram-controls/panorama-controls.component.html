@@ -1,6 +1,6 @@
 <div class="flex justify-content-center">
 
-  <div>
+  <div *ngIf="isShowControls">
     <div>
       <button class="btm-control" (click)="topLeft()">
         <div class="arrow"></div>
@@ -39,8 +39,6 @@
 </div>
 
 <app-player-list-answers
-  [playerId]="playerId"
-  [currentScene$]="currentScene$"
-  [stateGame$]="stateGame$"
+  [player]="player"
   (selectAnswer)="selectAnswer.emit($event)"
 ></app-player-list-answers>
