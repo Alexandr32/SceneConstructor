@@ -147,7 +147,6 @@ export class PanoramaSceneComponentComponent extends BaseComponent implements On
   }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy')
     super.unsubscribe()
     this.viewer?.destroy()
   }
