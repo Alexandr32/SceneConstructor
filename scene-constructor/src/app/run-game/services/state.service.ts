@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {FileService} from "../../core/services/file.service";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject, timer} from "rxjs";
 import {StateGame, StateGameAnswer} from "../models/other-models/state-game.model";
-import {first, map} from "rxjs/operators";
+import {debounceTime, distinct, distinctUntilChanged, filter, first, last, map, switchMap, take} from "rxjs/operators";
 import {Player} from "../models/other-models/player.model";
 import {AnswerRunGame} from "../models/other-models/answer.model";
 import {Game as EditGame} from "../../editor/models/game.model";
@@ -20,14 +20,22 @@ export interface StateGameFirebase {
 }
 
 
-@Injectable({
-  providedIn: 'root'
-})
+// @Injectable({
+//   providedIn: 'root'
+// })
+@Injectable()
 export class StateService {
+
+  stateGame$: Subject<StateGame> = new Subject<StateGame>()
+  stateGame: StateGame
+
+  typeControls: TypeControls
 
   private readonly runGameCollection = 'RunGameCollection'
   private readonly stateGameAnswerCollection = 'stateGameAnswerCollection'
-  private readonly stateGame = 'StateGame'
+  private readonly stateGameKey = 'StateGame'
+
+  private isFirstTap = false
 
   constructor(
     private fireStore: AngularFirestore,
@@ -35,34 +43,47 @@ export class StateService {
     private fileService: FileService) {
   }
 
-  getStateGame(gameId: string): Observable<StateGame> {
-    return this.fireStore.doc<StateGame>(`${this.runGameCollection}/${gameId}/${this.stateGame}/${gameId}`)
+  initStateGame(gameId: string) {
+
+    this.fireStore.doc<StateGame>(`${this.runGameCollection}/${gameId}/${this.stateGameKey}/${gameId}`)
       .snapshotChanges()
       .pipe(
         map((doc) => {
+
           const stateGame = doc.payload.data() as StateGame;
           const newStateGame = new StateGame(doc.payload.id, stateGame.currentSceneId)
           newStateGame.answer = stateGame.answer
           newStateGame.typeControls = stateGame.typeControls
-          return newStateGame;
-        })
+          this.stateGame = newStateGame
+
+          return {state: newStateGame, hasPendingWrites: doc.payload.metadata.hasPendingWrites};
+        }),
+        filter((doc) => {
+
+          debugger
+
+          if(!this.isFirstTap) {
+            this.isFirstTap = true
+            return true
+          }
+
+          return doc.hasPendingWrites
+        }),
+        map(doc => doc.state)
       )
+      .subscribe((x) => {
+
+        this.stateGame = x
+
+        this.stateGame$.next(x)
+
+        console.log('Простая подписка')
+      })
   }
 
-  // getStateAnswerGame(gameId: string): Observable<StateGameAnswer> {
-  //   return this.fireStore.doc<StateGameAnswer>(`${this.stateGameAnswerCollection}/${gameId}/${this.stateGame}/${gameId}`)
-  //     .snapshotChanges()
-  //     .pipe(
-  //       map((doc) => {
-  //         const stateGame = doc.payload.data() as StateGameAnswer;
-  //         const newStateGame = new StateGameAnswer(doc.payload.id)
-  //         newStateGame.answer = stateGame.answer
-  //         return newStateGame;
-  //       })
-  //     )
-  // }
-
   async saveNewStateGame(game: EditGame) {
+
+    console.log('saveNewStateGame')
 
     const startScene = game.scenes.find(item => {
       if (item.isStartGame) {
@@ -80,12 +101,12 @@ export class StateService {
 
     try {
 
-      await this.fireStore.collection<any>(`${this.runGameCollection}/${game.id}/${this.stateGame}`)
+      await this.fireStore.collection<any>(`${this.runGameCollection}/${game.id}/${this.stateGameKey}`)
         .doc(game.id)
         .set({
           currentSceneId: startScene.id,
           //answer: statePlayer
-        }  as StateGameFirebase)
+        } as StateGameFirebase)
 
     } catch (error) {
       console.error('При сохранении данных состояния игры произошла ошибка', error);
@@ -101,43 +122,45 @@ export class StateService {
    */
   async saveSelectAnswerStateGame(stateGameId: string, player: Player, selectAnswer: AnswerRunGame) {
 
-    const state = await this.getStateGame(stateGameId)
-      .pipe(first()).toPromise()
+    debugger
 
-    if(!state.answer) {
+    const state = this.stateGame
+
+    if (!state.answer) {
       state.answer = []
     }
 
     state.answer.push({playerId: player.id, answerId: selectAnswer.id})
 
-    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
+    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
       .doc(stateGameId)
       .update({...state})
   }
 
   async saveSelectTypeControls(stateGameId: string, typeControls: TypeControls) {
-    const state = await this.getStateGame(stateGameId)
-      .pipe(first()).toPromise()
+
+    const state = this.stateGame
     state.typeControls = typeControls
 
-    if(!state.answer) {
+    if (!state.answer) {
       state.answer = []
     }
 
-    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
+    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
       .doc(stateGameId)
       .update({...state})
   }
 
   async nextDataStateGame(stateGameId: string, currentScene: IBaseSceneRunGame) {
 
-    const state = await this.getStateGame(stateGameId)
-     .pipe(first()).toPromise()
+    debugger
+
+    const state = this.stateGame
 
     state.currentSceneId = currentScene.id
     state.answer = []
 
-    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
+    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
       .doc(stateGameId)
       .set({...state})
   }
@@ -167,7 +190,7 @@ export class StateService {
     //   a
     // }as StateGameFirebase
 
-    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
+    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
       .doc(stateGameId)
       .set({currentSceneId: currentScene.id} as StateGameFirebase)
   }
