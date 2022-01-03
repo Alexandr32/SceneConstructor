@@ -6,6 +6,7 @@ import {takeUntil} from "rxjs/operators";
 import {TypeSceneEnum} from "../../../core/models/type-scene.enum";
 import {PuzzleRunGame} from "../../models/other-models/scenes.models";
 import {ItemPartsPuzzleImage} from "../../../core/models/item-parts-puzzle-image.model";
+import {PartsPuzzleImage} from "../../../core/models/parts-puzzle-image.model";
 
 @Component({
   selector: 'app-puzzle-controls',
@@ -20,16 +21,19 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   isShowControls: boolean = false
 
   // Изображения для выбора (куда выбрано)
-  scenePartsPuzzleImages: ItemPartsPuzzleImage[] = [
-    {number: 1, value: null},
-    {number: 2, value: null},
-    {number: 3, value: null},
-    {number: 4, value: null},
-    {number: 5, value: null},
-    {number: 6, value: null},
-    {number: 7, value: null},
-    {number: 8, value: null},
-    {number: 9, value: null},
+  scenePartsPuzzleImages: {
+    itemPartsPuzzleImage: ItemPartsPuzzleImage,
+    draggable: boolean
+  }[] = [
+    {itemPartsPuzzleImage: {number: 1, value: null}, draggable: true},
+    {itemPartsPuzzleImage: {number: 2, value: null}, draggable: true},
+    {itemPartsPuzzleImage: {number: 3, value: null}, draggable: true},
+    {itemPartsPuzzleImage: {number: 4, value: null}, draggable: true},
+    {itemPartsPuzzleImage: {number: 5, value: null}, draggable: true},
+    {itemPartsPuzzleImage: {number: 6, value: null}, draggable: true},
+    {itemPartsPuzzleImage: {number: 7, value: null}, draggable: true},
+    {itemPartsPuzzleImage: {number: 8, value: null}, draggable: true},
+    {itemPartsPuzzleImage: {number: 9, value: null}, draggable: true},
   ]
 
   // Изображения доступные для выбора
@@ -54,6 +58,20 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
         const scene = currentScene as PuzzleRunGame
 
+        const findImages = scene.scenePartsPuzzleImages.filter(x => x.value)
+
+        findImages.forEach(item => {
+
+          const findItem = this.scenePartsPuzzleImages.find(x => x.itemPartsPuzzleImage.number === item.number)
+
+          if (findItem) {
+            findItem.draggable = false
+            findItem.itemPartsPuzzleImage.value = item.value
+          }
+
+        })
+
+
         const scenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] } =
           scene.playerScenePartsPuzzleImages.find(i => i.playerId === this.player.id)
 
@@ -68,7 +86,7 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
     console.log('drop:', value)
 
-    if(!value) {
+    if (!value) {
       return
     }
 
