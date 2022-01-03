@@ -6,7 +6,6 @@ import {takeUntil} from "rxjs/operators";
 import {TypeSceneEnum} from "../../../core/models/type-scene.enum";
 import {PuzzleRunGame} from "../../models/other-models/scenes.models";
 import {ItemPartsPuzzleImage} from "../../../core/models/item-parts-puzzle-image.model";
-import {PartsPuzzleImage} from "../../../core/models/parts-puzzle-image.model";
 
 @Component({
   selector: 'app-puzzle-controls',
@@ -24,17 +23,7 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   scenePartsPuzzleImages: {
     itemPartsPuzzleImage: ItemPartsPuzzleImage,
     draggable: boolean
-  }[] = [
-    {itemPartsPuzzleImage: {number: 1, value: null}, draggable: true},
-    {itemPartsPuzzleImage: {number: 2, value: null}, draggable: true},
-    {itemPartsPuzzleImage: {number: 3, value: null}, draggable: true},
-    {itemPartsPuzzleImage: {number: 4, value: null}, draggable: true},
-    {itemPartsPuzzleImage: {number: 5, value: null}, draggable: true},
-    {itemPartsPuzzleImage: {number: 6, value: null}, draggable: true},
-    {itemPartsPuzzleImage: {number: 7, value: null}, draggable: true},
-    {itemPartsPuzzleImage: {number: 8, value: null}, draggable: true},
-    {itemPartsPuzzleImage: {number: 9, value: null}, draggable: true},
-  ]
+  }[]
 
   // Изображения доступные для выбора
   scenePartsPuzzleImagesForPlayer: ItemPartsPuzzleImage[] = []
@@ -44,6 +33,7 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
   constructor(private storeRunGameService: StoreRunGameService) {
     super()
+    this.clearScenePartsPuzzleImages()
   }
 
   ngOnInit(): void {
@@ -55,6 +45,8 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
         if (currentScene.typesScene !== TypeSceneEnum.Puzzle) {
           return
         }
+
+        this.clearScenePartsPuzzleImages()
 
         const scene = currentScene as PuzzleRunGame
 
@@ -80,6 +72,20 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
             .filter(img => img.value)
         }
       })
+  }
+
+  private clearScenePartsPuzzleImages() {
+    this.scenePartsPuzzleImages = [
+      {itemPartsPuzzleImage: {number: 1, value: null}, draggable: true},
+      {itemPartsPuzzleImage: {number: 2, value: null}, draggable: true},
+      {itemPartsPuzzleImage: {number: 3, value: null}, draggable: true},
+      {itemPartsPuzzleImage: {number: 4, value: null}, draggable: true},
+      {itemPartsPuzzleImage: {number: 5, value: null}, draggable: true},
+      {itemPartsPuzzleImage: {number: 6, value: null}, draggable: true},
+      {itemPartsPuzzleImage: {number: 7, value: null}, draggable: true},
+      {itemPartsPuzzleImage: {number: 8, value: null}, draggable: true},
+      {itemPartsPuzzleImage: {number: 9, value: null}, draggable: true},
+    ]
   }
 
   drop(event, value: ItemPartsPuzzleImage) {
