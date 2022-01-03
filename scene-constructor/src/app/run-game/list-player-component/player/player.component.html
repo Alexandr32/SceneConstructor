@@ -18,6 +18,11 @@
         >
         </app-panorama-controls>
       </ng-container>
+      <ng-container *ngSwitchCase="'Puzzle'">
+        <app-puzzle-controls
+          [player]="player">
+        </app-puzzle-controls>
+      </ng-container>
 
     </ng-container>
   </div>

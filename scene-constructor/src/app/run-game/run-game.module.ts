@@ -21,6 +21,7 @@ import { DescriptionSceneComponent } from './description-scene/description-scene
 import {PlayerListAnswersComponent} from "./list-player-component/list-answers/player-list-answers.component";
 import { PanoramaControlsComponent } from './list-player-component/panoram-controls/panorama-controls.component';
 import {StateService} from "./services/state.service";
+import { PuzzleControlsComponent } from './list-player-component/puzzle-controls/puzzle-controls.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {StateService} from "./services/state.service";
     ListAnswersComponent,
     DescriptionSceneComponent,
     PlayerListAnswersComponent,
-    PanoramaControlsComponent
+    PanoramaControlsComponent,
+    PuzzleControlsComponent
   ],
   imports: [
     CommonModule,

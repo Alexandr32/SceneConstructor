@@ -1,0 +1,36 @@
+<ng-container *ngIf="isShowControls">
+  <div class="puzzle-controls__puzzle-controls">
+
+    <div *ngFor="let item of scenePartsPuzzleImages" class="puzzle-controls__grid-item"
+         draggable="true"
+         (dragstart)="dragStar($event, item)"
+         (drop)="drop($event, item)"
+         (dragover)="dragOver($event, item)"
+    >
+
+      <img *ngIf="item.value" class="puzzle-controls__image puzzle-controls__border"
+           [src]="item.value.src"
+           draggable="true"
+           alt="imagePuzzle"/>
+
+    </div>
+  </div>
+
+  <div class="puzzle-controls__content__available-images m-t-8">
+    <div class="puzzle-controls__content__available-images"
+         *ngFor="let item of scenePartsPuzzleImagesForPlayer"
+         draggable="true"
+         (dragstart)="dragStar($event, item)"
+         (drop)="drop($event, item)"
+         (dragover)="dragOver($event, item)"
+    >
+
+      <div class="puzzle-controls__grid-item">
+        <img *ngIf="item.value" class="puzzle-controls__image puzzle-controls__border"
+             [src]="item.value.src"
+             alt="imagePuzzle"/>
+      </div>
+
+    </div>
+  </div>
+</ng-container>
