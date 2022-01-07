@@ -211,7 +211,8 @@ export class RunGameMapper {
 
     puzzle.partsPuzzleImages = partsPuzzleImages
 
-    puzzle.scenePartsPuzzleImages = puzzleFirebase.scenePartsPuzzleImages.map((item: { number: number, imgId: number }, index) => {
+    puzzle.scenePartsPuzzleImages = puzzleFirebase.scenePartsPuzzleImages
+      .map((item: { number: number, imgId: number }, index) => {
       return {
         number: item.number,
         value: item.imgId ? ({ id: item.imgId, src: '' } as PartsPuzzleImage) : null

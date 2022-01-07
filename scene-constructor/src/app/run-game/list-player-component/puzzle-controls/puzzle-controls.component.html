@@ -20,7 +20,7 @@
     <div class="puzzle-controls__content__available-images"
          *ngFor="let item of scenePartsPuzzleImagesForPlayer"
          (dragstart)="dragStar($event, item)"
-         (drop)="drop($event, item)"
+         (drop)="dropClear($event, item)"
          (dragover)="dragOver($event, item)"
     >
 

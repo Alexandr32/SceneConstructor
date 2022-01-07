@@ -38,6 +38,7 @@ export class StateService {
           const newStateGame = new StateGame(doc.payload.id, stateGame.currentSceneId)
           newStateGame.answer = stateGame.answer
           newStateGame.typeControls = stateGame.typeControls
+          newStateGame.scenePartsPuzzleImages = stateGame.scenePartsPuzzleImages
           return {state: newStateGame, hasPendingWrites: doc.payload.metadata.hasPendingWrites};
         }),
         filter((doc) => {
@@ -81,7 +82,7 @@ export class StateService {
   }
 
 
-  async updateState(stateGameId: string, stateGame: StateGame) {
+  updateState(stateGameId: string, stateGame: StateGame) {
     return this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
       .doc(stateGameId)
       .update(stateGame)
