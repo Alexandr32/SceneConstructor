@@ -99,8 +99,6 @@ export class StoreRunGameService {
     if (stateGame) {
 
 
-
-
       const findOldItem: ItemPartsPuzzleImage = stateGame.scenePartsPuzzleImages.find(i => i?.value?.id === part?.value?.id)
       if (findOldItem) {
         findOldItem.value = null

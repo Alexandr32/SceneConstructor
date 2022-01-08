@@ -6,6 +6,7 @@ import { takeUntil } from "rxjs/operators";
 import { TypeSceneEnum } from "../../../core/models/type-scene.enum";
 import { PuzzleRunGame } from "../../models/other-models/scenes.models";
 import { ItemPartsPuzzleImage } from "../../../core/models/item-parts-puzzle-image.model";
+import { TypeControls } from '../../models/other-models/type-controls.enum';
 
 @Component({
   selector: 'app-puzzle-controls',
@@ -69,20 +70,6 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
         this.findImageConstItem()
 
-        // const findImages = scene.scenePartsPuzzleImages.filter(x => x.value)
-        //
-        // findImages.forEach(item => {
-        //
-        //   const findItem = this.scenePartsPuzzleImages.find(x => x.itemPartsPuzzleImage.number === item.number)
-        //
-        //   if (findItem) {
-        //     findItem.draggable = false
-        //     findItem.itemPartsPuzzleImage.value = item.value
-        //   }
-        //
-        // })
-
-
         const scenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] } =
           this.scene.playerScenePartsPuzzleImages.find(i => i.playerId === this.player.id)
 
@@ -92,11 +79,36 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
         }
       })
 
-    // this.storeRunGameService.stateGame$
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe(state => {
-    //     this.findImageConstItem()
-    //   })
+    this.storeRunGameService.stateGame$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(state => {
+
+        if (!state) {
+          return
+        }
+
+        if (!state.scenePartsPuzzleImages) {
+          return
+        }
+
+        this.scenePartsPuzzleImages.forEach(value => {
+          const find = state.scenePartsPuzzleImages
+            .find(x => x.number === value.itemPartsPuzzleImage.number)
+
+          if (!find.value) {
+            return
+          }
+
+          if (!value.itemPartsPuzzleImage.value) {
+            return
+          }
+
+          if (find.value.id !== value.itemPartsPuzzleImage.value.id) {
+            this.scenePartsPuzzleImagesForPlayer.push({ ...value.itemPartsPuzzleImage })
+            value.itemPartsPuzzleImage.value = null
+          }
+        })
+      })
   }
 
   private clearScenePartsPuzzleImages() {
@@ -131,8 +143,6 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
       number: this.selectItemPartsPuzzleImage.number,
       value: null
     } as ItemPartsPuzzleImage
-
-    //itemPartsPuzzleImage.value.src = null
 
     await this.storeRunGameService.selectPuzzleImage(itemPartsPuzzleImage)
 
