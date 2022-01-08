@@ -1,17 +1,17 @@
-import {Injectable} from '@angular/core';
-import {FileService} from "../../core/services/file.service";
-import {BehaviorSubject, Observable, Subject, timer} from "rxjs";
-import {StateGame, StateGameAnswer} from "../models/other-models/state-game.model";
-import {debounceTime, distinct, distinctUntilChanged, filter, first, last, map, switchMap, take} from "rxjs/operators";
-import {Player} from "../models/other-models/player.model";
-import {AnswerRunGame} from "../models/other-models/answer.model";
-import {Game as EditGame} from "../../editor/models/game.model";
-import {TypeScene} from "../../core/models/type-scene.enum";
-import {IBaseEditScene} from "../../editor/models/base-edit-scene.model";
-import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
-import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {AngularFireStorage} from "@angular/fire/compat/storage";
-import {TypeControls} from "../models/other-models/type-controls.enum";
+import { Injectable } from '@angular/core';
+import { FileService } from "../../core/services/file.service";
+import { BehaviorSubject, Observable, Subject, timer } from "rxjs";
+import { StateGame, StateGameAnswer } from "../models/other-models/state-game.model";
+import { debounceTime, distinct, distinctUntilChanged, filter, first, last, map, switchMap, take } from "rxjs/operators";
+import { Player } from "../models/other-models/player.model";
+import { AnswerRunGame } from "../models/other-models/answer.model";
+import { Game as EditGame } from "../../editor/models/game.model";
+import { TypeScene } from "../../core/models/type-scene.enum";
+import { IBaseEditScene } from "../../editor/models/base-edit-scene.model";
+import { IBaseSceneRunGame } from "../models/other-models/base-scene-run-game.model";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
+import { AngularFireStorage } from "@angular/fire/compat/storage";
+import { TypeControls } from "../models/other-models/type-controls.enum";
 
 
 @Injectable()
@@ -39,16 +39,17 @@ export class StateService {
           newStateGame.answer = stateGame.answer
           newStateGame.typeControls = stateGame.typeControls
           newStateGame.scenePartsPuzzleImages = stateGame.scenePartsPuzzleImages
-          return {state: newStateGame, hasPendingWrites: doc.payload.metadata.hasPendingWrites};
+          return { state: newStateGame, hasPendingWrites: doc.payload.metadata.hasPendingWrites };
         }),
-        filter((doc) => {
-          if(!this.isFirstTap) {
-            this.isFirstTap = true
-            return true
-          }
+        // ПРОВЕРИТЬ НА ЗАДВОЕНИЕ
+        // filter((doc) => {
+        //   if(!this.isFirstTap) {
+        //     this.isFirstTap = true
+        //     return true
+        //   }
 
-          return doc.hasPendingWrites
-        }),
+        //   return doc.hasPendingWrites
+        // }),
         map(doc => doc.state)
       )
   }
@@ -89,9 +90,9 @@ export class StateService {
   }
 
   async setState(stateGameId: string, stateGame: StateGame) {
-      return this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
-        .doc(stateGameId)
-        .set(stateGame)
+    return this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
+      .doc(stateGameId)
+      .set(stateGame)
   }
 
   // async nextDataStateGame(stateGameId: string, currentScene: IBaseSceneRunGame) {
@@ -135,6 +136,6 @@ export class StateService {
 
     await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
       .doc(stateGameId)
-      .set({currentSceneId: currentScene.id})
+      .set({ currentSceneId: currentScene.id })
   }
 }
