@@ -42,20 +42,58 @@ export class StoreRunGameService {
     this.stateGame$.next(stateGame)
 
     this.stateService.getStateGame(gameId).subscribe(x => {
+
       this.stateGame$.next(x)
 
       const currentScene = this.currentScene$.getValue()
 
       if (currentScene.typesScene === TypeSceneEnum.Answer ||
         currentScene.typesScene === TypeSceneEnum.Panorama) {
-        this.switchingAnswerScene(x, this.currentScene$.getValue())
+        this.switchingAnswerScene(x, this.currentScene$.getValue() as SceneRunGame | PanoramaRunGame)
       }
 
+      if (currentScene.typesScene === TypeSceneEnum.Puzzle) {
+        this.switchingPuzzleScene(x, this.currentScene$.getValue() as PuzzleRunGame)
+      }
 
     })
   }
 
-  private switchingAnswerScene(stateGame: StateGame, sceneRunGame: SceneRunGame | PanoramaRunGame | IBaseSceneRunGame) {
+  private switchingPuzzleScene(stateGame: StateGame, sceneRunGame: PuzzleRunGame) {
+    if (!sceneRunGame) {
+      return
+    }
+
+    const partsPuzzleId = stateGame.scenePartsPuzzleImages
+      .filter(f => f.value)
+      .map(m => m.value.id)
+
+    if (partsPuzzleId.length !== 9) {
+      return
+    }
+
+    let isError: boolean = false
+
+    partsPuzzleId.forEach((value: number, index: number) => {
+      const idx = index + 1
+      if (value !== idx) {
+        isError = true
+      }
+    })
+
+    if (isError) {
+      return
+    }
+
+    const findAnswer = sceneRunGame.answers[0]
+
+    if (findAnswer) {
+      this.selectedScene(findAnswer.sceneId)
+    }
+
+  }
+
+  private switchingAnswerScene(stateGame: StateGame, sceneRunGame: SceneRunGame | PanoramaRunGame) {
 
     if (!sceneRunGame) {
       return
