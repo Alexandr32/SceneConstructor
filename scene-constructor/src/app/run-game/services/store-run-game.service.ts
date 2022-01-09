@@ -92,8 +92,6 @@ export class StoreRunGameService {
 
   async selectPuzzleImage(part: ItemPartsPuzzleImage) {
 
-    console.log('part:', part)
-
     const stateGame = this.stateGame$.value
 
     if (stateGame) {
@@ -125,19 +123,6 @@ export class StoreRunGameService {
     this.currentScene$.next(scene)
 
     if (scene.typesScene === TypeSceneEnum.Puzzle) {
-
-      const puzzleRunGame = scene as PuzzleRunGame
-
-      // Изображение на экране сцены
-      const scenePartsPuzzleImages: {
-        number: number,
-        imgId: number
-      }[] = puzzleRunGame.scenePartsPuzzleImages.map(item => {
-        return {
-          number: item.number,
-          imgId: item.value ? item.value.id : null
-        }
-      })
 
       const stateGame = this.stateGame$.value
       stateGame.scenePartsPuzzleImages = this.getClearScenePartsPuzzleImages()
