@@ -11,6 +11,9 @@ import { AnswerRunGame } from "../models/other-models/answer.model";
 import { TypeSceneEnum } from "../../core/models/type-scene.enum";
 import { PuzzleRunGame } from "../models/other-models/scenes.models";
 import { ItemPartsPuzzleImage } from "../../core/models/item-parts-puzzle-image.model";
+import { PanoramaRunGame } from '../models/other-models/panorama-run-game';
+import { IBaseSceneFirebase } from 'src/app/editor/models/firebase-models/base-scene-firebase.mode';
+import { SceneRunGame } from '../models/other-models/scene-run-game';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +43,64 @@ export class StoreRunGameService {
 
     this.stateService.getStateGame(gameId).subscribe(x => {
       this.stateGame$.next(x)
+
+      const currentScene = this.currentScene$.getValue()
+
+      if (currentScene.typesScene === TypeSceneEnum.Answer ||
+        currentScene.typesScene === TypeSceneEnum.Panorama) {
+        this.switchingAnswerScene(x, this.currentScene$.getValue())
+      }
+
+
     })
+  }
+
+  private switchingAnswerScene(stateGame: StateGame, sceneRunGame: SceneRunGame | PanoramaRunGame | IBaseSceneRunGame) {
+
+    if (!sceneRunGame) {
+      return
+    }
+
+    if (stateGame.answer.length !== sceneRunGame.players.length) {
+      return
+    }
+
+    // Ключ: answerId, Значение кол-во
+    const map = new Map<string, number>()
+
+    stateGame.answer.forEach(answer => {
+      let value = map.get(answer.answerId)
+      if (value) {
+        value = value + 1
+        map.set(answer.answerId, value)
+      } else {
+        map.set(answer.answerId, 1)
+      }
+    })
+
+    let maxValue: {
+      value: number,
+      key: string
+    } = {
+      key: '',
+      value: 0
+    }
+
+    map.forEach((value: number, key: string) => {
+
+      if (value > maxValue.value) {
+        maxValue = {
+          key, value
+        }
+      }
+    })
+
+    const findAnswer = sceneRunGame.answers.find(x => x.id === maxValue.key)
+
+    if (findAnswer) {
+      this.selectedScene(findAnswer.sceneId)
+    }
+
   }
 
   async saveSelectTypeControls(typeControls: TypeControls) {
@@ -122,18 +182,28 @@ export class StoreRunGameService {
     const scene = runGame.scenesMap.get(selectSceneId)
     this.currentScene$.next(scene)
 
-    if (scene.typesScene === TypeSceneEnum.Puzzle) {
-
-      const stateGame = this.stateGame$.value
-      stateGame.scenePartsPuzzleImages = this.getClearScenePartsPuzzleImages()
-      stateGame.answer = []
-      stateGame.typeControls = TypeControls.center
-      try {
-        await this.stateService.updateState(this.stateGameId, { ...stateGame })
-      } catch (e) {
-        console.error(e)
-      }
+    const stateGame = this.stateGame$.value
+    stateGame.scenePartsPuzzleImages = this.getClearScenePartsPuzzleImages()
+    stateGame.answer = []
+    stateGame.typeControls = TypeControls.center
+    try {
+      await this.stateService.updateState(this.stateGameId, { ...stateGame })
+    } catch (e) {
+      console.error(e)
     }
+
+    // if (scene.typesScene === TypeSceneEnum.Puzzle) {
+
+    //   const stateGame = this.stateGame$.value
+    //   stateGame.scenePartsPuzzleImages = this.getClearScenePartsPuzzleImages()
+    //   stateGame.answer = []
+    //   stateGame.typeControls = TypeControls.center
+    //   try {
+    //     await this.stateService.updateState(this.stateGameId, { ...stateGame })
+    //   } catch (e) {
+    //     console.error(e)
+    //   }
+    // }
   }
 
   private getClearScenePartsPuzzleImages(): ItemPartsPuzzleImage[] {
