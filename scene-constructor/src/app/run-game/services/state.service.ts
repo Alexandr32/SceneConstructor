@@ -12,6 +12,7 @@ import { IBaseSceneRunGame } from "../models/other-models/base-scene-run-game.mo
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AngularFireStorage } from "@angular/fire/compat/storage";
 import { TypeControls } from "../models/other-models/type-controls.enum";
+import { ItemPartsPuzzleImage } from 'src/app/core/models/item-parts-puzzle-image.model';
 
 
 @Injectable()
@@ -74,12 +75,29 @@ export class StateService {
         .doc(game.id)
         .set({
           currentSceneId: startScene.id,
+          answer: [],
+          typeControls: TypeControls.center,
+          scenePartsPuzzleImages: this.getClearScenePartsPuzzleImages()
         })
 
     } catch (error) {
       console.error('При сохранении данных состояния игры произошла ошибка', error);
       throw error;
     }
+  }
+
+  private getClearScenePartsPuzzleImages(): ItemPartsPuzzleImage[] {
+    return [
+      { number: 1, value: null },
+      { number: 2, value: null },
+      { number: 3, value: null },
+      { number: 4, value: null },
+      { number: 5, value: null },
+      { number: 6, value: null },
+      { number: 7, value: null },
+      { number: 8, value: null },
+      { number: 9, value: null },
+    ]
   }
 
 
