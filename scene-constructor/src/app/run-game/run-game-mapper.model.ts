@@ -12,11 +12,12 @@ import { PuzzleRunGame} from "./models/other-models/scenes.models";
 import {SceneRunGame} from "./models/other-models/scene-run-game";
 import {PanoramaRunGame} from "./models/other-models/panorama-run-game";
 import {SceneEditScene} from "../editor/models/scene-edit-scene";
+import {PanoramaEditScene} from "../editor/models/panorama-edit-scene";
 
 
 export class RunGameMapper {
 
-  static answerToAnswerFirebase(answer: AnswerRunGame): AnswerRunGameFirebase {
+  static answerToAnswerFirebase(answer: Answer): AnswerRunGameFirebase {
     return {
       id: answer.id,
       text: answer.text,
@@ -81,7 +82,7 @@ export class RunGameMapper {
 
   }
 
-  static panoramaToPanoramaFirebase(panorama: PanoramaRunGame): PanoramaRunGameFirebase {
+  static panoramaToPanoramaFirebase(panorama: PanoramaEditScene): PanoramaRunGameFirebase {
 
     return {
       id: panorama.id,

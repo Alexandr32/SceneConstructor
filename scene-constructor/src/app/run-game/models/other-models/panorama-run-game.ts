@@ -11,6 +11,7 @@ export class PanoramaRunGame implements IBaseSceneRunGame {
     color: string
 
     soundFileId: string
+    soundFile: string
     soundFileLink: FileLink
 
     typesScene: TypeSceneEnum = TypeSceneEnum.Panorama

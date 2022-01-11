@@ -11,6 +11,7 @@ export class SceneRunGame implements IBaseSceneRunGame, IBaseBackgroundScene {
     color: string
 
     soundFileId: string
+    soundFile: string
     soundFileLink: FileLink
 
     typesScene: TypeSceneEnum = TypeSceneEnum.Answer

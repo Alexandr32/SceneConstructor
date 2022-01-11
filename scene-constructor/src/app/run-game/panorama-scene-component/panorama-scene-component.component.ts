@@ -1,12 +1,12 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {Observable, Subscription} from "rxjs";
-import {TypeControls} from "../models/other-models/type-controls.enum";
-import {StoreRunGameService} from "../services/store-run-game.service";
-import {TypeSceneEnum} from "../../core/models/type-scene.enum";
-import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
-import {StateGame} from "../models/other-models/state-game.model";
-import {BaseComponent} from "../../base-component/base-component.component";
-import {takeUntil} from "rxjs/operators";
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Observable, Subscription } from "rxjs";
+import { TypeControls } from "../models/other-models/type-controls.enum";
+import { StoreRunGameService } from "../services/store-run-game.service";
+import { TypeSceneEnum } from "../../core/models/type-scene.enum";
+import { PanoramaRunGame } from "../models/other-models/panorama-run-game";
+import { StateGame } from "../models/other-models/state-game.model";
+import { BaseComponent } from "../../base-component/base-component.component";
+import { debounceTime, takeUntil } from "rxjs/operators";
 
 declare let pannellum: any;
 
@@ -82,12 +82,15 @@ export class PanoramaSceneComponentComponent extends BaseComponent implements On
       })
 
     this.storeRunGameService.stateGame$
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        debounceTime(200) //Костыль
+      )
       .subscribe(state => {
 
         //Костыль считает сколько ответов чтобы камера не дергалась при ответе пропустить сцену
-        if(state.answer) {
-          if(state.answer.length !== this.countAnswer) {
+        if (state.answer) {
+          if (state.answer.length !== this.countAnswer) {
             this.countAnswer = state.answer.length
             return
           }

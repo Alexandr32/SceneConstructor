@@ -19,6 +19,7 @@ import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
 import {SceneEditScene} from "../../editor/models/scene-edit-scene";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 
 @Injectable({
   providedIn: 'root'
@@ -195,7 +196,7 @@ export class RunGameService {
 
           const promiseImg = this.promiseAnswerImageScene(
             resultGame.id,
-            (item as SceneEditScene)
+            (item as SceneRunGame)
           )
           promiseList.push(promiseImg)
           break
@@ -220,12 +221,31 @@ export class RunGameService {
           break
         }
       }
+
+
+      const promise = this.promiseSoundScene(resultGame.id,item)
+      promiseList.push(promise)
     }
 
     await Promise.all(promisePlayerList)
     await Promise.all(promiseList)
 
     return resultGame
+  }
+
+  private async promiseSoundScene(resultGameId: string, scene: IBaseSceneRunGame) {
+
+    if(scene.soundFileId) {
+      try {
+        scene.soundFile = await this.fileService
+          .getUrl(resultGameId, scene.soundFileId, TypeFile.Sound)
+          .toPromise()
+      } catch (error) {
+        console.log('Звук не найден или не установлен');
+        console.log(error);
+      }
+    }
+
   }
 
   private async promisePuzzleImageScene(resultGameId: string, scene: PuzzleRunGame) {

@@ -13,6 +13,7 @@ export class PuzzleRunGame implements IBaseSceneRunGame, IBaseBackgroundScene {
   color: string
 
   soundFileId: string
+  soundFile: string
   soundFileLink: FileLink
 
   typesScene: TypeSceneEnum = TypeSceneEnum.Puzzle
