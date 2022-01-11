@@ -11,8 +11,8 @@ import {IBaseSceneRunGame} from '../models/other-models/base-scene-run-game.mode
 import {StoreRunGameService} from "../services/store-run-game.service";
 import {BaseComponent} from "../../base-component/base-component.component";
 import {takeUntil} from "rxjs/operators";
-import {FileLink} from "../../core/models/file-link.model.ts";
 import {BehaviorSubject, Observable, of} from "rxjs";
+import {SettingsRunGameService} from "../services/settings-run-game.service";
 
 @Component({
   selector: 'app-run-game',
@@ -23,11 +23,14 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
 
   selectScene: IBaseSceneRunGame
 
+  #audio: any
+  #soundFile: string
   private soundUrl$: BehaviorSubject<string> = new BehaviorSubject<string>('')
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
-              private storeRunGameService: StoreRunGameService
+              private storeRunGameService: StoreRunGameService,
+              private settingsRunGameService: SettingsRunGameService
   ) {
     super()
   }
@@ -42,32 +45,12 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
         console.log(currentScene)
 
         this.soundUrl$.next(currentScene?.soundFile)
-
-        // this.soundUrl = of(currentScene?.soundFile)
-        //
-        // if(this.soundUrl !== currentScene?.soundFile) {
-        //   this.soundUrl = currentScene.soundFile
-        //   //this.playSound(currentScene.soundFile)
-        // }
       })
   }
 
   ngOnDestroy(): void {
     super.unsubscribe()
   }
-
-  // private delay = (time: number): Promise<any> => {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       console.log('setTimeout');
-  //
-  //       resolve('')
-  //     }, time);
-  //   })
-  // }
-
-  #audio: any
-  #soundFile: string
 
   private playSound(soundFile: string) {
 
@@ -80,15 +63,8 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
 
     this.#audio = new Audio(soundFile);
     this.#audio.load()
+    this.#audio.volume = this.settingsRunGameService.settingsRunGame.volumeSound
     this.#audio.play()
-
-    // if(!!!soundFile) {
-    //   return
-    // }
-    //
-    // var audio = new Audio(soundFile);
-    // audio.load()
-    // audio.play()
   }
 
   ngAfterViewInit() {
@@ -98,14 +74,26 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
         this.playSound(url)
       }
     })
+
+    this.settingsRunGameService.settingsRunGame$.subscribe(settings => {
+      if(!this.#audio) {
+        return
+      }
+
+      if(this.#audio.volume !== settings.volumeSound) {
+        this.#audio.volume = settings.volumeSound
+      }
+
+    })
   }
 
-  // private playSound() {
-  //   const audio = new Audio('../assets/audio_file.mp3');
-  //   audio.play();
-  // }
-
   selectedScene(scene: IBaseSceneRunGame) {
-    this.storeRunGameService.selectedScene(scene.id)
+    //this.storeRunGameService.selectedScene(scene.id)
+
+    // if(this.#audio) {
+    //   this.volume = this.volume + 0.1
+    //   this.#audio.volume = this.volume
+    // }
+
   }
 }

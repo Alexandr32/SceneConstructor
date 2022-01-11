@@ -1,7 +1,16 @@
 <button (click)="isShow = !isShow">Настройки</button>
 
-<div *ngIf="isShow" class="settings-run-game__settings__list-scenes">
-  <app-scenes-list
-    [scenes]="runGame?.scenes"
-    (selectedScene)="selectedScene.emit($event)"></app-scenes-list>
+<div>
+  <div>Громкость музыки</div>
+  <div class="width-full flex">
+    <button class="flex-grow-1" (click)="louder()">+</button>
+    <button class="flex-grow-1" (click)= "quiet()">-</button>
+  </div>
+
 </div>
+
+<!--<div *ngIf="isShow" class="settings-run-game__settings__list-scenes">-->
+<!--  <app-scenes-list-->
+<!--    [scenes]="runGame?.scenes"-->
+<!--    (selectedScene)="selectedScene.emit($event)"></app-scenes-list>-->
+<!--</div>-->
