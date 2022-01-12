@@ -10,12 +10,18 @@
   z-index: 2000;
   right: 0;
   background: white;
-  padding: 20px;
+  padding: 30px 20px 20px;
   opacity: 0.8;
   border-radius: 10px;
   border: 1px solid;
   margin: 10px;
   //box-shadow: 0 0 81px 21px rgba(225, 15, 15, 0.39);
+}
+
+.settings-run-game__settings__controls__btn_close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 
 .settings-run-game__settings__list-scenes {

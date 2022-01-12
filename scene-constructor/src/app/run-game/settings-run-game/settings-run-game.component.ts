@@ -21,10 +21,13 @@ export class SettingsRunGameComponent extends BaseComponent implements OnInit {
 
   runGame: RunGame
 
+  volumeSound: number = 0
+
   @Output()
   selectedScene: EventEmitter<IBaseSceneRunGame> = new EventEmitter<IBaseSceneRunGame>()
 
-  constructor(private storeRunGameService: StoreRunGameService, private settingsRunGameService: SettingsRunGameService) {
+  constructor(private storeRunGameService: StoreRunGameService,
+              private settingsRunGameService: SettingsRunGameService) {
     super()
   }
 
@@ -38,7 +41,8 @@ export class SettingsRunGameComponent extends BaseComponent implements OnInit {
     this.settingsRunGameService.settingsRunGame$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(value => {
-      this.soundOff = value.isSoundOff
+        this.volumeSound = value.volumeSound * 100
+        this.soundOff = value.isSoundOff
     })
   }
 

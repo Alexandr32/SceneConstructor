@@ -19,7 +19,7 @@ export class SettingsRunGameService {
 
   constructor() {
     this.#settingsRunGame$.next({
-      volumeSound: 0.5,
+      volumeSound: 1,
       isSoundOff: false
     } as SettingsRunGame)
   }
