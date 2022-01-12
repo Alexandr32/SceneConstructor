@@ -3,14 +3,17 @@
      (click)="isShow = !isShow"
      alt="">
 
-<!--<button (click)="isShow = !isShow">Настройки</button>-->
-
 <div *ngIf="isShow" class="settings-run-game__settings__controls">
 
-  <button class="settings-run-game__settings__controls__btn_close"
-          (click)="isShow = !isShow">
-    Закрыть настройки
-  </button>
+  <img class="settings-run-game__settings__controls__btn_close"
+       (click)="isShow = !isShow"
+       src="../assets/cross-black.svg"
+       alt="">
+
+<!--  <button class="settings-run-game__settings__controls__btn_close"-->
+<!--          (click)="isShow = !isShow">-->
+<!--    Закрыть настройки-->
+<!--  </button>-->
 
   <div class="cursor-pointer" (click)="changeSound()">
     <input type="checkbox" [checked]="soundOff">Выключить звуки
@@ -18,7 +21,7 @@
 
   <div class="m-t-8">Громкость музыки {{volumeSound}}%</div>
   <div class="width-full flex">
-    <button class="flex-grow-1" (click)= "quiet()">-</button>
+    <button class="flex-grow-1" (click)="quiet()">-</button>
     <button class="flex-grow-1" (click)="louder()">+</button>
   </div>
 
