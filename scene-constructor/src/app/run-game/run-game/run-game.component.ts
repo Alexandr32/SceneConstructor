@@ -26,6 +26,7 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
   #audio: any
   #soundFile: string
   private soundUrl$: BehaviorSubject<string> = new BehaviorSubject<string>('')
+  private soundOff$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
@@ -41,11 +42,14 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(currentScene => {
         this.selectScene = currentScene
-
-        console.log(currentScene)
-
         this.soundUrl$.next(currentScene?.soundFile)
       })
+
+    this.settingsRunGameService.settingsRunGame$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(settings => {
+      this.soundOff$.next(settings.isSoundOff)
+    })
   }
 
   ngOnDestroy(): void {
@@ -68,6 +72,19 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
   }
 
   ngAfterViewInit() {
+
+    this.soundOff$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(soundOff => {
+      if(this.#audio) {
+        if(soundOff) {
+          this.#audio.pause()
+        } else {
+          this.#audio.play()
+        }
+      }
+    })
+
     this.soundUrl$.subscribe(url => {
       if(this.#soundFile !== url) {
         this.#soundFile = url
@@ -75,7 +92,9 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
       }
     })
 
-    this.settingsRunGameService.settingsRunGame$.subscribe(settings => {
+    this.settingsRunGameService.settingsRunGame$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(settings => {
       if(!this.#audio) {
         return
       }

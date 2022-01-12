@@ -1,7 +1,12 @@
 <button (click)="isShow = !isShow">Настройки</button>
 
-<div>
-  <div>Громкость музыки</div>
+<div *ngIf="isShow" class="settings-run-game__settings__controls">
+
+  <div class="cursor-pointer" (click)="changeSound()">
+    <input type="checkbox" [checked]="soundOff">Выключить звуки
+  </div>
+
+  <div class="m-t-8">Громкость музыки</div>
   <div class="width-full flex">
     <button class="flex-grow-1" (click)="louder()">+</button>
     <button class="flex-grow-1" (click)= "quiet()">-</button>

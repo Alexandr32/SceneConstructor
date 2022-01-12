@@ -20,10 +20,9 @@ export class SettingsRunGameService {
   constructor() {
     this.#settingsRunGame$.next({
       volumeSound: 0.5,
-      isSoundOff: true
+      isSoundOff: false
     } as SettingsRunGame)
   }
-
 
   // Громче
   louder() {
@@ -34,8 +33,6 @@ export class SettingsRunGameService {
     }
 
     value.volumeSound = Number((value.volumeSound + 0.1).toFixed(1))
-
-    console.log(value.volumeSound)
 
     this.#settingsRunGame$.next({...value})
   }
@@ -49,8 +46,18 @@ export class SettingsRunGameService {
 
     value.volumeSound = Number((value.volumeSound - 0.1).toFixed(1))
 
-    console.log(value.volumeSound)
+    this.#settingsRunGame$.next({...value})
+  }
 
+  setSoundOff() {
+    const value = this.#settingsRunGame$.value
+    value.isSoundOff = true
+    this.#settingsRunGame$.next({...value})
+  }
+
+  setSoundOn() {
+    const value = this.#settingsRunGame$.value
+    value.isSoundOff = false
     this.#settingsRunGame$.next({...value})
   }
 }
