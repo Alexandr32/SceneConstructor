@@ -30,7 +30,7 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
-              private storeRunGameService: StoreRunGameService,
+              public storeRunGameService: StoreRunGameService,
               private settingsRunGameService: SettingsRunGameService
   ) {
     super()
@@ -38,6 +38,7 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
 
 
   async ngOnInit() {
+
     this.storeRunGameService.currentScene$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(currentScene => {

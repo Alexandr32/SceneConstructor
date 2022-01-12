@@ -22,5 +22,8 @@
   </app-settings-run-game>
 </div>
 
+<app-dialog-loading-game *ngIf="storeRunGameService.loadingGame$ | async">
+</app-dialog-loading-game>
+
 
 

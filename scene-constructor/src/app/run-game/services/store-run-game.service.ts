@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RunGameService } from "./run-game.service";
-import { BehaviorSubject } from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import { RunGame } from "../models/other-models/run-game.model";
 import { StateGame } from "../models/other-models/state-game.model";
 import { Player } from "../models/other-models/player.model";
@@ -25,6 +25,11 @@ export class StoreRunGameService {
   players$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>([])
   currentScene$: BehaviorSubject<IBaseSceneRunGame> = new BehaviorSubject<IBaseSceneRunGame>(null)
 
+  private _loadingGame$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
+  get loadingGame$(): Observable<boolean> {
+    return this._loadingGame$
+  }
+
   private stateGameId: string
 
   constructor(private runGameService: RunGameService, private stateService: StateService) { }
@@ -37,6 +42,7 @@ export class StoreRunGameService {
     this.runGame$.next(runGame)
     this.players$.next(runGame.players)
     const startScene = runGame.scenes.find(x => x.isStartGame)
+    this._loadingGame$.next(false)
     this.currentScene$.next(startScene)
     const stateGame = new StateGame('', startScene.id)
     this.stateGame$.next(stateGame)
