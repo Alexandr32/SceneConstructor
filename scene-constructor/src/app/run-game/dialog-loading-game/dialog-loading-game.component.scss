@@ -1,4 +1,7 @@
+$main-color: #1b1a48;
+
 .dialog-loading-game {
+  text-align: center;
   background: white;
   border: 1px solid;
   z-index: 3000;
@@ -8,4 +11,72 @@
   right: 40%;
   padding: 20px;
   border-radius: 10px;
+}
+
+.dialog-loading-game__pulse-loader:not(:required) {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  -moz-animation: pulse-loader 0.7s linear infinite alternate;
+  -webkit-animation: pulse-loader 0.7s linear infinite alternate;
+  animation: pulse-loader 0.7s linear infinite alternate;
+  border: 2px solid $main-color;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  overflow: hidden;
+  text-indent: 50px;
+}
+
+@-moz-keyframes pulse-loader {
+  0% {
+    -moz-box-shadow: $main-color 0 0 0 10px;
+    box-shadow: $main-color 0 0 0 10px;
+  }
+  40% {
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  100% {
+    -moz-box-shadow: $main-color 0 0 0 15px inset;
+    box-shadow: $main-color 0 0 0 15px inset;
+  }
+}
+@-webkit-keyframes pulse-loader {
+  0% {
+    -webkit-box-shadow: $main-color 0 0 0px 10px;
+    box-shadow: $main-color 0 0 0px 10px;
+  }
+  40% {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  100% {
+    -webkit-box-shadow: $main-color 0 0 0 15px inset;
+    box-shadow: $main-color 0 0 0 15px inset;
+  }
+}
+@keyframes pulse-loader {
+  0% {
+    -moz-box-shadow: $main-color 0 0 0 10px;
+    -webkit-box-shadow: $main-color 0 0 0 10px;
+    box-shadow: $main-color 0 0 0 10px;
+  }
+  40% {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  100% {
+    -moz-box-shadow: $main-color 0 0 0 15px inset;
+    -webkit-box-shadow: $main-color 0 0 0 15px inset;
+    box-shadow: $main-color 0 0 0 15px inset;
+  }
+}
+
+.dialog-loading-game__text {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
