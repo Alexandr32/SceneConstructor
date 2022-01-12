@@ -20,14 +20,29 @@ import { SceneRunGame } from '../models/other-models/scene-run-game';
 })
 export class StoreRunGameService {
 
-  stateGame$: BehaviorSubject<StateGame | undefined> = new BehaviorSubject<StateGame | undefined>(null)
-  runGame$: BehaviorSubject<RunGame> = new BehaviorSubject<RunGame>(null)
-  players$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>([])
-  currentScene$: BehaviorSubject<IBaseSceneRunGame> = new BehaviorSubject<IBaseSceneRunGame>(null)
+  #stateGame$: BehaviorSubject<StateGame | undefined> = new BehaviorSubject<StateGame | undefined>(null)
+  get stateGame$(): Observable<StateGame> {
+    return this.#stateGame$
+  }
 
-  private _loadingGame$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
+  #runGame$: BehaviorSubject<RunGame> = new BehaviorSubject<RunGame>(null)
+  get runGame$(): Observable<RunGame> {
+    return this.#runGame$
+  }
+
+  #players$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>([])
+  get players$(): Observable<Player[]> {
+    return this.#players$
+  }
+
+  #currentScene$: BehaviorSubject<IBaseSceneRunGame> = new BehaviorSubject<IBaseSceneRunGame>(null)
+  get currentScene$(): Observable<IBaseSceneRunGame> {
+    return this.#currentScene$
+  }
+
+  #loadingGame$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
   get loadingGame$(): Observable<boolean> {
-    return this._loadingGame$
+    return this.#loadingGame$
   }
 
   private stateGameId: string
@@ -39,27 +54,27 @@ export class StoreRunGameService {
     this.stateGameId = gameId
 
     const runGame = await this.runGameService.getGameById(gameId)
-    this.runGame$.next(runGame)
-    this.players$.next(runGame.players)
+    this.#runGame$.next(runGame)
+    this.#players$.next(runGame.players)
     const startScene = runGame.scenes.find(x => x.isStartGame)
-    this._loadingGame$.next(false)
-    this.currentScene$.next(startScene)
+    this.#loadingGame$.next(false)
+    this.#currentScene$.next(startScene)
     const stateGame = new StateGame('', startScene.id)
-    this.stateGame$.next(stateGame)
+    this.#stateGame$.next(stateGame)
 
     this.stateService.getStateGame(gameId).subscribe(x => {
 
-      this.stateGame$.next(x)
+      this.#stateGame$.next(x)
 
-      const currentScene = this.currentScene$.getValue()
+      const currentScene = this.#currentScene$.getValue()
 
       if (currentScene.typesScene === TypeSceneEnum.Answer ||
         currentScene.typesScene === TypeSceneEnum.Panorama) {
-        this.switchingAnswerScene(x, this.currentScene$.getValue() as SceneRunGame | PanoramaRunGame)
+        this.switchingAnswerScene(x, this.#currentScene$.getValue() as SceneRunGame | PanoramaRunGame)
       }
 
       if (currentScene.typesScene === TypeSceneEnum.Puzzle) {
-        this.switchingPuzzleScene(x, this.currentScene$.getValue() as PuzzleRunGame)
+        this.switchingPuzzleScene(x, this.#currentScene$.getValue() as PuzzleRunGame)
       }
 
     })
@@ -149,7 +164,7 @@ export class StoreRunGameService {
 
   async saveSelectTypeControls(typeControls: TypeControls) {
 
-    const stateGame = this.stateGame$.value
+    const stateGame = this.#stateGame$.value
 
     if (stateGame) {
       stateGame.typeControls = typeControls
@@ -168,7 +183,7 @@ export class StoreRunGameService {
    */
   async saveSelectAnswerStateGame(player: Player, selectAnswer: AnswerRunGame) {
 
-    const stateGame = this.stateGame$.value
+    const stateGame = this.#stateGame$.value
 
     if (!stateGame.typeControls) {
       stateGame.typeControls = TypeControls.center
@@ -186,7 +201,7 @@ export class StoreRunGameService {
   }
 
   async nextDataStateGame(currentScene: IBaseSceneRunGame) {
-    const stateGame = this.stateGame$.value
+    const stateGame = this.#stateGame$.value
     if (stateGame) {
       stateGame.currentSceneId = currentScene.id
       stateGame.answer = []
@@ -196,7 +211,7 @@ export class StoreRunGameService {
 
   async selectPuzzleImage(part: ItemPartsPuzzleImage) {
 
-    const stateGame = this.stateGame$.value
+    const stateGame = this.#stateGame$.value
 
     if (stateGame) {
 
@@ -217,16 +232,16 @@ export class StoreRunGameService {
 
   async selectedScene(selectSceneId: string) {
 
-    const runGame = this.runGame$.value
+    const runGame = this.#runGame$.value
 
     if (!runGame) {
       return
     }
 
     const scene = runGame.scenesMap.get(selectSceneId)
-    this.currentScene$.next(scene)
+    this.#currentScene$.next(scene)
 
-    const stateGame = this.stateGame$.value
+    const stateGame = this.#stateGame$.value
     stateGame.scenePartsPuzzleImages = this.getClearScenePartsPuzzleImages()
     stateGame.answer = []
     stateGame.typeControls = TypeControls.center
