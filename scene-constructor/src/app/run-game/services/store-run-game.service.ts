@@ -12,7 +12,6 @@ import { TypeSceneEnum } from "../../core/models/type-scene.enum";
 import { PuzzleRunGame } from "../models/other-models/scenes.models";
 import { ItemPartsPuzzleImage } from "../../core/models/item-parts-puzzle-image.model";
 import { PanoramaRunGame } from '../models/other-models/panorama-run-game';
-import { IBaseSceneFirebase } from 'src/app/editor/models/firebase-models/base-scene-firebase.mode';
 import { SceneRunGame } from '../models/other-models/scene-run-game';
 
 @Injectable({
@@ -200,15 +199,6 @@ export class StoreRunGameService {
     }
   }
 
-  async nextDataStateGame(currentScene: IBaseSceneRunGame) {
-    const stateGame = this.#stateGame$.value
-    if (stateGame) {
-      stateGame.currentSceneId = currentScene.id
-      stateGame.answer = []
-      return this.stateService.setState(this.stateGameId, { ...stateGame })
-    }
-  }
-
   async selectPuzzleImage(part: ItemPartsPuzzleImage) {
 
     const stateGame = this.#stateGame$.value
@@ -250,19 +240,6 @@ export class StoreRunGameService {
     } catch (e) {
       console.error(e)
     }
-
-    // if (scene.typesScene === TypeSceneEnum.Puzzle) {
-
-    //   const stateGame = this.stateGame$.value
-    //   stateGame.scenePartsPuzzleImages = this.getClearScenePartsPuzzleImages()
-    //   stateGame.answer = []
-    //   stateGame.typeControls = TypeControls.center
-    //   try {
-    //     await this.stateService.updateState(this.stateGameId, { ...stateGame })
-    //   } catch (e) {
-    //     console.error(e)
-    //   }
-    // }
   }
 
   private getClearScenePartsPuzzleImages(): ItemPartsPuzzleImage[] {

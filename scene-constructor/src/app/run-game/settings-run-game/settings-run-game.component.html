@@ -1,4 +1,9 @@
-<button (click)="isShow = !isShow">Настройки</button>
+<img class="settings-run-game__settings__gear"
+     src="../assets/gear.svg"
+     (click)="isShow = !isShow"
+     alt="">
+
+<!--<button (click)="isShow = !isShow">Настройки</button>-->
 
 <div *ngIf="isShow" class="settings-run-game__settings__controls">
 
