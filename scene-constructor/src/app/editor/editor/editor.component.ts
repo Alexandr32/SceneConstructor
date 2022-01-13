@@ -22,13 +22,15 @@ import {IBaseEditScene} from "../models/base-edit-scene.model";
 import {PanoramaEditScene} from "../models/panorama-edit-scene";
 import {SceneEditScene} from "../models/scene-edit-scene";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {BaseComponent} from "../../base-component/base-component.component";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EditorComponent extends BaseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   scenes: IBaseEditScene[] = [];
   players: Player[] = [];
@@ -63,10 +65,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     private stateService: StateService,
     private route: ActivatedRoute,
     private router: Router) {
+    super()
   }
   ngOnDestroy(): void {
     this.startScene$.unsubscribe()
     this.changeSelectModeEvent$.unsubscribe()
+    this.unsubscribe()
   }
 
   async ngOnInit() {
@@ -77,7 +81,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     await this.getGameData();
 
-    this.startScene$.subscribe(async (scene) => {
+    this.startScene$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(async (scene) => {
       await this.runGameByScene(scene)
     })
   }

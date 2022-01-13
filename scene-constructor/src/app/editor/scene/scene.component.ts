@@ -1,16 +1,27 @@
-import { Component, ElementRef, Input, OnInit, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Answer } from '../models/answer.model';
-import { Player } from '../../core/models/player.model';
-import { getTypesScene, TypeScene } from 'src/app/core/models/type-scene.enum';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChildren,
+  QueryList,
+  OnDestroy
+} from '@angular/core';
+import {Subject} from 'rxjs';
+import {Answer} from '../models/answer.model';
+import {Player} from '../../core/models/player.model';
+import {getTypesScene, TypeScene} from 'src/app/core/models/type-scene.enum';
 import {IBaseEditScene} from "../models/base-edit-scene.model";
+import {BaseComponent} from "../../base-component/base-component.component";
 
 @Component({
   selector: 'app-scene',
   templateUrl: './scene.component.html',
   styleUrls: ['./scene.component.scss']
 })
-export class SceneComponent implements OnInit {
+export class SceneComponent extends BaseComponent implements OnInit, OnDestroy {
 
   typeScene: TypeScene
 
@@ -29,12 +40,12 @@ export class SceneComponent implements OnInit {
   @Output()
   deleteScene = new EventEmitter<IBaseEditScene>();
 
-  dragPosition = { x: 0, y: 0 };
+  dragPosition = {x: 0, y: 0};
 
   @Output()
   changeDrag = new EventEmitter<void>();
 
-  @ViewChildren('answer', { read: ElementRef })
+  @ViewChildren('answer', {read: ElementRef})
   answers: QueryList<ElementRef>;
 
   @Input()
@@ -49,14 +60,18 @@ export class SceneComponent implements OnInit {
   startScene$: Subject<IBaseEditScene> = new Subject<IBaseEditScene>()
 
   constructor(public elementRef: ElementRef) {
+    super()
+  }
 
+  ngOnDestroy(): void {
+    this.unsubscribe()
   }
 
   ngOnInit() {
 
     this.typeScene = getTypesScene().find(item => item.type === this.scene.typesScene)
 
-    this.dragPosition = { x: this.scene.coordinate.x, y: this.scene.coordinate.y };
+    this.dragPosition = {x: this.scene.coordinate.x, y: this.scene.coordinate.y};
 
     this.changeSelectModeEvent$.subscribe(isSelectMode => {
       this.isSelectMode = isSelectMode;
@@ -78,7 +93,7 @@ export class SceneComponent implements OnInit {
 
     const element = event.source.getRootElement();
 
-    const { x, y } = this.getCoordinate(element);
+    const {x, y} = this.getCoordinate(element);
 
     this.scene.coordinate.x = x;
     this.scene.coordinate.y = y;
@@ -117,7 +132,7 @@ export class SceneComponent implements OnInit {
       y += el.offsetTop - el.scrollTop;
       el = el.offsetParent;
     }
-    return { top: y, left: x };
+    return {top: y, left: x};
   }
 
   selectAnswer(event, answer: Answer) {
@@ -156,13 +171,4 @@ export class SceneComponent implements OnInit {
   onClickDelete() {
     this.deleteScene.emit(this.scene);
   }
-
-  // toStringLabel(text: string, maxCount: number) {
-  //   let sliced = text.slice(0, maxCount);
-  //   if (sliced.length < text.length) {
-  //     sliced += '...';
-  //   }
-  //   return sliced;
-  // }
-
 }

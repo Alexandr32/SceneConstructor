@@ -28,7 +28,7 @@ export class PlayerComponent extends BaseComponent implements OnInit, OnDestroy 
   }
 
   ngOnDestroy(): void {
-    super.unsubscribe()
+    this.unsubscribe()
   }
 
   ngOnInit() {

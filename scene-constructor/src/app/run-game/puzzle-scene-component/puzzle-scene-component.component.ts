@@ -61,7 +61,7 @@ export class PuzzleSceneComponentComponent extends BaseComponent implements OnIn
   }
 
   ngOnDestroy(): void {
-    super.unsubscribe()
+    this.unsubscribe()
   }
 
 }

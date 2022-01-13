@@ -52,7 +52,7 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
   }
 
   ngOnDestroy(): void {
-    super.unsubscribe()
+    this.unsubscribe()
   }
 
   private playSound(soundFile: string) {

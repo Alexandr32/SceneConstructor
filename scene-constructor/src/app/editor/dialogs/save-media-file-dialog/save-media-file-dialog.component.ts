@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CropperSettings } from 'ngx-img-cropper';
 import { MessageDialogComponent } from 'src/app/core/message-dialog/message-dialog.component';
-import { base64ToFile, fileToBase64 } from 'src/app/editor/models/base64-to-file.model';
+import { fileToBase64 } from 'src/app/editor/models/base64-to-file.model';
 import { FileLink } from 'src/app/core/models/file-link.model.ts';
 import { MediaFile } from 'src/app/editor/models/media-file.model.ts';
 import { PartsPuzzleImage } from 'src/app/core/models/parts-puzzle-image.model';
@@ -420,7 +420,5 @@ export class SaveMediaFileDialogComponent implements OnInit {
   onClickDeletedPuzzleImg() {
     this.imgPuzzleFile = ''
   }
-
-
 
 }

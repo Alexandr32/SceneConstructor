@@ -39,7 +39,7 @@ export class ItemAnswerComponent extends BaseComponent implements OnInit, OnDest
   }
 
   ngOnDestroy(): void {
-    super.unsubscribe()
+    this.unsubscribe()
   }
 
 }

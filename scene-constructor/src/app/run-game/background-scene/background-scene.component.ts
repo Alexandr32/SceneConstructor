@@ -52,7 +52,7 @@ export class BackgroundSceneComponent extends BaseComponent implements OnInit, A
   }
 
   ngOnDestroy(): void {
-    super.unsubscribe()
+    this.unsubscribe()
   }
 
 }

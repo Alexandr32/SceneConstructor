@@ -6,7 +6,6 @@ import { takeUntil } from "rxjs/operators";
 import { TypeSceneEnum } from "../../../core/models/type-scene.enum";
 import { PuzzleRunGame } from "../../models/other-models/scenes.models";
 import { ItemPartsPuzzleImage } from "../../../core/models/item-parts-puzzle-image.model";
-import { TypeControls } from '../../models/other-models/type-controls.enum';
 
 @Component({
   selector: 'app-puzzle-controls',
@@ -175,7 +174,7 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   }
 
   ngOnDestroy(): void {
-    super.unsubscribe()
+    this.unsubscribe()
   }
 
 }

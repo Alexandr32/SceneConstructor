@@ -74,7 +74,7 @@ export class PanoramaControlsComponent extends BaseComponent implements OnInit, 
   }
 
   ngOnDestroy(): void {
-    super.unsubscribe()
+    this.unsubscribe()
   }
 
 }

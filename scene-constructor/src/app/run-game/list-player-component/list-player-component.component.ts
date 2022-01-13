@@ -26,7 +26,7 @@ export class ListPlayerComponentComponent extends BaseComponent implements OnIni
   }
 
   ngOnDestroy(): void {
-    super.unsubscribe()
+    this.unsubscribe()
   }
 
 }

@@ -57,7 +57,7 @@ export class PlayerListAnswersComponent extends BaseComponent implements OnInit,
   }
 
   ngOnDestroy(): void {
-    super.unsubscribe()
+    this.unsubscribe()
   }
 
 }

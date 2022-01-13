@@ -3,10 +3,11 @@ import { Game } from '../models/game.model';
 import { FirestoreService } from '../services/firestore.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageDialogComponent } from '../../core/message-dialog/message-dialog.component';
-import { Subscriber, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-//import * as pannellum from 'node_modules/pannellum'
+import {BaseComponent} from "../../base-component/base-component.component";
+import {takeUntil} from "rxjs/operators";
 declare let pannellum: any;
 
 @Component({
@@ -14,7 +15,7 @@ declare let pannellum: any;
   templateUrl: './game-list.component.html',
   styleUrls: ['./game-list.component.scss']
 })
-export class GameListComponent implements OnInit, OnDestroy {
+export class GameListComponent extends BaseComponent implements OnInit, OnDestroy {
 
   gameList: Game[] = []
 
@@ -25,7 +26,9 @@ export class GameListComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog,
     private fireStore: AngularFirestore,
     private firestoreService: FirestoreService,
-    private router: Router) { }
+    private router: Router) {
+    super()
+  }
 
   ngOnInit(): void {
 
@@ -33,7 +36,9 @@ export class GameListComponent implements OnInit, OnDestroy {
       data: 'Загрузка'
     });
 
-    this.game$ = this.firestoreService.getGames().subscribe((items) => {
+    this.game$ = this.firestoreService.getGames()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((items) => {
 
       dialogSave.close()
 
@@ -80,5 +85,6 @@ export class GameListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.game$.unsubscribe()
+    this.unsubscribe()
   }
 }
