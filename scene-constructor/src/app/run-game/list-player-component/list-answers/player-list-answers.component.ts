@@ -15,7 +15,7 @@ export class PlayerListAnswersComponent extends BaseComponent implements OnInit,
 
   @Input()
   player: Player
-  //
+
   answers$: Observable<AnswerRunGame[]>
 
   @Output()

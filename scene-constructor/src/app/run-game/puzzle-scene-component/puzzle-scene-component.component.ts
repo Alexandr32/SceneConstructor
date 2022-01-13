@@ -43,15 +43,11 @@ export class PuzzleSceneComponentComponent extends BaseComponent implements OnIn
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(item => {
 
-        console.log(item)
-
         if (!item.scenePartsPuzzleImages) {
           return
         }
 
         this.scenePartsPuzzleImages = item.scenePartsPuzzleImages
-
-        console.log('findItemScenePartsPuzzleImages:', this.findItemScenePartsPuzzleImages)
 
         this.findItemScenePartsPuzzleImages.forEach(item => {
           const findItem: ItemPartsPuzzleImage | undefined = this.scenePartsPuzzleImages.find(x => x.number === item.number)
@@ -60,8 +56,6 @@ export class PuzzleSceneComponentComponent extends BaseComponent implements OnIn
           }
 
         })
-
-        console.log(item.scenePartsPuzzleImages)
 
       })
   }

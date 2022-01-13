@@ -18,7 +18,6 @@ import { MainComponent } from './editor/main/main.component';
 import { FireModule } from './fire.module';
 import { SaveMediaFileDialogComponent } from './editor/dialogs/save-media-file-dialog/save-media-file-dialog.component';
 import { CommonModule } from '@angular/common';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { ItemGameComponent } from './editor/item-game/item-game.component';
 import { BaseEditSceneDialogComponent } from './editor/shared/base-edit-scene-dialog/base-edit-scene-dialog.component';
 import { EditSceneDialogComponent } from './editor/dialogs/edit-scene-dialog/edit-scene-dialog.component';
@@ -27,8 +26,6 @@ import { EditPlayerDialogComponent } from './editor/dialogs/edit-player-dialog/e
 import { SelectMediaFileDialogComponent } from './editor/dialogs/select-media-file-dialog/select-media-file-dialog.component';
 import { EditPanoramaDialogComponent } from './editor/dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
 import { EditPuzzleDialogComponent } from './editor/dialogs/edit-puzzle-dialog/edit-puzzle-dialog.component';
-import {VideoComponent} from "./run-game/answer-scene-component/video/video.component";
-import {ScenesListComponent} from "./run-game/settings-run-game/scenes-list/scenes-list.component";
 
 @NgModule({
   declarations: [
@@ -63,7 +60,7 @@ import {ScenesListComponent} from "./run-game/settings-run-game/scenes-list/scen
     RunGameModule
   ],
   providers: [],
-  entryComponents: [VideoComponent],
+  entryComponents: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

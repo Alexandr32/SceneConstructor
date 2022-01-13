@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Player} from "../../core/models/player.model";
 import {StoreRunGameService} from "../services/store-run-game.service";
 import {takeUntil} from "rxjs/operators";

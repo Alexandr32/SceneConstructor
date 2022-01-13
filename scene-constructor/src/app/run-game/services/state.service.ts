@@ -1,16 +1,9 @@
 import { Injectable } from '@angular/core';
-import { FileService } from "../../core/services/file.service";
-import { BehaviorSubject, Observable, Subject, timer } from "rxjs";
-import { StateGame, StateGameAnswer } from "../models/other-models/state-game.model";
-import { debounceTime, distinct, distinctUntilChanged, filter, first, last, map, switchMap, take } from "rxjs/operators";
-import { Player } from "../models/other-models/player.model";
-import { AnswerRunGame } from "../models/other-models/answer.model";
+import { Observable } from "rxjs";
+import { StateGame} from "../models/other-models/state-game.model";
+import { map } from "rxjs/operators";
 import { Game as EditGame } from "../../editor/models/game.model";
-import { TypeScene } from "../../core/models/type-scene.enum";
-import { IBaseEditScene } from "../../editor/models/base-edit-scene.model";
-import { IBaseSceneRunGame } from "../models/other-models/base-scene-run-game.model";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { AngularFireStorage } from "@angular/fire/compat/storage";
 import { TypeControls } from "../models/other-models/type-controls.enum";
 import { ItemPartsPuzzleImage } from 'src/app/core/models/item-parts-puzzle-image.model';
 
@@ -56,8 +49,6 @@ export class StateService {
   }
 
   async saveNewStateGame(game: EditGame) {
-
-    console.log('saveNewStateGame')
 
     const startScene = game.scenes.find(item => {
       if (item.isStartGame) {
@@ -112,20 +103,6 @@ export class StateService {
       .doc(stateGameId)
       .set(stateGame)
   }
-
-  // async nextDataStateGame(stateGameId: string, currentScene: IBaseSceneRunGame) {
-  //
-  //   debugger
-  //
-  //   const state = this.stateGame
-  //
-  //   state.currentSceneId = currentScene.id
-  //   state.answer = []
-  //
-  //   await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
-  //     .doc(stateGameId)
-  //     .set({...state})
-  // }
 
   async saveStateGameForScene(gameId: string, currentSceneId: string) {
 

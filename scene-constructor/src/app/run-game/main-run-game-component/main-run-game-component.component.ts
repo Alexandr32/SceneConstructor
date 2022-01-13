@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, Data} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {StoreRunGameService} from "../services/store-run-game.service";
 
 @Component({

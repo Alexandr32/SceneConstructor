@@ -12,7 +12,6 @@ import { SettingsRunGameComponent } from './settings-run-game/settings-run-game.
 import { AnswerSceneComponentComponent } from './answer-scene-component/answer-scene-component.component';
 import { PanoramaSceneComponentComponent } from './panorama-scene-component/panorama-scene-component.component';
 import { PuzzleSceneComponentComponent } from './puzzle-scene-component/puzzle-scene-component.component';
-import { VideoComponent } from './answer-scene-component/video/video.component';
 import {RefDirective} from "../core/directive/ref.directive";
 import { ScenesListComponent } from './settings-run-game/scenes-list/scenes-list.component';
 import { BackgroundSceneComponent } from './background-scene/background-scene.component';
@@ -35,7 +34,6 @@ import { DialogLoadingGameComponent } from './dialog-loading-game/dialog-loading
     AnswerSceneComponentComponent,
     PanoramaSceneComponentComponent,
     PuzzleSceneComponentComponent,
-    VideoComponent,
     RefDirective,
     ScenesListComponent,
     BackgroundSceneComponent,

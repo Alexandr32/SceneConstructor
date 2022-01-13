@@ -1,9 +1,7 @@
 import {
   Component,
-  Input,
   OnDestroy,
   OnInit,
-  ViewChild
 } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
@@ -49,8 +47,8 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
     this.settingsRunGameService.settingsRunGame$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(settings => {
-      this.soundOff$.next(settings.isSoundOff)
-    })
+        this.soundOff$.next(settings.isSoundOff)
+      })
   }
 
   ngOnDestroy(): void {
@@ -59,7 +57,7 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
 
   private playSound(soundFile: string) {
 
-    if(!!!soundFile) {
+    if (!!!soundFile) {
       this.#audio?.pause()
       return
     }
@@ -77,17 +75,17 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
     this.soundOff$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(soundOff => {
-      if(this.#audio) {
-        if(soundOff) {
-          this.#audio.pause()
-        } else {
-          this.#audio.play()
+        if (this.#audio) {
+          if (soundOff) {
+            this.#audio.pause()
+          } else {
+            this.#audio.play()
+          }
         }
-      }
-    })
+      })
 
     this.soundUrl$.subscribe(url => {
-      if(this.#soundFile !== url) {
+      if (this.#soundFile !== url) {
         this.#soundFile = url
         this.playSound(url)
       }
@@ -96,24 +94,14 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
     this.settingsRunGameService.settingsRunGame$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(settings => {
-      if(!this.#audio) {
-        return
-      }
+        if (!this.#audio) {
+          return
+        }
 
-      if(this.#audio.volume !== settings.volumeSound) {
-        this.#audio.volume = settings.volumeSound
-      }
+        if (this.#audio.volume !== settings.volumeSound) {
+          this.#audio.volume = settings.volumeSound
+        }
 
-    })
-  }
-
-  selectedScene(scene: IBaseSceneRunGame) {
-    //this.storeRunGameService.selectedScene(scene.id)
-
-    // if(this.#audio) {
-    //   this.volume = this.volume + 0.1
-    //   this.#audio.volume = this.volume
-    // }
-
+      })
   }
 }

@@ -7,9 +7,6 @@ const routes: Routes = [
   {
     path: ':gameId',
     component: MainRunGameComponentComponent, pathMatch: 'full',
-    // resolve: {
-    //   runGame: RunGameResolver
-    // }
   },
 ];
 

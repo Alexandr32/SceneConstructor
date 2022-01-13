@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AnswerRunGame} from "src/app/run-game/models/other-models/answer.model";
 import {Player} from '../../../core/models/player.model';
 import {IBaseSceneRunGame} from '../../models/other-models/base-scene-run-game.model';
-import {map, takeUntil} from "rxjs/operators";
+import {takeUntil} from "rxjs/operators";
 import {StateGame} from "../../models/other-models/state-game.model";
 import {TypeControls} from "../../models/other-models/type-controls.enum";
 import {StoreRunGameService} from "../../services/store-run-game.service";

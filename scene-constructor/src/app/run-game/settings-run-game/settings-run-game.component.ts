@@ -23,9 +23,6 @@ export class SettingsRunGameComponent extends BaseComponent implements OnInit {
 
   volumeSound: number = 0
 
-  @Output()
-  selectedScene: EventEmitter<IBaseSceneRunGame> = new EventEmitter<IBaseSceneRunGame>()
-
   constructor(private storeRunGameService: StoreRunGameService,
               private settingsRunGameService: SettingsRunGameService) {
     super()

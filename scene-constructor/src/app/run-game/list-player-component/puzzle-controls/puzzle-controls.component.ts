@@ -127,8 +127,6 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
   async dropClear(event, value: ItemPartsPuzzleImage) {
 
-    console.log('dropClear:', value)
-
     if (!value) {
       return
     }
@@ -151,8 +149,6 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
   async drop(event, value: ItemPartsPuzzleImage) {
 
-    console.log('drop:', value)
-
     if (!value) {
       return
     }
@@ -170,8 +166,6 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
   // Вызывается при старте перетаскивания
   dragStar(event, value: ItemPartsPuzzleImage) {
-
-    console.log('dragStar:', value)
 
     this.selectItemPartsPuzzleImage = value
   }

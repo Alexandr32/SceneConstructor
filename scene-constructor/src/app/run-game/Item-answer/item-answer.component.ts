@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 import { AnswerRunGame } from "src/app/run-game/models/other-models/answer.model";
-import {StateService} from "../services/state.service";
 import {StateGame} from "../models/other-models/state-game.model";
 import {takeUntil} from "rxjs/operators";
 import {BaseComponent} from "../../base-component/base-component.component";
@@ -21,26 +20,6 @@ export class ItemAnswerComponent extends BaseComponent implements OnInit, OnDest
 
   @Input()
   players: string[] = []
-
-  // get widthProgressBar(): number {
-  //
-  //   debugger
-  //
-  //   if(!this.players) {
-  //     return 0
-  //   }
-  //
-  //   if(!this.players.length) {
-  //     return 0
-  //   }
-  //
-  //   console.log(this.count / this.players.length * 100)
-  //
-  //   return this.count / this.players.length * 100
-  //
-  //   //return this.count * 10
-  //   //return this.count * (this.players ? this.players.length : 0)
-  // }
 
   count: number = 0
 

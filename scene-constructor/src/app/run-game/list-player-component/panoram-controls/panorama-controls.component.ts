@@ -1,8 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {Observable} from "rxjs";
 import {AnswerRunGame} from "../../models/other-models/answer.model";
-import {IBaseSceneRunGame} from "../../models/other-models/base-scene-run-game.model";
-import {StateGame} from "../../models/other-models/state-game.model";
 import {TypeControls} from "../../models/other-models/type-controls.enum";
 import {Player} from "../../../core/models/player.model";
 import {StoreRunGameService} from "../../services/store-run-game.service";

@@ -12,7 +12,6 @@ import {FileService} from 'src/app/core/services/file.service';
 import {TypeFile} from 'src/app/editor/models/type-file.model';
 import {RunGame} from '../models/other-models/run-game.model';
 import {PuzzleRunGame} from "../models/other-models/scenes.models";
-import {IBaseEditScene} from "../../editor/models/base-edit-scene.model";
 import {PanoramaEditScene} from "../../editor/models/panorama-edit-scene";
 import {SceneRunGame} from "../models/other-models/scene-run-game";
 import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
