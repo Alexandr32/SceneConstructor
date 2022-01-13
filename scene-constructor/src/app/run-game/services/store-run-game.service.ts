@@ -13,6 +13,7 @@ import { PuzzleRunGame } from "../models/other-models/scenes.models";
 import { ItemPartsPuzzleImage } from "../../core/models/item-parts-puzzle-image.model";
 import { PanoramaRunGame } from '../models/other-models/panorama-run-game';
 import { SceneRunGame } from '../models/other-models/scene-run-game';
+import {first} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -55,11 +56,13 @@ export class StoreRunGameService {
     const runGame = await this.runGameService.getGameById(gameId)
     this.#runGame$.next(runGame)
     this.#players$.next(runGame.players)
-    const startScene = runGame.scenes.find(x => x.isStartGame)
+    const state = await this.stateService.getStateGame(gameId)
+      .pipe(first())
+      .toPromise()
+    const startScene = runGame.scenesMap.get(state.currentSceneId)
     this.#loadingGame$.next(false)
     this.#currentScene$.next(startScene)
-    const stateGame = new StateGame('', startScene.id)
-    this.#stateGame$.next(stateGame)
+    this.#stateGame$.next(state)
 
     this.stateService.getStateGame(gameId).subscribe(x => {
 
@@ -69,11 +72,11 @@ export class StoreRunGameService {
 
       if (currentScene.typesScene === TypeSceneEnum.Answer ||
         currentScene.typesScene === TypeSceneEnum.Panorama) {
-        this.switchingAnswerScene(x, this.#currentScene$.getValue() as SceneRunGame | PanoramaRunGame)
+        this.switchingAnswerScene(x, currentScene as SceneRunGame | PanoramaRunGame)
       }
 
       if (currentScene.typesScene === TypeSceneEnum.Puzzle) {
-        this.switchingPuzzleScene(x, this.#currentScene$.getValue() as PuzzleRunGame)
+        this.switchingPuzzleScene(x, currentScene as PuzzleRunGame)
       }
 
     })
@@ -232,6 +235,7 @@ export class StoreRunGameService {
     this.#currentScene$.next(scene)
 
     const stateGame = this.#stateGame$.value
+    stateGame.currentSceneId = selectSceneId
     stateGame.scenePartsPuzzleImages = this.getClearScenePartsPuzzleImages()
     stateGame.answer = []
     stateGame.typeControls = TypeControls.center
