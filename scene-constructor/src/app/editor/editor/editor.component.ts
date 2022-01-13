@@ -11,9 +11,7 @@ import { MessageDialogComponent } from '../../core/message-dialog/message-dialog
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SaveMediaFileDialogComponent } from '../dialogs/save-media-file-dialog/save-media-file-dialog.component';
-import { FileLink } from 'src/app/core/models/file-link.model.ts';
 import { RunGameService } from 'src/app/run-game/services/run-game.service';
-import { TypeFile } from 'src/app/editor/models/type-file.model';
 import { TypeSceneEnum } from 'src/app/core/models/type-scene.enum';
 import { EditSceneDialogComponent } from '../dialogs/edit-scene-dialog/edit-scene-dialog.component';
 import { EditPlayerDialogComponent } from '../dialogs/edit-player-dialog/edit-player-dialog.component';
@@ -34,9 +32,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   scenes: IBaseEditScene[] = [];
   players: Player[] = [];
-
-  private fileForDeleteScenes: { id: string, typeFile: 'Video' | 'Image' }[] = [];
-  private fileForDeletePlayers: { id: string, typeFile: 'Video' | 'Image' }[] = [];
 
   game: Game;
   form: FormGroup = new FormGroup({});
@@ -163,8 +158,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onClickDeletePlayer(player: Player) {
-
-    this.fileForDeletePlayers.push({ id: player.id, typeFile: 'Image' });
 
     const index = this.players.indexOf(player);
     this.players.splice(index, 1);
@@ -454,10 +447,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   deletedScene(scene: IBaseEditScene) {
 
-    this.fileForDeleteScenes.push({ id: scene.id, typeFile: 'Video' });
-    this.fileForDeleteScenes.push({ id: scene.id, typeFile: 'Image' });
-
-    this.game.scenes.flatMap((item) => {
+    this.scenes.flatMap((item) => {
       return item.answers;
     }).filter((item) => {
       return item.sceneId == scene.id;
@@ -465,12 +455,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       item.sceneId = null;
     });
 
-    const index = this.game.scenes.indexOf(scene);
+    const index = this.scenes.indexOf(scene);
+
     this.scenes.splice(index, 1);
 
     this.clearCanvas();
     this.renderLine();
-
   }
 
   private clearCanvas() {
@@ -584,8 +574,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.canvas.nativeElement.width += 500;
     this.working.nativeElement.style.width = `${this.canvas.nativeElement.width}px`
     this.editor.nativeElement.style.width = `${this.canvas.nativeElement.width}px`
-
-    console.log('width::', this.working.nativeElement.style);
   }
 
   getWidthScreen(): number {
