@@ -354,7 +354,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     await this.runGameService.saveNewGame(this.game)
 
-    await this.runGameService.resetDataStateGame(this.game.id, scene)
+    await this.stateService.saveStateGameForScene(this.game.id, scene.id)
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run', this.game.id])

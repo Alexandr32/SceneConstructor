@@ -92,31 +92,6 @@ export class RunGameService {
     }
   }
 
-  async resetDataStateGame(stateGameId: string, currentScene: IBaseEditScene) {
-    //const state = await this.getStateGame(stateGameId)
-    //  .pipe(first()).toPromise()
-
-    // const statePlayer = [...state.answer.map(item => {
-    //   return item
-    // })]
-
-    // const answer = statePlayer.map((item) => {
-    //   item.value = ''
-    //   return item
-    // })
-
-    //state.answer = answer
-    // const answer = currentScene.players.map(item => {
-    //   return {id: item, value: ''}
-    // })
-    //
-    // //console.log('currentSceneId:::::::::', currentSceneId);
-    //
-    // this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGame}`)
-    //   .doc(stateGameId)
-    //   .set({currentScene: currentScene.id, answer: answer})
-  }
-
   async getGameById(gameId: string): Promise<RunGame> {
 
     const resultGame = await this.fireStore.doc<RunGame>(`Games/${gameId}`)

@@ -127,33 +127,22 @@ export class StateService {
   //     .set({...state})
   // }
 
-  async resetDataStateGame(stateGameId: string, currentScene: IBaseEditScene) {
-    //const state = await this.getStateGame(stateGameId)
-    //  .pipe(first()).toPromise()
+  async saveStateGameForScene(gameId: string, currentSceneId: string) {
 
-    // const statePlayer = [...state.answer.map(item => {
-    //   return item
-    // })]
+    try {
 
-    // const answer = statePlayer.map((item) => {
-    //   item.value = ''
-    //   return item
-    // })
+      await this.fireStore.collection<any>(`${this.runGameCollection}/${gameId}/${this.stateGameKey}`)
+        .doc(gameId)
+        .set({
+          currentSceneId: currentSceneId,
+          answer: [],
+          typeControls: TypeControls.center,
+          scenePartsPuzzleImages: this.getClearScenePartsPuzzleImages()
+        })
 
-    //state.answer = answer
-    // const answer = currentScene.players.map(item => {
-    //   return {id: item, value: ''}
-    // })
-
-    //console.log('currentSceneId:::::::::', currentScene.id);
-
-    // const stateGameFirebase = {
-    //   currentSceneId: currentScene.id,
-    //   a
-    // }as StateGameFirebase
-
-    await this.fireStore.collection<any>(`${this.runGameCollection}/${stateGameId}/${this.stateGameKey}`)
-      .doc(stateGameId)
-      .set({ currentSceneId: currentScene.id })
+    } catch (error) {
+      console.error('При сохранении данных состояния игры произошла ошибка', error);
+      throw error;
+    }
   }
 }
