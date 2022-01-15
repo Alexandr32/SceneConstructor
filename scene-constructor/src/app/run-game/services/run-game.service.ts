@@ -245,7 +245,7 @@ export class RunGameService {
         console.error(error);
       }
     } else {
-      scene.imageFile = '/assets/http_puzzle.jpg';
+      scene.imageFile = '/assets/http_scene.jpg';
     }
 
     for (const item of scene.partsPuzzleImages) {
@@ -284,7 +284,7 @@ export class RunGameService {
 
   private async promiseAnswerImageScene(resultGameId: string, scene: SceneRunGame) {
 
-    if(scene.imageFile) {
+    if(scene.imageFileId) {
       try {
         scene.imageFile = await this.fileService.getUrl(resultGameId, scene.imageFileId, TypeFile.SceneImages)
           .toPromise()
