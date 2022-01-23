@@ -2,7 +2,6 @@
   padding: 0;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  box-sizing: border-box;
 }
 
 html,
@@ -669,7 +668,4 @@ mat-grid-tile {
 .cursor-pointer {
   cursor: pointer
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

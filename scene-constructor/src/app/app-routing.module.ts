@@ -4,17 +4,36 @@ import {EditorComponent} from './editor/editor/editor.component';
 import {GameListComponent} from './editor/game-list/game-list.component';
 import {MainComponent} from './editor/main/main.component';
 import {AuthComponent} from "./editor/auth-component/auth.component";
+import {AuthGuard} from "./guard/auth.guard";
 
 // определение дочерних маршрутов
 const editRoutes: Routes = [
-  { path: '', component: GameListComponent, pathMatch: 'full' },
-  { path: 'login', component: AuthComponent },
-  { path: 'editor/:gameId', component: EditorComponent },
+  {
+    path: '',
+    component: GameListComponent,
+    pathMatch: 'full',
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'login', component: AuthComponent
+  },
+  {
+    path: 'editor/:gameId', component: EditorComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 const routes: Routes = [
-  { path: '', component: MainComponent, children: editRoutes },
-  { path: 'run', loadChildren: () => import('./run-game/run-game-routing.module').then(m => m.RunGameRoutingModule) },
+  {
+    path: '',
+    component: MainComponent,
+    children: editRoutes,
+  },
+  {
+    path: 'run',
+    loadChildren: () => import('./run-game/run-game-routing.module').then(m => m.RunGameRoutingModule),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

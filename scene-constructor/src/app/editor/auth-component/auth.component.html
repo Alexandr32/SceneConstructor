@@ -1,5 +1,5 @@
 <div class="auth__form">
-  <div *ngIf="auth.user | async as user; else showLogin">
+  <div *ngIf="auth.user$ | async as user; else showLogin">
     <div>Вы вошли как:</div>
     <div class="text-green">{{user.email}}</div>
     <button class="m-t-16" (click)="logout()">Выйти</button>
@@ -30,6 +30,8 @@
         Необходимо ввести пароль
       </div>
     </div>
+
+    <div class="text-red m-t-8">{{massage}}</div>
 
     <button class="m-t-16" [disabled]="form.invalid">Войти</button>
   </form>
