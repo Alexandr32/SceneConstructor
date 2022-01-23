@@ -1,0 +1,39 @@
+<div class="auth__form">
+  <div *ngIf="auth.user | async as user; else showLogin">
+    <div>Вы вошли как:</div>
+    <div class="text-green">{{user.email}}</div>
+    <button class="m-t-16" (click)="logout()">Выйти</button>
+  </div>
+</div>
+
+<ng-template #showLogin>
+
+  <form [formGroup]="form"
+        novalidate
+        (ngSubmit)="login()">
+    <div class="width-full">
+      <div>Почта</div>
+      <input name="mail" formControlName="mail" type="email"/>
+
+      <div class="text-red"
+           *ngIf="form.controls['mail'].invalid && form.controls['mail'].touched">
+        Некорректный email
+      </div>
+    </div>
+
+    <div class="width-full m-t-8">
+      <div>Пароль</div>
+      <input name="password" formControlName="password" type="password" />
+
+      <div class="text-red"
+           *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
+        Необходимо ввести пароль
+      </div>
+    </div>
+
+    <button class="m-t-16" [disabled]="form.invalid">Войти</button>
+  </form>
+
+
+
+</ng-template>

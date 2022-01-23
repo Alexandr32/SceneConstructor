@@ -3,10 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import {EditorComponent} from './editor/editor/editor.component';
 import {GameListComponent} from './editor/game-list/game-list.component';
 import {MainComponent} from './editor/main/main.component';
+import {AuthComponent} from "./editor/auth-component/auth.component";
 
 // определение дочерних маршрутов
 const editRoutes: Routes = [
   { path: '', component: GameListComponent, pathMatch: 'full' },
+  { path: 'login', component: AuthComponent },
   { path: 'editor/:gameId', component: EditorComponent },
 ];
 
