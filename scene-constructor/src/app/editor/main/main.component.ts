@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
+  get textFooter(): string {
+    return `AnyGame - ${ new Date().getFullYear()}`
+  }
+
   constructor() { }
 
   ngOnInit(): void {
