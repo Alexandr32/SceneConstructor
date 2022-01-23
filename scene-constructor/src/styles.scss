@@ -1,3 +1,8 @@
+:root {
+  --main: #2a2029;
+  --white: white
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -19,8 +24,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2a2029;
-  color: white;
+  background: var(--main);
+  box-shadow: 0 5px 10px 6px rgba(34, 60, 80, 0.2);
+  color: var(--white);
 }
 
 .header__content {
@@ -29,7 +35,7 @@ body {
 }
 
 .header__link {
-  color: white;
+  color: var(--white);
   text-decoration: none;
 }
 
@@ -38,16 +44,16 @@ body {
 }
 
 .footer {
-  background: #20232a;
+  background: var(--main);
   height: 52px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding-left: 10px;
+  padding-left: 20px;
 }
 
 .footer__text {
-  color: white;
+  color: var(--white);
   font-size: 0.7em;
 }
 
@@ -80,7 +86,7 @@ body {
 
 // Класс содержит в себе элементы html такие как header, body, footer
 .container {
-  background: white;
+  background: var(--white);
   display: flex;
   width: 100%;
   min-height: 100%;
@@ -443,7 +449,7 @@ body {
 }
 
 .text-white {
-  color: white;
+  color: var(--white);
 }
 
 .scene__control-height {
@@ -473,7 +479,7 @@ body {
 
 .game-run__text-description {
   position: absolute;
-  color: white;
+  color: var(--white);
   bottom: 0;
   padding: 15px;
   height: 80px;
@@ -497,14 +503,14 @@ body {
   height: 30px;
   background: #1b1a48;
   justify-content: space-between;
-  color: white;
+  color: var(--white);
   padding: 5px;
   border-radius: 8px;
   border: solid 1px black;
 }
 
 .game-run__answers__item {
-  background: white;
+  background: var(--white);
   border-radius: 10px;
   height: 20px;
   margin: 10px;
@@ -559,7 +565,7 @@ body {
 }
 
 .game-run__players {
-  background: white;
+  background: var(--white);
   border-radius: 0 0 10px 10px;
   display: flex;
 }
@@ -573,7 +579,7 @@ body {
 
 .player-test__name {
   padding: 5px;
-  background: white;
+  background: var(--white);
   border-radius: 10px;
 }
 
@@ -647,7 +653,7 @@ mat-grid-tile {
   width: 100px;
   height: 100px;
   background: #8340ff3b;
-  border: 1px solid white;
+  border: 1px solid var(--white);
   cursor: pointer;
 }
 
