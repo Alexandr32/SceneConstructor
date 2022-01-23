@@ -8,6 +8,7 @@
 
   <div>
     <a class="header__link"
+       *ngIf="auth.isAuthorized()"
        routerLink="/"
        [routerLinkActiveOptions]="{ exact: true }"
        routerLinkActive="text-bold text-orange"
@@ -17,6 +18,16 @@
 
     <a class="header__link m-l-20"
        routerLink="/login"
+       *ngIf="!auth.isAuthorized()"
+       [routerLinkActiveOptions]="{ exact: true }"
+       routerLinkActive="text-bold text-orange"
+    >
+      Вход
+    </a>
+
+    <a class="header__link m-l-20"
+       routerLink="/login"
+       *ngIf="auth.isAuthorized()"
        [routerLinkActiveOptions]="{ exact: true }"
        routerLinkActive="text-bold text-orange"
     >
