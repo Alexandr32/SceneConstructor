@@ -7,7 +7,20 @@
   </a>
 
   <div>
-    <a class="header__link" routerLink="/">Список игр</a>
-    <a class="header__link m-l-20" routerLink="/login">Аккаунт</a>
+    <a class="header__link"
+       routerLink="/"
+       [routerLinkActiveOptions]="{ exact: true }"
+       routerLinkActive="text-bold text-orange"
+    >
+      Список игр
+    </a>
+
+    <a class="header__link m-l-20"
+       routerLink="/login"
+       [routerLinkActiveOptions]="{ exact: true }"
+       routerLinkActive="text-bold text-orange"
+    >
+      Аккаунт
+    </a>
   </div>
 </nav>
