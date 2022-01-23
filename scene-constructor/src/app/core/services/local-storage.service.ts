@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+// Перекинул в core
 @Injectable({
   providedIn: 'root'
 })
