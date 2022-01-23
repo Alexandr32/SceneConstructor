@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {AuthenticationService} from "../services/authentication-service.service";
+import {AuthenticationEditorService} from "../../core/services/authentication-editor-service.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -13,7 +13,7 @@ export class AuthComponent implements OnInit {
   form: FormGroup;
   massage: string = ''
 
-  constructor(public auth: AuthenticationService, private fb: FormBuilder) {
+  constructor(public auth: AuthenticationEditorService, private fb: FormBuilder) {
     this.form = fb.group({
       "mail": new FormControl("",
         [

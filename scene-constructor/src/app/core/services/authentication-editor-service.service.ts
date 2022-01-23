@@ -5,10 +5,13 @@ import {User} from "@firebase/auth";
 import {map} from "rxjs/operators";
 import {Router} from "@angular/router";
 
+/**
+ * Сервис авторизации для входа в редактирование игр
+ */
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthenticationEditorService {
 
   user$: Observable<User>;
   private user: User;
