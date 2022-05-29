@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {AnswerRunGame} from "../../models/other-models/answer.model";
-import {TypeControls} from "../../models/other-models/type-controls.enum";
-import {Player} from "../../../core/models/player.model";
-import {StoreRunGameService} from "../../services/store-run-game.service";
-import {BaseComponent} from "../../../base-component/base-component.component";
+import {AnswerRunGame} from "../../run-game/models/other-models/answer.model";
+import {TypeControls} from "../../run-game/models/other-models/type-controls.enum";
+import {Player} from "../../core/models/player.model";
+import {StoreRunGameService} from "../../run-game/services/store-run-game.service";
+import {BaseComponent} from "../../base-component/base-component.component";
 import {takeUntil} from "rxjs/operators";
 
 @Component({

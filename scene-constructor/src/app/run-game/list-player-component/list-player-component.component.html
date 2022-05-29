@@ -15,10 +15,17 @@
       <div
         [style.visibility]="!isShowListPlayers ? 'hidden' : 'visible'"
         class="game-run__players">
-        <app-player
+
+        <div
           *ngFor="let player of players"
-          [player]="player"
-        ></app-player>
+        >
+          <app-player
+            [player]="player"
+          ></app-player>
+
+          <button (click)="goToPlayer(player)">Перейти</button>
+        </div>
+
       </div>
 
     </div>

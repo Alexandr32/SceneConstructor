@@ -29,6 +29,7 @@ import {
 import {EditPanoramaDialogComponent} from './editor/dialogs/edit-panorama-dialog/edit-panorama-dialog.component';
 import {EditPuzzleDialogComponent} from './editor/dialogs/edit-puzzle-dialog/edit-puzzle-dialog.component';
 import {AuthComponent} from './editor/auth-component/auth.component';
+import {GamePlayerModule} from "./player-game/game-player/game-player.module";
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {AuthComponent} from './editor/auth-component/auth.component';
     ReactiveFormsModule,
     ImageCropperModule,
     FireModule,
-    RunGameModule
+    RunGameModule,
+    GamePlayerModule
   ],
   providers: [
    // {provide: AUTH_SETTINGS, useValue: {appVerificationDisabledForTesting: true}},

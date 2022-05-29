@@ -4,7 +4,6 @@ import { RunGameComponent } from './run-game/run-game.component';
 import { RunGameRoutingModule } from './run-game-routing.module';
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { PlayerComponent } from './list-player-component/player/player.component';
 import { ItemAnswerComponent } from './item-answer/item-answer.component';
 import { MainRunGameComponentComponent } from './main-run-game-component/main-run-game-component.component';
 import { ListPlayerComponentComponent } from './list-player-component/list-player-component.component';
@@ -17,16 +16,13 @@ import { ScenesListComponent } from './settings-run-game/scenes-list/scenes-list
 import { BackgroundSceneComponent } from './background-scene/background-scene.component';
 import { ListAnswersComponent } from './list-answers/list-answers.component';
 import { DescriptionSceneComponent } from './description-scene/description-scene.component';
-import {PlayerListAnswersComponent} from "./list-player-component/list-answers/player-list-answers.component";
-import { PanoramaControlsComponent } from './list-player-component/panoram-controls/panorama-controls.component';
 import {StateService} from "./services/state.service";
-import { PuzzleControlsComponent } from './list-player-component/puzzle-controls/puzzle-controls.component';
 import { DialogLoadingGameComponent } from './dialog-loading-game/dialog-loading-game.component';
+import {PlayerModule} from "../player-game/player.module";
 
 @NgModule({
   declarations: [
     RunGameComponent,
-    PlayerComponent,
     ItemAnswerComponent,
     MainRunGameComponentComponent,
     ListPlayerComponentComponent,
@@ -39,13 +35,11 @@ import { DialogLoadingGameComponent } from './dialog-loading-game/dialog-loading
     BackgroundSceneComponent,
     ListAnswersComponent,
     DescriptionSceneComponent,
-    PlayerListAnswersComponent,
-    PanoramaControlsComponent,
-    PuzzleControlsComponent,
     DialogLoadingGameComponent
   ],
   imports: [
     CommonModule,
+    PlayerModule,
     RunGameRoutingModule,
     RouterModule,
     DragDropModule,

@@ -45,13 +45,16 @@ export class StoreRunGameService {
     return this.#loadingGame$
   }
 
-  private stateGameId: string
+  private _stateGameId: string
+  get stateGameId(): string {
+    return this._stateGameId
+  }
 
   constructor(private runGameService: RunGameService, private stateService: StateService) { }
 
   async initGame(gameId: string) {
 
-    this.stateGameId = gameId
+    this._stateGameId = gameId
 
     const runGame = await this.runGameService.getGameById(gameId)
     this.#runGame$.next(runGame)
@@ -173,7 +176,7 @@ export class StoreRunGameService {
       if (!stateGame.answer) {
         stateGame.answer = []
       }
-      return this.stateService.updateState(this.stateGameId, { ...stateGame })
+      return this.stateService.updateState(this._stateGameId, { ...stateGame })
     }
   }
 
@@ -198,7 +201,7 @@ export class StoreRunGameService {
 
       stateGame.answer.push({ playerId: player.id, answerId: selectAnswer.id })
 
-      return this.stateService.updateState(this.stateGameId, { ...stateGame })
+      return this.stateService.updateState(this._stateGameId, { ...stateGame })
     }
   }
 
@@ -219,7 +222,7 @@ export class StoreRunGameService {
       stateGame.answer = []
       stateGame.typeControls = TypeControls.center
 
-      return this.stateService.updateState(this.stateGameId, { ...stateGame })
+      return this.stateService.updateState(this._stateGameId, { ...stateGame })
     }
   }
 
@@ -240,7 +243,7 @@ export class StoreRunGameService {
     stateGame.answer = []
     stateGame.typeControls = TypeControls.center
     try {
-      await this.stateService.updateState(this.stateGameId, { ...stateGame })
+      await this.stateService.updateState(this._stateGameId, { ...stateGame })
     } catch (e) {
       console.error(e)
     }

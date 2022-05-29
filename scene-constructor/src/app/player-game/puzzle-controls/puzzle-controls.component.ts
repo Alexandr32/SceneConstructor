@@ -1,11 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { StoreRunGameService } from "../../services/store-run-game.service";
-import { Player } from "../../../core/models/player.model";
-import { BaseComponent } from "../../../base-component/base-component.component";
+import { StoreRunGameService } from "../../run-game/services/store-run-game.service";
+import { Player } from "../../core/models/player.model";
+import { BaseComponent } from "../../base-component/base-component.component";
 import { takeUntil } from "rxjs/operators";
-import { TypeSceneEnum } from "../../../core/models/type-scene.enum";
-import { PuzzleRunGame } from "../../models/other-models/scenes.models";
-import { ItemPartsPuzzleImage } from "../../../core/models/item-parts-puzzle-image.model";
+import { TypeSceneEnum } from "../../core/models/type-scene.enum";
+import { PuzzleRunGame } from "../../run-game/models/other-models/scenes.models";
+import { ItemPartsPuzzleImage } from "../../core/models/item-parts-puzzle-image.model";
 
 @Component({
   selector: 'app-puzzle-controls',

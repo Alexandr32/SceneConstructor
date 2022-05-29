@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {combineLatest, Observable} from "rxjs";
-import {AnswerRunGame} from "../../models/other-models/answer.model";
+import {AnswerRunGame} from "../../run-game/models/other-models/answer.model";
 import {map, takeUntil} from "rxjs/operators";
-import {Player} from "../../../core/models/player.model";
-import {StoreRunGameService} from "../../services/store-run-game.service";
-import {BaseComponent} from "../../../base-component/base-component.component";
+import {Player} from "../../core/models/player.model";
+import {StoreRunGameService} from "../../run-game/services/store-run-game.service";
+import {BaseComponent} from "../../base-component/base-component.component";
 
 @Component({
   selector: 'app-player-list-answers',
