@@ -1,11 +1,12 @@
-import {Component, OnInit, ViewEncapsulation} from "@angular/core";
-import {Observable} from "rxjs";
+import {Component, OnInit} from "@angular/core";
 import {Player} from "../../core/models/player.model";
 import {PlayerServices} from "../services/player.services";
 import {StoreRunGameService} from "../../run-game/services/store-run-game.service";
 import {RunGameService} from "../../run-game/services/run-game.service";
 import {StateService} from "../../run-game/services/state.service";
 import {ActivatedRoute} from "@angular/router";
+import {first} from "rxjs/operators";
+import {BaseComponent} from "../../base-component/base-component.component";
 
 @Component({
   selector: 'game-player',
@@ -18,21 +19,28 @@ import {ActivatedRoute} from "@angular/router";
     PlayerServices
   ]
 })
-export class GamePlayerComponent implements OnInit {
+export class GamePlayerComponent extends BaseComponent implements OnInit {
+
+  player: Player | undefined
 
   constructor(
-    public playerServices: PlayerServices,
+    private storeRunGameService: StoreRunGameService,
     private route: ActivatedRoute,
   ) {
-
+    super()
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
 
     const gameId = this.route.snapshot.params.gameId;
     const playerId = this.route.snapshot.params.playerId;
 
-    console.log('gameId:', gameId)
-    console.log('playerId:', playerId)
+    await this.storeRunGameService.initGame(gameId)
+
+    const players = await this.storeRunGameService.players$
+      .pipe(first())
+      .toPromise()
+
+    this.player = players.find(item => item.id === playerId)
   }
 }

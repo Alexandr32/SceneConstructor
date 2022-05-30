@@ -8,7 +8,7 @@ import {TypeControls} from "../../run-game/models/other-models/type-controls.enu
 import {StoreRunGameService} from "../../run-game/services/store-run-game.service";
 import {BaseComponent} from "../../base-component/base-component.component";
 
-//TODO: Вынести в отдельный компонент
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',

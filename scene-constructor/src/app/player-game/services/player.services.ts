@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {BehaviorSubject, Observable} from "rxjs";
 import {Player} from "../../run-game/models/other-models/player.model";
 
-
+// TODO: Сервис не используется
 @Injectable({
   providedIn: 'root'
 })
