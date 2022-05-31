@@ -8,7 +8,7 @@
           (click)="isShowListPlayers = !isShowListPlayers"
         >
           <div *ngIf="isShowListPlayers; else unset">Скрыть</div>
-          <ng-template #unset> Показать </ng-template>
+          <ng-template #unset> Показать</ng-template>
         </button>
       </div>
 
@@ -17,8 +17,10 @@
         class="game-run__players">
 
         <div
+          class="m-10 p-10 editor__border"
           *ngFor="let player of players"
         >
+
           <app-player
             [player]="player"
           ></app-player>

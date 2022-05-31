@@ -1,29 +1,29 @@
-<div class="player-test">
-  <img class="player-test__image" [src]="player?.imageFile" alt="player"/>
-  <div class="player-test__content">
-    <div class="player-test__name">{{ player?.name }}</div>
+<div class="player-test__content">
+  <div class="player-test__name">{{ player?.name }}</div>
 
-    <ng-container [ngSwitch]="currentScene?.typesScene">
-      <ng-container *ngSwitchCase="'Answer'">
-        <app-player-list-answers
-          [player]="player"
-          (selectAnswer)="selectAnswer($event)"
-        ></app-player-list-answers>
-      </ng-container>
-      <ng-container *ngSwitchCase="'Panorama'">
-        <app-panorama-controls
-          [player]="player"
-          (selectControls)="selectControls($event)"
-          (selectAnswer)="selectAnswer($event)"
-        >
-        </app-panorama-controls>
-      </ng-container>
-      <ng-container *ngSwitchCase="'Puzzle'">
-        <app-puzzle-controls
-          [player]="player">
-        </app-puzzle-controls>
-      </ng-container>
-
+  <ng-container [ngSwitch]="currentScene?.typesScene">
+    <ng-container *ngSwitchCase="'Answer'">
+      <app-player-list-answers
+        [player]="player"
+        (selectAnswer)="selectAnswer($event)"
+      ></app-player-list-answers>
     </ng-container>
-  </div>
+    <ng-container *ngSwitchCase="'Panorama'">
+      <app-panorama-controls
+        [player]="player"
+        (selectControls)="selectControls($event)"
+        (selectAnswer)="selectAnswer($event)"
+      >
+      </app-panorama-controls>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Puzzle'">
+      <app-puzzle-controls
+        [player]="player">
+      </app-puzzle-controls>
+    </ng-container>
+
+  </ng-container>
 </div>
+
+<img class="player-img" *ngIf="showImage && player?.imageFile" [src]="player?.imageFile" alt="player"/>
+

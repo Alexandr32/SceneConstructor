@@ -19,6 +19,9 @@ export class PlayerComponent extends BaseComponent implements OnInit, OnDestroy 
   @Input()
   player: Player
 
+  @Input()
+  showImage: boolean = false
+
   currentScene: IBaseSceneRunGame
   stateGame: StateGame
 

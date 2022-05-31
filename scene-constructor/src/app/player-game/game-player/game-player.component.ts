@@ -23,6 +23,11 @@ export class GamePlayerComponent extends BaseComponent implements OnInit {
 
   player: Player | undefined
 
+  stateLoadingEnum = StateLoading
+  state: StateLoading = StateLoading.loading
+
+  count: number = 5;
+
   constructor(
     private storeRunGameService: StoreRunGameService,
     private route: ActivatedRoute,
@@ -42,5 +47,13 @@ export class GamePlayerComponent extends BaseComponent implements OnInit {
       .toPromise()
 
     this.player = players.find(item => item.id === playerId)
+
+    this.state = StateLoading.completed
   }
 }
+
+export enum StateLoading {
+  loading,
+  completed,
+}
+

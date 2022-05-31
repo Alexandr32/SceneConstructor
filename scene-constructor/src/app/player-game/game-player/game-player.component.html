@@ -1,4 +1,13 @@
-<app-player
-  *ngIf="player"
-  [player]="player"
-></app-player>
+<div class="player-game" [ngSwitch]="state">
+  <ng-template [ngSwitchCase]="stateLoadingEnum.loading">
+    Загрузка...
+  </ng-template>
+  <ng-template [ngSwitchCase]="stateLoadingEnum.completed">
+
+    <app-player [player]="player" [showImage]="true"></app-player>
+
+  </ng-template>
+  <ng-template ngSwitchDefault>
+    Что-то пошло не так...
+  </ng-template>
+</div>
