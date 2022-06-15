@@ -19,6 +19,9 @@ import { DescriptionSceneComponent } from './description-scene/description-scene
 import {StateService} from "./services/state.service";
 import { DialogLoadingGameComponent } from './dialog-loading-game/dialog-loading-game.component';
 import {PlayerModule} from "../player-game/player.module";
+import {QRCodeModule} from "angularx-qrcode";
+import {AppModule} from "../app.module";
+import {LinqQrPipe} from "../pipe/linq-qr.pipe";
 
 @NgModule({
   declarations: [
@@ -35,7 +38,8 @@ import {PlayerModule} from "../player-game/player.module";
     BackgroundSceneComponent,
     ListAnswersComponent,
     DescriptionSceneComponent,
-    DialogLoadingGameComponent
+    DialogLoadingGameComponent,
+    LinqQrPipe
   ],
   imports: [
     CommonModule,
@@ -43,6 +47,7 @@ import {PlayerModule} from "../player-game/player.module";
     RunGameRoutingModule,
     RouterModule,
     DragDropModule,
+    QRCodeModule
   ],
   providers: [
     StateService

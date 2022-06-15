@@ -21,6 +21,20 @@
           *ngFor="let player of players"
         >
 
+          <div class="qrcodeImage">
+            <qrcode
+              [qrdata] = "player | linqQr : storeRunGameService.stateGameId"
+              [allowEmptyString]="true"
+              [cssClass]="'center'"
+              [colorDark]="'#000000ff'"
+              [colorLight]="'#ffffffff'"
+              [elementType]="'url'"
+              [errorCorrectionLevel]="'L'"
+              [scale]="1"
+              [width]="150"
+            ></qrcode>
+          </div>
+
           <app-player
             [player]="player"
           ></app-player>
