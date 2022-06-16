@@ -28,8 +28,13 @@ export class SettingsRunGameService {
 
     const isSound = isSoundValue === 'true'
 
+    let volumeSound = localStorage.getItem('volumeSound')
+    if(volumeSound === null) {
+      localStorage.setItem('volumeSound', '1')
+    }
+
     this.#settingsRunGame$.next({
-      volumeSound: 1,
+      volumeSound: +volumeSound,
       isSound: isSound
     } as SettingsRunGame)
   }
@@ -43,6 +48,7 @@ export class SettingsRunGameService {
     }
 
     value.volumeSound = Number((value.volumeSound + 0.1).toFixed(1))
+    localStorage.setItem('volumeSound', value.volumeSound.toString())
 
     this.#settingsRunGame$.next({...value})
   }
@@ -55,6 +61,7 @@ export class SettingsRunGameService {
     }
 
     value.volumeSound = Number((value.volumeSound - 0.1).toFixed(1))
+    localStorage.setItem('volumeSound', value.volumeSound.toString())
 
     this.#settingsRunGame$.next({...value})
   }
