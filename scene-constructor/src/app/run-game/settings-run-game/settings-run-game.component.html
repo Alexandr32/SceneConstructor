@@ -3,7 +3,9 @@
      (click)="isShow = !isShow"
      alt="">
 
-<div *ngIf="isShow" class="settings-run-game__settings__controls">
+<div *ngIf="isShow"
+     @settingMenu
+     class="settings-run-game__settings__controls">
 
   <img class="settings-run-game__settings__controls__btn_close"
        (click)="isShow = !isShow"

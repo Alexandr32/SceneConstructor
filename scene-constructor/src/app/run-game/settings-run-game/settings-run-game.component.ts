@@ -1,17 +1,28 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {Observable} from "rxjs";
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {RunGame} from "../models/other-models/run-game.model";
-import {IBaseSceneRunGame} from "../models/other-models/base-scene-run-game.model";
 import {StoreRunGameService} from "../services/store-run-game.service";
 import {SettingsRunGameService} from "../services/settings-run-game.service";
 import {BaseComponent} from "../../base-component/base-component.component";
 import {takeUntil} from "rxjs/operators";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-settings-run-game',
   templateUrl: './settings-run-game.component.html',
   styleUrls: ['./settings-run-game.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger('settingMenu', [
+      transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('0.1s', style({transform: 'translateY(0)'}))
+      ]),
+      transition(':leave', [
+        style({transform: 'translateY(0)'}),
+        animate('0.1s', style({transform: 'translateY(-100%)'}))
+      ])
+    ])
+  ]
 })
 export class SettingsRunGameComponent extends BaseComponent implements OnInit {
 
@@ -32,15 +43,15 @@ export class SettingsRunGameComponent extends BaseComponent implements OnInit {
     this.storeRunGameService.runGame$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(runGame => {
-      this.runGame = runGame
-    })
+        this.runGame = runGame
+      })
 
     this.settingsRunGameService.settingsRunGame$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(value => {
         this.volumeSound = value.volumeSound * 100
         this.isSound = value.isSound
-    })
+      })
   }
 
   // Громче
