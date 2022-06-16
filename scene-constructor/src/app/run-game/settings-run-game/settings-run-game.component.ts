@@ -17,7 +17,7 @@ export class SettingsRunGameComponent extends BaseComponent implements OnInit {
 
   isShow: boolean = false
 
-  soundOff: boolean = false
+  isSound: boolean = false
 
   runGame: RunGame
 
@@ -39,7 +39,7 @@ export class SettingsRunGameComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(value => {
         this.volumeSound = value.volumeSound * 100
-        this.soundOff = value.isSoundOff
+        this.isSound = value.isSound
     })
   }
 
@@ -54,8 +54,8 @@ export class SettingsRunGameComponent extends BaseComponent implements OnInit {
   }
 
   changeSound() {
-    const isSoundOff = this.settingsRunGameService.settingsRunGame.isSoundOff
-    if (isSoundOff) {
+    const isSound = this.settingsRunGameService.settingsRunGame.isSound
+    if (!isSound) {
       this.settingsRunGameService.setSoundOn()
     } else {
       this.settingsRunGameService.setSoundOff()

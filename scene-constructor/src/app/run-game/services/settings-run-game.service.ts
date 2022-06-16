@@ -18,9 +18,19 @@ export class SettingsRunGameService {
   }
 
   constructor() {
+
+    let isSoundValue = localStorage.getItem('isSound')
+
+    if(isSoundValue === null) {
+      localStorage.setItem('isSound', 'true')
+      isSoundValue = 'true'
+    }
+
+    const isSound = isSoundValue === 'true'
+
     this.#settingsRunGame$.next({
       volumeSound: 1,
-      isSoundOff: false
+      isSound: isSound
     } as SettingsRunGame)
   }
 
@@ -51,13 +61,15 @@ export class SettingsRunGameService {
 
   setSoundOff() {
     const value = this.#settingsRunGame$.value
-    value.isSoundOff = true
+    value.isSound = false
+    localStorage.setItem('isSound', 'false')
     this.#settingsRunGame$.next({...value})
   }
 
   setSoundOn() {
     const value = this.#settingsRunGame$.value
-    value.isSoundOff = false
+    value.isSound = true
+    localStorage.setItem('isSound', 'true')
     this.#settingsRunGame$.next({...value})
   }
 }

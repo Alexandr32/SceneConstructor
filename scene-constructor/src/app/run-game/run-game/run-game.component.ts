@@ -24,7 +24,7 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
   #audio: any
   #soundFile: string
   private soundUrl$: BehaviorSubject<string> = new BehaviorSubject<string>('')
-  private soundOff$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
+  private isSound$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
@@ -47,7 +47,7 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
     this.settingsRunGameService.settingsRunGame$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(settings => {
-        this.soundOff$.next(settings.isSoundOff)
+        this.isSound$.next(settings.isSound)
       })
   }
 
@@ -67,19 +67,24 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
     this.#audio = new Audio(soundFile);
     this.#audio.load()
     this.#audio.volume = this.settingsRunGameService.settingsRunGame.volumeSound
-    this.#audio.play()
+
+    if(this.settingsRunGameService.settingsRunGame.isSound) {
+      this.#audio.play()
+    }
+
   }
 
   ngAfterViewInit() {
 
-    this.soundOff$
+    this.isSound$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(soundOff => {
+      .subscribe(isSound => {
+
         if (this.#audio) {
-          if (soundOff) {
-            this.#audio.pause()
-          } else {
+          if (isSound) {
             this.#audio.play()
+          } else {
+            this.#audio.pause()
           }
         }
       })
