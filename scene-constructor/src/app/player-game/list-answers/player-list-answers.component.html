@@ -1,7 +1,10 @@
-<button
-  *ngFor="let item of (answers$ | async)"
-  class="player-test__btn-answer"
-  (click)="selectedAnswer(item)"
->
-  {{ item.text }}
-</button>
+<div class="player-test__btn-answers">
+  <button
+    *ngFor="let item of (answers$ | async)"
+    mat-stroked-button
+    class="player-test__btn-answer"
+    (click)="selectedAnswer(item)"
+  >
+    {{ item.text }}
+  </button>
+</div>

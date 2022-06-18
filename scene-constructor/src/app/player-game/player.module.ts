@@ -6,6 +6,7 @@ import {RouterModule} from "@angular/router";
 import {PanoramaControlsComponent} from "./panoram-controls/panorama-controls.component";
 import {PuzzleControlsComponent} from "./puzzle-controls/puzzle-controls.component";
 import {PlayerListAnswersComponent} from "./list-answers/player-list-answers.component";
+import {MatButtonModule} from "@angular/material/button";
 
 
 @NgModule({
@@ -15,9 +16,10 @@ import {PlayerListAnswersComponent} from "./list-answers/player-list-answers.com
     PuzzleControlsComponent,
     PlayerListAnswersComponent
   ],
-  imports: [
-    CommonModule,
-  ],
+    imports: [
+        CommonModule,
+        MatButtonModule,
+    ],
   exports: [
     PlayerComponent,
     PanoramaControlsComponent,
