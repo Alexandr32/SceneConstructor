@@ -591,11 +591,11 @@ body {
 }
 
 .game-run__players {
-  background: #ffffff96;
+  background: #ffffffd4;
   border-radius: 10px;
   display: flex;
   margin-left: 95px;
-  margin-top: 20px;
+  margin-top: 10px;
   border: 1px solid;
 }
 
@@ -723,4 +723,9 @@ mat-grid-tile {
 
 .text-orange {
   color: orange;
+}
+
+.qrcode {
+  border: solid black 1px;
+  border-radius: 5px;
 }
