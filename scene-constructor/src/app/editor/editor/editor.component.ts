@@ -337,7 +337,9 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
     await this.stateService.saveNewStateGame(this.game)
 
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(['run', this.game.id])
+      this.router.createUrlTree(['run',  this.game.id, {
+        isDevelopMode: 'true',
+      } ])
     );
 
     window.open(url, '_blank');

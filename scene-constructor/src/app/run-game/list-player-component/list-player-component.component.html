@@ -1,23 +1,23 @@
 <div>
   <div class="game-run__open-player">
     <div class="game-run__list-player">
-      <div class="game-run__list-player-control">
-        <div class="">Управление игроками для тестирования</div>
-        <button
-          class="font-size-11"
-          (click)="isShowListPlayers = !isShowListPlayers"
-        >
-          <div *ngIf="isShowListPlayers; else unset">Скрыть</div>
-          <ng-template #unset> Показать</ng-template>
-        </button>
-      </div>
+
+      <img class="list-player__img"
+           src="assets/users.svg"
+           (click)="isShowListPlayers = !isShowListPlayers">
 
       <div
-        [style.visibility]="!isShowListPlayers ? 'hidden' : 'visible'"
+        @listPlayer
+        *ngIf="isShowListPlayers"
         class="game-run__players">
 
+        <img class="game-run__btn_close"
+             (click)="isShowListPlayers = !isShowListPlayers"
+             src="assets/cross-black.svg"
+             alt="">
+
         <div
-          class="m-10 p-10 editor__border"
+          class="m-10 p-10 game-run__player"
           *ngFor="let player of players"
         >
 
@@ -35,11 +35,21 @@
             ></qrcode>
           </div>
 
-          <app-player
-            [player]="player"
-          ></app-player>
+          <div class="game-run__player__body" *ngIf="!isDevelopMode">
+            <img class="game-run__player-img" *ngIf="player?.imageFile" [src]="player?.imageFile" alt="player"/>
+            <div class="game-run__player__name">
+              <div>{{player.name}}</div>
+            </div>
+          </div>
 
-          <button (click)="goToPlayer(player)">Перейти</button>
+          <ng-container *ngIf="isDevelopMode">
+            <app-player
+              [player]="player"
+            ></app-player>
+
+            <button (click)="goToPlayer(player)">Перейти</button>
+          </ng-container>
+
         </div>
 
       </div>

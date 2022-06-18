@@ -1,0 +1,48 @@
+.list-player__img {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  height: 65px;
+  width: 65px;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.game-run__player-img {
+  width: 200px;
+}
+
+.game-run__player {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-run__player__name {
+  background: var(--white);
+  padding: 10px;
+  border-radius: 30px;
+  bottom: 20px;
+  position: absolute;
+  max-width: 70%;
+  white-space: break-spaces;
+  box-sizing: border-box;
+}
+
+.game-run__player__body {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.game-run__btn_close {
+  position: absolute;
+  top: 25px;
+  right: 5px;
+  height: 30px;
+  cursor: pointer;
+}

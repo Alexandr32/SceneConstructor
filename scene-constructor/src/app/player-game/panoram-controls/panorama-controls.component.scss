@@ -1,14 +1,17 @@
-.btm-control {
+button {
   background: var(--white);
   width: 80px;
   height: 80px;
   display: flex;
   justify-content: center;
-  margin: 5px !important;
+  align-items: center;
+  margin: 5px;
+  border-radius: 5px;
+  border: solid 1px;
+  cursor: pointer;
 }
 
 .arrow {
-  display: inline-flex;
   width: 20px;
   height: 20px;
   border-top: 2px solid gray;
@@ -19,7 +22,6 @@
   background: cadetblue;
   width: 20px;
   height: 20px;
-  margin-left: 14px;
   border-radius: 50%;
 }
 

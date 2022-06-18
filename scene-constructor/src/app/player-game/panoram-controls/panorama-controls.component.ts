@@ -10,7 +10,7 @@ import {takeUntil} from "rxjs/operators";
   selector: 'app-panorama-controls',
   templateUrl: './panorama-controls.component.html',
   styleUrls: ['./panorama-controls.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  //encapsulation: ViewEncapsulation.None
 })
 export class PanoramaControlsComponent extends BaseComponent implements OnInit, OnDestroy {
 

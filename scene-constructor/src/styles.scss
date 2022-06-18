@@ -591,9 +591,12 @@ body {
 }
 
 .game-run__players {
-  background: var(--white);
-  border-radius: 0 0 10px 10px;
+  background: #ffffff96;
+  border-radius: 10px;
   display: flex;
+  margin-left: 95px;
+  margin-top: 20px;
+  border: 1px solid;
 }
 
 .player-test__content {
