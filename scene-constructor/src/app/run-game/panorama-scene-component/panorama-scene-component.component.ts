@@ -87,15 +87,6 @@ export class PanoramaSceneComponentComponent extends BaseComponent implements On
         debounceTime(200) //Костыль
       )
       .subscribe(state => {
-
-        //Костыль считает сколько ответов чтобы камера не дергалась при ответе пропустить сцену
-        if (state.answer) {
-          if (state.answer.length !== this.countAnswer) {
-            this.countAnswer = state.answer.length
-            return
-          }
-        }
-
         const action = this.typesControls.get(state.typeControls)
         if (action) {
           action()

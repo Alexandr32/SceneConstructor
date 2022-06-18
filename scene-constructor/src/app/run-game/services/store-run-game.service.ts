@@ -171,13 +171,17 @@ export class StoreRunGameService {
 
     const stateGame = this.#stateGame$.value
 
-    if (stateGame) {
-      stateGame.typeControls = typeControls
-      if (!stateGame.answer) {
-        stateGame.answer = []
-      }
-      return this.stateService.updateState(this._stateGameId, { ...stateGame })
+    stateGame.typeControls = typeControls
+    if (!stateGame.answer) {
+      stateGame.answer = []
     }
+
+    // Костыльный костыль сначала обновляем пустое состояние потом меняем состояние. Если предыдущее состояние равно
+    // предыдущему события не наступают
+    return this.stateService.updateState(this._stateGameId, {...stateGame, typeControls: null})
+      .then(() => {
+        return this.stateService.updateState(this._stateGameId, {...stateGame})
+      })
   }
 
   /**
