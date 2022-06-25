@@ -1,37 +1,83 @@
 <ng-container *ngIf="isShowControls">
-  <div class="puzzle-controls__puzzle-controls">
+<!--  <div class="puzzle-controls__puzzle-controls">-->
 
-    <div *ngFor="let item of scenePartsPuzzleImages" class="puzzle-controls__grid-item"
-         [draggable]="item.draggable"
-         (dragstart)="dragStar($event, item.itemPartsPuzzleImage)"
-         (drop)="drop($event, item.itemPartsPuzzleImage)"
-         (dragover)="dragOver($event, item.itemPartsPuzzleImage)"
-    >
+<!--    <div *ngFor="let item of scenePartsPuzzleImages" class="puzzle-controls__grid-item"-->
+<!--         [draggable]="item.draggable"-->
+<!--         (dragstart)="dragStar($event, item.itemPartsPuzzleImage)"-->
+<!--         (drop)="drop($event, item.itemPartsPuzzleImage)"-->
+<!--         (dragover)="dragOver($event, item.itemPartsPuzzleImage)"-->
+<!--    >-->
 
-      <img *ngIf="item.itemPartsPuzzleImage.value" class="puzzle-controls__image puzzle-controls__border"
-           [src]="item.itemPartsPuzzleImage.value.src"
-           [draggable]="item.draggable"
-           alt="imagePuzzle"/>
+<!--      <img *ngIf="item.itemPartsPuzzleImage.value" class="puzzle-controls__image puzzle-controls__border"-->
+<!--           [src]="item.itemPartsPuzzleImage.value.src"-->
+<!--           [draggable]="item.draggable"-->
+<!--           alt="imagePuzzle"/>-->
 
-    </div>
-  </div>
+<!--    </div>-->
+<!--  </div>-->
 
-  <div class="puzzle-controls__content__available-images m-t-8">
-    <div class="puzzle-controls__content__available-images"
-         *ngFor="let item of scenePartsPuzzleImagesForPlayer"
-         (dragstart)="dragStar($event, item)"
-         (drop)="dropClear($event, item)"
-         (dragover)="dragOver($event, item)"
-    >
+<!--  <div class="puzzle-controls__content__available-images m-t-8">-->
+<!--    <div class="puzzle-controls__content__available-images"-->
+<!--         *ngFor="let item of scenePartsPuzzleImagesForPlayer"-->
+<!--         (dragstart)="dragStar($event, item)"-->
+<!--         (drop)="dropClear($event, item)"-->
+<!--         (dragover)="dragOver($event, item)"-->
+<!--    >-->
 
-      <div class="puzzle-controls__grid-item"
-           draggable="true">
+<!--      <div class="puzzle-controls__grid-item"-->
+<!--           draggable="true">-->
 
-        <img *ngIf="item.value" class="puzzle-controls__image puzzle-controls__border"
-             [src]="item.value.src"
-             alt="imagePuzzle"/>
+<!--        <img *ngIf="item.value" class="puzzle-controls__image puzzle-controls__border"-->
+<!--             [src]="item.value.src"-->
+<!--             alt="imagePuzzle"/>-->
+<!--      </div>-->
+
+<!--    </div>-->
+<!--  </div>-->
+
+  <div cdkDropListGroup>
+    <div class="puzzle-controls__puzzle-controls">
+      <div
+        cdkDropList
+        [cdkDropListData]="imgPlace1"
+        class="puzzle-controls__place-item"
+        (cdkDropListDropped)="dropItemInContainer($event)">
+        <div class="puzzle-controls__img-item" *ngFor="let item of imgPlace1" cdkDrag>
+          {{item}}
+        </div>
       </div>
 
+      <div
+        cdkDropList
+        [cdkDropListData]="imgPlace2"
+        class="puzzle-controls__place-item"
+        (cdkDropListDropped)="dropItemInContainer($event)">
+          <div class="puzzle-controls__img-item" *ngFor="let item of imgPlace2" cdkDrag>
+            {{item}}
+          </div>
+      </div>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="imgPlace3"
+        class="puzzle-controls__place-item"
+        (cdkDropListDropped)="dropItemInContainer($event)">
+          <div class="puzzle-controls__img-item" *ngFor="let item of imgPlace3" cdkDrag>
+            {{item}}
+          </div>
+      </div>
+    </div>
+
+    <div class="">
+      <div
+        cdkDropList
+        [cdkDropListData]="done"
+        class="puzzle-controls__puzzle-controls"
+        (cdkDropListDropped)="dropItemsTemplate($event)">
+        <div class="puzzle-controls__img-item" *ngFor="let item of done" cdkDrag>
+          {{item}}
+        </div>
+      </div>
     </div>
   </div>
 </ng-container>

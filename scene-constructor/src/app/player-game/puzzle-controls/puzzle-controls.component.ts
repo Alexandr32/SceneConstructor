@@ -6,6 +6,8 @@ import { takeUntil } from "rxjs/operators";
 import { TypeSceneEnum } from "../../core/models/type-scene.enum";
 import { PuzzleRunGame } from "../../run-game/models/other-models/scenes.models";
 import { ItemPartsPuzzleImage } from "../../core/models/item-parts-puzzle-image.model";
+import {CdkDragDrop} from "@angular/cdk/drag-drop/drag-events";
+import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-puzzle-controls',
@@ -32,6 +34,35 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
   // Выбранный кусок пазла
   private selectItemPartsPuzzleImage: ItemPartsPuzzleImage
+
+  imgPlace1 = ['test1'];
+  imgPlace2 = ['test2'];
+  imgPlace3 = [];
+  imgPlace4 = [];
+  imgPlace5 = [];
+  imgPlace6 = [];
+  imgPlace7 = [];
+  imgPlace8 = [];
+  imgPlace9 = [];
+
+  places = [
+   'this.imgPlace1',
+   'this.imgPlace2',
+   'this.imgPlace3',
+   'this.imgPlace4',
+   'this.imgPlace5',
+   'this.imgPlace6',
+   'this.imgPlace7',
+   'this.imgPlace8',
+   'this.imgPlace9',
+  ]
+
+  places2 = [
+    'this2.imgPlace1',
+  ]
+
+  //done = ['test'];
+  done = [];
 
   constructor(private storeRunGameService: StoreRunGameService) {
     super()
@@ -177,4 +208,59 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
     this.unsubscribe()
   }
 
+  // Перемещаем на блок с пазлом
+  dropItemInContainer(event: CdkDragDrop<string[]>) {
+
+    //const data = event.container.data[0]
+    //this.done.push(data)
+    //img.push(data)
+
+    console.log(event.item.dropContainer.data[0])
+    console.log(event.container.data[0])
+
+    if(event.container.data[0]) {
+      return
+    }
+
+    console.log(event)
+
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+  }
+
+  // Доступные пункты
+  dropItemsTemplate(event: CdkDragDrop<string[]>) {
+
+    //const data = event.container.data[0]
+    //this.done.push(data)
+    //img.push(data)
+
+    //console.log(event.item.dropContainer.data[0])
+    //console.log(event.container.data[0])
+
+    // if(event.container.data[0]) {
+    //   return
+    // }
+
+    console.log(event)
+
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+  }
 }

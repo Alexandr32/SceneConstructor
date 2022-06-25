@@ -7,6 +7,7 @@ import {PanoramaControlsComponent} from "./panoram-controls/panorama-controls.co
 import {PuzzleControlsComponent} from "./puzzle-controls/puzzle-controls.component";
 import {PlayerListAnswersComponent} from "./list-answers/player-list-answers.component";
 import {MatButtonModule} from "@angular/material/button";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {MatButtonModule} from "@angular/material/button";
     imports: [
         CommonModule,
         MatButtonModule,
+        DragDropModule
     ],
   exports: [
     PlayerComponent,
