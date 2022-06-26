@@ -42,8 +42,10 @@
         [cdkDropListData]="imgPlace1"
         class="puzzle-controls__place-item"
         (cdkDropListDropped)="dropItemInContainer($event)">
-        <div class="puzzle-controls__img-item" *ngFor="let item of imgPlace1" cdkDrag>
-          {{item}}
+        <div *ngFor="let item of imgPlace1" cdkDrag>
+          <img *ngIf="item.value" class="puzzle-controls__image puzzle-controls__border"
+               [src]="item.value.src"
+               alt="imagePuzzle"/>
         </div>
       </div>
 
@@ -52,8 +54,10 @@
         [cdkDropListData]="imgPlace2"
         class="puzzle-controls__place-item"
         (cdkDropListDropped)="dropItemInContainer($event)">
-          <div class="puzzle-controls__img-item" *ngFor="let item of imgPlace2" cdkDrag>
-            {{item}}
+          <div *ngFor="let item of imgPlace2" cdkDrag>
+            <img *ngIf="item.value" class="puzzle-controls__image puzzle-controls__border"
+                 [src]="item.value.src"
+                 alt="imagePuzzle"/>
           </div>
       </div>
 
@@ -62,13 +66,16 @@
         [cdkDropListData]="imgPlace3"
         class="puzzle-controls__place-item"
         (cdkDropListDropped)="dropItemInContainer($event)">
-          <div class="puzzle-controls__img-item" *ngFor="let item of imgPlace3" cdkDrag>
-            {{item}}
-          </div>
+        <div *ngFor="let item of imgPlace3" cdkDrag>
+          <img *ngIf="item.value" class="puzzle-controls__image puzzle-controls__border"
+               [src]="item.value.src"
+               alt="imagePuzzle"/>
+
+        </div>
       </div>
     </div>
 
-    <div class="">
+    <!--<div class="">
       <div
         cdkDropList
         [cdkDropListData]="done"
@@ -76,6 +83,21 @@
         (cdkDropListDropped)="dropItemsTemplate($event)">
         <div class="puzzle-controls__img-item" *ngFor="let item of done" cdkDrag>
           {{item}}
+        </div>
+      </div>
+    </div>-->
+
+    <div class="">
+      <div
+        cdkDropList
+        [cdkDropListData]="scenePartsPuzzleImagesForPlayer"
+        class="puzzle-controls__puzzle-controls"
+        (cdkDropListDropped)="dropItemsTemplate($event)">
+        <div *ngFor="let item of scenePartsPuzzleImagesForPlayer" cdkDrag>
+          <img *ngIf="item.value" class="puzzle-controls__image puzzle-controls__border"
+               [src]="item.value.src"
+               alt="imagePuzzle"/>
+
         </div>
       </div>
     </div>

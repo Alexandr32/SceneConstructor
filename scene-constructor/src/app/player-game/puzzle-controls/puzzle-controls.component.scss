@@ -19,12 +19,12 @@
   align-items: center;
 }
 
-.puzzle-controls__img-item {
-  width: 95px;
-  height: 95px;
-  box-sizing: border-box;
-  background: gold;
-}
+//.puzzle-controls__img-item {
+//  width: 95px;
+//  height: 95px;
+//  box-sizing: border-box;
+//  background: gold;
+//}
 
 .puzzle-controls__content__available-images {
   display: grid;
@@ -38,8 +38,8 @@
 }
 
 .puzzle-controls__image {
-  width: 50px;
-  height: 50px;
+  width: 95px;
+  height: 95px;
   box-sizing: border-box;
 }
 .puzzle-controls__border {

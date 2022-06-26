@@ -35,31 +35,31 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   // Выбранный кусок пазла
   private selectItemPartsPuzzleImage: ItemPartsPuzzleImage
 
-  imgPlace1 = ['test1'];
-  imgPlace2 = ['test2'];
-  imgPlace3 = [];
-  imgPlace4 = [];
-  imgPlace5 = [];
-  imgPlace6 = [];
-  imgPlace7 = [];
-  imgPlace8 = [];
-  imgPlace9 = [];
+  imgPlace1: ItemPartsPuzzleImage[] = [];
+  imgPlace2: ItemPartsPuzzleImage[] = [];
+  imgPlace3: ItemPartsPuzzleImage[] = [];
+  imgPlace4: ItemPartsPuzzleImage[] = [];
+  imgPlace5: ItemPartsPuzzleImage[] = [];
+  imgPlace6: ItemPartsPuzzleImage[] = [];
+  imgPlace7: ItemPartsPuzzleImage[] = [];
+  imgPlace8: ItemPartsPuzzleImage[] = [];
+  imgPlace9: ItemPartsPuzzleImage[] = [];
 
-  places = [
-   'this.imgPlace1',
-   'this.imgPlace2',
-   'this.imgPlace3',
-   'this.imgPlace4',
-   'this.imgPlace5',
-   'this.imgPlace6',
-   'this.imgPlace7',
-   'this.imgPlace8',
-   'this.imgPlace9',
-  ]
-
-  places2 = [
-    'this2.imgPlace1',
-  ]
+  // places = [
+  //  this.imgPlace1,
+  //  this.imgPlace2,
+  //  this.imgPlace3,
+  //  this.imgPlace4,
+  //  this.imgPlace5,
+  //  this.imgPlace6,
+  //  this.imgPlace7,
+  //  this.imgPlace8,
+  //  this.imgPlace9,
+  // ]
+  //
+  // places2 = [
+  //   'this2.imgPlace1',
+  // ]
 
   //done = ['test'];
   done = [];
@@ -209,7 +209,7 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   }
 
   // Перемещаем на блок с пазлом
-  dropItemInContainer(event: CdkDragDrop<string[]>) {
+  dropItemInContainer(event: CdkDragDrop<ItemPartsPuzzleImage[]>) {
 
     //const data = event.container.data[0]
     //this.done.push(data)
@@ -237,7 +237,7 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   }
 
   // Доступные пункты
-  dropItemsTemplate(event: CdkDragDrop<string[]>) {
+  dropItemsTemplate(event: CdkDragDrop<ItemPartsPuzzleImage[]>) {
 
     //const data = event.container.data[0]
     //this.done.push(data)
