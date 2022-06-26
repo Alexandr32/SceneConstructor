@@ -1,7 +1,7 @@
 <div class="player-test__content">
   <div class="player-test__name">{{ player?.name }}</div>
 
-  <ng-container [ngSwitch]="currentScene?.typesScene">
+  <div class="m-t-16" [ngSwitch]="currentScene?.typesScene">
     <ng-container *ngSwitchCase="'Answer'">
       <app-player-list-answers
         [player]="player"
@@ -22,7 +22,7 @@
       </app-puzzle-controls>
     </ng-container>
 
-  </ng-container>
+  </div>
 </div>
 
 <img class="player-img" *ngIf="showImage && player?.imageFile" [src]="player?.imageFile" alt="player"/>

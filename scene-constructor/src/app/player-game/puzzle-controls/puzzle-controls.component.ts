@@ -45,24 +45,17 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   imgPlace8: ItemPartsPuzzleImage[] = [];
   imgPlace9: ItemPartsPuzzleImage[] = [];
 
-  // places = [
-  //  this.imgPlace1,
-  //  this.imgPlace2,
-  //  this.imgPlace3,
-  //  this.imgPlace4,
-  //  this.imgPlace5,
-  //  this.imgPlace6,
-  //  this.imgPlace7,
-  //  this.imgPlace8,
-  //  this.imgPlace9,
-  // ]
-  //
-  // places2 = [
-  //   'this2.imgPlace1',
-  // ]
-
-  //done = ['test'];
-  done = [];
+  places: ItemPartsPuzzleImage[][]  = [
+   this.imgPlace1,
+   this.imgPlace2,
+   this.imgPlace3,
+   this.imgPlace4,
+   this.imgPlace5,
+   this.imgPlace6,
+   this.imgPlace7,
+   this.imgPlace8,
+   this.imgPlace9,
+  ]
 
   constructor(private storeRunGameService: StoreRunGameService) {
     super()

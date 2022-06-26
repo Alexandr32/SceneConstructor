@@ -5,7 +5,19 @@
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  border: 1px solid white;
+}
+
+.puzzle-controls__puzzle-controls-template {
+  min-width: 300px;
+  min-height: 298px;
+  background: rgba(255, 230, 64, 0.23);
+  box-sizing: border-box;
+  display: grid;
+  align-content: baseline;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding-top: 2px;
+  padding-left: 2px;
+  margin-top: 20px;
 }
 
 .puzzle-controls__place-item {
@@ -16,15 +28,7 @@
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
-
-//.puzzle-controls__img-item {
-//  width: 95px;
-//  height: 95px;
-//  box-sizing: border-box;
-//  background: gold;
-//}
 
 .puzzle-controls__content__available-images {
   display: grid;
@@ -38,10 +42,10 @@
 }
 
 .puzzle-controls__image {
-  width: 95px;
-  height: 95px;
+  width: 98px;
+  height: 98px;
   box-sizing: border-box;
 }
 .puzzle-controls__border {
-  border: 4px solid orangered;
+  border: 1px solid white;
 }
