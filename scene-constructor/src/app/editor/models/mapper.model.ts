@@ -10,7 +10,7 @@ import { Player } from "../../run-game/models/other-models/player.model"
 import {IBaseEditScene} from "./base-edit-scene.model";
 import {PanoramaEditScene} from "./panorama-edit-scene";
 import {SceneEditScene} from "./scene-edit-scene";
-import {PuzzleEditScene} from "./puzzle-edit-scene";
+import {PuzzleEditScene, SceneForEditPlayer} from "./puzzle-edit-scene";
 
 export class Mapper {
 
@@ -159,35 +159,46 @@ export class Mapper {
 
   static puzzleToPuzzleFirebase(puzzle: PuzzleEditScene): PuzzleFirebase {
 
-    const playerScenePartsPuzzleImages: {
-      playerId: string,
-      scenePartsPuzzleImages: {
-        number: number,
-        imgId: number
-      }[]
-    }[] = puzzle.playerScenePartsPuzzleImages.map(item => {
-      return {
-        playerId: item.playerId,
-        scenePartsPuzzleImages: item.scenePartsPuzzleImages.map(x => {
-          return {
-            number: x.number,
-            imgId: x.value ? x.value.id : null
-          }
-        })
-      }
-    })
+    // const playerScenePartsPuzzleImages: {
+    //   playerId: string,
+    //
+    //   scenePartsPuzzleImages: {
+    //     number: number,
+    //     imgId: number
+    //   }[]
+    //
+    // }[] = puzzle.playerScenePartsPuzzleImages.map(item => {
+    //   return {
+    //     playerId: item.playerId,
+    //     scenePartsPuzzleImages: item.scenePartsPuzzleImages.map(x => {
+    //       return {
+    //         number: x.number,
+    //         imgId: x.value ? x.value.id : null
+    //       }
+    //     })
+    //   }
+    // })
 
+    // const playerScenePartsPuzzleImages: {
+    //   playerId: string,
+    //   dataForPlayerPartsImages: SceneForEditPlayer
+    //   }[] = puzzle.dataForPlayerPartsImages.map((item) => {
+    //     return {
+    //       playerId: item.playerId,
+    //       dataForPlayerPartsImages: item
+    //     }
+    //   })
 
     // Изображение на экране сцены
-    const scenePartsPuzzleImages: {
-      number: number,
-      imgId: number
-    }[] = puzzle.scenePartsPuzzleImages.map(item => {
-      return {
-        number: item.number,
-        imgId: item.value ? item.value.id : null
-      }
-    })
+    // const scenePartsPuzzleImages: {
+    //   number: number,
+    //   imgId: number
+    // }[] = puzzle.scenePartsPuzzleImages.map(item => {
+    //   return {
+    //     number: item.number,
+    //     imgId: item.value ? item.value.id : null
+    //   }
+    // })
 
     return {
       id: puzzle.id,
@@ -212,8 +223,21 @@ export class Mapper {
       typesScene: puzzle.typesScene,
       players: puzzle.players,
       isStartGame: puzzle.isStartGame,
-      scenePartsPuzzleImages: scenePartsPuzzleImages,
-      playerScenePartsPuzzleImages: playerScenePartsPuzzleImages
+      //scenePartsPuzzleImages: scenePartsPuzzleImages,
+      //playerScenePartsPuzzleImages: playerScenePartsPuzzleImages
+
+      imgInPlace1: puzzle.imgInPlace1,
+      imgInPlace2: puzzle.imgInPlace2,
+      imgInPlace3: puzzle.imgInPlace3,
+      imgInPlace4: puzzle.imgInPlace4,
+      imgInPlace5: puzzle.imgInPlace5,
+      imgInPlace6: puzzle.imgInPlace6,
+      imgInPlace7: puzzle.imgInPlace7,
+      imgInPlace8: puzzle.imgInPlace8,
+      imgInPlace9: puzzle.imgInPlace9,
+
+      dataForPlayerPartsImages: puzzle.dataForPlayerPartsImages
+
     } as PuzzleFirebase;
 
   }
@@ -244,6 +268,12 @@ export class Mapper {
       return Mapper.answerFirebaseToAnswer(item, puzzle)
     })
 
+    puzzle.players.forEach((playerId) => {
+      const value = new SceneForEditPlayer()
+      value.playerId = playerId
+      puzzle.dataForPlayerPartsImages.push(value)
+    })
+
     puzzle.maxCountAnswers = puzzleFirebase.maxCountAnswers
 
     const partsPuzzleImages: PartsPuzzleImage[] = []
@@ -259,32 +289,34 @@ export class Mapper {
 
     puzzle.partsPuzzleImages = partsPuzzleImages
 
-    puzzle.scenePartsPuzzleImages = puzzleFirebase.scenePartsPuzzleImages.map((item: { number: number, imgId: number }, index) => {
-      return {
-        number: item.number,
-        value: item.imgId ? ({ id: item.imgId, src: '' } as PartsPuzzleImage) : null
-      }
-    })
+    // TODO добавить маппинг из FB в обычную модель
 
-    puzzle.playerScenePartsPuzzleImages = puzzleFirebase
-      .playerScenePartsPuzzleImages.map((item, index) => {
-
-        return {
-          playerId: item.playerId,
-          scenePartsPuzzleImages: item.scenePartsPuzzleImages.map(x => {
-            return {
-              number: x.number,
-              value: x.imgId
-                ? {
-                  id: x.imgId,
-                  src: ''
-                } as PartsPuzzleImage
-                : null
-            } as ItemPartsPuzzleImage
-          })
-
-        }
-      })
+    // puzzle.scenePartsPuzzleImages = puzzleFirebase.scenePartsPuzzleImages.map((item: { number: number, imgId: number }, index) => {
+    //   return {
+    //     number: item.number,
+    //     value: item.imgId ? ({ id: item.imgId, src: '' } as PartsPuzzleImage) : null
+    //   }
+    // })
+    //
+    // puzzle.playerScenePartsPuzzleImages = puzzleFirebase
+    //   .playerScenePartsPuzzleImages.map((item, index) => {
+    //
+    //     return {
+    //       playerId: item.playerId,
+    //       scenePartsPuzzleImages: item.scenePartsPuzzleImages.map(x => {
+    //         return {
+    //           number: x.number,
+    //           value: x.imgId
+    //             ? {
+    //               id: x.imgId,
+    //               src: ''
+    //             } as PartsPuzzleImage
+    //             : null
+    //         } as ItemPartsPuzzleImage
+    //       })
+    //
+    //     }
+    //   })
 
     return puzzle
   }

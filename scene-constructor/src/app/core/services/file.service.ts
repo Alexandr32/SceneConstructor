@@ -5,12 +5,12 @@ import { base64ToFile } from "src/app/editor/models/base64-to-file.model";
 import { MediaFile } from "src/app/editor/models/media-file.model.ts";
 import { TypeFile } from "src/app/editor/models/type-file.model";
 import { IPanoramaCore } from "../models/base-panorama.model";
-import { IPuzzleCore } from "../models/base-puzzle.model";
 import { ISceneCore } from "../models/base-scene.model";
 import { FileLink } from "../models/file-link.model.ts";
 import { PartsPuzzleImage } from "../models/parts-puzzle-image.model";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {PuzzleEditScene} from "../../editor/models/puzzle-edit-scene";
 
 @Injectable({
   providedIn: 'root'
@@ -81,7 +81,7 @@ export class FileService {
     }
   }
 
-  async setFilePuzzleFile(gameId: string, scene: IPuzzleCore) {
+  async setFilePuzzleFile(gameId: string, scene: PuzzleEditScene) {
 
     if (scene.imagePuzzleFileId) {
       try {
@@ -130,23 +130,25 @@ export class FileService {
       const src = await this.getUplPartsPuzzleImages(gameId, scene.imagePuzzleFileId, item).toPromise()
       item.src = src
 
-      const scenePartsPuzzleImages = scene.scenePartsPuzzleImages
-        .filter(x => x.value !== null)
-        .find(p => p.value.id === item.id)
-
-      if (scenePartsPuzzleImages) {
-        scenePartsPuzzleImages.value.src = src
-      }
+      // TODO: Что-то лишнее
+      // const scenePartsPuzzleImages = scene.scenePartsPuzzleImages
+      //   .filter(x => x.value !== null)
+      //   .find(p => p.value.id === item.id)
+      //
+      // if (scenePartsPuzzleImages) {
+      //   scenePartsPuzzleImages.value.src = src
+      // }
 
     }
 
-    scene.playerScenePartsPuzzleImages.map(x => {
-      x.scenePartsPuzzleImages.map(i => {
-        if (i.value) {
-          i.value.src = scene.partsPuzzleImages.find(f => f.id === i.value.id).src
-        }
-      })
-    })
+    // TODO: Что-то лишнее
+    // scene.playerScenePartsPuzzleImages.map(x => {
+    //   x.scenePartsPuzzleImages.map(i => {
+    //     if (i.value) {
+    //       i.value.src = scene.partsPuzzleImages.find(f => f.id === i.value.id).src
+    //     }
+    //   })
+    // })
 
   }
 

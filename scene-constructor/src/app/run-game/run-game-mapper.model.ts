@@ -134,28 +134,32 @@ export class RunGameMapper {
         number: number,
         imgId: number
       }[]
-    }[] = puzzle.playerScenePartsPuzzleImages.map(item => {
-      return {
-        playerId: item.playerId,
-        scenePartsPuzzleImages: item.scenePartsPuzzleImages.map(x => {
-          return {
-            number: x.number,
-            imgId: x.value ? x.value.id : null
-          }
-        })
-      }
-    })
+    }[] = []
+    //   puzzle.playerScenePartsPuzzleImages.map(item => {
+    //   return {
+    //     playerId: item.playerId,
+    //     scenePartsPuzzleImages: item.scenePartsPuzzleImages.map(x => {
+    //       return {
+    //         number: x.number,
+    //         imgId: x.value ? x.value.id : null
+    //       }
+    //     })
+    //   }
+    // })
 
     // Изображение на экране сцены
     const scenePartsPuzzleImages: {
       number: number,
       imgId: number
-    }[] = puzzle.scenePartsPuzzleImages.map(item => {
-      return {
-        number: item.number,
-        imgId: item.value ? item.value.id : null
-      }
-    })
+    }[] = []
+    //   = puzzle.scenePartsPuzzleImages.map(item => {
+    //   return {
+    //     number: item.number,
+    //     imgId: item.value ? item.value.id : null
+    //   }
+    // })
+
+    // TODO: добавить маппинг для запуска игры
 
     return {
       id: puzzle.id,

@@ -35,6 +35,9 @@ export class PuzzleSceneComponentComponent extends BaseComponent implements OnIn
       }
 
       this.scene = currentScene as PuzzleRunGame
+
+      console.log(this.scene)
+
       this.findItemScenePartsPuzzleImages = this.scene.scenePartsPuzzleImages.filter(f => f.value)
 
     })
@@ -48,6 +51,7 @@ export class PuzzleSceneComponentComponent extends BaseComponent implements OnIn
         }
 
         this.scenePartsPuzzleImages = item.scenePartsPuzzleImages
+        console.log(this.scenePartsPuzzleImages)
 
         this.findItemScenePartsPuzzleImages.forEach(item => {
           const findItem: ItemPartsPuzzleImage | undefined = this.scenePartsPuzzleImages.find(x => x.number === item.number)

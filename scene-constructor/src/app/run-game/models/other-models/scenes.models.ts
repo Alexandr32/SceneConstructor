@@ -37,10 +37,21 @@ export class PuzzleRunGame implements IBaseSceneRunGame, IBaseBackgroundScene {
   // Список доступных изображений
   partsPuzzleImages: PartsPuzzleImage[]
 
-  // Изображение на экране сцены
-  scenePartsPuzzleImages: ItemPartsPuzzleImage[]
+  // Изображение на экране сцены в браузере
+  scenePartsPuzzleImages: ItemPartsPuzzleImage[] //TODO: на одно место должно быть несколько элементов, разделить на списки от 1 до 9
 
   // Изображения для игроков
-  playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = []
+  playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = [] //TODO: Удалить
+}
+
+class SceneForPlayer {
+
+  playerId: string
+
+  // Доступные изображения для выбора
+  partsPuzzleImages: ItemPartsPuzzleImage[]
+
+  // Те изображения которые он выложил
+  partsPuzzleImagesInPlace: ItemPartsPuzzleImage[] //TODO: проще разбить на 1-9 меньше головников
 }
 

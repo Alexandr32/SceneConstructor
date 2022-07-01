@@ -1,115 +1,165 @@
-<app-base-edit-scene-dialog
-  [form]="form"
-  [soundFileLink]="soundFileLink"
-  [dialog]="dialog"
-  [validData]="validData"
-  [data]="data"
-  (close)="onNoClick()"
-  (save)="onClickSave()"
-  [players]="selectPlayers"
-  (changeSelectPlayers)="eventChangeSelectPlayers()"
->
-  Редактирование головоломки
+<div class="example-container">
+  <h2>To do</h2>
 
-<!-- Фоновые изображение сцены -->
-  <hr class="m-t-25" />
-
-  <div>
-    <div class="edit-scene-dialog__image-box" *ngIf="imgFile && imgFile !== ''">
-      <img
-        class="edit-scene-dialog__image-box__image"
-        [src]="imgFile"
-        [alt]="form.value.name"
-      />
-    </div>
-
-    <div>
-      <button (click)="openSelectBackgroundImageFileDialog()">Выбрать изображение</button>
-      <button (click)="onClickDeletedBackgroundImg()">Удалить</button>
-    </div>
+  <div
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="todo"
+    [cdkDropListConnectedTo]="[doneList]"
+    class="example-list"
+    (cdkDropListDropped)="drop2($event)">
+    <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
   </div>
+</div>
 
-  <hr class="m-t-25" />
+<div class="example-container">
+  <h2>Done</h2>
 
-  <div class="">
-    <div *ngFor="let video of videoSources">
-      <video
-        controls
-        class="edit-scene-dialog__image-box__image"
-        disabled="true"
-        (click)="toggleVideo()"
-      >
-        <source [src]="video" type="video/mp4" />
-        Browser not supported
-      </video>
-    </div>
-
-    <div>
-      <button (click)="openSelectBackgroundVideoFileDialog()">Выбрать видео</button>
-      <button (click)="onClickBackgroundDeletedVideo()">Убрать видео</button>
-    </div>
+  <div
+    cdkDropList
+    #doneList="cdkDropList"
+    [cdkDropListData]="done"
+    [cdkDropListConnectedTo]="[todoList]"
+    class="example-list"
+    (cdkDropListDropped)="drop2($event)">
+    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
   </div>
+</div>
 
-  <div class="m-t-25">
-    <div>
-      <button (click)="openSelectImageFileDialog()">Выбрать изображение</button>
-      <button (click)="onClickDeletedImg()">Удалить</button>
-    </div>
-  </div>
+<!--<app-base-edit-scene-dialog-->
+<!--  [form]="form"-->
+<!--  [soundFileLink]="soundFileLink"-->
+<!--  [dialog]="dialog"-->
+<!--  [validData]="validData"-->
+<!--  [data]="data"-->
+<!--  (close)="onNoClick()"-->
+<!--  (save)="onClickSave()"-->
+<!--  [players]="selectPlayers"-->
+<!--  (changeSelectPlayers)="eventChangeSelectPlayers()"-->
+<!--&gt;-->
+<!--  Редактирование головоломки-->
 
-  <div class="flex">
-    <div
-      class="edit-scene-dialog__puzzle-image-box m-10"
-      *ngIf="imgPuzzleFile && imgPuzzleFile !== ''"
-    >
-      <img
-        class="edit-scene-dialog__puzzle-image-box"
-        [src]="imgPuzzleFile"
-        [alt]="form.value.name"
-      />
-    </div>
-  </div>
+<!--  &lt;!&ndash; Фоновые изображение сцены &ndash;&gt;-->
+<!--  <hr class="m-t-25"/>-->
 
-  <div class="editor__border">
-    Изображение на сцене
-    <button (click)="resetParts()">Сброс</button>
+<!--  <div>-->
+<!--    <div class="edit-scene-dialog__image-box" *ngIf="imgFile && imgFile !== ''">-->
+<!--      <img-->
+<!--        class="edit-scene-dialog__image-box__image"-->
+<!--        [src]="imgFile"-->
+<!--        [alt]="form.value.name"-->
+<!--      />-->
+<!--    </div>-->
 
-    <div class="grid-puzzle m-10">
-      <div *ngFor="let item of scenePartsPuzzleImages">
-        <div
-          class="grid-item"
-          draggable="true"
-          (dragover)="dragOver($event, item)"
-          (dragstart)="dragStar($event, item, 'scene')"
-          (drop)="dropScene($event, item)"
-        >
-          <div *ngIf="item.value">
-            <img class="width-full height-full" [src]="item.value.src" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!--    <div>-->
+<!--      <button (click)="openSelectBackgroundImageFileDialog()">Выбрать изображение</button>-->
+<!--      <button (click)="onClickDeletedBackgroundImg()">Удалить</button>-->
+<!--    </div>-->
+<!--  </div>-->
 
-  <div class="flex">
-    <div *ngFor="let playerSceneParts of playerScenePartsPuzzleImages">
-      {{ playerSceneParts.name }}
+<!--  <hr class="m-t-25"/>-->
 
-      <div class="grid-puzzle m-10">
-        <div *ngFor="let item of playerSceneParts.scenePartsPuzzleImages">
-          <div
-            class="grid-item"
-            draggable="true"
-            (dragover)="dragOver($event, item)"
-            (dragstart)="dragStar($event, item, 'player')"
-            (drop)="drop($event, item)"
-          >
-            <div *ngIf="item.value">
-              <img class="width-full height-full" [src]="item.value.src" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</app-base-edit-scene-dialog>
+<!--  <div class="">-->
+<!--    <div *ngFor="let video of videoSources">-->
+<!--      <video-->
+<!--        controls-->
+<!--        class="edit-scene-dialog__image-box__image"-->
+<!--        disabled="true"-->
+<!--        (click)="toggleVideo()"-->
+<!--      >-->
+<!--        <source [src]="video" type="video/mp4"/>-->
+<!--        Browser not supported-->
+<!--      </video>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--      <button (click)="openSelectBackgroundVideoFileDialog()">Выбрать видео</button>-->
+<!--      <button (click)="onClickBackgroundDeletedVideo()">Убрать видео</button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="m-t-25">-->
+<!--    <div>-->
+<!--      <button (click)="openSelectImageFileDialog()">Выбрать изображение</button>-->
+<!--      <button (click)="onClickDeletedImg()">Удалить</button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="flex">-->
+<!--    <div-->
+<!--      class="edit-scene-dialog__puzzle-image-box m-10"-->
+<!--      *ngIf="imgPuzzleFile && imgPuzzleFile !== ''"-->
+<!--    >-->
+<!--      <img-->
+<!--        class="edit-scene-dialog__puzzle-image-box"-->
+<!--        [src]="imgPuzzleFile"-->
+<!--        [alt]="form.value.name"-->
+<!--      />-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="editor__border">-->
+<!--    Изображение на сцене-->
+<!--    <button (click)="resetParts()">Сброс</button>-->
+
+<!--    <div-->
+<!--      *ngFor="let imgPlace of scenePartsPuzzleImages"-->
+<!--      cdkDropList-->
+<!--      [cdkDropListData]="imgPlace"-->
+<!--      (cdkDropListDropped)="dropItemInContainer($event)"-->
+<!--      class="grid-item"-->
+<!--    >-->
+<!--      <div *ngFor="let item of imgPlace"-->
+<!--           cdkDrag-->
+<!--      >-->
+<!--        <div *ngIf="item?.src">-->
+<!--          <img class="width-full height-full" [src]="item?.src"/>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--    </div>-->
+
+<!--    &lt;!&ndash;<div class="grid-puzzle m-10" cdkDropListGroup>-->
+<!--      <div-->
+<!--        *ngFor="let imgPlace of scenePartsPuzzleImages"-->
+<!--        cdkDropList-->
+<!--        [cdkDropListData]="imgPlace"-->
+<!--        (cdkDropListDropped)="dropItemInContainer($event)"-->
+<!--        class="grid-item"-->
+<!--      >-->
+<!--        <div *ngFor="let item of imgPlace"-->
+<!--             cdkDrag-->
+<!--        >-->
+<!--          <div *ngIf="item?.src">-->
+<!--            <img class="width-full height-full" [src]="item?.src" />-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--      </div>-->
+<!--    </div>&ndash;&gt;-->
+<!--  </div>-->
+
+<!--  <div class="flex">-->
+<!--    <div *ngFor="let item of playerScenePartsPuzzleImages">-->
+<!--      {{ item.scenePartsPuzzleImages.name }}-->
+
+<!--      <div class="grid-puzzle m-10">-->
+<!--        <div *ngFor="let item of item.listImg">-->
+<!--          <div-->
+<!--            class="grid-item"-->
+<!--            draggable="true"-->
+<!--            (dragover)="dragOver($event, item)"-->
+<!--            (dragstart)="dragStar($event, item, 'player')"-->
+<!--            (drop)="drop($event, item)"-->
+<!--          >-->
+<!--            <div *ngIf="item?.src">-->
+<!--              <img class="width-full height-full" [src]="item?.src"/>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+<!--</app-base-edit-scene-dialog>-->

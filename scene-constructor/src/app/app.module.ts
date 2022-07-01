@@ -63,7 +63,7 @@ import {GamePlayerModule} from "./player-game/game-player/game-player.module";
     ImageCropperModule,
     FireModule,
     RunGameModule,
-    GamePlayerModule
+    GamePlayerModule,
   ],
   providers: [
    // {provide: AUTH_SETTINGS, useValue: {appVerificationDisabledForTesting: true}},
