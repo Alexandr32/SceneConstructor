@@ -23,10 +23,6 @@ import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 })
 export class EditPuzzleDialogComponent implements OnInit {
 
-  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
-
-  done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
-
   validData: boolean = true;
 
   @Output()
@@ -79,15 +75,17 @@ export class EditPuzzleDialogComponent implements OnInit {
   ]
 
   // Список изображений для игроков
-  playerScenePartsPuzzleImages: { scenePartsPuzzleImages: SceneForEditPlayer, listImg: PartsPuzzleImage[] }[] = []
+  playerScenePartsPuzzleImages: { scenePartsPuzzleImages: SceneForEditPlayer, listImg: PartsPuzzleImage[][] }[] = []
 
-  selectPartsPuzzleImage: {
-    select: ItemPartsPuzzleImage,
-    type: 'scene' | 'player' | null
-  } = {
-      select: null,
-      type: null
-    }
+  // selectPartsPuzzleImage: {
+  //   number: null | 1 | 2 | 3 | 4 | 5 | 6| 7 | 8 | 9
+  //   select: PartsPuzzleImage,
+  //   type: 'scene' | 'player' | null
+  // } = {
+  //     number: null,
+  //     select: null,
+  //     type: null
+  //   }
 
   constructor(public dialogRef: MatDialogRef<EditPuzzleDialogComponent>,
     private firestoreService: FirestoreService,
@@ -138,15 +136,15 @@ export class EditPuzzleDialogComponent implements OnInit {
         {
           scenePartsPuzzleImages: value,
           listImg: [
-            value.imgInPlace1,
-            value.imgInPlace2,
-            value.imgInPlace3,
-            value.imgInPlace4,
-            value.imgInPlace5,
-            value.imgInPlace6,
-            value.imgInPlace7,
-            value.imgInPlace8,
-            value.imgInPlace9,
+            [value.imgInPlace1],
+            [value.imgInPlace2],
+            [value.imgInPlace3],
+            [value.imgInPlace4],
+            [value.imgInPlace5],
+            [value.imgInPlace6],
+            [value.imgInPlace7],
+            [value.imgInPlace8],
+            [value.imgInPlace9],
           ]
         }
       )
@@ -265,54 +263,91 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // Вызывается при старте перетаскивания
-  dragStar(event, value: PartsPuzzleImage, type: 'scene' | 'player' | null) {
-    //this.selectPartsPuzzleImage.select = value
-    this.selectPartsPuzzleImage.type = type
+  //selectImage: PartsPuzzleImage
+  selectNumber: number
+  dragStarImg(event, numberPosition: number) {
+    this.selectNumber = numberPosition
   }
 
-  dragOver(event, value: PartsPuzzleImage) {
+  dragImg(event, numberPosition: number) {
+    // Не реагируем когда вызвано само на себе
+    if(numberPosition === this.selectNumber) {
+      return
+    }
+
+    const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
+    const values: PartsPuzzleImage[] = this.scenePartsPuzzleImages[numberPosition]
+
+    const currentValue = currentValues.pop()
+    values.push(currentValue)
+
+    event.stopPropagation()
+  }
+
+  dragOver(event) {
     event.preventDefault()
   }
 
-  private setValueCurrentPartsPuzzleImage(value: PartsPuzzleImage) {
-    if (value) {
+  // private setValueCurrentPartsPuzzleImage(value: PartsPuzzleImage) {
+  //   if (value) {
+  //
+  //     if (this.selectPartsPuzzleImage.select) {
+  //       value.id = this.selectPartsPuzzleImage.select.id
+  //       value.src = this.selectPartsPuzzleImage.select.src
+  //     } else {
+  //       value = null
+  //     }
+  //
+  //     return
+  //   }
+  //
+  //   if (this.selectPartsPuzzleImage.select) {
+  //     value = {
+  //       id: this.selectPartsPuzzleImage.select.id,
+  //       src: this.selectPartsPuzzleImage.select.src
+  //     }
+  //   } else {
+  //     value = null
+  //   }
+  // }
 
-      if (this.selectPartsPuzzleImage.select.value) {
-        value.id = this.selectPartsPuzzleImage.select.value.id
-        value.src = this.selectPartsPuzzleImage.select.value.src
-      } else {
-        value = null
-      }
+  selectNumberPlayer: number
+  dragStarImgPlayer(event, numberPosition: number) {
+    this.selectNumberPlayer = numberPosition
+  }
 
+  dragImgPlayer(event, numberPosition: number, parts: PartsPuzzleImage[][]) {
+    // Не реагируем когда вызвано само на себе
+    if(numberPosition === this.selectNumber) {
       return
     }
 
-    if (this.selectPartsPuzzleImage.select.value) {
-      value = {
-        id: this.selectPartsPuzzleImage.select.value.id,
-        src: this.selectPartsPuzzleImage.select.value.src
-      }
-    } else {
-      value = null
-    }
-  }
+    const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
+    //const values: PartsPuzzleImage[] = parts[numberPosition]
 
+    const currentValue = currentValues.pop()
+    parts[numberPosition].push(currentValue)
+
+    event.stopPropagation()
+  }
   /**
    * Срабатывает при отпускании перетаскивания
-   * @param event
-   * @param value Значение ячейки на котором было произведено отпускание
    */
-  drop(event, value: PartsPuzzleImage) {
-
-    if (value) {
-      return
-    }
-
-    // TODO: переделать логику переноса
-    this.setValueCurrentPartsPuzzleImage(value)
-    this.selectPartsPuzzleImage.select.value = null
-  }
+  // dropPlayerParts(event, numberPosition: number, partsPuzzleImages: PartsPuzzleImage[]) {
+  //
+  //   const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
+  //   const values: PartsPuzzleImage[] = partsPuzzleImages[numberPosition]
+  //   const currentValue = currentValues.pop()
+  //   values.push(currentValue)
+  //
+  //   // if (value) {
+  //   //   return
+  //   // }
+  //   //
+  //   // // TODO: переделать логику переноса
+  //   // this.setValueCurrentPartsPuzzleImage(value)
+  //   // this.selectPartsPuzzleImage.select = null
+  // }
 
   /**
    *  Срабатывает когда картинка возвращается от игрока на сцену
@@ -321,18 +356,19 @@ export class EditPuzzleDialogComponent implements OnInit {
    */
   dropScene(event, value: PartsPuzzleImage) {
 
-    if (!this.selectPartsPuzzleImage.select.value) {
-      return
-    }
+    // if (!this.selectPartsPuzzleImage.select) {
+    //   return
+    // }
 
     //const part = this.scenePartsPuzzleImages.find(item => item.number === this.selectPartsPuzzleImage.select.value.id)
 
     //part.value = this.selectPartsPuzzleImage.select.value
 
-    if (this.selectPartsPuzzleImage.type === 'player') {
-      this.selectPartsPuzzleImage.select.value = null
-      this.selectPartsPuzzleImage.type = null
-    }
+    // if (this.selectPartsPuzzleImage.type === 'player') {
+    //   this.selectPartsPuzzleImage.number = null
+    //   this.selectPartsPuzzleImage.select = null
+    //   this.selectPartsPuzzleImage.type = null
+    // }
   }
 
   eventChangeSelectPlayers() {
