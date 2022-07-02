@@ -135,16 +135,18 @@ export class EditPuzzleDialogComponent implements OnInit {
       this.playerScenePartsPuzzleImages.push(
         {
           scenePartsPuzzleImages: value,
+
+          // Получение загруженных картинок
           listImg: [
-            [value.imgInPlace1],
-            [value.imgInPlace2],
-            [value.imgInPlace3],
-            [value.imgInPlace4],
-            [value.imgInPlace5],
-            [value.imgInPlace6],
-            [value.imgInPlace7],
-            [value.imgInPlace8],
-            [value.imgInPlace9],
+            value.imgInPlace1 ? [value.imgInPlace1] : [],
+            value.imgInPlace2 ? [value.imgInPlace2] : [],
+            value.imgInPlace3 ? [value.imgInPlace3] : [],
+            value.imgInPlace4 ? [value.imgInPlace4] : [],
+            value.imgInPlace5 ? [value.imgInPlace5] : [],
+            value.imgInPlace6 ? [value.imgInPlace6] : [],
+            value.imgInPlace7 ? [value.imgInPlace7] : [],
+            value.imgInPlace8 ? [value.imgInPlace8] : [],
+            value.imgInPlace9 ? [value.imgInPlace9] : [],
           ]
         }
       )

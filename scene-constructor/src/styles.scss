@@ -692,6 +692,7 @@ mat-grid-tile {
   background: #8340ff3b;
   border: 1px solid var(--white);
   cursor: pointer;
+  display: flex;
 }
 
 .cursor-default {
