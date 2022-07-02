@@ -107,7 +107,7 @@
             (drop)="dragImgPlayer($event, i, player.listImg)"
           >
             <div *ngFor="let item of parts"
-                 (dragstart)="dragStarImgPlayer($event, i)"
+                 (dragstart)="dragStarImgPlayer($event, i, player.listImg)"
                  (dragover)="dragOver($event)"
                  (drop)="dragImgPlayer($event, i, player.listImg)">
               <div *ngIf="item?.src">

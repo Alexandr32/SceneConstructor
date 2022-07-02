@@ -263,24 +263,39 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  dragEvent: 'completed' | 'startDragInScene' | 'startDragInPlayer' = 'completed'
+
   //selectImage: PartsPuzzleImage
   selectNumber: number
   dragStarImg(event, numberPosition: number) {
     this.selectNumber = numberPosition
+    this.dragEvent = 'startDragInScene'
   }
 
   dragImg(event, numberPosition: number) {
     // Не реагируем когда вызвано само на себе
-    if(numberPosition === this.selectNumber) {
-      return
+    // if(numberPosition === this.selectNumber) {
+    //   return
+    // }
+
+    //debugger
+
+    // Перетаскивание началось с области сцены
+    if(this.dragEvent === 'startDragInScene') {
+      const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
+      const currentValue = currentValues.pop()
+      this.scenePartsPuzzleImages[numberPosition].push(currentValue)
     }
 
-    const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
-    const values: PartsPuzzleImage[] = this.scenePartsPuzzleImages[numberPosition]
+    // Перетаскивание началось с области играка
+    if(this.dragEvent === 'startDragInPlayer') {
+      const currentValues: PartsPuzzleImage[] = this.selectPartsPlayer[this.selectNumberPlayer]
+      const currentValue = currentValues.pop()
+      this.scenePartsPuzzleImages[numberPosition].push(currentValue)
+    }
 
-    const currentValue = currentValues.pop()
-    values.push(currentValue)
 
+    this.dragEvent = 'completed'
     event.stopPropagation()
   }
 
@@ -288,46 +303,37 @@ export class EditPuzzleDialogComponent implements OnInit {
     event.preventDefault()
   }
 
-  // private setValueCurrentPartsPuzzleImage(value: PartsPuzzleImage) {
-  //   if (value) {
-  //
-  //     if (this.selectPartsPuzzleImage.select) {
-  //       value.id = this.selectPartsPuzzleImage.select.id
-  //       value.src = this.selectPartsPuzzleImage.select.src
-  //     } else {
-  //       value = null
-  //     }
-  //
-  //     return
-  //   }
-  //
-  //   if (this.selectPartsPuzzleImage.select) {
-  //     value = {
-  //       id: this.selectPartsPuzzleImage.select.id,
-  //       src: this.selectPartsPuzzleImage.select.src
-  //     }
-  //   } else {
-  //     value = null
-  //   }
-  // }
-
   selectNumberPlayer: number
-  dragStarImgPlayer(event, numberPosition: number) {
+  selectPartsPlayer: PartsPuzzleImage[][]
+  dragStarImgPlayer(event, numberPosition: number, parts: PartsPuzzleImage[][]) {
     this.selectNumberPlayer = numberPosition
+    this.selectPartsPlayer = parts
+    this.dragEvent = 'startDragInPlayer'
   }
 
   dragImgPlayer(event, numberPosition: number, parts: PartsPuzzleImage[][]) {
     // Не реагируем когда вызвано само на себе
-    if(numberPosition === this.selectNumber) {
-      return
+    // if(numberPosition === this.selectNumber) {
+    //   return
+    // }
+
+    //debugger
+
+    if(this.dragEvent === 'startDragInScene') {
+      const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
+      //const values: PartsPuzzleImage[] = parts[numberPosition]
+
+      const currentValue = currentValues.pop()
+      parts[numberPosition].push(currentValue)
     }
 
-    const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
-    //const values: PartsPuzzleImage[] = parts[numberPosition]
+    if(this.dragEvent === 'startDragInPlayer') {
+      const currentValues: PartsPuzzleImage[] = this.selectPartsPlayer[this.selectNumberPlayer]
+      const currentValue = currentValues.pop()
+      parts[numberPosition].push(currentValue)
+    }
 
-    const currentValue = currentValues.pop()
-    parts[numberPosition].push(currentValue)
-
+    this.dragEvent = 'completed'
     event.stopPropagation()
   }
   /**
