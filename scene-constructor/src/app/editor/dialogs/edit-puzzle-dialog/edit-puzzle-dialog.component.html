@@ -79,8 +79,8 @@
           (drop)="dragImg($event, i)"
           (dragover)="dragOver($event)"
           draggable="true">
-          <div *ngFor="let item of parts"
-               (dragstart)="dragStarImg($event, i)"
+          <div *ngFor="let item of parts; let iItem = index"
+               (dragstart)="dragStarImg($event, i, iItem)"
                (dragover)="dragOver($event)"
                (drop)="dragImg($event, i)">
             <div *ngIf="item?.src">
@@ -107,8 +107,8 @@
             (drop)="dragImgPlayer($event, i, player.listImg)"
           >
             <div *ngIf="parts.length > 1" class="text-red">Не более 1!!!</div>
-            <div *ngFor="let item of parts"
-                 (dragstart)="dragStarImgPlayer($event, i, player.listImg)"
+            <div *ngFor="let item of parts; let iItem = index"
+                 (dragstart)="dragStarImgPlayer($event, i, player.listImg, iItem)"
                  (dragover)="dragOver($event)"
                  (drop)="dragImgPlayer($event, i, player.listImg)">
               <div *ngIf="item?.src">

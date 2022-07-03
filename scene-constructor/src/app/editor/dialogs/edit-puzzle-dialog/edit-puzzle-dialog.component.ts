@@ -51,6 +51,9 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   selectPlayers: { player: Player, isSelect: boolean }[] = [];
 
+  // Все изображения
+  allImgForScene: PartsPuzzleImage[] = [];
+
   // Список изображений для сцены
   imgInPlace1: PartsPuzzleImage[] = [];
   imgInPlace2: PartsPuzzleImage[] = [];
@@ -240,6 +243,9 @@ export class EditPuzzleDialogComponent implements OnInit {
 
         this.scenePartsPuzzleImages[i - 1].push(partsPuzzleImage)
 
+
+        this.allImgForScene.push(partsPuzzleImage)
+
         // const itemPartsPuzzleImage = {
         //   number: i,
         //   value: partsPuzzleImage
@@ -269,9 +275,10 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   //selectImage: PartsPuzzleImage
   selectNumber: number
-  dragStarImg(event, numberPosition: number) {
+  dragStarImg(event, numberPosition: number, numberSelectImageInCell: number) {
     this.selectNumber = numberPosition
     this.dragEvent = 'startDragInScene'
+    this.numberSelectImageInCell = numberSelectImageInCell
   }
 
   dragImg(event, numberPosition: number) {
@@ -285,15 +292,15 @@ export class EditPuzzleDialogComponent implements OnInit {
     // Перетаскивание началось с области сцены
     if(this.dragEvent === 'startDragInScene') {
       const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
-      const currentValue = currentValues.pop()
-      this.scenePartsPuzzleImages[numberPosition].push(currentValue)
+      const currentValue = currentValues.splice(this.numberSelectImageInCell, 1)
+      this.scenePartsPuzzleImages[numberPosition].push(currentValue[0])
     }
 
     // Перетаскивание началось с области играка
     if(this.dragEvent === 'startDragInPlayer') {
       const currentValues: PartsPuzzleImage[] = this.selectPartsPlayer[this.selectNumberPlayer]
-      const currentValue = currentValues.pop()
-      this.scenePartsPuzzleImages[numberPosition].push(currentValue)
+      const currentValue = currentValues.splice(this.numberSelectImageInCell, 1)
+      this.scenePartsPuzzleImages[numberPosition].push(currentValue[0])
     }
 
 
@@ -307,11 +314,22 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   selectNumberPlayer: number
   selectPartsPlayer: PartsPuzzleImage[][]
-  dragStarImgPlayer(event, numberPosition: number, parts: PartsPuzzleImage[][]) {
+  // Номер выбранного изображения в ячейке
+  numberSelectImageInCell: number
+
+  dragStarImgPlayer(event, numberPosition: number, parts: PartsPuzzleImage[][], numberSelectImageInCell: number) {
     this.selectNumberPlayer = numberPosition
     this.selectPartsPlayer = parts
+    this.numberSelectImageInCell = numberSelectImageInCell
     this.dragEvent = 'startDragInPlayer'
   }
+
+  // Номер выбранного изображения
+  // numberSelectImage: number
+  // selectImage(number: number) {
+  //   console.log(number)
+  //   this.numberSelectImage = number
+  // }
 
   dragImgPlayer(event, numberPosition: number, parts: PartsPuzzleImage[][]) {
     // Не реагируем когда вызвано само на себе
@@ -325,14 +343,16 @@ export class EditPuzzleDialogComponent implements OnInit {
       const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
       //const values: PartsPuzzleImage[] = parts[numberPosition]
 
-      const currentValue = currentValues.pop()
-      parts[numberPosition].push(currentValue)
+      //const currentValue = currentValues[this.numberSelectImage]
+      const currentValue = currentValues.splice(this.numberSelectImageInCell, 1)
+      parts[numberPosition].push(currentValue[0])
     }
 
     if(this.dragEvent === 'startDragInPlayer') {
       const currentValues: PartsPuzzleImage[] = this.selectPartsPlayer[this.selectNumberPlayer]
-      const currentValue = currentValues.pop()
-      parts[numberPosition].push(currentValue)
+      //const currentValue = currentValues[this.numberSelectImage]
+      const currentValue = currentValues.splice(this.numberSelectImageInCell, 1)
+      parts[numberPosition].push(currentValue[0])
     }
 
     this.dragEvent = 'completed'
@@ -362,26 +382,89 @@ export class EditPuzzleDialogComponent implements OnInit {
    * @param event
    * @param value
    */
-  dropScene(event, value: PartsPuzzleImage) {
-
-    // if (!this.selectPartsPuzzleImage.select) {
-    //   return
-    // }
-
-    //const part = this.scenePartsPuzzleImages.find(item => item.number === this.selectPartsPuzzleImage.select.value.id)
-
-    //part.value = this.selectPartsPuzzleImage.select.value
-
-    // if (this.selectPartsPuzzleImage.type === 'player') {
-    //   this.selectPartsPuzzleImage.number = null
-    //   this.selectPartsPuzzleImage.select = null
-    //   this.selectPartsPuzzleImage.type = null
-    // }
-  }
+  // dropScene(event, value: PartsPuzzleImage) {
+  //
+  //   // if (!this.selectPartsPuzzleImage.select) {
+  //   //   return
+  //   // }
+  //
+  //   //const part = this.scenePartsPuzzleImages.find(item => item.number === this.selectPartsPuzzleImage.select.value.id)
+  //
+  //   //part.value = this.selectPartsPuzzleImage.select.value
+  //
+  //   // if (this.selectPartsPuzzleImage.type === 'player') {
+  //   //   this.selectPartsPuzzleImage.number = null
+  //   //   this.selectPartsPuzzleImage.select = null
+  //   //   this.selectPartsPuzzleImage.type = null
+  //   // }
+  // }
 
   eventChangeSelectPlayers() {
 
-    const playerScenePartsPuzzleImages = Object.assign([], this.playerScenePartsPuzzleImages);
+    const players = this.selectPlayers
+      .filter(item => {
+        if (item.isSelect) {
+          return item.player
+        }
+      })
+      .map(item => item.player)
+
+    const playerScenePartsPuzzleImages: { scenePartsPuzzleImages: SceneForEditPlayer, listImg: PartsPuzzleImage[][] }[]
+      = Object.assign([], this.playerScenePartsPuzzleImages);
+
+    this.playerScenePartsPuzzleImages = []
+
+    players.forEach((player) => {
+      const res = playerScenePartsPuzzleImages.find(item => item.scenePartsPuzzleImages.playerId === player.id)
+
+      if (res) {
+        // Добавляем уже существующую
+        this.playerScenePartsPuzzleImages.push(res)
+        return
+      }
+
+      // Создаем новую область
+      const sceneForEditPlayer = new SceneForEditPlayer()
+      sceneForEditPlayer.playerId = player.id
+      sceneForEditPlayer.name = player.name
+
+      const newValue = {
+        scenePartsPuzzleImages: sceneForEditPlayer,
+        listImg: [
+          sceneForEditPlayer.imgInPlace1 ? [sceneForEditPlayer.imgInPlace1] : [],
+          sceneForEditPlayer.imgInPlace2 ? [sceneForEditPlayer.imgInPlace2] : [],
+          sceneForEditPlayer.imgInPlace3 ? [sceneForEditPlayer.imgInPlace3] : [],
+          sceneForEditPlayer.imgInPlace4 ? [sceneForEditPlayer.imgInPlace4] : [],
+          sceneForEditPlayer.imgInPlace5 ? [sceneForEditPlayer.imgInPlace5] : [],
+          sceneForEditPlayer.imgInPlace6 ? [sceneForEditPlayer.imgInPlace6] : [],
+          sceneForEditPlayer.imgInPlace7 ? [sceneForEditPlayer.imgInPlace7] : [],
+          sceneForEditPlayer.imgInPlace8 ? [sceneForEditPlayer.imgInPlace8] : [],
+          sceneForEditPlayer.imgInPlace9 ? [sceneForEditPlayer.imgInPlace9] : [],
+        ]
+      }
+      this.playerScenePartsPuzzleImages.push(newValue)
+    })
+
+    // Все изображения которые есть на сцене
+    const allImagePlayer: PartsPuzzleImage[] = this.playerScenePartsPuzzleImages.flatMap((playerValue) => {
+      return playerValue.listImg.flatMap(item => item)
+    })
+
+    const allImgInScene: PartsPuzzleImage[] = this.scenePartsPuzzleImages.flatMap((value) => {
+      return value
+    })
+
+    // Проверяем есть ли не используемые фото
+    this.allImgForScene.forEach(img => {
+
+      // Если картинки нет у игрока и на сцене пихаем ее в конец сцены
+      if(!allImagePlayer.includes(img) &&  !allImgInScene.includes(img)) {
+        this.scenePartsPuzzleImages[8].push(img)
+      }
+
+    })
+
+    /*const playerScenePartsPuzzleImages = Object.assign([], this.playerScenePartsPuzzleImages);
 
     this.playerScenePartsPuzzleImages = []
 
@@ -441,11 +524,34 @@ export class EditPuzzleDialogComponent implements OnInit {
       // if (findEl) {
       //   findEl.value = item.value
       // }
-    })
+    })*/
 
   }
 
   resetParts() {
+
+      this.imgInPlace1.length = 0
+      this.imgInPlace2.length = 0
+      this.imgInPlace3.length = 0
+      this.imgInPlace4.length = 0
+      this.imgInPlace5.length = 0
+      this.imgInPlace6.length = 0
+      this.imgInPlace7.length = 0
+      this.imgInPlace8.length = 0
+      this.imgInPlace9.length = 0
+
+    this.playerScenePartsPuzzleImages.forEach(value => {
+      value.listImg[0].length = 0
+      value.listImg[1].length = 0
+      value.listImg[2].length = 0
+      value.listImg[3].length = 0
+      value.listImg[4].length = 0
+      value.listImg[5].length = 0
+      value.listImg[6].length = 0
+      value.listImg[7].length = 0
+      value.listImg[8].length = 0
+    })
+
     // this.scenePartsPuzzleImages = this.data.scene.partsPuzzleImages?.map((item, index) => {
     //   return {
     //     number: index + 1,
@@ -504,62 +610,62 @@ export class EditPuzzleDialogComponent implements OnInit {
     //this.videoPlayer.nativeElement.play()
   }
 
-  drop2(event: CdkDragDrop<string[]>) {
+  // drop2(event: CdkDragDrop<string[]>) {
+  //
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(
+  //       event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex,
+  //     );
+  //   }
+  // }
 
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-  }
+  // dropItemInContainer(event: CdkDragDrop<any>) {
+  //
+  //   console.log(event.previousContainer)
+  //   console.log(event.container)
+  //
+  //   if (event.previousContainer === event.container) {
+  //
+  //     console.log(event.container.data)
+  //     console.log(event.previousIndex)
+  //     console.log(event.currentIndex)
+  //
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(
+  //       event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex,
+  //     );
+  //   }
+  //
+  // }
 
-  dropItemInContainer(event: CdkDragDrop<any>) {
-
-    console.log(event.previousContainer)
-    console.log(event.container)
-
-    if (event.previousContainer === event.container) {
-
-      console.log(event.container.data)
-      console.log(event.previousIndex)
-      console.log(event.currentIndex)
-
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-
-  }
-
-  private static getId(key: string): number {
-
-    const map = new Map<string, number>()
-    map.set('cdk-drop-list-1', 1)
-    map.set('cdk-drop-list-2', 2)
-    map.set('cdk-drop-list-3', 3)
-    map.set('cdk-drop-list-4', 4)
-    map.set('cdk-drop-list-5', 5)
-    map.set('cdk-drop-list-6', 6)
-    map.set('cdk-drop-list-7', 7)
-    map.set('cdk-drop-list-8', 8)
-    map.set('cdk-drop-list-9', 9)
-
-    const value = map.get(key)
-
-    if(!value) {
-      throw new Error('Не корректное значение')
-    }
-
-    return value
-  }
+  // private static getId(key: string): number {
+  //
+  //   const map = new Map<string, number>()
+  //   map.set('cdk-drop-list-1', 1)
+  //   map.set('cdk-drop-list-2', 2)
+  //   map.set('cdk-drop-list-3', 3)
+  //   map.set('cdk-drop-list-4', 4)
+  //   map.set('cdk-drop-list-5', 5)
+  //   map.set('cdk-drop-list-6', 6)
+  //   map.set('cdk-drop-list-7', 7)
+  //   map.set('cdk-drop-list-8', 8)
+  //   map.set('cdk-drop-list-9', 9)
+  //
+  //   const value = map.get(key)
+  //
+  //   if(!value) {
+  //     throw new Error('Не корректное значение')
+  //   }
+  //
+  //   return value
+  // }
 }
