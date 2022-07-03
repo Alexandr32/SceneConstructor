@@ -209,6 +209,27 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.data.scene.imgInPlace8 = this.imgInPlace8
     this.data.scene.imgInPlace9 = this.imgInPlace9
 
+    const dataForPlayerPartsImages: SceneForEditPlayer[] = this.playerScenePartsPuzzleImages.map(item => {
+
+      const sceneForEditPlayer = new SceneForEditPlayer()
+      sceneForEditPlayer.name = item.scenePartsPuzzleImages.name
+      sceneForEditPlayer.playerId = item.scenePartsPuzzleImages.playerId
+
+      sceneForEditPlayer.imgInPlace1 = item.listImg[0][0] ? item.listImg[0][0] : null
+      sceneForEditPlayer.imgInPlace2 = item.listImg[1][0] ? item.listImg[1][0] : null
+      sceneForEditPlayer.imgInPlace3 = item.listImg[2][0] ? item.listImg[2][0] : null
+      sceneForEditPlayer.imgInPlace4 = item.listImg[3][0] ? item.listImg[2][0] : null
+      sceneForEditPlayer.imgInPlace5 = item.listImg[4][0] ? item.listImg[4][0] : null
+      sceneForEditPlayer.imgInPlace6 = item.listImg[5][0] ? item.listImg[5][0] : null
+      sceneForEditPlayer.imgInPlace7 = item.listImg[6][0] ? item.listImg[6][0] : null
+      sceneForEditPlayer.imgInPlace8 = item.listImg[7][0] ? item.listImg[7][0] : null
+      sceneForEditPlayer.imgInPlace9 = item.listImg[8][0] ? item.listImg[8][0] : null
+
+      return sceneForEditPlayer
+    })
+    
+    this.data.scene.dataForPlayerPartsImages = dataForPlayerPartsImages
+
     this.data.scene.dataForPlayerPartsImages = this.playerScenePartsPuzzleImages.map(item => {
       return item.scenePartsPuzzleImages
     })
