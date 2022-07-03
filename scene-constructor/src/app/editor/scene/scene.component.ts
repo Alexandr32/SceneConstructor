@@ -59,6 +59,9 @@ export class SceneComponent extends BaseComponent implements OnInit, OnDestroy {
   @Input()
   startScene$: Subject<IBaseEditScene> = new Subject<IBaseEditScene>()
 
+  @Input()
+  startDebugModeScene$: Subject<IBaseEditScene> = new Subject<IBaseEditScene>()
+
   constructor(public elementRef: ElementRef) {
     super()
   }
@@ -162,6 +165,10 @@ export class SceneComponent extends BaseComponent implements OnInit, OnDestroy {
    */
   onClickRunScene() {
     this.startScene$.next(this.scene)
+  }
+
+  startRunSceneDebugMode() {
+    this.startDebugModeScene$.next(this.scene)
   }
 
   getNamePlayer(id: string): string {

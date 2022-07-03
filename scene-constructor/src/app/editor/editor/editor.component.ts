@@ -57,6 +57,7 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
   widthScreen: number
 
   startScene$: Subject<SceneEditScene> = new Subject<SceneEditScene>()
+  startDebugModeScene$: Subject<SceneEditScene> = new Subject<SceneEditScene>()
 
   constructor(public dialog: MatDialog,
     private fireStore: AngularFirestore,
@@ -69,6 +70,7 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
   }
   ngOnDestroy(): void {
     this.startScene$.unsubscribe()
+    this.startDebugModeScene$.unsubscribe()
     this.changeSelectModeEvent$.unsubscribe()
     this.unsubscribe()
   }
@@ -86,6 +88,12 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
       .subscribe(async (scene) => {
       await this.runGameByScene(scene)
     })
+
+    this.startDebugModeScene$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(async (scene) => {
+        await this.runGameBySceneInDebugMode(scene)
+      })
   }
 
   private async getGameData() {
@@ -337,6 +345,24 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
     await this.stateService.saveNewStateGame(this.game)
 
     const url = this.router.serializeUrl(
+      this.router.createUrlTree(['run',  this.game.id])
+    );
+
+    window.open(url, '_blank');
+  }
+
+  async runGameDevelopMode() {
+
+    const isCheckingSceneStart = this.isCheckingSceneStart()
+    if (!isCheckingSceneStart.isChecking) {
+      this.showMessage(isCheckingSceneStart.message)
+      return
+    }
+
+    await this.runGameService.saveNewGame(this.game)
+    await this.stateService.saveNewStateGame(this.game)
+
+    const url = this.router.serializeUrl(
       this.router.createUrlTree(['run',  this.game.id, {
         isDevelopMode: 'true',
       } ])
@@ -359,6 +385,27 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run', this.game.id])
+    );
+
+    window.open(url, '_blank');
+  }
+
+  async runGameBySceneInDebugMode(scene: SceneEditScene) {
+
+    const isCheckingSceneStart = this.isCheckingSceneStart()
+    if (!isCheckingSceneStart.isChecking) {
+      this.showMessage(isCheckingSceneStart.message)
+      return
+    }
+
+    await this.runGameService.saveNewGame(this.game)
+
+    await this.stateService.saveStateGameForScene(this.game.id, scene.id)
+
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['run',  this.game.id, {
+        isDevelopMode: 'true',
+      } ])
     );
 
     window.open(url, '_blank');

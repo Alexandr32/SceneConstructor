@@ -38,6 +38,16 @@
             Запустить игру
           </button>
         </div>
+        <div class="m-10">
+          <button
+            class="m-10"
+            mat-raised-button
+            color="accent"
+            (click)="runGameDevelopMode()"
+          >
+            Запустить игру в режиме отладки
+          </button>
+        </div>
       </div>
       <div class="m-10">
         <button
@@ -128,6 +138,7 @@
       (selectAnswerScene)="selectAnswerScene($event)"
       (selectScene)="selectScene($event)"
       [startScene$]="startScene$"
+      [startDebugModeScene$]="startDebugModeScene$"
     ></app-scene>
 
     <canvas
