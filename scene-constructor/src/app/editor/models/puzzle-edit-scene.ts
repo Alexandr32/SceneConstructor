@@ -74,6 +74,7 @@ export class SceneForEditPlayer {
 
   // Те изображения которые есть на сцена играка (которые он выложил и те которые уже там есть)
   imgInPlace1: PartsPuzzleImage = null;
+  // TODO: режим драг в области редактирования не нужен
   // Можно ли перетаскивать элемент
   isDraggableImgPlace1: boolean
   imgInPlace2: PartsPuzzleImage = null;
