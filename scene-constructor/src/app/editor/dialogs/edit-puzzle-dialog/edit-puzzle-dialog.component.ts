@@ -78,7 +78,7 @@ export class EditPuzzleDialogComponent implements OnInit {
   ]
 
   // Список изображений для игроков
-  playerScenePartsPuzzleImages: { scenePartsPuzzleImages: SceneForEditPlayer, listImg: PartsPuzzleImage[][] }[] = []
+  playerScenePartsPuzzleImages: SceneForEditPlayer[] = []
 
   // Событие выбора
   dragEvent: 'completed' | 'startDragInScene' | 'startDragInPlayer' = 'completed'
@@ -87,9 +87,9 @@ export class EditPuzzleDialogComponent implements OnInit {
   selectNumber: number
 
   // Выбранный номер ячейки у игрока
-  selectNumberPlayer: number
+  //selectNumberPlayer: number
   // Массив у выбранного игрока
-  selectPartsPlayer: PartsPuzzleImage[][]
+  selectPartsPlayer: PartsPuzzleImage[]
   // Номер выбранного изображения в ячейке
   numberSelectImageInCell: number
 
@@ -182,24 +182,7 @@ export class EditPuzzleDialogComponent implements OnInit {
 
     this.data.scene.dataForPlayerPartsImages.forEach((value) => {
 
-      this.playerScenePartsPuzzleImages.push(
-        {
-          scenePartsPuzzleImages: value,
-
-          // Получение загруженных картинок
-          listImg: [
-            value.imgInPlace1 ? [value.imgInPlace1] : [],
-            value.imgInPlace2 ? [value.imgInPlace2] : [],
-            value.imgInPlace3 ? [value.imgInPlace3] : [],
-            value.imgInPlace4 ? [value.imgInPlace4] : [],
-            value.imgInPlace5 ? [value.imgInPlace5] : [],
-            value.imgInPlace6 ? [value.imgInPlace6] : [],
-            value.imgInPlace7 ? [value.imgInPlace7] : [],
-            value.imgInPlace8 ? [value.imgInPlace8] : [],
-            value.imgInPlace9 ? [value.imgInPlace9] : [],
-          ]
-        }
-      )
+      this.playerScenePartsPuzzleImages.push(value)
 
     })
 
@@ -230,21 +213,93 @@ export class EditPuzzleDialogComponent implements OnInit {
     this.data.scene.imgInPlace8 = this.imgInPlace8
     this.data.scene.imgInPlace9 = this.imgInPlace9
 
-    const dataForPlayerPartsImages: SceneForEditPlayer[] = this.playerScenePartsPuzzleImages.map(item => {
+    const dataForPlayerPartsImages: SceneForEditPlayer[] = this.playerScenePartsPuzzleImages.map((item) => {
 
       const sceneForEditPlayer = new SceneForEditPlayer()
-      sceneForEditPlayer.name = item.scenePartsPuzzleImages.name
-      sceneForEditPlayer.playerId = item.scenePartsPuzzleImages.playerId
+      sceneForEditPlayer.name = item.name
+      sceneForEditPlayer.playerId = item.playerId
 
-      sceneForEditPlayer.imgInPlace1 = item.listImg[0][0] ? item.listImg[0][0] : null
-      sceneForEditPlayer.imgInPlace2 = item.listImg[1][0] ? item.listImg[1][0] : null
-      sceneForEditPlayer.imgInPlace3 = item.listImg[2][0] ? item.listImg[2][0] : null
-      sceneForEditPlayer.imgInPlace4 = item.listImg[3][0] ? item.listImg[2][0] : null
-      sceneForEditPlayer.imgInPlace5 = item.listImg[4][0] ? item.listImg[4][0] : null
-      sceneForEditPlayer.imgInPlace6 = item.listImg[5][0] ? item.listImg[5][0] : null
-      sceneForEditPlayer.imgInPlace7 = item.listImg[6][0] ? item.listImg[6][0] : null
-      sceneForEditPlayer.imgInPlace8 = item.listImg[7][0] ? item.listImg[7][0] : null
-      sceneForEditPlayer.imgInPlace9 = item.listImg[8][0] ? item.listImg[8][0] : null
+      // if(this.imgInPlace1.length > 0) {
+      //   sceneForEditPlayer.imgInPlace1 = this.imgInPlace1[0]
+      //   sceneForEditPlayer.isDraggableImgPlace1 = false
+      // } else {
+      //   sceneForEditPlayer.imgInPlace1 = null
+      //   sceneForEditPlayer.isDraggableImgPlace1 = true
+      // }
+      //
+      // if(this.imgInPlace2.length > 0) {
+      //   sceneForEditPlayer.imgInPlace2 = this.imgInPlace2[0]
+      //   sceneForEditPlayer.isDraggableImgPlace2 = false
+      // } else {
+      //   sceneForEditPlayer.imgInPlace2 = null
+      //   sceneForEditPlayer.isDraggableImgPlace2 = true
+      // }
+      //
+      // if(this.imgInPlace3.length > 0) {
+      //   sceneForEditPlayer.imgInPlace3 = this.imgInPlace3[0]
+      //   sceneForEditPlayer.isDraggableImgPlace3 = false
+      // } else {
+      //   sceneForEditPlayer.imgInPlace3 = null
+      //   sceneForEditPlayer.isDraggableImgPlace3 = true
+      // }
+      //
+      // if(this.imgInPlace4.length > 0) {
+      //   sceneForEditPlayer.imgInPlace4 = this.imgInPlace4[0]
+      //   sceneForEditPlayer.isDraggableImgPlace4 = false
+      // } else {
+      //   sceneForEditPlayer.imgInPlace4 = null
+      //   sceneForEditPlayer.isDraggableImgPlace4 = true
+      // }
+      //
+      // if(this.imgInPlace5.length > 0) {
+      //   sceneForEditPlayer.imgInPlace5 = this.imgInPlace5[0]
+      //   sceneForEditPlayer.isDraggableImgPlace5 = false
+      // } else {
+      //   sceneForEditPlayer.imgInPlace5 = null
+      //   sceneForEditPlayer.isDraggableImgPlace5 = true
+      // }
+      //
+      // if(this.imgInPlace6.length > 0) {
+      //   sceneForEditPlayer.imgInPlace6 = this.imgInPlace6[0]
+      //   sceneForEditPlayer.isDraggableImgPlace6 = false
+      // } else {
+      //   sceneForEditPlayer.imgInPlace6 = null
+      //   sceneForEditPlayer.isDraggableImgPlace6 = true
+      // }
+      //
+      // if(this.imgInPlace7.length > 0) {
+      //   sceneForEditPlayer.imgInPlace7 = this.imgInPlace7[0]
+      //   sceneForEditPlayer.isDraggableImgPlace7 = false
+      // } else {
+      //   sceneForEditPlayer.imgInPlace7 = null
+      //   sceneForEditPlayer.isDraggableImgPlace7 = true
+      // }
+      //
+      // if(this.imgInPlace8.length > 0) {
+      //   sceneForEditPlayer.imgInPlace8 = this.imgInPlace8[0]
+      //   sceneForEditPlayer.isDraggableImgPlace8 = false
+      // } else {
+      //   sceneForEditPlayer.imgInPlace8 = null
+      //   sceneForEditPlayer.isDraggableImgPlace8 = true
+      // }
+      //
+      // if(this.imgInPlace9.length > 0) {
+      //   sceneForEditPlayer.imgInPlace9 = this.imgInPlace9[0]
+      //   sceneForEditPlayer.isDraggableImgPlace9 = false
+      // } else {
+      //   sceneForEditPlayer.imgInPlace9 = null
+      //   sceneForEditPlayer.isDraggableImgPlace9 = true
+      // }
+
+      sceneForEditPlayer.imgPlace1 = item.imgPlace1
+      sceneForEditPlayer.imgPlace2 = item.imgPlace2
+      sceneForEditPlayer.imgPlace3 = item.imgPlace3
+      sceneForEditPlayer.imgPlace4 = item.imgPlace4
+      sceneForEditPlayer.imgPlace5 = item.imgPlace5
+      sceneForEditPlayer.imgPlace6 = item.imgPlace6
+      sceneForEditPlayer.imgPlace7 = item.imgPlace7
+      sceneForEditPlayer.imgPlace8 = item.imgPlace8
+      sceneForEditPlayer.imgPlace9 = item.imgPlace9
 
       return sceneForEditPlayer
     })
@@ -287,15 +342,15 @@ export class EditPuzzleDialogComponent implements OnInit {
       this.imgInPlace9.length = 0
 
       this.playerScenePartsPuzzleImages.forEach(value => {
-        value.listImg[0].length = 0
-        value.listImg[1].length = 0
-        value.listImg[2].length = 0
-        value.listImg[3].length = 0
-        value.listImg[4].length = 0
-        value.listImg[5].length = 0
-        value.listImg[6].length = 0
-        value.listImg[7].length = 0
-        value.listImg[8].length = 0
+        value.imgPlace1.length = 0
+        value.imgPlace2.length = 0
+        value.imgPlace3.length = 0
+        value.imgPlace4.length = 0
+        value.imgPlace5.length = 0
+        value.imgPlace6.length = 0
+        value.imgPlace7.length = 0
+        value.imgPlace8.length = 0
+        value.imgPlace9.length = 0
       })
 
       this.allImgForScene = []
@@ -351,7 +406,7 @@ export class EditPuzzleDialogComponent implements OnInit {
 
     // Перетаскивание началось с области играка
     if (this.dragEvent === 'startDragInPlayer') {
-      const currentValues: PartsPuzzleImage[] = this.selectPartsPlayer[this.selectNumberPlayer]
+      const currentValues: PartsPuzzleImage[] = this.selectPartsPlayer
       const currentValue = currentValues.splice(this.numberSelectImageInCell, 1)
       this.scenePartsPuzzleImages[numberPosition].push(currentValue[0])
     }
@@ -364,27 +419,27 @@ export class EditPuzzleDialogComponent implements OnInit {
     event.preventDefault()
   }
 
-  dragStarImgPlayer(event, numberPosition: number, parts: PartsPuzzleImage[][], numberSelectImageInCell: number) {
-    this.selectNumberPlayer = numberPosition
+  dragStarImgPlayer(event, parts: PartsPuzzleImage[], numberSelectImageInCell: number) {
+    //this.selectNumberPlayer = numberPosition
     this.selectPartsPlayer = parts
     this.numberSelectImageInCell = numberSelectImageInCell
     this.dragEvent = 'startDragInPlayer'
   }
 
-  dragImgPlayer(event, numberPosition: number, parts: PartsPuzzleImage[][]) {
+  dragImgPlayer(event, parts: PartsPuzzleImage[]) {
 
     if (this.dragEvent === 'startDragInScene') {
       const currentValues: PartsPuzzleImage[] = this.scenePartsPuzzleImages[this.selectNumber]
 
       const currentValue = currentValues.splice(this.numberSelectImageInCell, 1)
-      parts[numberPosition].push(currentValue[0])
+      parts.push(currentValue[0])
     }
 
     if (this.dragEvent === 'startDragInPlayer') {
-      const currentValues: PartsPuzzleImage[] = this.selectPartsPlayer[this.selectNumberPlayer]
+      const currentValues: PartsPuzzleImage[] = this.selectPartsPlayer
 
       const currentValue = currentValues.splice(this.numberSelectImageInCell, 1)
-      parts[numberPosition].push(currentValue[0])
+      parts.push(currentValue[0])
     }
 
     this.dragEvent = 'completed'
@@ -404,13 +459,13 @@ export class EditPuzzleDialogComponent implements OnInit {
       })
       .map(item => item.player)
 
-    const playerScenePartsPuzzleImages: { scenePartsPuzzleImages: SceneForEditPlayer, listImg: PartsPuzzleImage[][] }[]
+    const playerScenePartsPuzzleImages: SceneForEditPlayer[]
       = Object.assign([], this.playerScenePartsPuzzleImages);
 
     this.playerScenePartsPuzzleImages = []
 
     players.forEach((player) => {
-      const res = playerScenePartsPuzzleImages.find((item) => item.scenePartsPuzzleImages.playerId === player.id)
+      const res = playerScenePartsPuzzleImages.find((item) => item.playerId === player.id)
 
       if (res) {
         // Добавляем уже существующую
@@ -422,27 +477,87 @@ export class EditPuzzleDialogComponent implements OnInit {
       const sceneForEditPlayer = new SceneForEditPlayer()
       sceneForEditPlayer.playerId = player.id
       sceneForEditPlayer.name = player.name
+      sceneForEditPlayer.imgPlace1 = []
+      sceneForEditPlayer.imgPlace2 = []
+      sceneForEditPlayer.imgPlace3 = []
+      sceneForEditPlayer.imgPlace4 = []
+      sceneForEditPlayer.imgPlace5 = []
+      sceneForEditPlayer.imgPlace6 = []
+      sceneForEditPlayer.imgPlace7 = []
+      sceneForEditPlayer.imgPlace8 = []
+      sceneForEditPlayer.imgPlace9 = []
 
-      const newValue = {
-        scenePartsPuzzleImages: sceneForEditPlayer,
-        listImg: [
-          sceneForEditPlayer.imgInPlace1 ? [sceneForEditPlayer.imgInPlace1] : [],
-          sceneForEditPlayer.imgInPlace2 ? [sceneForEditPlayer.imgInPlace2] : [],
-          sceneForEditPlayer.imgInPlace3 ? [sceneForEditPlayer.imgInPlace3] : [],
-          sceneForEditPlayer.imgInPlace4 ? [sceneForEditPlayer.imgInPlace4] : [],
-          sceneForEditPlayer.imgInPlace5 ? [sceneForEditPlayer.imgInPlace5] : [],
-          sceneForEditPlayer.imgInPlace6 ? [sceneForEditPlayer.imgInPlace6] : [],
-          sceneForEditPlayer.imgInPlace7 ? [sceneForEditPlayer.imgInPlace7] : [],
-          sceneForEditPlayer.imgInPlace8 ? [sceneForEditPlayer.imgInPlace8] : [],
-          sceneForEditPlayer.imgInPlace9 ? [sceneForEditPlayer.imgInPlace9] : [],
-        ]
-      }
-      this.playerScenePartsPuzzleImages.push(newValue)
+      // const newValue = {
+      //   scenePartsPuzzleImages: sceneForEditPlayer,
+      //   listImg: [
+      //     sceneForEditPlayer.imgInPlace1 ? [sceneForEditPlayer.imgInPlace1] : [],
+      //     sceneForEditPlayer.imgInPlace2 ? [sceneForEditPlayer.imgInPlace2] : [],
+      //     sceneForEditPlayer.imgInPlace3 ? [sceneForEditPlayer.imgInPlace3] : [],
+      //     sceneForEditPlayer.imgInPlace4 ? [sceneForEditPlayer.imgInPlace4] : [],
+      //     sceneForEditPlayer.imgInPlace5 ? [sceneForEditPlayer.imgInPlace5] : [],
+      //     sceneForEditPlayer.imgInPlace6 ? [sceneForEditPlayer.imgInPlace6] : [],
+      //     sceneForEditPlayer.imgInPlace7 ? [sceneForEditPlayer.imgInPlace7] : [],
+      //     sceneForEditPlayer.imgInPlace8 ? [sceneForEditPlayer.imgInPlace8] : [],
+      //     sceneForEditPlayer.imgInPlace9 ? [sceneForEditPlayer.imgInPlace9] : [],
+      //   ]
+      // }
+      this.playerScenePartsPuzzleImages.push(sceneForEditPlayer)
     })
 
     // Все изображения игроков которые
-    const allImagePlayer: PartsPuzzleImage[] = this.playerScenePartsPuzzleImages.flatMap((playerValue) => {
-      return playerValue.listImg.flatMap((item) => item)
+    // const allImagePlayer: PartsPuzzleImage[] = this.playerScenePartsPuzzleImages.flatMap((playerValue) => {
+    //   return playerValue.imgPlace6
+    // })
+
+    const allImagePlayer: PartsPuzzleImage[] = []
+
+    this.playerScenePartsPuzzleImages.forEach((item) => {
+
+      item.imgPlace1.forEach(img => {
+        if(img) {
+          allImagePlayer.push(img)
+        }
+      })
+      item.imgPlace2.forEach(img => {
+        if(img) {
+          allImagePlayer.push(img)
+        }
+      })
+      item.imgPlace3.forEach(img => {
+        if(img) {
+          allImagePlayer.push(img)
+        }
+      })
+      item.imgPlace4.forEach(img => {
+        if(img) {
+          allImagePlayer.push(img)
+        }
+      })
+      item.imgPlace5.forEach(img => {
+        if(img) {
+          allImagePlayer.push(img)
+        }
+      })
+      item.imgPlace6.forEach(img => {
+        if(img) {
+          allImagePlayer.push(img)
+        }
+      })
+      item.imgPlace7.forEach(img => {
+        if(img) {
+          allImagePlayer.push(img)
+        }
+      })
+      item.imgPlace8.forEach(img => {
+        if(img) {
+          allImagePlayer.push(img)
+        }
+      })
+      item.imgPlace9.forEach(img => {
+        if(img) {
+          allImagePlayer.push(img)
+        }
+      })
     })
 
     // Все изображения которые есть на сцене
@@ -466,15 +581,22 @@ export class EditPuzzleDialogComponent implements OnInit {
   }
 
   resetParts() {
+
     this.allImgForScene.forEach((item, index: number) => {
       this.scenePartsPuzzleImages[index].length = 0
       this.scenePartsPuzzleImages[index].push(item)
     })
 
     this.playerScenePartsPuzzleImages.forEach((values) => {
-      values.listImg.forEach((img) => {
-        img.length = 0
-      })
+      values.imgPlace1.length = 0
+      values.imgPlace2.length = 0
+      values.imgPlace3.length = 0
+      values.imgPlace4.length = 0
+      values.imgPlace5.length = 0
+      values.imgPlace6.length = 0
+      values.imgPlace7.length = 0
+      values.imgPlace8.length = 0
+      values.imgPlace9.length = 0
     })
 
   }
@@ -521,10 +643,19 @@ export class EditPuzzleDialogComponent implements OnInit {
   }
 
   validationPlayerImage() {
-    const list = this.playerScenePartsPuzzleImages
-      .flatMap(item => {
-        return item.listImg
-      })
+    const list: PartsPuzzleImage[][] = []
+
+    this.playerScenePartsPuzzleImages.forEach(item => {
+      list.push(item.imgPlace1)
+      list.push(item.imgPlace2)
+      list.push(item.imgPlace3)
+      list.push(item.imgPlace4)
+      list.push(item.imgPlace5)
+      list.push(item.imgPlace6)
+      list.push(item.imgPlace7)
+      list.push(item.imgPlace8)
+      list.push(item.imgPlace9)
+    })
 
 
     for (let item of list) {

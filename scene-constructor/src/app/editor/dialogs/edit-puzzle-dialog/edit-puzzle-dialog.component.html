@@ -84,7 +84,7 @@
                (dragover)="dragOver($event)"
                (drop)="dragImg($event, i)">
             <div *ngIf="item?.src">
-              <img class="width-full height-full" [src]="item?.src" />
+              <img class="width-full height-full" [src]="item?.src"/>
             </div>
           </div>
 
@@ -95,29 +95,165 @@
   </div>
 
   <div class="flex">
-    <div *ngFor="let player of playerScenePartsPuzzleImages">
-      {{ player.scenePartsPuzzleImages.name }}
+    <div *ngFor="let sceneForEditPlayer of playerScenePartsPuzzleImages">
+      {{ sceneForEditPlayer.name }}
 
       <div class="grid-puzzle m-10">
-        <div *ngFor="let parts of player.listImg; let i = index">
-          <div
-            class="grid-item"
-            draggable="true"
-            (dragover)="dragOver($event)"
-            (drop)="dragImgPlayer($event, i, player.listImg)"
-          >
-            <div *ngIf="parts.length > 1" class="text-red">Не более 1!!!</div>
-            <div *ngFor="let item of parts; let iItem = index"
-                 (dragstart)="dragStarImgPlayer($event, i, player.listImg, iItem)"
-                 (dragover)="dragOver($event)"
-                 (drop)="dragImgPlayer($event, i, player.listImg)">
-              <div *ngIf="item?.src">
-                <img class="width-full height-full" [src]="item?.src" />
-              </div>
+
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event)"
+          (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace1)"
+        >
+          <div *ngIf="sceneForEditPlayer.imgPlace1.length > 1" class="text-red">Не более 1!!!</div>
+          <div *ngFor="let item of sceneForEditPlayer.imgPlace1; let iItem = index"
+               (dragstart)="dragStarImgPlayer($event, sceneForEditPlayer.imgPlace1, iItem)"
+               (dragover)="dragOver($event)"
+               (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace1)">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event)"
+          (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace2)"
+        >
+          <div *ngIf="sceneForEditPlayer.imgPlace2.length > 1" class="text-red">Не более 1!!!</div>
+          <div *ngFor="let item of sceneForEditPlayer.imgPlace2; let iItem = index"
+               (dragstart)="dragStarImgPlayer($event, sceneForEditPlayer.imgPlace2, iItem)"
+               (dragover)="dragOver($event)"
+               (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace2)">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event)"
+          (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace3)"
+        >
+          <div *ngIf="sceneForEditPlayer.imgPlace3.length > 1" class="text-red">Не более 1!!!</div>
+          <div *ngFor="let item of sceneForEditPlayer.imgPlace3; let iItem = index"
+               (dragstart)="dragStarImgPlayer($event, sceneForEditPlayer.imgPlace3, iItem)"
+               (dragover)="dragOver($event)"
+               (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace3)">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event)"
+          (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace4)"
+        >
+          <div *ngIf="sceneForEditPlayer.imgPlace4.length > 1" class="text-red">Не более 1!!!</div>
+          <div *ngFor="let item of sceneForEditPlayer.imgPlace4; let iItem = index"
+               (dragstart)="dragStarImgPlayer($event, sceneForEditPlayer.imgPlace4, iItem)"
+               (dragover)="dragOver($event)"
+               (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace4)">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event)"
+          (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace5)"
+        >
+          <div *ngIf="sceneForEditPlayer.imgPlace5.length > 1" class="text-red">Не более 1!!!</div>
+          <div *ngFor="let item of sceneForEditPlayer.imgPlace5; let iItem = index"
+               (dragstart)="dragStarImgPlayer($event, sceneForEditPlayer.imgPlace5, iItem)"
+               (dragover)="dragOver($event)"
+               (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace5)">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event)"
+          (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace6)"
+        >
+          <div *ngIf="sceneForEditPlayer.imgPlace6.length > 1" class="text-red">Не более 1!!!</div>
+          <div *ngFor="let item of sceneForEditPlayer.imgPlace6; let iItem = index"
+               (dragstart)="dragStarImgPlayer($event, sceneForEditPlayer.imgPlace6, iItem)"
+               (dragover)="dragOver($event)"
+               (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace6)">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event)"
+          (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace7)"
+        >
+          <div *ngIf="sceneForEditPlayer.imgPlace7.length > 1" class="text-red">Не более 1!!!</div>
+          <div *ngFor="let item of sceneForEditPlayer.imgPlace7; let iItem = index"
+               (dragstart)="dragStarImgPlayer($event, sceneForEditPlayer.imgPlace7, iItem)"
+               (dragover)="dragOver($event)"
+               (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace7)">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event)"
+          (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace8)"
+        >
+          <div *ngIf="sceneForEditPlayer.imgPlace8.length > 1" class="text-red">Не более 1!!!</div>
+          <div *ngFor="let item of sceneForEditPlayer.imgPlace8; let iItem = index"
+               (dragstart)="dragStarImgPlayer($event, sceneForEditPlayer.imgPlace8, iItem)"
+               (dragover)="dragOver($event)"
+               (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace8)">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="grid-item"
+          draggable="true"
+          (dragover)="dragOver($event)"
+          (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace9)"
+        >
+          <div *ngIf="sceneForEditPlayer.imgPlace9.length > 1" class="text-red">Не более 1!!!</div>
+          <div *ngFor="let item of sceneForEditPlayer.imgPlace9; let iItem = index"
+               (dragstart)="dragStarImgPlayer($event, sceneForEditPlayer.imgPlace9, iItem)"
+               (dragover)="dragOver($event)"
+               (drop)="dragImgPlayer($event, sceneForEditPlayer.imgPlace9)">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
