@@ -3,6 +3,8 @@ import { AnswerFirebase } from "./answer-firebase.model";
 import { IBaseSceneFirebase } from "./base-scene-firebase.mode";
 import {PartsPuzzleImage} from "../../../core/models/parts-puzzle-image.model";
 import {SceneForEditPlayer} from "../puzzle-edit-scene";
+import {PartsPuzzleImageFirebase} from "./parts-puzzle-image-firebase.model";
+import {SceneForEditPlayerFirebase} from "./scene-for-edit-player-firebase.model";
 
 export interface PuzzleFirebase extends IBaseSceneFirebase {
   id: string
@@ -26,29 +28,17 @@ export interface PuzzleFirebase extends IBaseSceneFirebase {
   players: string[]
   isStartGame: boolean
 
-  //TODO: Удалить
-  scenePartsPuzzleImages: { number: number, imgId: number }[]
-
-  // TODO: Удалить
-  playerScenePartsPuzzleImages: {
-    playerId: string,
-    scenePartsPuzzleImages: {
-      number: number,
-      imgId: number
-    }[]
-  }[]
-
   // Изображение на экране сцены
-  imgInPlace1: PartsPuzzleImage[];
-  imgInPlace2: PartsPuzzleImage[];
-  imgInPlace3: PartsPuzzleImage[];
-  imgInPlace4: PartsPuzzleImage[];
-  imgInPlace5: PartsPuzzleImage[];
-  imgInPlace6: PartsPuzzleImage[];
-  imgInPlace7: PartsPuzzleImage[];
-  imgInPlace8: PartsPuzzleImage[];
-  imgInPlace9: PartsPuzzleImage[];
+  imgInPlace1: PartsPuzzleImageFirebase[];
+  imgInPlace2: PartsPuzzleImageFirebase[];
+  imgInPlace3: PartsPuzzleImageFirebase[];
+  imgInPlace4: PartsPuzzleImageFirebase[];
+  imgInPlace5: PartsPuzzleImageFirebase[];
+  imgInPlace6: PartsPuzzleImageFirebase[];
+  imgInPlace7: PartsPuzzleImageFirebase[];
+  imgInPlace8: PartsPuzzleImageFirebase[];
+  imgInPlace9: PartsPuzzleImageFirebase[];
 
   // Изображения для игроков
-  dataForPlayerPartsImages: SceneForEditPlayer[]
+  dataForPlayerPartsImages: SceneForEditPlayerFirebase[]
 }

@@ -133,6 +133,7 @@ export class FirestoreService {
   }
 
   async saveGame(game: Game) {
+    debugger
 
     const players = [...(game.players.map(item => {
       return {

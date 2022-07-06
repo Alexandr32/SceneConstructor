@@ -1,18 +1,129 @@
-import { Answer } from "./answer.model"
-import { Coordinate } from "./coordinate.model"
-import { AnswerFirebase } from "./firebase-models/answer-firebase.model"
-import { PanoramaFirebase } from "./firebase-models/panorama-firebase.model"
-import { PuzzleFirebase } from "./firebase-models/puzzle-firebase.model"
-import { SceneAnswerFirebase } from "./firebase-models/scene-answer-firestore.model"
-import { ItemPartsPuzzleImage } from "../../core/models/item-parts-puzzle-image.model"
-import { PartsPuzzleImage } from "../../core/models/parts-puzzle-image.model"
-import { Player } from "../../run-game/models/other-models/player.model"
+import {Answer} from "./answer.model"
+import {Coordinate} from "./coordinate.model"
+import {AnswerFirebase} from "./firebase-models/answer-firebase.model"
+import {PanoramaFirebase} from "./firebase-models/panorama-firebase.model"
+import {PuzzleFirebase} from "./firebase-models/puzzle-firebase.model"
+import {SceneAnswerFirebase} from "./firebase-models/scene-answer-firestore.model"
+import {ItemPartsPuzzleImage} from "../../core/models/item-parts-puzzle-image.model"
+import {PartsPuzzleImage} from "../../core/models/parts-puzzle-image.model"
+import {Player} from "../../run-game/models/other-models/player.model"
 import {IBaseEditScene} from "./base-edit-scene.model";
 import {PanoramaEditScene} from "./panorama-edit-scene";
 import {SceneEditScene} from "./scene-edit-scene";
 import {PuzzleEditScene, SceneForEditPlayer} from "./puzzle-edit-scene";
+import {PartsPuzzleImageFirebase} from "./firebase-models/parts-puzzle-image-firebase.model";
+import {SceneForEditPlayerFirebase} from "./firebase-models/scene-for-edit-player-firebase.model";
 
 export class Mapper {
+
+  static sceneForEditPlayerFirebaseToSceneForEditPlayer(sceneForEditPlayer: SceneForEditPlayerFirebase): SceneForEditPlayer {
+    const value = new SceneForEditPlayer()
+    value.playerId = sceneForEditPlayer.playerId
+    value.name = sceneForEditPlayer.name
+    //TODO: раскомментировать
+
+    //debugger
+    value.imgPlace1 = sceneForEditPlayer.imgPlace1 ? [sceneForEditPlayer.imgPlace1] : []
+    value.imgPlace2 = sceneForEditPlayer.imgPlace2 ? [sceneForEditPlayer.imgPlace2] : []
+    value.imgPlace3 = sceneForEditPlayer.imgPlace3 ? [sceneForEditPlayer.imgPlace3] : []
+    value.imgPlace4 = sceneForEditPlayer.imgPlace4 ? [sceneForEditPlayer.imgPlace4] : []
+    value.imgPlace5 = sceneForEditPlayer.imgPlace5 ? [sceneForEditPlayer.imgPlace5] : []
+    value.imgPlace6 = sceneForEditPlayer.imgPlace6 ? [sceneForEditPlayer.imgPlace6] : []
+    value.imgPlace7 = sceneForEditPlayer.imgPlace7 ? [sceneForEditPlayer.imgPlace7] : []
+    value.imgPlace8 = sceneForEditPlayer.imgPlace8 ? [sceneForEditPlayer.imgPlace8] : []
+    value.imgPlace9 = sceneForEditPlayer.imgPlace9 ? [sceneForEditPlayer.imgPlace9] : []
+    //
+    // value.isDraggableImgPlace1 = sceneForEditPlayer.isDraggableImgPlace1
+    // value.isDraggableImgPlace2 = sceneForEditPlayer.isDraggableImgPlace2
+    // value.isDraggableImgPlace3 = sceneForEditPlayer.isDraggableImgPlace2
+    // value.isDraggableImgPlace4 = sceneForEditPlayer.isDraggableImgPlace4
+    // value.isDraggableImgPlace5 = sceneForEditPlayer.isDraggableImgPlace5
+    // value.isDraggableImgPlace6 = sceneForEditPlayer.isDraggableImgPlace6
+    // value.isDraggableImgPlace7 = sceneForEditPlayer.isDraggableImgPlace7
+    // value.isDraggableImgPlace8 = sceneForEditPlayer.isDraggableImgPlace8
+    // value.isDraggableImgPlace9 = sceneForEditPlayer.isDraggableImgPlace9
+    //
+    //
+    // value.imgPlace1 = sceneForEditPlayer.imgPlace1
+    // value.imgPlace2 = sceneForEditPlayer.imgPlace2
+    // value.imgPlace3 = sceneForEditPlayer.imgPlace3
+    // value.imgPlace4 = sceneForEditPlayer.imgPlace4
+    // value.imgPlace5 = sceneForEditPlayer.imgPlace5
+    // value.imgPlace6 = sceneForEditPlayer.imgPlace6
+    // value.imgPlace7 = sceneForEditPlayer.imgPlace7
+    // value.imgPlace8 = sceneForEditPlayer.imgPlace8
+    // value.imgPlace9 = sceneForEditPlayer.imgPlace9
+
+    return value
+  }
+
+  static sceneForEditPlayerToSceneForEditPlayerFirebase(sceneForEditPlayer: SceneForEditPlayer,
+                                                        puzzleEditScene: PuzzleEditScene): SceneForEditPlayerFirebase {
+    return {
+      playerId: sceneForEditPlayer.playerId,
+
+      name: sceneForEditPlayer.name,
+
+      // Доступные изображения для выбора
+      imgPlace1: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(sceneForEditPlayer.imgPlace1[0]),
+      imgPlace2: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(sceneForEditPlayer.imgPlace2[0]),
+      imgPlace3: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(sceneForEditPlayer.imgPlace3[0]),
+      imgPlace4: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(sceneForEditPlayer.imgPlace4[0]),
+      imgPlace5: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(sceneForEditPlayer.imgPlace5[0]),
+      imgPlace6: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(sceneForEditPlayer.imgPlace6[0]),
+      imgPlace7: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(sceneForEditPlayer.imgPlace7[0]),
+      imgPlace8: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(sceneForEditPlayer.imgPlace8[0]),
+      imgPlace9: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(sceneForEditPlayer.imgPlace9[0]),
+
+      // Проверка есть ли на сцене что-то
+      imgInPlace1: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(puzzleEditScene.imgInPlace1[0]),
+      isDraggableImgPlace1: puzzleEditScene.imgInPlace1.length > 0 ? false : true,
+
+      imgInPlace2: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(puzzleEditScene.imgInPlace2[0]),
+      isDraggableImgPlace2: puzzleEditScene.imgInPlace2.length > 0 ? false : true,
+
+      imgInPlace3: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(puzzleEditScene.imgInPlace3[0]),
+      isDraggableImgPlace3: puzzleEditScene.imgInPlace3.length > 0 ? false : true,
+
+      imgInPlace4: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(puzzleEditScene.imgInPlace4[0]),
+      isDraggableImgPlace4: puzzleEditScene.imgInPlace4.length > 0 ? false : true,
+
+      imgInPlace5: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(puzzleEditScene.imgInPlace5[0]),
+      isDraggableImgPlace5: puzzleEditScene.imgInPlace5.length > 0 ? false : true,
+
+      imgInPlace6: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(puzzleEditScene.imgInPlace6[0]),
+      isDraggableImgPlace6: puzzleEditScene.imgInPlace6.length > 0 ? false : true,
+
+      imgInPlace7: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(puzzleEditScene.imgInPlace7[0]),
+      isDraggableImgPlace7: puzzleEditScene.imgInPlace7.length > 0 ? false : true,
+
+      imgInPlace8: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(puzzleEditScene.imgInPlace8[0]),
+      isDraggableImgPlace8: puzzleEditScene.imgInPlace8.length > 0 ? false : true,
+
+      imgInPlace9: Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(puzzleEditScene.imgInPlace9[0]),
+      isDraggableImgPlace9: puzzleEditScene.imgInPlace9.length > 0 ? false : true,
+
+    } as SceneForEditPlayerFirebase
+  }
+
+  static partsPuzzleImageToPartsPuzzleImageFirebase(partsPuzzleImage: PartsPuzzleImage | null): PartsPuzzleImageFirebase {
+
+    if(!partsPuzzleImage) {
+      return null;
+    }
+
+    return {
+      id: partsPuzzleImage.id,
+      src: partsPuzzleImage.src
+    } as PartsPuzzleImageFirebase
+  }
+
+  static partsPuzzleImageFirebaseToPartsPuzzleImage(partsPuzzleImage: PartsPuzzleImageFirebase): PartsPuzzleImage {
+    return {
+      id: partsPuzzleImage.id,
+      src: partsPuzzleImage.src
+    } as PartsPuzzleImage
+  }
 
   static answerToAnswerFirebase(answer: Answer): AnswerFirebase {
 
@@ -200,6 +311,8 @@ export class Mapper {
     //   }
     // })
 
+    //const dataForPlayerPartsImages: SceneForEditPlayer[] = puzzle.dataForPlayerPartsImages
+
     return {
       id: puzzle.id,
       title: puzzle.title,
@@ -223,20 +336,46 @@ export class Mapper {
       typesScene: puzzle.typesScene,
       players: puzzle.players,
       isStartGame: puzzle.isStartGame,
-      //scenePartsPuzzleImages: scenePartsPuzzleImages,
-      //playerScenePartsPuzzleImages: playerScenePartsPuzzleImages
 
-      imgInPlace1: puzzle.imgInPlace1,
-      imgInPlace2: puzzle.imgInPlace2,
-      imgInPlace3: puzzle.imgInPlace3,
-      imgInPlace4: puzzle.imgInPlace4,
-      imgInPlace5: puzzle.imgInPlace5,
-      imgInPlace6: puzzle.imgInPlace6,
-      imgInPlace7: puzzle.imgInPlace7,
-      imgInPlace8: puzzle.imgInPlace8,
-      imgInPlace9: puzzle.imgInPlace9,
+      imgInPlace1: puzzle.imgInPlace1.map(item => {
+        return Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(item)
+      }),
 
-      dataForPlayerPartsImages: puzzle.dataForPlayerPartsImages
+      imgInPlace2: puzzle.imgInPlace2.map(item => {
+        return Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(item)
+      }),
+
+      imgInPlace3: puzzle.imgInPlace3.map(item => {
+        return Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(item)
+      }),
+
+      imgInPlace4: puzzle.imgInPlace4.map(item => {
+        return Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(item)
+      }),
+
+      imgInPlace5: puzzle.imgInPlace5.map(item => {
+        return Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(item)
+      }),
+
+      imgInPlace6: puzzle.imgInPlace6.map(item => {
+        return Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(item)
+      }),
+
+      imgInPlace7: puzzle.imgInPlace7.map(item => {
+        return Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(item)
+      }),
+
+      imgInPlace8: puzzle.imgInPlace8.map(item => {
+        return Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(item)
+      }),
+
+      imgInPlace9: puzzle.imgInPlace9.map(item => {
+        return Mapper.partsPuzzleImageToPartsPuzzleImageFirebase(item)
+      }),
+
+      dataForPlayerPartsImages: puzzle.dataForPlayerPartsImages.map(item => {
+        return Mapper.sceneForEditPlayerToSceneForEditPlayerFirebase(item, puzzle)
+      })
 
     } as PuzzleFirebase;
 
@@ -268,12 +407,6 @@ export class Mapper {
       return Mapper.answerFirebaseToAnswer(item, puzzle)
     })
 
-    puzzle.players.forEach((playerId) => {
-      const value = new SceneForEditPlayer()
-      value.playerId = playerId
-      puzzle.dataForPlayerPartsImages.push(value)
-    })
-
     puzzle.maxCountAnswers = puzzleFirebase.maxCountAnswers
 
     const partsPuzzleImages: PartsPuzzleImage[] = []
@@ -289,36 +422,38 @@ export class Mapper {
 
     puzzle.partsPuzzleImages = partsPuzzleImages
 
-    // TODO добавить маппинг из FB в обычную модель
+    puzzle.imgInPlace1 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace1)
+    puzzle.imgInPlace2 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace2)
+    puzzle.imgInPlace3 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace3)
+    puzzle.imgInPlace4 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace4)
+    puzzle.imgInPlace5 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace5)
+    puzzle.imgInPlace6 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace6)
+    puzzle.imgInPlace7 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace7)
+    puzzle.imgInPlace8 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace8)
+    puzzle.imgInPlace9 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace9)
 
-    // puzzle.scenePartsPuzzleImages = puzzleFirebase.scenePartsPuzzleImages.map((item: { number: number, imgId: number }, index) => {
-    //   return {
-    //     number: item.number,
-    //     value: item.imgId ? ({ id: item.imgId, src: '' } as PartsPuzzleImage) : null
-    //   }
-    // })
-    //
-    // puzzle.playerScenePartsPuzzleImages = puzzleFirebase
-    //   .playerScenePartsPuzzleImages.map((item, index) => {
-    //
-    //     return {
-    //       playerId: item.playerId,
-    //       scenePartsPuzzleImages: item.scenePartsPuzzleImages.map(x => {
-    //         return {
-    //           number: x.number,
-    //           value: x.imgId
-    //             ? {
-    //               id: x.imgId,
-    //               src: ''
-    //             } as PartsPuzzleImage
-    //             : null
-    //         } as ItemPartsPuzzleImage
-    //       })
-    //
-    //     }
-    //   })
+    if(puzzleFirebase.dataForPlayerPartsImages) {
+      puzzle.dataForPlayerPartsImages = puzzleFirebase.dataForPlayerPartsImages?.map((item) => {
+        return Mapper.sceneForEditPlayerFirebaseToSceneForEditPlayer(item)
+      })
+    } else {
+      puzzle.dataForPlayerPartsImages = []
+    }
+
+
 
     return puzzle
   }
+
+  static arrayPuzzleFBtoModelMapping(imgInPlaceFirebase: PartsPuzzleImageFirebase[] | undefined) {
+    if (imgInPlaceFirebase) {
+      return imgInPlaceFirebase.map(item => {
+        return Mapper.partsPuzzleImageFirebaseToPartsPuzzleImage(item)
+      })
+    } else {
+      return []
+    }
+  }
+
 
 }
