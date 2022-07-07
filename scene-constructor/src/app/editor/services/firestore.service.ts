@@ -8,7 +8,11 @@ import { TypeFile } from '../models/type-file.model';
 import { MediaFile } from '../models/media-file.model.ts';
 import { base64ToFile } from '../models/base64-to-file.model';
 import { TypeSceneEnum } from '../../core/models/type-scene.enum';
-import { Mapper } from '../models/mapper.model';
+import {
+  PanoramaSceneEditorMapper,
+  AnswerSceneEditorMapper,
+  PuzzleSceneEditorMapper
+} from '../models/editor-mapper.model';
 import { SceneAnswerFirebase } from '../models/firebase-models/scene-answer-firestore.model';
 import { PuzzleFirebase } from '../models/firebase-models/puzzle-firebase.model';
 import { PanoramaFirebase } from '../models/firebase-models/panorama-firebase.model';
@@ -55,15 +59,15 @@ export class FirestoreService {
             const resultScene = (): any => {
               switch (baseScene.typesScene) {
                 case TypeSceneEnum.Answer: {
-                  return Mapper.sceneAnswerFirebaseToSceneAnswer(baseScene as unknown as SceneAnswerFirebase)
+                  return AnswerSceneEditorMapper.toDtoForEditor(baseScene as unknown as SceneAnswerFirebase)
 
                 }
                 case TypeSceneEnum.Panorama: {
-                  return Mapper.panoramaFirebaseToPanorama(baseScene as unknown as PanoramaFirebase)
+                  return PanoramaSceneEditorMapper.toDtoEditor(baseScene as unknown as PanoramaFirebase)
 
                 }
                 case TypeSceneEnum.Puzzle: {
-                  return Mapper.puzzleFirebaseToPuzzle(baseScene as unknown as PuzzleFirebase)
+                  return PuzzleSceneEditorMapper.toDtoEditor(baseScene as unknown as PuzzleFirebase)
 
                 }
               }
@@ -149,13 +153,13 @@ export class FirestoreService {
       const result = (): any => {
         switch (scene.typesScene) {
           case TypeSceneEnum.Answer: {
-            return Mapper.sceneAnswerToSceneAnswerFirebase(scene as SceneEditScene)
+            return AnswerSceneEditorMapper.toFirebase(scene as SceneEditScene)
           }
           case TypeSceneEnum.Panorama: {
-            return Mapper.panoramaToPanoramaFirebase((scene as PanoramaEditScene))
+            return PanoramaSceneEditorMapper.toFirebase((scene as PanoramaEditScene))
           }
           case TypeSceneEnum.Puzzle: {
-            return Mapper.puzzleToPuzzleFirebase((scene as PuzzleEditScene))
+            return PuzzleSceneEditorMapper.toFirebase((scene as PuzzleEditScene))
           }
         }
       }
