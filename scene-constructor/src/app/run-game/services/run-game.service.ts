@@ -3,7 +3,11 @@ import { first, map, take} from 'rxjs/operators';
 import {Game as EditGame} from '../../editor/models/game.model';
 import {Player} from "../models/other-models/player.model";
 import {TypeSceneEnum} from 'src/app/core/models/type-scene.enum';
-import {RunGameMapper} from '../run-game-mapper.model';
+import {
+  AnswerSceneRunGameMapper,
+  PanoramaSceneRunGameMapper,
+  PuzzleSceneRunGameMapper
+} from '../run-game-mapper.model';
 import {PuzzleEditScene} from 'src/app/editor/models/puzzle-edit-scene';
 import {SceneAnswerRunGameFirebase} from '../models/firebase-models/scene-answer-run-game-firebase.model';
 import {PanoramaRunGameFirebase} from '../models/firebase-models/panorama-scene-run-game-firebase.model';
@@ -50,13 +54,13 @@ export class RunGameService {
       const result = (): any => {
         switch (scene.typesScene) {
           case TypeSceneEnum.Answer: {
-            return RunGameMapper.sceneAnswerToSceneAnswerFirebase(scene as SceneEditScene)
+            return AnswerSceneRunGameMapper.toFirebase(scene as SceneEditScene)
           }
           case TypeSceneEnum.Panorama: {
-            return RunGameMapper.panoramaToPanoramaFirebase((scene as PanoramaEditScene))
+            return PanoramaSceneRunGameMapper.toFirebase((scene as PanoramaEditScene))
           }
           case TypeSceneEnum.Puzzle: {
-            return RunGameMapper.puzzleToPuzzleFirebase((scene as PuzzleEditScene))
+            return PuzzleSceneRunGameMapper.toFirebase((scene as PuzzleEditScene))
           }
         }
       }
@@ -106,15 +110,15 @@ export class RunGameService {
             const resultScene = (): any => {
               switch (baseScene.typesScene) {
                 case TypeSceneEnum.Answer: {
-                  return RunGameMapper.sceneAnswerFirebaseToSceneAnswer(baseScene as unknown as SceneAnswerRunGameFirebase)
+                  return AnswerSceneRunGameMapper.toDtoRunGame(baseScene as unknown as SceneAnswerRunGameFirebase)
 
                 }
                 case TypeSceneEnum.Panorama: {
-                  return RunGameMapper.panoramaFirebaseToPanorama(baseScene as unknown as PanoramaRunGameFirebase)
+                  return PanoramaSceneRunGameMapper.toDtoRunGame(baseScene as unknown as PanoramaRunGameFirebase)
 
                 }
                 case TypeSceneEnum.Puzzle: {
-                  return RunGameMapper.puzzleFirebaseToPuzzle(baseScene as unknown as PuzzleSceneRunGameFirebase)
+                  return PuzzleSceneRunGameMapper.toDtoRunGame(baseScene as unknown as PuzzleSceneRunGameFirebase)
                 }
               }
             }

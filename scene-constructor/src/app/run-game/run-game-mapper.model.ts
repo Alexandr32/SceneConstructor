@@ -14,10 +14,8 @@ import {PanoramaRunGame} from "./models/other-models/panorama-run-game";
 import {SceneEditScene} from "../editor/models/scene-edit-scene";
 import {PanoramaEditScene} from "../editor/models/panorama-edit-scene";
 
-
-export class RunGameMapper {
-
-  static answerToAnswerFirebase(answer: Answer): AnswerRunGameFirebase {
+export class AnswerRunGameMapper {
+  static toFirebase(answer: Answer): AnswerRunGameFirebase {
     return {
       id: answer.id,
       text: answer.text,
@@ -26,7 +24,7 @@ export class RunGameMapper {
     } as AnswerRunGameFirebase
   }
 
-  static answerFirebaseToAnswer(answerFirebase: AnswerRunGameFirebase, parentScene: IBaseSceneRunGame): AnswerRunGame {
+  static toDtoRunGame(answerFirebase: AnswerRunGameFirebase, parentScene: IBaseSceneRunGame): AnswerRunGame {
 
     return new AnswerRunGame(
       answerFirebase.id,
@@ -36,8 +34,10 @@ export class RunGameMapper {
       answerFirebase.sceneId
     )
   }
+}
 
-  static sceneAnswerToSceneAnswerFirebase(scene: SceneEditScene): SceneAnswerRunGameFirebase {
+export class AnswerSceneRunGameMapper {
+  static toFirebase(scene: SceneEditScene): SceneAnswerRunGameFirebase {
 
     return {
       id: scene.id,
@@ -48,7 +48,7 @@ export class RunGameMapper {
       videoFileId: scene.videoFileId,
       typesScene: scene.typesScene,
       answers: scene.answers.map(item => {
-        return RunGameMapper.answerToAnswerFirebase(item)
+        return AnswerRunGameMapper.toFirebase(item)
       }),
       players: scene.players,
       isStartGame: scene.isStartGame
@@ -56,7 +56,7 @@ export class RunGameMapper {
 
   }
 
-  static sceneAnswerFirebaseToSceneAnswer(sceneAnswerFirebase: SceneAnswerRunGameFirebase): SceneRunGame {
+  static toDtoRunGame(sceneAnswerFirebase: SceneAnswerRunGameFirebase): SceneRunGame {
 
     const scene = new SceneRunGame()
     scene.id = sceneAnswerFirebase.id
@@ -75,14 +75,16 @@ export class RunGameMapper {
     scene.videoFileId = sceneAnswerFirebase.videoFileId
 
     scene.answers = sceneAnswerFirebase.answers.map(item => {
-      return RunGameMapper.answerFirebaseToAnswer(item, scene)
+      return AnswerRunGameMapper.toDtoRunGame(item, scene)
     })
 
     return scene
 
   }
+}
 
-  static panoramaToPanoramaFirebase(panorama: PanoramaEditScene): PanoramaRunGameFirebase {
+export class PanoramaSceneRunGameMapper {
+  static toFirebase(panorama: PanoramaEditScene): PanoramaRunGameFirebase {
 
     return {
       id: panorama.id,
@@ -95,7 +97,7 @@ export class RunGameMapper {
 
       players: panorama.players,
       answers: panorama.answers.map(item => {
-        return RunGameMapper.answerToAnswerFirebase(item)
+        return AnswerRunGameMapper.toFirebase(item)
       }),
 
       imageFileId: panorama.imageFileId,
@@ -104,7 +106,7 @@ export class RunGameMapper {
     } as PanoramaRunGameFirebase;
   }
 
-  static panoramaFirebaseToPanorama(panoramaFirebase: PanoramaRunGameFirebase): PanoramaRunGame {
+  static toDtoRunGame(panoramaFirebase: PanoramaRunGameFirebase): PanoramaRunGame {
     const panorama = new PanoramaRunGame()
     panorama.id = panoramaFirebase.id
     panorama.title = panoramaFirebase.title
@@ -116,7 +118,7 @@ export class RunGameMapper {
 
     panorama.players = panoramaFirebase.players
     panorama.answers = panoramaFirebase.answers.map(item => {
-      return RunGameMapper.answerFirebaseToAnswer(item, panorama)
+      return AnswerRunGameMapper.toDtoRunGame(item, panorama)
     })
 
     panorama.imageFileId = panoramaFirebase.imageFileId
@@ -125,8 +127,13 @@ export class RunGameMapper {
 
     return panorama
   }
+}
 
-  static puzzleToPuzzleFirebase(puzzle: PuzzleEditScene): PuzzleSceneRunGameFirebase {
+/**
+ * Маппер для панорамы с ответами для области редактирования
+ */
+export class PuzzleSceneRunGameMapper {
+  static toFirebase(puzzle: PuzzleEditScene): PuzzleSceneRunGameFirebase {
 
     const playerScenePartsPuzzleImages: {
       playerId: string,
@@ -172,7 +179,7 @@ export class RunGameMapper {
       // Видео фона
       videoFileId: puzzle.videoFileId,
       answers: puzzle.answers.map(item => {
-        return RunGameMapper.answerToAnswerFirebase(item)
+        return AnswerRunGameMapper.toFirebase(item)
       }),
       typesScene: puzzle.typesScene,
       players: puzzle.players,
@@ -183,7 +190,7 @@ export class RunGameMapper {
 
   }
 
-  static puzzleFirebaseToPuzzle(puzzleFirebase: PuzzleSceneRunGameFirebase): PuzzleRunGame {
+  static toDtoRunGame(puzzleFirebase: PuzzleSceneRunGameFirebase): PuzzleRunGame {
     const puzzle = new PuzzleRunGame()
     puzzle.id = puzzleFirebase.id
     puzzle.title = puzzleFirebase.title
@@ -200,7 +207,7 @@ export class RunGameMapper {
     puzzle.players = puzzleFirebase.players
 
     puzzle.answers = puzzleFirebase.answers.map(item => {
-      return RunGameMapper.answerFirebaseToAnswer(item, puzzle)
+      return AnswerRunGameMapper.toDtoRunGame(item, puzzle)
     })
 
     const partsPuzzleImages: PartsPuzzleImage[] = []
@@ -218,11 +225,11 @@ export class RunGameMapper {
 
     puzzle.scenePartsPuzzleImages = puzzleFirebase.scenePartsPuzzleImages
       .map((item: { number: number, imgId: number }, index) => {
-      return {
-        number: item.number,
-        value: item.imgId ? ({ id: item.imgId, src: '' } as PartsPuzzleImage) : null
-      }
-    })
+        return {
+          number: item.number,
+          value: item.imgId ? ({ id: item.imgId, src: '' } as PartsPuzzleImage) : null
+        }
+      })
 
     puzzle.playerScenePartsPuzzleImages = puzzleFirebase
       .playerScenePartsPuzzleImages.map((item, index) => {
