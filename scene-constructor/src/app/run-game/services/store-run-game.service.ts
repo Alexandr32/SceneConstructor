@@ -9,7 +9,7 @@ import { StateService } from "./state.service";
 import { TypeControls } from "../models/other-models/type-controls.enum";
 import { AnswerRunGame } from "../models/other-models/answer.model";
 import { TypeSceneEnum } from "../../core/models/type-scene.enum";
-import { PuzzleRunGame } from "../models/other-models/scenes.models";
+import { PuzzleRunGame } from "../models/other-models/puzzle-run-game.models";
 import { ItemPartsPuzzleImage } from "../../core/models/item-parts-puzzle-image.model";
 import { PanoramaRunGame } from '../models/other-models/panorama-run-game';
 import { SceneRunGame } from '../models/other-models/scene-run-game';

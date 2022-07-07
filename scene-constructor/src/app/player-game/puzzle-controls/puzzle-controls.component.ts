@@ -4,7 +4,7 @@ import {Player} from "../../core/models/player.model";
 import {BaseComponent} from "../../base-component/base-component.component";
 import {filter, takeUntil} from "rxjs/operators";
 import {TypeSceneEnum} from "../../core/models/type-scene.enum";
-import {PuzzleRunGame} from "../../run-game/models/other-models/scenes.models";
+import {PuzzleRunGame} from "../../run-game/models/other-models/puzzle-run-game.models";
 import {ItemPartsPuzzleImage} from "../../core/models/item-parts-puzzle-image.model";
 import {CdkDragDrop} from "@angular/cdk/drag-drop/drag-events";
 import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
@@ -104,25 +104,25 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
         //this.findImageConstItem()
 
-        const scenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] } =
-          scene.playerScenePartsPuzzleImages.find(i => i.playerId === this.player.id)
-
-        if (scenePartsPuzzleImages) {
-          this.scenePartsPuzzleImagesForPlayer = scenePartsPuzzleImages.scenePartsPuzzleImages
-            .filter(img => img.value)
-            .map(item => {
-              return {
-                value: item,
-                drag: true
-              } as { value: ItemPartsPuzzleImage, drag: boolean }
-            })
-        }
+        // const scenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] } =
+        //   scene.playerScenePartsPuzzleImages.find(i => i.playerId === this.player.id)
+        //
+        // if (scenePartsPuzzleImages) {
+        //   this.scenePartsPuzzleImagesForPlayer = scenePartsPuzzleImages.scenePartsPuzzleImages
+        //     .filter(img => img.value)
+        //     .map(item => {
+        //       return {
+        //         value: item,
+        //         drag: true
+        //       } as { value: ItemPartsPuzzleImage, drag: boolean }
+        //     })
+        // }
 
         // Формируем доступные элементы при старте
-        scene.scenePartsPuzzleImages.forEach(item =>  {
-          // добавляем на экран
-          this.addItemInPlace(item)
-        })
+        // scene.scenePartsPuzzleImages.forEach(item =>  {
+        //   // добавляем на экран
+        //   this.addItemInPlace(item)
+        // })
       })
 
     this.storeRunGameService.stateGame$
@@ -377,13 +377,13 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
       }
     }
   }
-  removeItemInPlace(item: ItemPartsPuzzleImage) {
-
-    debugger
-    if (!item.value) {
-      return
-    }
-    const index: number = this.scenePartsPuzzleImagesForPlayer.findIndex(value => value.value)
-    this.scenePartsPuzzleImagesForPlayer.splice(index, 1)
-  }
+  // removeItemInPlace(item: ItemPartsPuzzleImage) {
+  //
+  //   debugger
+  //   if (!item.value) {
+  //     return
+  //   }
+  //   const index: number = this.scenePartsPuzzleImagesForPlayer.findIndex(value => value.value)
+  //   this.scenePartsPuzzleImagesForPlayer.splice(index, 1)
+  // }
 }

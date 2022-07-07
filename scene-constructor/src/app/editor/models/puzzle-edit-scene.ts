@@ -57,6 +57,7 @@ export class PuzzleEditScene implements IBaseEditScene, IBaseBackgroundScene {
   videoFile: string
 }
 
+// TODO: дать пометку что это область editor
 export class SceneForEditPlayer {
 
   playerId: string

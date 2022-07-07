@@ -2,13 +2,15 @@
 
   <div class="position-absolute flex justify-content-center puzzle-scene__grid-puzzle">
     <div class="grid-puzzle m-10">
-      <div *ngFor="let item of scenePartsPuzzleImages">
+      <div *ngFor="let parts of scenePartsPuzzleImages;">
         <div
-          class="grid-item cursor-default"
-        >
-          <div *ngIf="item.value">
-            <img class="width-full height-full" [src]="item.value.src" />
+          class="grid-item cursor-default">
+          <div *ngFor="let item of parts;">
+            <div *ngIf="item?.src">
+              <img class="width-full height-full" [src]="item?.src"/>
+            </div>
           </div>
+
         </div>
       </div>
     </div>

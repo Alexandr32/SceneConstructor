@@ -4,7 +4,7 @@ import {StateGame} from "../models/other-models/state-game.model";
 import {StoreRunGameService} from "../services/store-run-game.service";
 import {TypeSceneEnum} from "../../core/models/type-scene.enum";
 import {SceneRunGame} from "../models/other-models/scene-run-game";
-import {PuzzleRunGame} from "../models/other-models/scenes.models";
+import {PuzzleRunGame} from "../models/other-models/puzzle-run-game.models";
 import {BaseComponent} from "../../base-component/base-component.component";
 import {takeUntil} from "rxjs/operators";
 

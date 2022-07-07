@@ -1,13 +1,9 @@
 import {Injectable} from '@angular/core';
-import { first, map, take} from 'rxjs/operators';
+import {first, map, take} from 'rxjs/operators';
 import {Game as EditGame} from '../../editor/models/game.model';
 import {Player} from "../models/other-models/player.model";
 import {TypeSceneEnum} from 'src/app/core/models/type-scene.enum';
-import {
-  AnswerSceneRunGameMapper,
-  PanoramaSceneRunGameMapper,
-  PuzzleSceneRunGameMapper
-} from '../run-game-mapper.model';
+import {AnswerSceneRunGameMapper, PanoramaSceneRunGameMapper, PuzzleSceneRunGameMapper} from '../run-game-mapper.model';
 import {PuzzleEditScene} from 'src/app/editor/models/puzzle-edit-scene';
 import {SceneAnswerRunGameFirebase} from '../models/firebase-models/scene-answer-run-game-firebase.model';
 import {PanoramaRunGameFirebase} from '../models/firebase-models/panorama-scene-run-game-firebase.model';
@@ -15,7 +11,7 @@ import {PuzzleSceneRunGameFirebase} from '../models/firebase-models/puzzle-scene
 import {FileService} from 'src/app/core/services/file.service';
 import {TypeFile} from 'src/app/editor/models/type-file.model';
 import {RunGame} from '../models/other-models/run-game.model';
-import {PuzzleRunGame} from "../models/other-models/scenes.models";
+import {PuzzleRunGame} from "../models/other-models/puzzle-run-game.models";
 import {PanoramaEditScene} from "../../editor/models/panorama-edit-scene";
 import {SceneRunGame} from "../models/other-models/scene-run-game";
 import {PanoramaRunGame} from "../models/other-models/panorama-run-game";
@@ -253,26 +249,25 @@ export class RunGameService {
     }
 
     for (const item of scene.partsPuzzleImages) {
-      const src = await this.fileService.getUplPartsPuzzleImages(resultGameId, scene.imagePuzzleFileId, item).toPromise()
-      item.src = src
+      item.src = await this.fileService.getUplPartsPuzzleImages(resultGameId, scene.imagePuzzleFileId, item).toPromise()
 
-      const scenePartsPuzzleImages = scene.scenePartsPuzzleImages
-        .filter(x => x.value !== null)
-        .find(p => p.value.id === item.id)
-
-      if (scenePartsPuzzleImages) {
-        scenePartsPuzzleImages.value.src = src
-      }
+      // const scenePartsPuzzleImages = scene.scenePartsPuzzleImages
+      //   .filter(x => x.value !== null)
+      //   .find(p => p.value.id === item.id)
+      //
+      // if (scenePartsPuzzleImages) {
+      //   scenePartsPuzzleImages.value.src = src
+      // }
 
     }
 
-    scene.playerScenePartsPuzzleImages.map(x => {
-      x.scenePartsPuzzleImages.map(i => {
-        if (i.value) {
-          i.value.src = scene.partsPuzzleImages.find(f => f.id === i.value.id).src
-        }
-      })
-    })
+    // scene.playerScenePartsPuzzleImages.map(x => {
+    //   x.scenePartsPuzzleImages.map(i => {
+    //     if (i.value) {
+    //       i.value.src = scene.partsPuzzleImages.find(f => f.id === i.value.id).src
+    //     }
+    //   })
+    // })
   }
 
   private async promisePanoramaImageScene(resultGameId: string, scene: PanoramaRunGame) {
