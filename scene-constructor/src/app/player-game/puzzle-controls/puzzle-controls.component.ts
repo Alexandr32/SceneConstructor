@@ -45,17 +45,17 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   ]
 
   // Доступные изображения для выбора
-  imgForSelectPlayer1: PartsPuzzleImage[] = [];
-  imgForSelectPlayer2: PartsPuzzleImage[] = [];
-  imgForSelectPlayer3: PartsPuzzleImage[] = [];
-  imgForSelectPlayer4: PartsPuzzleImage[] = [];
-  imgForSelectPlayer5: PartsPuzzleImage[] = [];
-  imgForSelectPlayer6: PartsPuzzleImage[] = [];
-  imgForSelectPlayer7: PartsPuzzleImage[] = [];
-  imgForSelectPlayer8: PartsPuzzleImage[] = [];
-  imgForSelectPlayer9: PartsPuzzleImage[] = [];
+  imgForSelectPlayer1: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgForSelectPlayer2: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgForSelectPlayer3: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgForSelectPlayer4: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgForSelectPlayer5: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgForSelectPlayer6: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgForSelectPlayer7: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgForSelectPlayer8: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgForSelectPlayer9: { value: PartsPuzzleImage, drag: boolean }[] = [];
 
-  scenePartsPuzzleImagesForPlayer: PartsPuzzleImage[][] = [
+  scenePartsPuzzleImagesForPlayer: { value: PartsPuzzleImage, drag: boolean }[][] = [
     this.imgForSelectPlayer1,
     this.imgForSelectPlayer2,
     this.imgForSelectPlayer3,
@@ -152,15 +152,62 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
           })
         })
 
-        this.imgForSelectPlayer1.push(scenePartsPuzzleImagesForPlayer.imgPlace1)
-        this.imgForSelectPlayer2.push(scenePartsPuzzleImagesForPlayer.imgPlace2)
-        this.imgForSelectPlayer3.push(scenePartsPuzzleImagesForPlayer.imgPlace3)
-        this.imgForSelectPlayer4.push(scenePartsPuzzleImagesForPlayer.imgPlace4)
-        this.imgForSelectPlayer5.push(scenePartsPuzzleImagesForPlayer.imgPlace5)
-        this.imgForSelectPlayer6.push(scenePartsPuzzleImagesForPlayer.imgPlace6)
-        this.imgForSelectPlayer7.push(scenePartsPuzzleImagesForPlayer.imgPlace7)
-        this.imgForSelectPlayer8.push(scenePartsPuzzleImagesForPlayer.imgPlace8)
-        this.imgForSelectPlayer9.push(scenePartsPuzzleImagesForPlayer.imgPlace9)
+        if(scenePartsPuzzleImagesForPlayer.imgPlace1) {
+          this.imgForSelectPlayer1.push({
+            value: scenePartsPuzzleImagesForPlayer.imgPlace1,
+            drag: true
+          })
+        }
+        if(scenePartsPuzzleImagesForPlayer.imgPlace2) {
+          this.imgForSelectPlayer2.push({
+            value: scenePartsPuzzleImagesForPlayer.imgPlace2,
+            drag: true
+          })
+        }
+        if(scenePartsPuzzleImagesForPlayer.imgPlace3) {
+          this.imgForSelectPlayer3.push({
+            value: scenePartsPuzzleImagesForPlayer.imgPlace3,
+            drag: true
+          })
+        }
+        if(scenePartsPuzzleImagesForPlayer.imgPlace4) {
+          this.imgForSelectPlayer4.push({
+            value: scenePartsPuzzleImagesForPlayer.imgPlace4,
+            drag: true
+          })
+        }
+        if(scenePartsPuzzleImagesForPlayer.imgPlace5) {
+          this.imgForSelectPlayer5.push({
+            value: scenePartsPuzzleImagesForPlayer.imgPlace5,
+            drag: true
+          })
+        }
+        if(scenePartsPuzzleImagesForPlayer.imgPlace6) {
+          this.imgForSelectPlayer6.push({
+            value: scenePartsPuzzleImagesForPlayer.imgPlace6,
+            drag: true
+          })
+        }
+        if(scenePartsPuzzleImagesForPlayer.imgPlace7) {
+          this.imgForSelectPlayer7.push({
+            value: scenePartsPuzzleImagesForPlayer.imgPlace7,
+            drag: true
+          })
+        }
+        if(scenePartsPuzzleImagesForPlayer.imgPlace8) {
+          this.imgForSelectPlayer8.push({
+            value: scenePartsPuzzleImagesForPlayer.imgPlace8,
+            drag: true
+          })
+        }
+        if(scenePartsPuzzleImagesForPlayer.imgPlace9) {
+          this.imgForSelectPlayer9.push({
+            value: scenePartsPuzzleImagesForPlayer.imgPlace9,
+            drag: true
+          })
+        }
+
+
       })
 
     this.storeRunGameService.stateGame$
@@ -183,93 +230,89 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
     this.unsubscribe()
   }
 
-  // Перемещаем на блок с пазлом
-  async dropItemInContainer(event: CdkDragDrop<{ value: PartsPuzzleImage, drag: boolean }[]>) {
+  /**
+   * Перемещаем на блок с пазлом при наведении с доступных на выложеные
+   * @param event
+   * @param currentPlaceElement элемент на который двигают
+   * @param number номер в массиве на который двигают
+   */
+  async dropItemInContainer(event: CdkDragDrop<{ value: PartsPuzzleImage, drag: boolean }[]>,
+                            currentPlaceElement: { value: PartsPuzzleImage, drag: boolean }[]) {
 
-    //debugger
-
-    //const data = event.container.data[0]
-    //this.done.push(data)
-    //img.push(data)
-
-    const number = PuzzleControlsComponent.getId(event.container.id)
-    console.log(number)
-    console.log(event.item.dropContainer.data[0])
-    console.log(event.container.data[0])
-
-    if(event.container.data[0]) {
+    if(currentPlaceElement.length > 0) {
       return
     }
 
-    //debugger
-    const value = event.item.dropContainer.data[number - 1]
-    value.number = number
+    // Что двигаем
+    const currentDragElement: { value: PartsPuzzleImage, drag: boolean } = event.item.dropContainer.data[0]
 
-    console.log(event)
-
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+    if(currentDragElement.drag === false) {
+      return
     }
 
-    debugger
-    this.storeRunGameService.selectPuzzleImage(value)
+    // Удаляем элемент с места с которого он перенесен
+    this.scenePartsPuzzleImagesForPlayer.forEach((img) => {
+     const findItem = img.find(i => i?.value?.id === currentDragElement.value.id)
+      if(findItem) {
+        img.length = 0
+      }
+    })
+
+    // Удаляем элемент с вывеженых на сцену (если перенос идет внутри сцены)
+    this.places.forEach((img) => {
+      const findItem = img.find(i => i?.value?.id === currentDragElement.value.id)
+      if(findItem) {
+        img.length = 0
+      }
+    })
+
+    currentPlaceElement.push(currentDragElement)
+
+    // TODO: Вот сюда добавляем сохраниение в БД
+    //  здесь учитывать сохранение флага о пермещении
+
+    //this.storeRunGameService.
   }
 
-  // Доступные пункты
-  //dropItemsTemplate(event: CdkDragDrop<{ value: PartsPuzzleImage, drag: boolean }[]>) {
-  dropItemsTemplate(event: CdkDragDrop<PartsPuzzleImage[]>) {
+  /**
+   * Перемещаем на блок с изображениям для выбора
+   * @param event
+   * @param currentPlaceElement элемент на который двигают
+   * @param number номер в массиве на который двигают
+   */
+  dropItemsTemplate(event: CdkDragDrop<{ value: PartsPuzzleImage, drag: boolean }[]>,
+                    currentPlaceElement: { value: PartsPuzzleImage, drag: boolean }[]) {
 
-    //const data = event.container.data[0]
-    //this.done.push(data)
-    //img.push(data)
-
-    //console.log(event.item.dropContainer.data[0])
-    //console.log(event.container.data[0])
-
-    // if(event.container.data[0]) {
-    //   return
-    // }
-
-    console.log(event)
-
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-  }
-
-  private static getId(key: string): number {
-
-    const map = new Map<string, number>()
-    map.set('cdk-drop-list-1', 1)
-    map.set('cdk-drop-list-2', 2)
-    map.set('cdk-drop-list-3', 3)
-    map.set('cdk-drop-list-4', 4)
-    map.set('cdk-drop-list-5', 5)
-    map.set('cdk-drop-list-6', 6)
-    map.set('cdk-drop-list-7', 7)
-    map.set('cdk-drop-list-8', 8)
-    map.set('cdk-drop-list-9', 9)
-
-    const value = map.get(key)
-
-    if(!value) {
-      throw new Error('Не корректное значение')
+    if(currentPlaceElement.length > 0) {
+      return
     }
 
-    return value
+    // Что двигаем
+    const currentDragElement: { value: PartsPuzzleImage, drag: boolean } = event.item.dropContainer.data[0]
+
+    if(currentDragElement.drag === false) {
+      return
+    }
+
+    // Удаляем элемент с места с которого он перенесен
+    this.scenePartsPuzzleImagesForPlayer.forEach((img) => {
+      const findItem = img.find(i => i?.value?.id === currentDragElement.value.id)
+      if(findItem) {
+        img.length = 0
+      }
+    })
+
+    // Удаляем элемент с вывеженых на сцену (если перенос идет внутри сцены)
+    this.places.forEach((img) => {
+      const findItem = img.find(i => i?.value?.id === currentDragElement.value.id)
+      if(findItem) {
+        img.length = 0
+      }
+    })
+
+    currentPlaceElement.push(currentDragElement)
+
+    // TODO: Вот сюда добавляем сохраниение в БД
+    //  здесь учитывать сохранение флага о пермещении
   }
 }

@@ -7,7 +7,7 @@
         cdkDropList
         [cdkDropListData]="imgPlace"
         class="puzzle-controls__place-item"
-        (cdkDropListDropped)="dropItemInContainer($event)">
+        (cdkDropListDropped)="dropItemInContainer($event, imgPlace)">
         <div *ngFor="let item of imgPlace"
              cdkDrag
              [cdkDragDisabled]="!item.drag">
@@ -25,12 +25,12 @@
         cdkDropList
         [cdkDropListData]="imgPlace"
         class="puzzle-controls__place-item"
-        (cdkDropListDropped)="dropItemsTemplate($event)">
+        (cdkDropListDropped)="dropItemsTemplate($event, imgPlace)">
         <div *ngFor="let item of imgPlace"
              cdkDrag>
-          <img *ngIf="item"
+          <img *ngIf="item?.value"
                class="puzzle-controls__image"
-               [src]="item.src"
+               [src]="item?.value?.src"
                alt="imagePuzzle"/>
         </div>
       </div>

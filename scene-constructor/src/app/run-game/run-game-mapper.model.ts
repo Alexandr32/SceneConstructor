@@ -169,8 +169,6 @@ export class SceneForControlPuzzlePlayerRunGameMapper {
     value.imgInPlace8 = sceneForEditPlayer.imgInPlace8
     value.isStopDraggableImgPlace8 = sceneForEditPlayer.isStopDraggableImgPlace8
 
-    debugger
-
     value.imgInPlace9 = sceneForEditPlayer.imgInPlace9
     value.isStopDraggableImgPlace9 = sceneForEditPlayer.isStopDraggableImgPlace9
 
