@@ -4,10 +4,11 @@ import {Player} from "../../core/models/player.model";
 import {BaseComponent} from "../../base-component/base-component.component";
 import {filter, takeUntil} from "rxjs/operators";
 import {TypeSceneEnum} from "../../core/models/type-scene.enum";
-import {PuzzleRunGame} from "../../run-game/models/other-models/puzzle-run-game.models";
+import {PuzzleRunGame, SceneForPuzzleControlPlayerRunGame} from "../../run-game/models/other-models/puzzle-run-game.models";
 import {ItemPartsPuzzleImage} from "../../core/models/item-parts-puzzle-image.model";
 import {CdkDragDrop} from "@angular/cdk/drag-drop/drag-events";
 import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+import {PartsPuzzleImage} from "../../core/models/parts-puzzle-image.model";
 
 @Component({
   selector: 'app-puzzle-controls',
@@ -29,25 +30,27 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   //   draggable: boolean
   // }[]
 
-  // Изображения доступные для выбора
-  scenePartsPuzzleImagesForPlayer: { value: ItemPartsPuzzleImage, drag: boolean }[] = []
+  // Изображения доступные
+  scenePartsPuzzleImagesForPlayer: PartsPuzzleImage[] = []
+
+  //dataForPlayerPartsImage: SceneForPlayerRunGame
 
   //private scene: PuzzleRunGame
 
   // Выбранный кусок пазла
   //private selectItemPartsPuzzleImage: ItemPartsPuzzleImage
 
-  imgPlace1: { value: ItemPartsPuzzleImage, drag: boolean }[] = [];
-  imgPlace2: { value: ItemPartsPuzzleImage, drag: boolean }[] = [];
-  imgPlace3: { value: ItemPartsPuzzleImage, drag: boolean }[] = [];
-  imgPlace4: { value: ItemPartsPuzzleImage, drag: boolean }[] = [];
-  imgPlace5: { value: ItemPartsPuzzleImage, drag: boolean }[] = [];
-  imgPlace6: { value: ItemPartsPuzzleImage, drag: boolean }[] = [];
-  imgPlace7: { value: ItemPartsPuzzleImage, drag: boolean }[] = [];
-  imgPlace8: { value: ItemPartsPuzzleImage, drag: boolean }[] = [];
-  imgPlace9: { value: ItemPartsPuzzleImage, drag: boolean }[] = [];
+  imgPlace1: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgPlace2: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgPlace3: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgPlace4: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgPlace5: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgPlace6: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgPlace7: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgPlace8: { value: PartsPuzzleImage, drag: boolean }[] = [];
+  imgPlace9: { value: PartsPuzzleImage, drag: boolean }[] = [];
 
-  places: { value: ItemPartsPuzzleImage, drag: boolean }[][] = [
+  places: { value: PartsPuzzleImage, drag: boolean }[][] = [
     this.imgPlace1,
     this.imgPlace2,
     this.imgPlace3,
@@ -58,6 +61,17 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
     this.imgPlace8,
     this.imgPlace9,
   ]
+
+  // Доступные изображения для выбора
+  imgForSelectPlayer1: PartsPuzzleImage | null | undefined;
+  imgForSelectPlayer2: PartsPuzzleImage | null | undefined;
+  imgForSelectPlayer3: PartsPuzzleImage | null | undefined;
+  imgForSelectPlayer4: PartsPuzzleImage | null | undefined;
+  imgForSelectPlayer5: PartsPuzzleImage | null | undefined;
+  imgForSelectPlayer6: PartsPuzzleImage | null | undefined;
+  imgForSelectPlayer7: PartsPuzzleImage | null | undefined;
+  imgForSelectPlayer8: PartsPuzzleImage | null | undefined;
+  imgForSelectPlayer9: PartsPuzzleImage | null | undefined;
 
   constructor(private storeRunGameService: StoreRunGameService) {
     super()
@@ -90,6 +104,8 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
         //this.isFirstStart = false
 
+        console.log(1)
+
         this.isShowControls = currentScene.players.includes(this.player.id)
 
         if (currentScene.typesScene !== TypeSceneEnum.Puzzle) {
@@ -101,6 +117,125 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
         const scene = currentScene as PuzzleRunGame
 
         console.log(scene)
+
+        const scenePartsPuzzleImagesForPlayer = scene.dataForPlayerPartsImages
+          .find(i => i.playerId === this.player.id)
+
+        if(!scenePartsPuzzleImagesForPlayer) {
+          return;
+        }
+
+        // TODO: переделать
+        if(scene.imgInPlace1) {
+          scene.imgInPlace1.forEach(img => {
+            this.imgPlace1.push({
+              value: img,
+              drag: false
+            })
+          })
+        }
+        if(scene.imgInPlace2) {
+          scene.imgInPlace2.forEach(img => {
+            this.imgPlace2.push({
+              value: img,
+              drag: false
+            })
+          })
+        }
+        if(scene.imgInPlace3) {
+          scene.imgInPlace3.forEach(img => {
+            this.imgPlace3.push({
+              value: img,
+              drag: false
+            })
+          })
+        }
+        if(scene.imgInPlace4) {
+          scene.imgInPlace4.forEach(img => {
+            this.imgPlace4.push({
+              value: img,
+              drag: false
+            })
+          })
+        }
+        if(scene.imgInPlace5) {
+          scene.imgInPlace5.forEach(img => {
+            this.imgPlace5.push({
+              value: img,
+              drag: false
+            })
+          })
+        }
+        if(scene.imgInPlace6) {
+          scene.imgInPlace6.forEach(img => {
+            this.imgPlace6.push({
+              value: img,
+              drag: false
+            })
+          })
+        }
+        if(scene.imgInPlace7) {
+          scene.imgInPlace7.forEach(img => {
+            this.imgPlace7.push({
+              value: img,
+              drag: false
+            })
+          })
+        }
+        if(scene.imgInPlace8) {
+          scene.imgInPlace8.forEach(img => {
+            this.imgPlace8.push({
+              value: img,
+              drag: false
+            })
+          })
+        }
+        if(scene.imgInPlace9) {
+          scene.imgInPlace9.forEach(img => {
+            this.imgPlace9.push({
+              value: img,
+              drag: false
+            })
+          })
+        }
+
+        this.imgForSelectPlayer1 = scenePartsPuzzleImagesForPlayer.imgPlace1
+        this.imgForSelectPlayer2 = scenePartsPuzzleImagesForPlayer.imgPlace2
+        this.imgForSelectPlayer3 = scenePartsPuzzleImagesForPlayer.imgPlace3
+        this.imgForSelectPlayer4 = scenePartsPuzzleImagesForPlayer.imgPlace4
+        this.imgForSelectPlayer5 = scenePartsPuzzleImagesForPlayer.imgPlace5
+        this.imgForSelectPlayer6 = scenePartsPuzzleImagesForPlayer.imgPlace6
+        this.imgForSelectPlayer7 = scenePartsPuzzleImagesForPlayer.imgPlace7
+        this.imgForSelectPlayer8 = scenePartsPuzzleImagesForPlayer.imgPlace8
+        this.imgForSelectPlayer9 = scenePartsPuzzleImagesForPlayer.imgPlace9
+
+        // scenePartsPuzzleImagesForPlayer.imgPlace1?.forEach((img) => {
+        //   this.scenePartsPuzzleImagesForPlayer.push(img)
+        // })
+        // scenePartsPuzzleImagesForPlayer.imgPlace2?.forEach((img) => {
+        //   this.scenePartsPuzzleImagesForPlayer.push(img)
+        // })
+        // scenePartsPuzzleImagesForPlayer.imgPlace3?.forEach((img) => {
+        //   this.scenePartsPuzzleImagesForPlayer.push(img)
+        // })
+        // scenePartsPuzzleImagesForPlayer.imgPlace4?.forEach((img) => {
+        //   this.scenePartsPuzzleImagesForPlayer.push(img)
+        // })
+        // scenePartsPuzzleImagesForPlayer.imgPlace5?.forEach((img) => {
+        //   this.scenePartsPuzzleImagesForPlayer.push(img)
+        // })
+        // scenePartsPuzzleImagesForPlayer.imgPlace6?.forEach((img) => {
+        //   this.scenePartsPuzzleImagesForPlayer.push(img)
+        // })
+        // scenePartsPuzzleImagesForPlayer.imgPlace7?.forEach((img) => {
+        //   this.scenePartsPuzzleImagesForPlayer.push(img)
+        // })
+        // scenePartsPuzzleImagesForPlayer.imgPlace8?.forEach((img) => {
+        //   this.scenePartsPuzzleImagesForPlayer.push(img)
+        // })
+        // scenePartsPuzzleImagesForPlayer.imgPlace9?.forEach((img) => {
+        //   this.scenePartsPuzzleImagesForPlayer.push(img)
+        // })
 
         //this.findImageConstItem()
 
@@ -140,24 +275,24 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
         console.log(state.scenePartsPuzzleImages)
 
         // доступные пункты для выбора
-        const scenePartsPuzzleImagesForPlayer = this.scenePartsPuzzleImagesForPlayer.map(item => {
-          return item.value.value.src
-        })
+        // const scenePartsPuzzleImagesForPlayer = this.scenePartsPuzzleImagesForPlayer.map(item => {
+        //   return item.value.value.src
+        // })
 
         // Здесь
         // что показано и если оно принадлежит выводим
-        state.scenePartsPuzzleImages.forEach(value => {
-
-          if(value.value && scenePartsPuzzleImagesForPlayer.includes(value.value.src)) {
-            // добавляем на экран
-            //this.addItemInPlace(value)
-
-            // Убираем из доступных для выбора
-            //this.removeItemInPlace(value)
-          }
-
-          //this.addItemInPlace(value)
-        })
+        // state.scenePartsPuzzleImages.forEach(value => {
+        //
+        //   if(value.value && scenePartsPuzzleImagesForPlayer.includes(value.value.src)) {
+        //     // добавляем на экран
+        //     //this.addItemInPlace(value)
+        //
+        //     // Убираем из доступных для выбора
+        //     //this.removeItemInPlace(value)
+        //   }
+        //
+        //   //this.addItemInPlace(value)
+        // })
 
         // this.scenePartsPuzzleImages.forEach(value => {
         //   const find = state.scenePartsPuzzleImages
@@ -247,7 +382,7 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   }
 
   // Перемещаем на блок с пазлом
-  async dropItemInContainer(event: CdkDragDrop<{ value: ItemPartsPuzzleImage, drag: boolean }[]>) {
+  async dropItemInContainer(event: CdkDragDrop<{ value: PartsPuzzleImage, drag: boolean }[]>) {
 
     //const data = event.container.data[0]
     //this.done.push(data)
@@ -284,7 +419,8 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   }
 
   // Доступные пункты
-  dropItemsTemplate(event: CdkDragDrop<{ value: ItemPartsPuzzleImage, drag: boolean }[]>) {
+  //dropItemsTemplate(event: CdkDragDrop<{ value: PartsPuzzleImage, drag: boolean }[]>) {
+  dropItemsTemplate(event: CdkDragDrop<PartsPuzzleImage[]>) {
 
     //const data = event.container.data[0]
     //this.done.push(data)
@@ -333,50 +469,50 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
     return value
   }
 
-  addItemInPlace(item: ItemPartsPuzzleImage) {
-    if (!item.value) {
-      return
-    }
-
-    switch (item.number) {
-      case 1: {
-        this.imgPlace1.push({value: item, drag: false})
-        break
-      }
-      case 2: {
-        this.imgPlace2.push({value: item, drag: false})
-        break
-      }
-      case 3: {
-        this.imgPlace3.push({value: item, drag: false})
-        break
-      }
-      case 4: {
-        this.imgPlace4.push({value: item, drag: false})
-        break
-      }
-      case 5: {
-        this.imgPlace5.push({value: item, drag: false})
-        break
-      }
-      case 6: {
-        this.imgPlace6.push({value: item, drag: false})
-        break
-      }
-      case 7: {
-        this.imgPlace7.push({value: item, drag: false})
-        break
-      }
-      case 8: {
-        this.imgPlace8.push({value: item, drag: false})
-        break
-      }
-      case 9: {
-        this.imgPlace9.push({value: item, drag: false})
-        break
-      }
-    }
-  }
+  // addItemInPlace(item: ItemPartsPuzzleImage) {
+  //   if (!item.value) {
+  //     return
+  //   }
+  //
+  //   switch (item.number) {
+  //     case 1: {
+  //       this.imgPlace1.push({value: item, drag: false})
+  //       break
+  //     }
+  //     case 2: {
+  //       this.imgPlace2.push({value: item, drag: false})
+  //       break
+  //     }
+  //     case 3: {
+  //       this.imgPlace3.push({value: item, drag: false})
+  //       break
+  //     }
+  //     case 4: {
+  //       this.imgPlace4.push({value: item, drag: false})
+  //       break
+  //     }
+  //     case 5: {
+  //       this.imgPlace5.push({value: item, drag: false})
+  //       break
+  //     }
+  //     case 6: {
+  //       this.imgPlace6.push({value: item, drag: false})
+  //       break
+  //     }
+  //     case 7: {
+  //       this.imgPlace7.push({value: item, drag: false})
+  //       break
+  //     }
+  //     case 8: {
+  //       this.imgPlace8.push({value: item, drag: false})
+  //       break
+  //     }
+  //     case 9: {
+  //       this.imgPlace9.push({value: item, drag: false})
+  //       break
+  //     }
+  //   }
+  // }
   // removeItemInPlace(item: ItemPartsPuzzleImage) {
   //
   //   debugger

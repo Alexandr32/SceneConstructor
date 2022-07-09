@@ -8,6 +8,7 @@ import {IBaseBackgroundScene} from "../../../core/models/base-background-scene.m
 import {Coordinate} from "../../../editor/models/coordinate.model";
 import {Answer} from "../../../editor/models/answer.model";
 import {SceneForEditPlayer} from "../../../editor/models/puzzle-edit-scene";
+import {PartsPuzzleImageFirebase} from "../../../editor/models/firebase-models/parts-puzzle-image-firebase.model";
 
 export class PuzzleRunGame implements IBaseSceneRunGame, IBaseBackgroundScene {
 
@@ -46,7 +47,7 @@ export class PuzzleRunGame implements IBaseSceneRunGame, IBaseBackgroundScene {
   imgInPlace9: PartsPuzzleImage[];
 
   // Изображения для игроков
-  dataForPlayerPartsImages: SceneForPlayerRunGame[] = []
+  dataForPlayerPartsImages: SceneForPuzzleControlPlayerRunGame[] = []
 
   // Изображение фона
   imageFileId: string
@@ -56,61 +57,51 @@ export class PuzzleRunGame implements IBaseSceneRunGame, IBaseBackgroundScene {
   videoFileId: string
   videoFile: string
   soundFile: string;
+}
 
-
-
-//   id: string
-//   title: string
-//   text: string
-//   color: string
-//
-//   soundFileId: string
-//   soundFile: string
-//   soundFileLink: FileLink
-//
-//   typesScene: TypeSceneEnum = TypeSceneEnum.Puzzle
-//
-//   isStartGame: boolean = false
-//
-//   players: string[] = []
-//
-//   answers: AnswerRunGame[] = []
-//
-//   imagePuzzleFileId: string;
-//
-//   // Изображение фона
-//   imageFileId: string
-//   imageFile: string
-//
-//   // Видео фона
-//   videoFileId: string
-//   videoFile: string
-//
-//   // Список доступных изображений
-//   partsPuzzleImages: PartsPuzzleImage[]
-//
-//   // Изображение на экране сцены в браузере
-//   scenePartsPuzzleImages: ItemPartsPuzzleImage[] //TODO: на одно место должно быть несколько элементов, разделить на списки от 1 до 9
-//
-//   // Изображения для игроков
-//   playerScenePartsPuzzleImages: { playerId: string, scenePartsPuzzleImages: ItemPartsPuzzleImage[] }[] = [] //TODO: Удалить
- }
-
-class SceneForPlayerRunGame {
+export class SceneForPuzzleControlPlayerRunGame {
 
   playerId: string
 
   name: string
 
+  // Изображеняи на сцене для пользователя
+  imgInPlace1: PartsPuzzleImage[]
+  isStopDraggableImgPlace1: boolean = false
+
+  imgInPlace2: PartsPuzzleImage[]
+  isStopDraggableImgPlace2: boolean = false
+
+  imgInPlace3: PartsPuzzleImage[]
+  isStopDraggableImgPlace3: boolean = false
+
+  imgInPlace4: PartsPuzzleImage[]
+  isStopDraggableImgPlace4: boolean = false
+
+  imgInPlace5: PartsPuzzleImage[]
+  isStopDraggableImgPlace5: boolean = false
+
+  imgInPlace6: PartsPuzzleImage[]
+  isStopDraggableImgPlace6: boolean = false
+
+  imgInPlace7: PartsPuzzleImage[]
+  isStopDraggableImgPlace7: boolean = false
+
+  imgInPlace8: PartsPuzzleImage[]
+  isStopDraggableImgPlace8: boolean = false
+
+  imgInPlace9: PartsPuzzleImage[]
+  isStopDraggableImgPlace9: boolean = false
+
   // Доступные изображения для выбора
-  imgPlace1: PartsPuzzleImage[];
-  imgPlace2: PartsPuzzleImage[];
-  imgPlace3: PartsPuzzleImage[];
-  imgPlace4: PartsPuzzleImage[];
-  imgPlace5: PartsPuzzleImage[];
-  imgPlace6: PartsPuzzleImage[];
-  imgPlace7: PartsPuzzleImage[];
-  imgPlace8: PartsPuzzleImage[];
-  imgPlace9: PartsPuzzleImage[];
+  imgPlace1: PartsPuzzleImage | null | undefined;
+  imgPlace2: PartsPuzzleImage | null | undefined;
+  imgPlace3: PartsPuzzleImage | null | undefined;
+  imgPlace4: PartsPuzzleImage | null | undefined;
+  imgPlace5: PartsPuzzleImage | null | undefined;
+  imgPlace6: PartsPuzzleImage | null | undefined;
+  imgPlace7: PartsPuzzleImage | null | undefined;
+  imgPlace8: PartsPuzzleImage | null | undefined;
+  imgPlace9: PartsPuzzleImage | null | undefined;
 }
 

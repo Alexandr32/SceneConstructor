@@ -104,7 +104,7 @@ export class PuzzleSceneEditorMapper {
       }),
 
       dataForPlayerPartsImages: puzzle.dataForPlayerPartsImages.map(item => {
-        return SceneForEditPlayerEditorMapper.toFirebase(item, puzzle)
+        return SceneForEditPuzzleControlPlayerEditorMapper.toFirebase(item, puzzle)
       })
 
     } as PuzzleFirebase;
@@ -164,7 +164,7 @@ export class PuzzleSceneEditorMapper {
 
     if(puzzleFirebase.dataForPlayerPartsImages) {
       puzzle.dataForPlayerPartsImages = puzzleFirebase.dataForPlayerPartsImages?.map((item) => {
-        return SceneForEditPlayerEditorMapper.toDtoForEditor(item)
+        return SceneForEditPuzzleControlPlayerEditorMapper.toDtoForEditor(item)
       })
     } else {
       puzzle.dataForPlayerPartsImages = []
@@ -189,7 +189,7 @@ export class PuzzleSceneEditorMapper {
 /**
  * Маппер сущности для редатирования изображения на области редактирования сцен
  */
-export class SceneForEditPlayerEditorMapper {
+export class SceneForEditPuzzleControlPlayerEditorMapper {
   static toDtoForEditor(sceneForEditPlayer: SceneForEditPlayerFirebase): SceneForEditPlayer {
     const value = new SceneForEditPlayer()
     value.playerId = sceneForEditPlayer.playerId
@@ -227,32 +227,51 @@ export class SceneForEditPlayerEditorMapper {
       imgPlace9: ImagePuzzleEditorMapper.toFirebase(sceneForEditPlayer.imgPlace9[0]),
 
       // Проверка есть ли на сцене что-то
-      imgInPlace1: ImagePuzzleEditorMapper.toFirebase(puzzleEditScene.imgInPlace1[0]),
-      isDraggableImgPlace1: puzzleEditScene.imgInPlace1.length > 0 ? false : true,
+      imgInPlace1: puzzleEditScene.imgInPlace1.map(i => {
+        return ImagePuzzleEditorMapper.toFirebase(i)
+      }),
+      isStopDraggableImgPlace1: puzzleEditScene.imgInPlace1.length > 0 ? true : false,
 
-      imgInPlace2: ImagePuzzleEditorMapper.toFirebase(puzzleEditScene.imgInPlace2[0]),
-      isDraggableImgPlace2: puzzleEditScene.imgInPlace2.length > 0 ? false : true,
+      imgInPlace2: puzzleEditScene.imgInPlace2.map(i => {
+        return ImagePuzzleEditorMapper.toFirebase(i)
+      }),
+      isStopDraggableImgPlace2: puzzleEditScene.imgInPlace2.length > 0 ? true : false,
 
-      imgInPlace3: ImagePuzzleEditorMapper.toFirebase(puzzleEditScene.imgInPlace3[0]),
-      isDraggableImgPlace3: puzzleEditScene.imgInPlace3.length > 0 ? false : true,
+      imgInPlace3: puzzleEditScene.imgInPlace3.map(i => {
+        return ImagePuzzleEditorMapper.toFirebase(i)
+      }),
+      isStopDraggableImgPlace3: puzzleEditScene.imgInPlace3.length > 0 ? true : false,
 
-      imgInPlace4: ImagePuzzleEditorMapper.toFirebase(puzzleEditScene.imgInPlace4[0]),
-      isDraggableImgPlace4: puzzleEditScene.imgInPlace4.length > 0 ? false : true,
+      imgInPlace4: puzzleEditScene.imgInPlace4.map(i => {
+        return ImagePuzzleEditorMapper.toFirebase(i)
+      }),
+      isStopDraggableImgPlace4: puzzleEditScene.imgInPlace4.length > 0 ? true : false,
 
-      imgInPlace5: ImagePuzzleEditorMapper.toFirebase(puzzleEditScene.imgInPlace5[0]),
-      isDraggableImgPlace5: puzzleEditScene.imgInPlace5.length > 0 ? false : true,
+      imgInPlace5: puzzleEditScene.imgInPlace5.map(i => {
+        return ImagePuzzleEditorMapper.toFirebase(i)
+      }),
+      isStopDraggableImgPlace5: puzzleEditScene.imgInPlace5.length > 0 ? true : false,
 
-      imgInPlace6: ImagePuzzleEditorMapper.toFirebase(puzzleEditScene.imgInPlace6[0]),
-      isDraggableImgPlace6: puzzleEditScene.imgInPlace6.length > 0 ? false : true,
+      imgInPlace6: puzzleEditScene.imgInPlace6.map(i => {
+        return ImagePuzzleEditorMapper.toFirebase(i)
+      }),
+      isStopDraggableImgPlace6: puzzleEditScene.imgInPlace6.length > 0 ? true : false,
 
-      imgInPlace7: ImagePuzzleEditorMapper.toFirebase(puzzleEditScene.imgInPlace7[0]),
-      isDraggableImgPlace7: puzzleEditScene.imgInPlace7.length > 0 ? false : true,
+      imgInPlace7: puzzleEditScene.imgInPlace7.map(i => {
+        return ImagePuzzleEditorMapper.toFirebase(i)
+      }),
+      isStopDraggableImgPlace7: puzzleEditScene.imgInPlace7.length > 0 ? true : false,
 
-      imgInPlace8: ImagePuzzleEditorMapper.toFirebase(puzzleEditScene.imgInPlace8[0]),
-      isDraggableImgPlace8: puzzleEditScene.imgInPlace8.length > 0 ? false : true,
+      imgInPlace8: puzzleEditScene.imgInPlace8.map(i => {
+        return ImagePuzzleEditorMapper.toFirebase(i)
+      }),
+      isStopDraggableImgPlace8: puzzleEditScene.imgInPlace8.length > 0 ? true : false,
 
-      imgInPlace9: ImagePuzzleEditorMapper.toFirebase(puzzleEditScene.imgInPlace9[0]),
-      isDraggableImgPlace9: puzzleEditScene.imgInPlace9.length > 0 ? false : true,
+      imgInPlace9: puzzleEditScene.imgInPlace1.map(i => {
+        return ImagePuzzleEditorMapper.toFirebase(i)
+      }),
+      isStopDraggableImgPlace9: puzzleEditScene.imgInPlace9.length > 0 ? true : false,
+
 
     } as SceneForEditPlayerFirebase
   }

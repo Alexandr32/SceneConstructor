@@ -1,14 +1,14 @@
 import { ItemPartsPuzzleImage } from "../core/models/item-parts-puzzle-image.model";
 import { PartsPuzzleImage } from "../core/models/parts-puzzle-image.model";
 import { Answer } from "../editor/models/answer.model";
-import { PuzzleEditScene } from "../editor/models/puzzle-edit-scene";
+import {PuzzleEditScene, SceneForEditPlayer} from "../editor/models/puzzle-edit-scene";
 import { AnswerRunGameFirebase } from "./models/firebase-models/answer-run-game-firebase.model";
 import { PanoramaRunGameFirebase } from "./models/firebase-models/panorama-scene-run-game-firebase.model";
 import { PuzzleSceneRunGameFirebase } from "./models/firebase-models/puzzle-scene-run-game-firebase.model";
 import { SceneAnswerRunGameFirebase } from "./models/firebase-models/scene-answer-run-game-firebase.model";
 import { AnswerRunGame } from "./models/other-models/answer.model";
 import { IBaseSceneRunGame } from "./models/other-models/base-scene-run-game.model";
-import { PuzzleRunGame} from "./models/other-models/puzzle-run-game.models";
+import {PuzzleRunGame, SceneForPuzzleControlPlayerRunGame} from "./models/other-models/puzzle-run-game.models";
 import {SceneRunGame} from "./models/other-models/scene-run-game";
 import {PanoramaRunGame} from "./models/other-models/panorama-run-game";
 import {SceneEditScene} from "../editor/models/scene-edit-scene";
@@ -17,10 +17,11 @@ import {PuzzleFirebase} from "../editor/models/firebase-models/puzzle-firebase.m
 import {
   AnswerEditorMapper,
   ImagePuzzleEditorMapper,
-  SceneForEditPlayerEditorMapper
+  SceneForEditPuzzleControlPlayerEditorMapper
 } from "../editor/models/editor-mapper.model";
 import {Coordinate} from "../editor/models/coordinate.model";
 import {PartsPuzzleImageFirebase} from "../editor/models/firebase-models/parts-puzzle-image-firebase.model";
+import {SceneForEditPlayerFirebase} from "../editor/models/firebase-models/scene-for-edit-player-firebase.model";
 
 export class AnswerRunGameMapper {
   static toFirebase(answer: Answer): AnswerRunGameFirebase {
@@ -137,6 +138,57 @@ export class PanoramaSceneRunGameMapper {
   }
 }
 
+export class SceneForControlPuzzlePlayerRunGameMapper {
+  static toDtoForRunGame(sceneForEditPlayer: SceneForEditPlayerFirebase): SceneForPuzzleControlPlayerRunGame {
+    const value = new SceneForPuzzleControlPlayerRunGame()
+    value.playerId = sceneForEditPlayer.playerId
+    value.name = sceneForEditPlayer.name
+
+    // Изображеняи на сцене для пользователя
+    value.imgInPlace1 = sceneForEditPlayer.imgPlace1 ? [sceneForEditPlayer.imgPlace1] : []
+    value.isStopDraggableImgPlace1 = sceneForEditPlayer.isStopDraggableImgPlace1
+
+    value.imgInPlace2 = sceneForEditPlayer.imgPlace2 ? [sceneForEditPlayer.imgPlace2] : []
+    value.isStopDraggableImgPlace2 = sceneForEditPlayer.isStopDraggableImgPlace2
+
+    value.imgInPlace3 = sceneForEditPlayer.imgPlace3 ? [sceneForEditPlayer.imgPlace3] : []
+    value.isStopDraggableImgPlace3 = sceneForEditPlayer.isStopDraggableImgPlace3
+
+    value.imgInPlace4 = sceneForEditPlayer.imgPlace4 ? [sceneForEditPlayer.imgPlace4] : []
+    value.isStopDraggableImgPlace4 = sceneForEditPlayer.isStopDraggableImgPlace4
+
+    value.imgInPlace5 = sceneForEditPlayer.imgPlace5 ? [sceneForEditPlayer.imgPlace5] : []
+    value.isStopDraggableImgPlace5 = sceneForEditPlayer.isStopDraggableImgPlace5
+
+    value.imgInPlace6 = sceneForEditPlayer.imgPlace6 ? [sceneForEditPlayer.imgPlace6] : []
+    value.isStopDraggableImgPlace6 = sceneForEditPlayer.isStopDraggableImgPlace6
+
+    value.imgInPlace7 = sceneForEditPlayer.imgPlace7 ? [sceneForEditPlayer.imgPlace7] : []
+    value.isStopDraggableImgPlace7 = sceneForEditPlayer.isStopDraggableImgPlace7
+
+    value.imgInPlace8 = sceneForEditPlayer.imgPlace8 ? [sceneForEditPlayer.imgPlace8] : []
+    value.isStopDraggableImgPlace8 = sceneForEditPlayer.isStopDraggableImgPlace8
+
+    value.imgInPlace9 = sceneForEditPlayer.imgPlace9 ? [sceneForEditPlayer.imgPlace9] : []
+    value.isStopDraggableImgPlace9 = sceneForEditPlayer.isStopDraggableImgPlace9
+
+    value.imgInPlace1 = sceneForEditPlayer.imgPlace1 ? [sceneForEditPlayer.imgPlace1] : []
+    value.isStopDraggableImgPlace1 = sceneForEditPlayer.isStopDraggableImgPlace1
+
+    value.imgPlace1 = sceneForEditPlayer.imgPlace1
+    value.imgPlace2 = sceneForEditPlayer.imgPlace2
+    value.imgPlace3 = sceneForEditPlayer.imgPlace3
+    value.imgPlace4 = sceneForEditPlayer.imgPlace4
+    value.imgPlace5 = sceneForEditPlayer.imgPlace5
+    value.imgPlace6 = sceneForEditPlayer.imgPlace6
+    value.imgPlace7 = sceneForEditPlayer.imgPlace7
+    value.imgPlace8 = sceneForEditPlayer.imgPlace8
+    value.imgPlace9 = sceneForEditPlayer.imgPlace9
+
+    return value
+  }
+}
+
 /**
  * Маппер для панорамы с ответами для области редактирования
  */
@@ -199,7 +251,7 @@ export class PuzzleSceneRunGameMapper {
       }),
 
       dataForPlayerPartsImages: puzzle.dataForPlayerPartsImages.map(item => {
-        return SceneForEditPlayerEditorMapper.toFirebase(item, puzzle)
+        return SceneForEditPuzzleControlPlayerEditorMapper.toFirebase(item, puzzle)
       })
 
     } as PuzzleSceneRunGameFirebase;
@@ -255,7 +307,7 @@ export class PuzzleSceneRunGameMapper {
 
     if(puzzleFirebase.dataForPlayerPartsImages) {
       puzzle.dataForPlayerPartsImages = puzzleFirebase.dataForPlayerPartsImages?.map((item) => {
-        return SceneForEditPlayerEditorMapper.toDtoForEditor(item)
+        return SceneForControlPuzzlePlayerRunGameMapper.toDtoForRunGame(item)
       })
     } else {
       puzzle.dataForPlayerPartsImages = []

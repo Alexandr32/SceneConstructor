@@ -1,47 +1,40 @@
 import {PartsPuzzleImageFirebase} from "./parts-puzzle-image-firebase.model";
+import {PartsPuzzleImage} from "../../../core/models/parts-puzzle-image.model";
 
+// Модель для редактирования и заупска игры
 export interface SceneForEditPlayerFirebase {
 
   playerId: string
 
   name: string
 
-  // Те изображения которые есть на сцена играка (которые он выложил и те которые уже там есть)
-  imgInPlace1: PartsPuzzleImageFirebase | null | undefined;
-  // Можно ли перетаскивать элемент
-  isDraggableImgPlace1: boolean
+  // Изображеняи на сцене для пользователя
+  imgInPlace1: PartsPuzzleImage[]
+  isStopDraggableImgPlace1: boolean
 
-  imgInPlace2: PartsPuzzleImageFirebase | null | undefined;
-  // Можно ли перетаскивать элемент
-  isDraggableImgPlace2: boolean
+  imgInPlace2: PartsPuzzleImage[]
+  isStopDraggableImgPlace2: boolean
 
-  imgInPlace3: PartsPuzzleImageFirebase | null | undefined;
-  // Можно ли перетаскивать элемент
-  isDraggableImgPlace3: boolean
+  imgInPlace3: PartsPuzzleImage[]
+  isStopDraggableImgPlace3: boolean
 
-  imgInPlace4: PartsPuzzleImageFirebase | null | undefined;
-  // Можно ли перетаскивать элемент
-  isDraggableImgPlace4: boolean
+  imgInPlace4: PartsPuzzleImage[]
+  isStopDraggableImgPlace4: boolean
 
-  imgInPlace5: PartsPuzzleImageFirebase | null | undefined;
-  // Можно ли перетаскивать элемент
-  isDraggableImgPlace5: boolean
+  imgInPlace5: PartsPuzzleImage[]
+  isStopDraggableImgPlace5: boolean
 
-  imgInPlace6: PartsPuzzleImageFirebase | null | undefined;
-  // Можно ли перетаскивать элемент
-  isDraggableImgPlace6: boolean
+  imgInPlace6: PartsPuzzleImage[]
+  isStopDraggableImgPlace6: boolean
 
-  imgInPlace7: PartsPuzzleImageFirebase | null | undefined;
-  // Можно ли перетаскивать элемент
-  isDraggableImgPlace7: boolean
+  imgInPlace7: PartsPuzzleImage[]
+  isStopDraggableImgPlace7: boolean
 
-  imgInPlace8: PartsPuzzleImageFirebase | null | undefined;
-  // Можно ли перетаскивать элемент
-  isDraggableImgPlace8: boolean
+  imgInPlace8: PartsPuzzleImage[]
+  isStopDraggableImgPlace8: boolean
 
-  imgInPlace9: PartsPuzzleImageFirebase | null | undefined;
-  // Можно ли перетаскивать элемент
-  isDraggableImgPlace9: boolean
+  imgInPlace9: PartsPuzzleImage[]
+  isStopDraggableImgPlace9: boolean
 
   // Доступные изображения для выбора
   imgPlace1: PartsPuzzleImageFirebase | null | undefined;
