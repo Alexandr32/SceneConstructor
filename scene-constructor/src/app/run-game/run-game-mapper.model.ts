@@ -304,7 +304,6 @@ export class PuzzleSceneRunGameMapper {
     puzzle.imgInPlace8 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace8)
     puzzle.imgInPlace9 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace9)
 
-    debugger
     if(puzzleFirebase.dataForPlayerPartsImages) {
       puzzle.dataForPlayerPartsImages = puzzleFirebase.dataForPlayerPartsImages?.map((item) => {
         return SceneForControlPuzzlePlayerRunGameMapper.toDtoForRunGame(item)
