@@ -267,7 +267,7 @@ export class SceneForEditPuzzleControlPlayerEditorMapper {
       }),
       isStopDraggableImgPlace8: puzzleEditScene.imgInPlace8.length > 0 ? true : false,
 
-      imgInPlace9: puzzleEditScene.imgInPlace1.map(i => {
+      imgInPlace9: puzzleEditScene.imgInPlace9.map(i => {
         return ImagePuzzleEditorMapper.toFirebase(i)
       }),
       isStopDraggableImgPlace9: puzzleEditScene.imgInPlace9.length > 0 ? true : false,

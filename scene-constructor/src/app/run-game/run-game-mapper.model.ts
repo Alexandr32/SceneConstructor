@@ -145,35 +145,34 @@ export class SceneForControlPuzzlePlayerRunGameMapper {
     value.name = sceneForEditPlayer.name
 
     // Изображеняи на сцене для пользователя
-    value.imgInPlace1 = sceneForEditPlayer.imgPlace1 ? [sceneForEditPlayer.imgPlace1] : []
+    value.imgInPlace1 = sceneForEditPlayer.imgInPlace1
     value.isStopDraggableImgPlace1 = sceneForEditPlayer.isStopDraggableImgPlace1
 
-    value.imgInPlace2 = sceneForEditPlayer.imgPlace2 ? [sceneForEditPlayer.imgPlace2] : []
+    value.imgInPlace2 = sceneForEditPlayer.imgInPlace2
     value.isStopDraggableImgPlace2 = sceneForEditPlayer.isStopDraggableImgPlace2
 
-    value.imgInPlace3 = sceneForEditPlayer.imgPlace3 ? [sceneForEditPlayer.imgPlace3] : []
+    value.imgInPlace3 = sceneForEditPlayer.imgInPlace3
     value.isStopDraggableImgPlace3 = sceneForEditPlayer.isStopDraggableImgPlace3
 
-    value.imgInPlace4 = sceneForEditPlayer.imgPlace4 ? [sceneForEditPlayer.imgPlace4] : []
+    value.imgInPlace4 = sceneForEditPlayer.imgInPlace4
     value.isStopDraggableImgPlace4 = sceneForEditPlayer.isStopDraggableImgPlace4
 
-    value.imgInPlace5 = sceneForEditPlayer.imgPlace5 ? [sceneForEditPlayer.imgPlace5] : []
+    value.imgInPlace5 = sceneForEditPlayer.imgInPlace5
     value.isStopDraggableImgPlace5 = sceneForEditPlayer.isStopDraggableImgPlace5
 
-    value.imgInPlace6 = sceneForEditPlayer.imgPlace6 ? [sceneForEditPlayer.imgPlace6] : []
+    value.imgInPlace6 = sceneForEditPlayer.imgInPlace6
     value.isStopDraggableImgPlace6 = sceneForEditPlayer.isStopDraggableImgPlace6
 
-    value.imgInPlace7 = sceneForEditPlayer.imgPlace7 ? [sceneForEditPlayer.imgPlace7] : []
+    value.imgInPlace7 = sceneForEditPlayer.imgInPlace7
     value.isStopDraggableImgPlace7 = sceneForEditPlayer.isStopDraggableImgPlace7
 
-    value.imgInPlace8 = sceneForEditPlayer.imgPlace8 ? [sceneForEditPlayer.imgPlace8] : []
+    value.imgInPlace8 = sceneForEditPlayer.imgInPlace8
     value.isStopDraggableImgPlace8 = sceneForEditPlayer.isStopDraggableImgPlace8
 
-    value.imgInPlace9 = sceneForEditPlayer.imgPlace9 ? [sceneForEditPlayer.imgPlace9] : []
-    value.isStopDraggableImgPlace9 = sceneForEditPlayer.isStopDraggableImgPlace9
+    debugger
 
-    value.imgInPlace1 = sceneForEditPlayer.imgPlace1 ? [sceneForEditPlayer.imgPlace1] : []
-    value.isStopDraggableImgPlace1 = sceneForEditPlayer.isStopDraggableImgPlace1
+    value.imgInPlace9 = sceneForEditPlayer.imgInPlace9
+    value.isStopDraggableImgPlace9 = sceneForEditPlayer.isStopDraggableImgPlace9
 
     value.imgPlace1 = sceneForEditPlayer.imgPlace1
     value.imgPlace2 = sceneForEditPlayer.imgPlace2
@@ -305,6 +304,7 @@ export class PuzzleSceneRunGameMapper {
     puzzle.imgInPlace8 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace8)
     puzzle.imgInPlace9 = this.arrayPuzzleFBtoModelMapping(puzzleFirebase.imgInPlace9)
 
+    debugger
     if(puzzleFirebase.dataForPlayerPartsImages) {
       puzzle.dataForPlayerPartsImages = puzzleFirebase.dataForPlayerPartsImages?.map((item) => {
         return SceneForControlPuzzlePlayerRunGameMapper.toDtoForRunGame(item)

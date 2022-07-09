@@ -40,6 +40,7 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
   // Выбранный кусок пазла
   //private selectItemPartsPuzzleImage: ItemPartsPuzzleImage
 
+  // Изображения на сцене
   imgPlace1: { value: PartsPuzzleImage, drag: boolean }[] = [];
   imgPlace2: { value: PartsPuzzleImage, drag: boolean }[] = [];
   imgPlace3: { value: PartsPuzzleImage, drag: boolean }[] = [];
@@ -126,78 +127,133 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
         }
 
         // TODO: переделать
-        if(scene.imgInPlace1) {
-          scene.imgInPlace1.forEach(img => {
-            this.imgPlace1.push({
-              value: img,
-              drag: false
-            })
+        // if(scene.imgInPlace1) {
+        //   scene.imgInPlace1.forEach(img => {
+        //     this.imgPlace1.push({
+        //       value: img,
+        //       drag: false
+        //     })
+        //   })
+        // }
+        // if(scene.imgInPlace2) {
+        //   scene.imgInPlace2.forEach(img => {
+        //     this.imgPlace2.push({
+        //       value: img,
+        //       drag: false
+        //     })
+        //   })
+        // }
+        // if(scene.imgInPlace3) {
+        //   scene.imgInPlace3.forEach(img => {
+        //     this.imgPlace3.push({
+        //       value: img,
+        //       drag: false
+        //     })
+        //   })
+        // }
+        // if(scene.imgInPlace4) {
+        //   scene.imgInPlace4.forEach(img => {
+        //     this.imgPlace4.push({
+        //       value: img,
+        //       drag: false
+        //     })
+        //   })
+        // }
+        // if(scene.imgInPlace5) {
+        //   scene.imgInPlace5.forEach(img => {
+        //     this.imgPlace5.push({
+        //       value: img,
+        //       drag: false
+        //     })
+        //   })
+        // }
+        // if(scene.imgInPlace6) {
+        //   scene.imgInPlace6.forEach(img => {
+        //     this.imgPlace6.push({
+        //       value: img,
+        //       drag: false
+        //     })
+        //   })
+        // }
+        // if(scene.imgInPlace7) {
+        //   scene.imgInPlace7.forEach(img => {
+        //     this.imgPlace7.push({
+        //       value: img,
+        //       drag: false
+        //     })
+        //   })
+        // }
+        // if(scene.imgInPlace8) {
+        //   scene.imgInPlace8.forEach(img => {
+        //     this.imgPlace8.push({
+        //       value: img,
+        //       drag: false
+        //     })
+        //   })
+        // }
+        // if(scene.imgInPlace9) {
+        //   scene.imgInPlace9.forEach(img => {
+        //     this.imgPlace9.push({
+        //       value: img,
+        //       drag: false
+        //     })
+        //   })
+        // }
+
+        scenePartsPuzzleImagesForPlayer.imgInPlace1.forEach((img) => {
+          this.imgPlace1.push({
+            value: img,
+            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace1
           })
-        }
-        if(scene.imgInPlace2) {
-          scene.imgInPlace2.forEach(img => {
-            this.imgPlace2.push({
-              value: img,
-              drag: false
-            })
+        })
+        scenePartsPuzzleImagesForPlayer.imgInPlace2.forEach((img) => {
+          this.imgPlace2.push({
+            value: img,
+            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace2
           })
-        }
-        if(scene.imgInPlace3) {
-          scene.imgInPlace3.forEach(img => {
-            this.imgPlace3.push({
-              value: img,
-              drag: false
-            })
+        })
+        scenePartsPuzzleImagesForPlayer.imgInPlace3.forEach((img) => {
+          this.imgPlace3.push({
+            value: img,
+            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace3
           })
-        }
-        if(scene.imgInPlace4) {
-          scene.imgInPlace4.forEach(img => {
-            this.imgPlace4.push({
-              value: img,
-              drag: false
-            })
+        })
+        scenePartsPuzzleImagesForPlayer.imgInPlace4.forEach((img) => {
+          this.imgPlace4.push({
+            value: img,
+            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace4
           })
-        }
-        if(scene.imgInPlace5) {
-          scene.imgInPlace5.forEach(img => {
-            this.imgPlace5.push({
-              value: img,
-              drag: false
-            })
+        })
+        scenePartsPuzzleImagesForPlayer.imgInPlace5.forEach((img) => {
+          this.imgPlace5.push({
+            value: img,
+            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace5
           })
-        }
-        if(scene.imgInPlace6) {
-          scene.imgInPlace6.forEach(img => {
-            this.imgPlace6.push({
-              value: img,
-              drag: false
-            })
+        })
+        scenePartsPuzzleImagesForPlayer.imgInPlace6.forEach((img) => {
+          this.imgPlace6.push({
+            value: img,
+            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace6
           })
-        }
-        if(scene.imgInPlace7) {
-          scene.imgInPlace7.forEach(img => {
-            this.imgPlace7.push({
-              value: img,
-              drag: false
-            })
+        })
+        scenePartsPuzzleImagesForPlayer.imgInPlace7.forEach((img) => {
+          this.imgPlace7.push({
+            value: img,
+            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace7
           })
-        }
-        if(scene.imgInPlace8) {
-          scene.imgInPlace8.forEach(img => {
-            this.imgPlace8.push({
-              value: img,
-              drag: false
-            })
+        })
+        scenePartsPuzzleImagesForPlayer.imgInPlace8.forEach((img) => {
+          this.imgPlace8.push({
+            value: img,
+            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace8
           })
-        }
-        if(scene.imgInPlace9) {
-          scene.imgInPlace9.forEach(img => {
-            this.imgPlace9.push({
-              value: img,
-              drag: false
-            })
+        })
+        scenePartsPuzzleImagesForPlayer.imgInPlace9.forEach((img) => {
+          this.imgPlace9.push({
+            value: img,
+            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace9
           })
-        }
+        })
 
         this.imgForSelectPlayer1 = scenePartsPuzzleImagesForPlayer.imgPlace1
         this.imgForSelectPlayer2 = scenePartsPuzzleImagesForPlayer.imgPlace2
