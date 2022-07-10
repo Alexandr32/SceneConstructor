@@ -79,6 +79,7 @@
           (drop)="dragImg($event, i)"
           (dragover)="dragOver($event)"
           draggable="true">
+          <div *ngIf="parts.length > 1" class="text-red">Не более 1!!!</div>
           <div *ngFor="let item of parts; let iItem = index"
                (dragstart)="dragStarImg($event, i, iItem)"
                (dragover)="dragOver($event)"

@@ -412,6 +412,8 @@ export class EditPuzzleDialogComponent implements OnInit {
     }
 
     this.dragEvent = 'completed'
+
+    this.validationSceneImage()
     event.stopPropagation()
   }
 
@@ -599,6 +601,7 @@ export class EditPuzzleDialogComponent implements OnInit {
       values.imgPlace9.length = 0
     })
 
+    this.validationSceneImage()
   }
 
   openSelectBackgroundImageFileDialog() {
@@ -640,6 +643,17 @@ export class EditPuzzleDialogComponent implements OnInit {
 
   toggleVideo() {
     //this.videoPlayer.nativeElement.play()
+  }
+
+  validationSceneImage() {
+    for (let item of this.scenePartsPuzzleImages) {
+      if (item.length > 1) {
+        this.validData = false
+        break;
+      } else {
+        this.validData = true
+      }
+    }
   }
 
   validationPlayerImage() {
