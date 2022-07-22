@@ -8,7 +8,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {IBaseSceneRunGame} from '../models/other-models/base-scene-run-game.model';
 import {StoreRunGameService} from "../services/store-run-game.service";
 import {BaseComponent} from "../../base-component/base-component.component";
-import {takeUntil} from "rxjs/operators";
+import {filter, takeUntil} from "rxjs/operators";
 import {BehaviorSubject, Observable, of} from "rxjs";
 import {SettingsRunGameService} from "../services/settings-run-game.service";
 
@@ -37,11 +37,15 @@ export class RunGameComponent extends BaseComponent implements OnInit, OnDestroy
 
   async ngOnInit() {
 
-    this.storeRunGameService.currentScene$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(currentScene => {
-        this.selectScene = currentScene
-        this.soundUrl$.next(currentScene?.soundFile)
+    this.storeRunGameService.stateGame$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        filter(i => i !== null)
+      )
+      .subscribe((state) => {
+        console.log(state)
+        this.selectScene = state.currentScene
+        this.soundUrl$.next(state?.currentScene?.soundFile)
       })
 
     this.settingsRunGameService.settingsRunGame$

@@ -341,14 +341,27 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
       return
     }
 
+    this.showMessage('Загрузка')
+
     await this.runGameService.saveNewGame(this.game)
-    await this.stateService.saveNewStateGame(this.game)
+
+    const startScene = this.game.scenes.find(item => {
+      if (item.isStartGame) {
+        return item
+      }
+    })
+
+    const savingGame = await this.runGameService.getGameById(this.game.id)
+
+    await this.stateService.saveNewStateGameForScene(this.game.id, savingGame.scenesMap.get(startScene.id))
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run',  this.game.id])
     );
 
     window.open(url, '_blank');
+
+    this.closeMessage()
   }
 
   async runGameDevelopMode() {
@@ -359,8 +372,19 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
       return
     }
 
+    this.showMessage('Загрузка')
+
     await this.runGameService.saveNewGame(this.game)
-    await this.stateService.saveNewStateGame(this.game)
+
+    const startScene = this.game.scenes.find(item => {
+      if (item.isStartGame) {
+        return item
+      }
+    })
+
+    const savingGame = await this.runGameService.getGameById(this.game.id)
+
+    await this.stateService.saveNewStateGameForScene(this.game.id, savingGame.scenesMap.get(startScene.id))
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run',  this.game.id, {
@@ -369,6 +393,8 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
     );
 
     window.open(url, '_blank');
+
+    this.closeMessage()
   }
 
   async runGameByScene(scene: SceneEditScene) {
@@ -379,15 +405,15 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
       return
     }
 
-    await this.runGameService.saveNewGame(this.game)
-
-    await this.stateService.saveStateGameForScene(this.game.id, scene.id)
+    this.showMessage('Загрузка')
+    await this.saveDataGame(scene)
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run', this.game.id])
     );
 
     window.open(url, '_blank');
+    this.closeMessage()
   }
 
   async runGameBySceneInDebugMode(scene: SceneEditScene) {
@@ -398,9 +424,8 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
       return
     }
 
-    await this.runGameService.saveNewGame(this.game)
-
-    await this.stateService.saveStateGameForScene(this.game.id, scene.id)
+    this.showMessage('Загрузка')
+    await this.saveDataGame(scene)
 
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['run',  this.game.id, {
@@ -409,12 +434,25 @@ export class EditorComponent extends BaseComponent implements OnInit, AfterViewI
     );
 
     window.open(url, '_blank');
+    this.closeMessage()
+  }
+
+  private async saveDataGame(scene: SceneEditScene) {
+    await this.runGameService.saveNewGame(this.game)
+
+    const savingGame = await this.runGameService.getGameById(this.game.id)
+
+    await this.stateService.saveNewStateGameForScene(this.game.id, savingGame.scenesMap.get(scene.id))
   }
 
   private showMessage(message: string) {
     this.dialog.open(MessageDialogComponent, {
       data: message
     });
+  }
+
+  closeMessage() {
+    this.dialog.closeAll()
   }
 
   /**

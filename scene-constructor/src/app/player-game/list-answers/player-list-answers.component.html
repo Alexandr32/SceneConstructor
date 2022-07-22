@@ -1,6 +1,6 @@
 <div class="player-test__btn-answers">
   <button
-    *ngFor="let item of (answers$ | async)"
+    *ngFor="let item of answers"
     mat-stroked-button
     class="player-test__btn-answer"
     (click)="selectedAnswer(item)"

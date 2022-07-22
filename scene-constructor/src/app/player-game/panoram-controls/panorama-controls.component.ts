@@ -30,10 +30,10 @@ export class PanoramaControlsComponent extends BaseComponent implements OnInit, 
   }
 
   ngOnInit(): void {
-    this.storeRunGameService.currentScene$
+    this.storeRunGameService.stateGame$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(currentScene => {
-        this.isShowControls = currentScene.players.includes(this.player.id)
+      .subscribe(state => {
+        this.isShowControls = state.currentScene.players.includes(this.player.id)
       })
   }
 

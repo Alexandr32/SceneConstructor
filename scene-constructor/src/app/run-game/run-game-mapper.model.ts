@@ -184,6 +184,52 @@ export class SceneForControlPuzzlePlayerRunGameMapper {
 
     return value
   }
+
+  static toFirebase(sceneForEditPlayer: SceneForPuzzleControlPlayerRunGame): SceneForEditPlayerFirebase {
+
+    return {
+      playerId: sceneForEditPlayer.playerId,
+      name: sceneForEditPlayer.name,
+
+      // Изображеняи на сцене для пользователя
+      imgInPlace1: sceneForEditPlayer.imgInPlace1,
+      isStopDraggableImgPlace1: sceneForEditPlayer.isStopDraggableImgPlace1,
+
+      imgInPlace2: sceneForEditPlayer.imgInPlace2,
+      isStopDraggableImgPlace2: sceneForEditPlayer.isStopDraggableImgPlace2,
+
+      imgInPlace3: sceneForEditPlayer.imgInPlace3,
+      isStopDraggableImgPlace3: sceneForEditPlayer.isStopDraggableImgPlace3,
+
+      imgInPlace4: sceneForEditPlayer.imgInPlace4,
+      isStopDraggableImgPlace4: sceneForEditPlayer.isStopDraggableImgPlace4,
+
+      imgInPlace5: sceneForEditPlayer.imgInPlace5,
+      isStopDraggableImgPlace5: sceneForEditPlayer.isStopDraggableImgPlace5,
+
+      imgInPlace6: sceneForEditPlayer.imgInPlace6,
+      isStopDraggableImgPlace6: sceneForEditPlayer.isStopDraggableImgPlace6,
+
+      imgInPlace7: sceneForEditPlayer.imgInPlace7,
+      isStopDraggableImgPlace7: sceneForEditPlayer.isStopDraggableImgPlace7,
+
+      imgInPlace8: sceneForEditPlayer.imgInPlace8,
+      isStopDraggableImgPlace8: sceneForEditPlayer.isStopDraggableImgPlace8,
+
+      imgInPlace9: sceneForEditPlayer.imgInPlace9,
+      isStopDraggableImgPlace9: sceneForEditPlayer.isStopDraggableImgPlace9,
+
+      imgPlace1: sceneForEditPlayer.imgPlace1,
+      imgPlace2: sceneForEditPlayer.imgPlace2,
+      imgPlace3: sceneForEditPlayer.imgPlace3,
+      imgPlace4: sceneForEditPlayer.imgPlace4,
+      imgPlace5: sceneForEditPlayer.imgPlace5,
+      imgPlace6: sceneForEditPlayer.imgPlace6,
+      imgPlace7: sceneForEditPlayer.imgPlace7,
+      imgPlace8: sceneForEditPlayer.imgPlace8,
+      imgPlace9: sceneForEditPlayer.imgPlace9,
+    } as SceneForEditPlayerFirebase
+  }
 }
 
 /**

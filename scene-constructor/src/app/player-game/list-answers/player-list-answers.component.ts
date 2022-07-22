@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {combineLatest, Observable} from "rxjs";
 import {AnswerRunGame} from "../../run-game/models/other-models/answer.model";
-import {map, takeUntil} from "rxjs/operators";
+import {takeUntil} from "rxjs/operators";
 import {Player} from "../../core/models/player.model";
 import {StoreRunGameService} from "../../run-game/services/store-run-game.service";
 import {BaseComponent} from "../../base-component/base-component.component";
@@ -16,7 +15,7 @@ export class PlayerListAnswersComponent extends BaseComponent implements OnInit,
   @Input()
   player: Player
 
-  answers$: Observable<AnswerRunGame[]>
+  answers: AnswerRunGame[]
 
   @Output()
   selectAnswer: EventEmitter<AnswerRunGame> = new EventEmitter<AnswerRunGame>()
@@ -27,29 +26,26 @@ export class PlayerListAnswersComponent extends BaseComponent implements OnInit,
 
   ngOnInit(): void {
 
-    const currentScene$ = this.storeRunGameService.currentScene$
     const stateGame$ = this.storeRunGameService.stateGame$
-
-    this.answers$ = combineLatest(currentScene$, stateGame$,
-      (currentScene, stateGame) =>
-        ({currentScene, stateGame}))
+    stateGame$
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        map(pair => {
-
-          if(!pair.currentScene.players.includes(this.player.id)) {
-            return []
-          }
-
-          const selectAnswer = pair.stateGame.answer?.find(a => a.playerId === this.player.id)
-
-          if(selectAnswer) {
-            return []
-          }
-
-          return pair.currentScene.answers
-        })
       )
+      .subscribe((state) => {
+
+        const selectAnswer = state.answer?.find(a => a.playerId === this.player.id)
+
+        if (selectAnswer) {
+          this.answers = []
+          return
+        }
+
+        if (state.currentScene.players.includes(this.player.id)) {
+          this.answers = state?.currentScene?.answers
+        } else {
+          this.answers = []
+        }
+      })
   }
 
   async selectedAnswer(answer: AnswerRunGame) {

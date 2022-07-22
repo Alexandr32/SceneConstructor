@@ -1,6 +1,7 @@
 import { Player } from "src/app/core/models/player.model";
 import { IBaseSceneRunGame } from "./base-scene-run-game.model";
 
+// Содержит в себе информацию о игре но не содержит в себе состояние игры
 export class RunGame {
 
   scenesMap: Map<string, IBaseSceneRunGame>

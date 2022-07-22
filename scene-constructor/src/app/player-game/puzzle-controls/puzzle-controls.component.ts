@@ -1,12 +1,14 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {StoreRunGameService} from "../../run-game/services/store-run-game.service";
 import {Player} from "../../core/models/player.model";
 import {BaseComponent} from "../../base-component/base-component.component";
-import {filter, takeUntil} from "rxjs/operators";
+import {takeUntil} from "rxjs/operators";
 import {TypeSceneEnum} from "../../core/models/type-scene.enum";
-import {PuzzleRunGame} from "../../run-game/models/other-models/puzzle-run-game.models";
+import {
+  PuzzleRunGame,
+  SceneForPuzzleControlPlayerRunGame
+} from "../../run-game/models/other-models/puzzle-run-game.models";
 import {CdkDragDrop} from "@angular/cdk/drag-drop/drag-events";
-import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {PartsPuzzleImage} from "../../core/models/parts-puzzle-image.model";
 
 @Component({
@@ -18,6 +20,19 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
   @Input()
   player: Player
+
+  @Output()
+  sceneForPuzzleControlPlayerRunGame: EventEmitter<{
+    sceneForPuzzleControlPlayerRunGame: SceneForPuzzleControlPlayerRunGame, // Сцена игрока
+    event: 'del' | 'add' // Добавить или удалить элемент со сцены,
+    numberPosition: number // Номер позиции с 1-9,
+    image: PartsPuzzleImage
+  }> = new EventEmitter<{
+    sceneForPuzzleControlPlayerRunGame: SceneForPuzzleControlPlayerRunGame, // Сцена игрока
+    event: 'del' | 'add' // Добавить или удалить элемент со сцены,
+    numberPosition: number // Номер позиции с 1-9,
+    image: PartsPuzzleImage
+  }>()
 
   isShowControls: boolean = false
 
@@ -67,162 +82,152 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
     this.imgForSelectPlayer9,
   ]
 
+  stateScenePlayer: SceneForPuzzleControlPlayerRunGame
+
+  currentScene: PuzzleRunGame | undefined
+
+
   constructor(private storeRunGameService: StoreRunGameService) {
     super()
   }
 
   ngOnInit(): void {
-    this.storeRunGameService.currentScene$
+    this.storeRunGameService.stateGame$
       .pipe(
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe((currentScene) => {
+      .subscribe((state) => {
 
-        console.log(1)
+        this.isShowControls = state.currentScene.players.includes(this.player.id)
 
-        this.isShowControls = currentScene.players.includes(this.player.id)
-
-        if (currentScene.typesScene !== TypeSceneEnum.Puzzle) {
+        if (state.currentScene.typesScene !== TypeSceneEnum.Puzzle) {
           return
         }
 
-        const scene = currentScene as PuzzleRunGame
-
-        console.log(scene)
-
-        const scenePartsPuzzleImagesForPlayer = scene.dataForPlayerPartsImages
-          .find(i => i.playerId === this.player.id)
-
-        if(!scenePartsPuzzleImagesForPlayer) {
+        if(state.currentScene.id === this.currentScene?.id) {
           return;
         }
 
-        scenePartsPuzzleImagesForPlayer.imgInPlace1.forEach((img) => {
+        this.currentScene = state.currentScene as PuzzleRunGame
+
+        this.stateScenePlayer = state.dataForPlayerPartsImages
+          .find(i => i.playerId === this.player.id)
+
+        if(!this.stateScenePlayer) {
+          return;
+        }
+
+        this.stateScenePlayer.imgInPlace1.forEach((img) => {
           this.imgPlace1.push({
             value: img,
-            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace1
+            drag: !this.stateScenePlayer.isStopDraggableImgPlace1
           })
         })
-        scenePartsPuzzleImagesForPlayer.imgInPlace2.forEach((img) => {
+        this.stateScenePlayer.imgInPlace2.forEach((img) => {
           this.imgPlace2.push({
             value: img,
-            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace2
+            drag: !this.stateScenePlayer.isStopDraggableImgPlace2
           })
         })
-        scenePartsPuzzleImagesForPlayer.imgInPlace3.forEach((img) => {
+        this.stateScenePlayer.imgInPlace3.forEach((img) => {
           this.imgPlace3.push({
             value: img,
-            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace3
+            drag: !this.stateScenePlayer.isStopDraggableImgPlace3
           })
         })
-        scenePartsPuzzleImagesForPlayer.imgInPlace4.forEach((img) => {
+        this.stateScenePlayer.imgInPlace4.forEach((img) => {
           this.imgPlace4.push({
             value: img,
-            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace4
+            drag: !this.stateScenePlayer.isStopDraggableImgPlace4
           })
         })
-        scenePartsPuzzleImagesForPlayer.imgInPlace5.forEach((img) => {
+        this.stateScenePlayer.imgInPlace5.forEach((img) => {
           this.imgPlace5.push({
             value: img,
-            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace5
+            drag: !this.stateScenePlayer.isStopDraggableImgPlace5
           })
         })
-        scenePartsPuzzleImagesForPlayer.imgInPlace6.forEach((img) => {
+        this.stateScenePlayer.imgInPlace6.forEach((img) => {
           this.imgPlace6.push({
             value: img,
-            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace6
+            drag: !this.stateScenePlayer.isStopDraggableImgPlace6
           })
         })
-        scenePartsPuzzleImagesForPlayer.imgInPlace7.forEach((img) => {
+        this.stateScenePlayer.imgInPlace7.forEach((img) => {
           this.imgPlace7.push({
             value: img,
-            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace7
+            drag: !this.stateScenePlayer.isStopDraggableImgPlace7
           })
         })
-        scenePartsPuzzleImagesForPlayer.imgInPlace8.forEach((img) => {
+        this.stateScenePlayer.imgInPlace8.forEach((img) => {
           this.imgPlace8.push({
             value: img,
-            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace8
+            drag: !this.stateScenePlayer.isStopDraggableImgPlace8
           })
         })
-        scenePartsPuzzleImagesForPlayer.imgInPlace9.forEach((img) => {
+        this.stateScenePlayer.imgInPlace9.forEach((img) => {
           this.imgPlace9.push({
             value: img,
-            drag: !scenePartsPuzzleImagesForPlayer.isStopDraggableImgPlace9
+            drag: !this.stateScenePlayer.isStopDraggableImgPlace9
           })
         })
 
-        if(scenePartsPuzzleImagesForPlayer.imgPlace1) {
+        if(this.stateScenePlayer.imgPlace1) {
           this.imgForSelectPlayer1.push({
-            value: scenePartsPuzzleImagesForPlayer.imgPlace1,
+            value: this.stateScenePlayer.imgPlace1,
             drag: true
           })
         }
-        if(scenePartsPuzzleImagesForPlayer.imgPlace2) {
+        if(this.stateScenePlayer.imgPlace2) {
           this.imgForSelectPlayer2.push({
-            value: scenePartsPuzzleImagesForPlayer.imgPlace2,
+            value: this.stateScenePlayer.imgPlace2,
             drag: true
           })
         }
-        if(scenePartsPuzzleImagesForPlayer.imgPlace3) {
+        if(this.stateScenePlayer.imgPlace3) {
           this.imgForSelectPlayer3.push({
-            value: scenePartsPuzzleImagesForPlayer.imgPlace3,
+            value: this.stateScenePlayer.imgPlace3,
             drag: true
           })
         }
-        if(scenePartsPuzzleImagesForPlayer.imgPlace4) {
+        if(this.stateScenePlayer.imgPlace4) {
           this.imgForSelectPlayer4.push({
-            value: scenePartsPuzzleImagesForPlayer.imgPlace4,
+            value: this.stateScenePlayer.imgPlace4,
             drag: true
           })
         }
-        if(scenePartsPuzzleImagesForPlayer.imgPlace5) {
+        if(this.stateScenePlayer.imgPlace5) {
           this.imgForSelectPlayer5.push({
-            value: scenePartsPuzzleImagesForPlayer.imgPlace5,
+            value: this.stateScenePlayer.imgPlace5,
             drag: true
           })
         }
-        if(scenePartsPuzzleImagesForPlayer.imgPlace6) {
+        if(this.stateScenePlayer.imgPlace6) {
           this.imgForSelectPlayer6.push({
-            value: scenePartsPuzzleImagesForPlayer.imgPlace6,
+            value: this.stateScenePlayer.imgPlace6,
             drag: true
           })
         }
-        if(scenePartsPuzzleImagesForPlayer.imgPlace7) {
+        if(this.stateScenePlayer.imgPlace7) {
           this.imgForSelectPlayer7.push({
-            value: scenePartsPuzzleImagesForPlayer.imgPlace7,
+            value: this.stateScenePlayer.imgPlace7,
             drag: true
           })
         }
-        if(scenePartsPuzzleImagesForPlayer.imgPlace8) {
+        if(this.stateScenePlayer.imgPlace8) {
           this.imgForSelectPlayer8.push({
-            value: scenePartsPuzzleImagesForPlayer.imgPlace8,
+            value: this.stateScenePlayer.imgPlace8,
             drag: true
           })
         }
-        if(scenePartsPuzzleImagesForPlayer.imgPlace9) {
+        if(this.stateScenePlayer.imgPlace9) {
           this.imgForSelectPlayer9.push({
-            value: scenePartsPuzzleImagesForPlayer.imgPlace9,
+            value: this.stateScenePlayer.imgPlace9,
             drag: true
           })
         }
 
 
-      })
-
-    this.storeRunGameService.stateGame$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((state) => {
-
-        if (!state) {
-          return
-        }
-
-        if (!state.scenePartsPuzzleImages) {
-          return
-        }
-
-        console.log(state.scenePartsPuzzleImages)
       })
   }
 
@@ -237,7 +242,8 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
    * @param number номер в массиве на который двигают
    */
   async dropItemInContainer(event: CdkDragDrop<{ value: PartsPuzzleImage, drag: boolean }[]>,
-                            currentPlaceElement: { value: PartsPuzzleImage, drag: boolean }[]) {
+                            currentPlaceElement: { value: PartsPuzzleImage, drag: boolean }[],
+                            number: number) {
 
     if(currentPlaceElement.length > 0) {
       return
@@ -270,8 +276,7 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
     // TODO: Вот сюда добавляем сохраниение в БД
     //  здесь учитывать сохранение флага о пермещении
-
-    //this.storeRunGameService.
+    this.saveStatePlayer('add', number, currentDragElement.value)
   }
 
   /**
@@ -281,7 +286,8 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
    * @param number номер в массиве на который двигают
    */
   dropItemsTemplate(event: CdkDragDrop<{ value: PartsPuzzleImage, drag: boolean }[]>,
-                    currentPlaceElement: { value: PartsPuzzleImage, drag: boolean }[]) {
+                    currentPlaceElement: { value: PartsPuzzleImage, drag: boolean }[],
+                    number: number) {
 
     if(currentPlaceElement.length > 0) {
       return
@@ -314,5 +320,41 @@ export class PuzzleControlsComponent extends BaseComponent implements OnInit, On
 
     // TODO: Вот сюда добавляем сохраниение в БД
     //  здесь учитывать сохранение флага о пермещении
+    this.saveStatePlayer('del', number, currentDragElement.value)
+  }
+
+  saveStatePlayer(event: 'del' | 'add', numberPosition: number, image: PartsPuzzleImage) {
+
+    // Кастуем то что на сцене в то что должно уйти в базу
+
+    this.stateScenePlayer.imgInPlace1 = this.imgPlace1.map(i => i.value)
+    this.stateScenePlayer.imgInPlace2 = this.imgPlace2.map(i => i.value)
+    this.stateScenePlayer.imgInPlace3 = this.imgPlace3.map(i => i.value)
+    this.stateScenePlayer.imgInPlace4 = this.imgPlace4.map(i => i.value)
+    this.stateScenePlayer.imgInPlace5 = this.imgPlace5.map(i => i.value)
+    this.stateScenePlayer.imgInPlace6 = this.imgPlace6.map(i => i.value)
+    this.stateScenePlayer.imgInPlace7 = this.imgPlace7.map(i => i.value)
+    this.stateScenePlayer.imgInPlace8 = this.imgPlace8.map(i => i.value)
+    this.stateScenePlayer.imgInPlace9 = this.imgPlace9.map(i => i.value)
+
+    this.stateScenePlayer.imgPlace1 = this.imgForSelectPlayer1.length > 0 ? this.imgForSelectPlayer1.map(i => i.value)[0] : null
+    this.stateScenePlayer.imgPlace2 = this.imgForSelectPlayer2.length > 0 ? this.imgForSelectPlayer2.map(i => i.value)[0] : null
+    this.stateScenePlayer.imgPlace3 = this.imgForSelectPlayer3.length > 0 ? this.imgForSelectPlayer3.map(i => i.value)[0] : null
+    this.stateScenePlayer.imgPlace4 = this.imgForSelectPlayer4.length > 0 ? this.imgForSelectPlayer4.map(i => i.value)[0] : null
+    this.stateScenePlayer.imgPlace5 = this.imgForSelectPlayer5.length > 0 ? this.imgForSelectPlayer5.map(i => i.value)[0] : null
+    this.stateScenePlayer.imgPlace6 = this.imgForSelectPlayer6.length > 0 ? this.imgForSelectPlayer6.map(i => i.value)[0] : null
+    this.stateScenePlayer.imgPlace7 = this.imgForSelectPlayer7.length > 0 ? this.imgForSelectPlayer7.map(i => i.value)[0] : null
+    this.stateScenePlayer.imgPlace8 = this.imgForSelectPlayer8.length > 0 ? this.imgForSelectPlayer8.map(i => i.value)[0] : null
+    this.stateScenePlayer.imgPlace9 = this.imgForSelectPlayer9.length > 0 ? this.imgForSelectPlayer9.map(i => i.value)[0] : null
+
+
+    const value = {
+        sceneForPuzzleControlPlayerRunGame: this.stateScenePlayer, // Сцена игрока
+        event: event, // Добавить или удалить элемент со сцены,
+        numberPosition: numberPosition, // Номер позиции с 1-9,
+        image: image
+    }
+
+    this.sceneForPuzzleControlPlayerRunGame.emit(value)
   }
 }

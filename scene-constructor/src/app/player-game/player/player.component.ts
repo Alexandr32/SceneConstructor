@@ -7,6 +7,9 @@ import {StateGame} from "../../run-game/models/other-models/state-game.model";
 import {TypeControls} from "../../run-game/models/other-models/type-controls.enum";
 import {StoreRunGameService} from "../../run-game/services/store-run-game.service";
 import {BaseComponent} from "../../base-component/base-component.component";
+import {StateService} from "../../run-game/services/state.service";
+import {SceneForPuzzleControlPlayerRunGame} from "../../run-game/models/other-models/puzzle-run-game.models";
+import {PartsPuzzleImage} from "../../core/models/parts-puzzle-image.model";
 
 
 @Component({
@@ -22,11 +25,11 @@ export class PlayerComponent extends BaseComponent implements OnInit, OnDestroy 
   @Input()
   showImage: boolean = false
 
-  currentScene: IBaseSceneRunGame
   stateGame: StateGame
 
   constructor(
-    private storeRunGameService: StoreRunGameService
+    private storeRunGameService: StoreRunGameService,
+    private stateService: StateService
   ) {
     super()
   }
@@ -36,19 +39,27 @@ export class PlayerComponent extends BaseComponent implements OnInit, OnDestroy 
   }
 
   ngOnInit() {
-
-    this.storeRunGameService.currentScene$
+    this.storeRunGameService.stateGame$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(currentScene => {
-        this.currentScene = currentScene
+      .subscribe((stateGame) => {
+        this.stateGame = stateGame
       })
   }
 
+  async selectPuzzle(value: {
+    sceneForPuzzleControlPlayerRunGame: SceneForPuzzleControlPlayerRunGame, // Сцена игрока
+    event: 'del' | 'add' // Добавить или удалить элемент со сцены,
+    numberPosition: number // Номер позиции с 1-9,
+    image: PartsPuzzleImage
+  }) {
+    await this.stateService.selectPuzzle(value)
+  }
+
   async selectAnswer(answer: AnswerRunGame) {
-    await this.storeRunGameService.saveSelectAnswerStateGame(this.player, answer)
+    await this.stateService.saveSelectAnswerStateGame(this.player, answer)
   }
 
   async selectControls(typeControls: TypeControls) {
-    await this.storeRunGameService.saveSelectTypeControls(typeControls)
+    await this.stateService.saveSelectTypeControls(typeControls)
   }
 }

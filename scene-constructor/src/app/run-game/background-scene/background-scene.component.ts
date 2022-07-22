@@ -7,6 +7,7 @@ import {SceneRunGame} from "../models/other-models/scene-run-game";
 import {PuzzleRunGame} from "../models/other-models/puzzle-run-game.models";
 import {BaseComponent} from "../../base-component/base-component.component";
 import {takeUntil} from "rxjs/operators";
+import {stat} from "fs";
 
 @Component({
   selector: 'app-background-scene',
@@ -31,15 +32,15 @@ export class BackgroundSceneComponent extends BaseComponent implements OnInit, A
 
   ngOnInit(): void {
 
-    this.storeRunGameService.currentScene$
+    this.storeRunGameService.stateGame$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(currentScene => {
+      .subscribe(state => {
 
-        if (currentScene.typesScene === TypeSceneEnum.Panorama) {
+        if (state.currentScene.typesScene === TypeSceneEnum.Panorama) {
           return
         }
 
-        this.scene = currentScene as SceneRunGame | PuzzleRunGame
+        this.scene = state.currentScene as SceneRunGame | PuzzleRunGame
 
         this.showVideo = !!this.scene.videoFile
         this.showImage = !!this.scene.imageFile && !this.showVideo

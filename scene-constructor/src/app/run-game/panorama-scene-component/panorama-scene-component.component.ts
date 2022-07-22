@@ -69,22 +69,24 @@ export class PanoramaSceneComponentComponent extends BaseComponent implements On
 
   ngOnInit() {
 
-    this.storeRunGameService.currentScene$
+    this.storeRunGameService.stateGame$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((currentScene) => {
+      .subscribe((state) => {
 
-        if (currentScene.typesScene !== TypeSceneEnum.Panorama) {
+        if (state.currentScene.typesScene !== TypeSceneEnum.Panorama) {
           return
         }
 
-        this.scene = (currentScene as PanoramaRunGame)
-        this.showPanorama()
+        if(this.scene?.id !== state.currentScene.id) {
+          this.scene = (state.currentScene as PanoramaRunGame)
+          this.showPanorama()
+        }
       })
 
     this.storeRunGameService.stateGame$
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        debounceTime(200) //Костыль
+        //debounceTime(200) //Костыль
       )
       .subscribe(state => {
         const action = this.typesControls.get(state.typeControls)

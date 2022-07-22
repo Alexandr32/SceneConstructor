@@ -1,7 +1,9 @@
 <div class="player-test__content">
-  <div class="player-test__name">{{ player?.name }}</div>
+  <div class="player-test__name">
+    {{ player?.name }}
+  </div>
 
-  <div class="m-t-16" [ngSwitch]="currentScene?.typesScene">
+  <div class="m-t-16" [ngSwitch]="stateGame?.currentScene?.typesScene">
     <ng-container *ngSwitchCase="'Answer'">
       <app-player-list-answers
         [player]="player"
@@ -18,7 +20,9 @@
     </ng-container>
     <ng-container *ngSwitchCase="'Puzzle'">
       <app-puzzle-controls
-        [player]="player">
+        [player]="player"
+        (sceneForPuzzleControlPlayerRunGame)="selectPuzzle($event)"
+      >
       </app-puzzle-controls>
     </ng-container>
 

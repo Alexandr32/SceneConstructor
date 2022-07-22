@@ -29,9 +29,7 @@ export class SettingsRunGameComponent extends BaseComponent implements OnInit {
   isShow: boolean = false
 
   isSound: boolean = false
-
-  runGame: RunGame
-
+  
   volumeSound: number = 0
 
   constructor(private storeRunGameService: StoreRunGameService,
@@ -40,11 +38,6 @@ export class SettingsRunGameComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.storeRunGameService.runGame$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(runGame => {
-        this.runGame = runGame
-      })
 
     this.settingsRunGameService.settingsRunGame$
       .pipe(takeUntil(this.ngUnsubscribe))

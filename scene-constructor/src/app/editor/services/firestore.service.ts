@@ -68,7 +68,9 @@ export class FirestoreService {
                 }
                 case TypeSceneEnum.Puzzle: {
                   return PuzzleSceneEditorMapper.toDtoEditor(baseScene as unknown as PuzzleFirebase)
-
+                }
+                default: {
+                  throw new Error('неизвестная сцена')
                 }
               }
             }
@@ -107,6 +109,9 @@ export class FirestoreService {
                 await this.fileService.setFilePuzzleFile(game.id, item as PuzzleEditScene)
                 break
               }
+              default: {
+                throw new Error('неизвестная сцена')
+              }
             }
           })
 
@@ -137,7 +142,6 @@ export class FirestoreService {
   }
 
   async saveGame(game: Game) {
-    debugger
 
     const players = [...(game.players.map(item => {
       return {
@@ -160,6 +164,9 @@ export class FirestoreService {
           }
           case TypeSceneEnum.Puzzle: {
             return PuzzleSceneEditorMapper.toFirebase((scene as PuzzleEditScene))
+          }
+          default: {
+            throw new Error('неизвестная сцена')
           }
         }
       }
